@@ -1,0 +1,71 @@
+table.Gretzky th, tr.Gretzky {
+	background-color:rgba(255, 255, 0, .5);
+} /* yellow */
+
+/* D2 */
+
+table.Eastern th, tr.Eastern, table.Hasek th, tr.Hasek {
+        background-color:rgba(255, 0, 0, .5);
+} /* red */
+
+table.Western th, tr.Western, table.Brodeur th, tr.Brodeur {
+        background-color:rgba(0, 255, 0, .5);
+} /* green */
+
+table.Roy th, tr.Roy {
+	background-color:rgba(0, 0, 255, .5);
+} /* blue */
+
+/* D3 */
+
+table.Howe th, tr.Howe {
+        background-color:rgba(0, 255, 255, .5);
+} /* teal */
+
+table.Lemieux th, tr.Lemieux {
+        background-color:rgba(255, 0, 255, .5);
+} /* magenta */
+
+table.Dionne th, tr.Dionne {
+        background-color:rgba(128, 0, 0, .5);
+} /* maroon */
+
+table.Francis th, tr.Francis {
+	background-color:rgba(0, 128, 0, .5);
+} /* forest green */
+
+table.Yzerman th, tr.Yzerman {
+	background-color:rgba(0, 0, 128, .5);
+} /* indigo */
+
+table.Jagr th, tr.Jagr {
+	background-color:rgba(128, 128, 0, .5);
+}
+
+table.Messier th, tr.Messier, table.Chelios th, tr.Chelios {
+	background-color:rgba(128, 0, 128, .5);
+}
+
+table.Sakic th, tr.Sakic, table.Leetch th, tr.Leetch {
+	background-color:rgba(0, 128, 128, .5);
+}
+
+table.Esposito th, tr.Esposito, table.Niedermayer th, tr.Niedermayer {
+	background-color:rgba(0, 0, 64, .5);
+}
+
+table.Recchi th, tr.Recchi, table.Lidstrom th, tr.Lidstrom {
+	background-color:rgba(64, 0, 0, .5);
+}
+
+table.Coffey th, tr.Coffey, table.Orr th, tr.Orr {
+	background-color:rgba(128, 128, 128, .5);
+}
+
+table.Bourque th, tr.Bourque {
+	background-color:rgba(0, 64, 0, .5);
+}
+
+table.Pronger th, tr.Pronger {
+	background-color:rgba(0, 0, 0, .5);
+}

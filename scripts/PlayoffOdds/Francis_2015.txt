@@ -1,0 +1,228 @@
+LeagueBegin
+League: Francis (Sort: Lottery) (Playoffs: 6)
+Team: Rose City Sinners
+Team: Talk to me Goose
+Team: Defibrillators
+Team: Lou's Clues
+Team: What's the Maatta?
+Team: Heil Sittler
+Team: Mud Dragons
+Team: Top Chetterberg
+Team: Leddy, set, go!
+Team: HotDogs
+Team: TeamNameRequired
+Team: Kneel before Saad
+Team: Glaciers
+Team: This Isn't Basketball...
+Kind: fantasy
+Sport: hockey
+Level: Division 3
+Season: 2015 (current: True)
+Author: Jeremy
+Note: www.roldtimehockey.com<br>www.reddit.com/r/oldtimehockey<br>www.fleaflicker.com/nhl/league?leagueId=7537&season=2015
+LeagueEnd
+SortBegin
+Lottery: Points, Average Points HeadToHead, GoalsFor
+SortEnd
+RulesBegin
+PointsForWinInRegulation: 1
+PointsForWinInOvertime: 1
+PointsForWinInShootout: 1
+PointsForLossInRegulation: 0
+PointsForLossInOvertime: 0
+PointsForLossInShootout: 0
+PointsForTie: 0.5
+PercentOfGamesThatEndInTie: 0
+PercentOfGamesThatEndInOvertimeWin: 0
+PercentOfGamesThatEndInShootoutWin: 0
+WeightType: Pythagenpat
+WeightExponent: 0.27
+RulesEnd
+GamesBegin
+TeamListedFirst: home
+Date: 10/5/2015
+Lou's Clues	105.57-144.53	Top Chetterberg
+Heil Sittler	168.36-108.61	Defibrillators
+TeamNameRequired	93.59-96.68	Leddy, set, go!
+Rose City Sinners	136.94-74.11	Mud Dragons
+Glaciers	78.56-86.3	This Isn't Basketball...
+HotDogs	124.33-162.29	Kneel before Saad
+Talk to me Goose	113.8-101.69	What's the Maatta?
+Date: 10/12/2015
+Kneel before Saad	155.42-160.05	What's the Maatta?
+This Isn't Basketball...	132.32-174.87	Top Chetterberg
+Mud Dragons	180.76-250.23	Defibrillators
+Rose City Sinners	230.08-173.28	TeamNameRequired
+Glaciers	96.29-196.84	Heil Sittler
+HotDogs	214.42-225.5	Lou's Clues
+Talk to me Goose	154.86-112.17	Leddy, set, go!
+Date: 10/19/2015
+Lou's Clues	159.71-185.06	Talk to me Goose
+Heil Sittler	132.38-155.55	HotDogs
+TeamNameRequired	213.1-102.74	Glaciers
+Defibrillators	193.86-171.3	Rose City Sinners
+Top Chetterberg	138.63-121.67	Mud Dragons
+What's the Maatta?	176.04-143.53	This Isn't Basketball...
+Leddy, set, go!	193.86-189.42	Kneel before Saad
+Date: 10/26/2015
+Defibrillators	201.93-173.79	TeamNameRequired
+Top Chetterberg	153.39-171.29	Heil Sittler
+What's the Maatta?	185.72-192.9	Lou's Clues
+Kneel before Saad	136.36-166.21	Talk to me Goose
+This Isn't Basketball...	162.32-162.56	HotDogs
+Mud Dragons	181.35-138.63	Glaciers
+Leddy, set, go!	163.6-177.61	Rose City Sinners
+Date: 11/2/2015
+Lou's Clues	193.5-175.64	TeamNameRequired
+Heil Sittler	185.75-179.63	Leddy, set, go!
+Mud Dragons	185.23-181.51	This Isn't Basketball...
+Rose City Sinners	283.58-158.51	Kneel before Saad
+Glaciers	125.17-160.07	What's the Maatta?
+HotDogs	163.21-191.02	Top Chetterberg
+Talk to me Goose	169.24-153.76	Defibrillators
+Date: 11/9/2015
+Lou's Clues	165.57-174.87	Kneel before Saad
+Heil Sittler	163.45-154.75	What's the Maatta?
+TeamNameRequired	138.14-196.93	Top Chetterberg
+Defibrillators	169.77-151.54	Leddy, set, go!
+Glaciers	130.9-204.93	Rose City Sinners
+HotDogs	179.99-210.17	Mud Dragons
+Talk to me Goose	204.93-185.05	This Isn't Basketball...
+Date: 11/16/2015
+Heil Sittler	212.62-244.54	Lou's Clues
+TeamNameRequired	208.94-210.47	Talk to me Goose
+Defibrillators	261.72-197.23	HotDogs
+Top Chetterberg	200.89-166.02	Glaciers
+What's the Maatta?	211.55-245.5	Rose City Sinners
+Kneel before Saad	133.76-163.87	Mud Dragons
+Leddy, set, go!	175.73-129.69	This Isn't Basketball...
+Date: 11/23/2015
+Lou's Clues	202.59-145.82	Leddy, set, go!
+This Isn't Basketball...	163.93-119.53	Kneel before Saad
+Mud Dragons	132.38-199.45	What's the Maatta?
+Rose City Sinners	195.57-166.82	Top Chetterberg
+Glaciers	175.06-142.81	Defibrillators
+HotDogs	224.61-180.53	TeamNameRequired
+Talk to me Goose	194.19-204.44	Heil Sittler
+Date: 11/30/2015
+TeamNameRequired	179.18-198.65	Heil Sittler
+Defibrillators	198.16-225.75	Lou's Clues
+Top Chetterberg	180.66-265.32	Talk to me Goose
+What's the Maatta?	162.81-145.12	HotDogs
+Kneel before Saad	144.08-125.31	Glaciers
+This Isn't Basketball...	136.76-227.07	Rose City Sinners
+Leddy, set, go!	212.22-167.08	Mud Dragons
+Date: 12/7/2015
+Top Chetterberg	145.68-167.21	Defibrillators
+What's the Maatta?	160.14-115.04	TeamNameRequired
+Kneel before Saad	173.42-158.4	Heil Sittler
+This Isn't Basketball...	124.56-208.32	Lou's Clues
+Mud Dragons	156.07-245.36	Talk to me Goose
+Rose City Sinners	206.97-166.98	HotDogs
+Leddy, set, go!	124.06-85.58	Glaciers
+Date: 12/14/2015
+Lou's Clues	238.34-181.52	Top Chetterberg
+Heil Sittler	212.62-217.74	Defibrillators
+TeamNameRequired	267.36-131.15	Leddy, set, go!
+Rose City Sinners	198.33-193.86	Mud Dragons
+Glaciers	139.75-111.3	This Isn't Basketball...
+HotDogs	192.96-143.45	Kneel before Saad
+Talk to me Goose	194.0-287.94	What's the Maatta?
+Date: 12/21/2015
+TeamNameRequired	158.07-136.34	Heil Sittler
+Defibrillators	160.22-111.04	Lou's Clues
+Top Chetterberg	108.96-147.0	Talk to me Goose
+What's the Maatta?	105.44-142.58	HotDogs
+Kneel before Saad	92.53-94.6	Glaciers
+This Isn't Basketball...	129.62-178.6	Rose City Sinners
+Leddy, set, go!	115.94-146.92	Mud Dragons
+Date: 12/28/2015
+What's the Maatta?	197.0-135.72	Top Chetterberg
+Kneel before Saad	155.3-188.43	Defibrillators
+This Isn't Basketball...	147.73-236.23	TeamNameRequired
+Mud Dragons	244.18-187.49	Heil Sittler
+Rose City Sinners	232.51-169.89	Lou's Clues
+Glaciers	125.29-225.96	Talk to me Goose
+Leddy, set, go!	216.85-155.4	HotDogs
+Date: 1/4/2016
+Top Chetterberg		Defibrillators
+What's the Maatta?		TeamNameRequired
+Kneel before Saad		Heil Sittler
+This Isn't Basketball...		Lou's Clues
+Mud Dragons		Talk to me Goose
+Rose City Sinners		HotDogs
+Leddy, set, go!		Glaciers
+Date: 1/11/2016
+Heil Sittler		Lou's Clues
+TeamNameRequired		Talk to me Goose
+Defibrillators		HotDogs
+Top Chetterberg		Glaciers
+What's the Maatta?		Rose City Sinners
+Kneel before Saad		Mud Dragons
+Leddy, set, go!		This Isn't Basketball...
+Date: 1/18/2016
+Kneel before Saad		What's the Maatta?
+This Isn't Basketball...		Top Chetterberg
+Mud Dragons		Defibrillators
+Rose City Sinners		TeamNameRequired
+Glaciers		Heil Sittler
+HotDogs		Lou's Clues
+Talk to me Goose		Leddy, set, go!
+Date: 1/25/2016
+Lou's Clues		Glaciers
+Heil Sittler		Rose City Sinners
+TeamNameRequired		Mud Dragons
+Defibrillators		This Isn't Basketball...
+Top Chetterberg		Kneel before Saad
+What's the Maatta?		Leddy, set, go!
+Talk to me Goose		HotDogs
+Date: 2/1/2016
+Lou's Clues		Leddy, set, go!
+This Isn't Basketball...		Kneel before Saad
+Mud Dragons		What's the Maatta?
+Rose City Sinners		Top Chetterberg
+Glaciers		Defibrillators
+HotDogs		TeamNameRequired
+Talk to me Goose		Heil Sittler
+Date: 2/8/2016
+Defibrillators		TeamNameRequired
+Top Chetterberg		Heil Sittler
+What's the Maatta?		Lou's Clues
+Kneel before Saad		Talk to me Goose
+This Isn't Basketball...		HotDogs
+Mud Dragons		Glaciers
+Leddy, set, go!		Rose City Sinners
+Date: 2/15/2016
+Lou's Clues		TeamNameRequired
+Heil Sittler		Leddy, set, go!
+Mud Dragons		This Isn't Basketball...
+Rose City Sinners		Kneel before Saad
+Glaciers		What's the Maatta?
+HotDogs		Top Chetterberg
+Talk to me Goose		Defibrillators
+Date: 2/22/2016
+Lou's Clues		Talk to me Goose
+Heil Sittler		HotDogs
+TeamNameRequired		Glaciers
+Defibrillators		Rose City Sinners
+Top Chetterberg		Mud Dragons
+What's the Maatta?		This Isn't Basketball...
+Leddy, set, go!		Kneel before Saad
+Date: 2/29/2016
+Lou's Clues		Mud Dragons
+Heil Sittler		This Isn't Basketball...
+TeamNameRequired		Kneel before Saad
+Defibrillators		What's the Maatta?
+Top Chetterberg		Leddy, set, go!
+HotDogs		Glaciers
+Talk to me Goose		Rose City Sinners
+Date: 3/7/2016
+Lou's Clues		Kneel before Saad
+Heil Sittler		What's the Maatta?
+TeamNameRequired		Top Chetterberg
+Defibrillators		Leddy, set, go!
+Glaciers		Rose City Sinners
+HotDogs		Mud Dragons
+Talk to me Goose		This Isn't Basketball...
+GamesEnd
+

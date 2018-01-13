@@ -1,0 +1,228 @@
+LeagueBegin
+League: Hasek (Sort: Lottery) (Playoffs: 6)
+Team: Denim Chicken
+Team: Flying Zambonis
+Team: Toews'd & Kane-fused
+Team: Zetterberg Curve
+Team: JewChooTrain
+Team: The Rickbreath 40-30s
+Team: Elbow Room #41in15
+Team: CTE
+Team: PuckingFricks
+Team: Kwik-E-Mart Gougers
+Team: Daft Puck
+Team: Boyz N Da Hud
+Team: Weapons Of Mass Destruction
+Team: Kurri Farts
+Kind: fantasy
+Sport: hockey
+Level: Division 2
+Season: 2015 (current: True)
+Author: Jeremy
+Note: www.roldtimehockey.com<br>www.reddit.com/r/oldtimehockey<br>www.fleaflicker.com/nhl/league?leagueId=7529&season=2015
+LeagueEnd
+SortBegin
+Lottery: Points, Average Points HeadToHead, GoalsFor
+SortEnd
+RulesBegin
+PointsForWinInRegulation: 1
+PointsForWinInOvertime: 1
+PointsForWinInShootout: 1
+PointsForLossInRegulation: 0
+PointsForLossInOvertime: 0
+PointsForLossInShootout: 0
+PointsForTie: 0.5
+PercentOfGamesThatEndInTie: 0
+PercentOfGamesThatEndInOvertimeWin: 0
+PercentOfGamesThatEndInShootoutWin: 0
+WeightType: Pythagenpat
+WeightExponent: 0.27
+RulesEnd
+GamesBegin
+TeamListedFirst: home
+Date: 10/5/2015
+Daft Puck	110.11-114.68	Flying Zambonis
+JewChooTrain	157.0-143.69	Boyz N Da Hud
+Toews'd & Kane-fused	132.73-128.82	Kurri Farts
+The Rickbreath 40-30s	112.79-105.87	PuckingFricks
+Zetterberg Curve	167.46-170.83	Denim Chicken
+Elbow Room #41in15	129.06-101.07	Kwik-E-Mart Gougers
+CTE	115.7-103.6	Weapons Of Mass Destruction
+Date: 10/12/2015
+Kwik-E-Mart Gougers	213.28-172.63	Weapons Of Mass Destruction
+Denim Chicken	243.4-237.07	Flying Zambonis
+PuckingFricks	253.94-187.7	Boyz N Da Hud
+The Rickbreath 40-30s	140.63-178.46	Toews'd & Kane-fused
+Zetterberg Curve	182.95-165.59	JewChooTrain
+Elbow Room #41in15	199.32-188.33	Daft Puck
+CTE	196.64-139.51	Kurri Farts
+Date: 10/19/2015
+Daft Puck	170.29-145.3	CTE
+JewChooTrain	129.93-193.51	Elbow Room #41in15
+Toews'd & Kane-fused	149.71-228.86	Zetterberg Curve
+Boyz N Da Hud	201.69-215.68	The Rickbreath 40-30s
+Flying Zambonis	189.64-149.09	PuckingFricks
+Weapons Of Mass Destruction	212.6-180.47	Denim Chicken
+Kurri Farts	154.51-160.58	Kwik-E-Mart Gougers
+Date: 10/26/2015
+Boyz N Da Hud	146.25-150.63	Toews'd & Kane-fused
+Flying Zambonis	213.95-191.48	JewChooTrain
+Weapons Of Mass Destruction	199.87-175.53	Daft Puck
+Kwik-E-Mart Gougers	162.99-188.82	CTE
+Denim Chicken	219.96-182.7	Elbow Room #41in15
+PuckingFricks	183.59-210.14	Zetterberg Curve
+Kurri Farts	167.59-199.69	The Rickbreath 40-30s
+Date: 11/2/2015
+Daft Puck	159.79-240.18	Toews'd & Kane-fused
+JewChooTrain	203.71-135.04	Kurri Farts
+PuckingFricks	151.79-198.62	Denim Chicken
+The Rickbreath 40-30s	257.03-197.38	Kwik-E-Mart Gougers
+Zetterberg Curve	248.49-156.12	Weapons Of Mass Destruction
+Elbow Room #41in15	188.37-196.54	Flying Zambonis
+CTE	120.88-164.39	Boyz N Da Hud
+Date: 11/9/2015
+Daft Puck	177.62-134.59	Kwik-E-Mart Gougers
+JewChooTrain	239.02-166.88	Weapons Of Mass Destruction
+Toews'd & Kane-fused	190.68-181.3	Flying Zambonis
+Boyz N Da Hud	175.42-149.63	Kurri Farts
+Zetterberg Curve	184.29-188.99	The Rickbreath 40-30s
+Elbow Room #41in15	202.46-180.95	PuckingFricks
+CTE	159.86-209.5	Denim Chicken
+Date: 11/16/2015
+JewChooTrain	238.92-222.58	Daft Puck
+Toews'd & Kane-fused	199.25-196.19	CTE
+Boyz N Da Hud	157.7-234.51	Elbow Room #41in15
+Flying Zambonis	171.38-203.86	Zetterberg Curve
+Weapons Of Mass Destruction	167.84-214.41	The Rickbreath 40-30s
+Kwik-E-Mart Gougers	210.64-179.14	PuckingFricks
+Kurri Farts	159.16-256.97	Denim Chicken
+Date: 11/23/2015
+Daft Puck	168.55-128.3	Kurri Farts
+Denim Chicken	189.12-214.54	Kwik-E-Mart Gougers
+PuckingFricks	191.61-176.67	Weapons Of Mass Destruction
+The Rickbreath 40-30s	192.48-223.61	Flying Zambonis
+Zetterberg Curve	144.28-134.93	Boyz N Da Hud
+Elbow Room #41in15	129.95-182.38	Toews'd & Kane-fused
+CTE	209.48-173.78	JewChooTrain
+Date: 11/30/2015
+Toews'd & Kane-fused	228.48-240.26	JewChooTrain
+Boyz N Da Hud	183.8-188.84	Daft Puck
+Flying Zambonis	183.66-224.01	CTE
+Weapons Of Mass Destruction	187.22-160.69	Elbow Room #41in15
+Kwik-E-Mart Gougers	223.85-165.84	Zetterberg Curve
+Denim Chicken	198.62-182.84	The Rickbreath 40-30s
+Kurri Farts	190.89-261.4	PuckingFricks
+Date: 12/7/2015
+Flying Zambonis	233.04-146.6	Boyz N Da Hud
+Weapons Of Mass Destruction	118.03-218.86	Toews'd & Kane-fused
+Kwik-E-Mart Gougers	120.27-213.17	JewChooTrain
+Denim Chicken	169.23-156.85	Daft Puck
+PuckingFricks	172.12-151.31	CTE
+The Rickbreath 40-30s	215.66-172.78	Elbow Room #41in15
+Kurri Farts	164.42-195.28	Zetterberg Curve
+Date: 12/14/2015
+Daft Puck	202.2-279.82	Flying Zambonis
+JewChooTrain	185.5-175.03	Boyz N Da Hud
+Toews'd & Kane-fused	271.98-232.98	Kurri Farts
+The Rickbreath 40-30s	176.21-159.88	PuckingFricks
+Zetterberg Curve	157.17-297.26	Denim Chicken
+Elbow Room #41in15	205.75-143.68	Kwik-E-Mart Gougers
+CTE	257.87-196.19	Weapons Of Mass Destruction
+Date: 12/21/2015
+Toews'd & Kane-fused	143.17-159.64	JewChooTrain
+Boyz N Da Hud	127.99-94.36	Daft Puck
+Flying Zambonis	149.43-142.57	CTE
+Weapons Of Mass Destruction	140.77-148.78	Elbow Room #41in15
+Kwik-E-Mart Gougers	172.68-160.2	Zetterberg Curve
+Denim Chicken	135.95-117.54	The Rickbreath 40-30s
+Kurri Farts	135.94-146.32	PuckingFricks
+Date: 12/28/2015
+Weapons Of Mass Destruction	206.11-219.35	Flying Zambonis
+Kwik-E-Mart Gougers	153.47-181.77	Boyz N Da Hud
+Denim Chicken	269.86-175.18	Toews'd & Kane-fused
+PuckingFricks	170.78-168.83	JewChooTrain
+The Rickbreath 40-30s	188.86-220.82	Daft Puck
+Zetterberg Curve	247.19-242.71	CTE
+Kurri Farts	182.1-186.06	Elbow Room #41in15
+Date: 1/4/2016
+Flying Zambonis		Boyz N Da Hud
+Weapons Of Mass Destruction		Toews'd & Kane-fused
+Kwik-E-Mart Gougers		JewChooTrain
+Denim Chicken		Daft Puck
+PuckingFricks		CTE
+The Rickbreath 40-30s		Elbow Room #41in15
+Kurri Farts		Zetterberg Curve
+Date: 1/11/2016
+JewChooTrain		Daft Puck
+Toews'd & Kane-fused		CTE
+Boyz N Da Hud		Elbow Room #41in15
+Flying Zambonis		Zetterberg Curve
+Weapons Of Mass Destruction		The Rickbreath 40-30s
+Kwik-E-Mart Gougers		PuckingFricks
+Kurri Farts		Denim Chicken
+Date: 1/18/2016
+Kwik-E-Mart Gougers		Weapons Of Mass Destruction
+Denim Chicken		Flying Zambonis
+PuckingFricks		Boyz N Da Hud
+The Rickbreath 40-30s		Toews'd & Kane-fused
+Zetterberg Curve		JewChooTrain
+Elbow Room #41in15		Daft Puck
+CTE		Kurri Farts
+Date: 1/25/2016
+Daft Puck		Zetterberg Curve
+JewChooTrain		The Rickbreath 40-30s
+Toews'd & Kane-fused		PuckingFricks
+Boyz N Da Hud		Denim Chicken
+Flying Zambonis		Kwik-E-Mart Gougers
+Weapons Of Mass Destruction		Kurri Farts
+CTE		Elbow Room #41in15
+Date: 2/1/2016
+Daft Puck		Kurri Farts
+Denim Chicken		Kwik-E-Mart Gougers
+PuckingFricks		Weapons Of Mass Destruction
+The Rickbreath 40-30s		Flying Zambonis
+Zetterberg Curve		Boyz N Da Hud
+Elbow Room #41in15		Toews'd & Kane-fused
+CTE		JewChooTrain
+Date: 2/8/2016
+Boyz N Da Hud		Toews'd & Kane-fused
+Flying Zambonis		JewChooTrain
+Weapons Of Mass Destruction		Daft Puck
+Kwik-E-Mart Gougers		CTE
+Denim Chicken		Elbow Room #41in15
+PuckingFricks		Zetterberg Curve
+Kurri Farts		The Rickbreath 40-30s
+Date: 2/15/2016
+Daft Puck		Toews'd & Kane-fused
+JewChooTrain		Kurri Farts
+PuckingFricks		Denim Chicken
+The Rickbreath 40-30s		Kwik-E-Mart Gougers
+Zetterberg Curve		Weapons Of Mass Destruction
+Elbow Room #41in15		Flying Zambonis
+CTE		Boyz N Da Hud
+Date: 2/22/2016
+Daft Puck		CTE
+JewChooTrain		Elbow Room #41in15
+Toews'd & Kane-fused		Zetterberg Curve
+Boyz N Da Hud		The Rickbreath 40-30s
+Flying Zambonis		PuckingFricks
+Weapons Of Mass Destruction		Denim Chicken
+Kurri Farts		Kwik-E-Mart Gougers
+Date: 2/29/2016
+Daft Puck		PuckingFricks
+JewChooTrain		Denim Chicken
+Toews'd & Kane-fused		Kwik-E-Mart Gougers
+Boyz N Da Hud		Weapons Of Mass Destruction
+Flying Zambonis		Kurri Farts
+Elbow Room #41in15		Zetterberg Curve
+CTE		The Rickbreath 40-30s
+Date: 3/7/2016
+Daft Puck		Kwik-E-Mart Gougers
+JewChooTrain		Weapons Of Mass Destruction
+Toews'd & Kane-fused		Flying Zambonis
+Boyz N Da Hud		Kurri Farts
+Zetterberg Curve		The Rickbreath 40-30s
+Elbow Room #41in15		PuckingFricks
+CTE		Denim Chicken
+GamesEnd
+

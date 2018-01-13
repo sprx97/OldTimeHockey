@@ -1,0 +1,49 @@
+/********* Navigation Bar *********/
+
+html {
+	min-width:1000px;
+	overflow-x:scroll;
+}
+
+body {
+        padding-top: 50px;
+        padding-left: 0px;
+        padding-right: 0px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+	background-color:rgba(255, 255, 255, 1);
+}
+
+.navbar-inverse {
+	background-color: #2E2E36;
+	border-color: #FFFFFF;
+	min-width:1200px;
+	border-bottom: 1px solid black;
+}
+
+.navbar .navbar-nav * a {
+	font-family: "Arial";
+	font-size: 125%;
+	font-weight: 800;
+}
+
+.navbar .navbar-nav * a:link, .navbar .navbar-nav * a:visited {
+	color: #DA635D;
+}
+
+.navbar-left > li {
+	border-right: 2px solid black;
+}
+
+.navbar .navbar-nav * li {
+	list-style-position: inside;
+	border: 1px solid black;
+}
+
+/* Selected tab */
+li.selected {
+	background-color: #686870;
+}
+

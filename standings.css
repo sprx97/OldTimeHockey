@@ -1,0 +1,48 @@
+.tier {
+	margin:0px 0px 20px 0px;
+	padding:5px 0px 20px 0px;
+	height:auto;
+}
+.division1 {
+	background-color:rgba(205, 173, 0, .5);
+}
+.division2 {
+	background-color:rgba(128, 128, 128, .5);
+}
+.division3 {
+	background-color:rgba(205, 127, 50, .5);
+}
+
+.column {
+	display:inline-block;
+	width:33%;
+}
+
+table {
+	table-layout:fixed;
+	width:90%;
+	background-color:rgba(255, 255, 255, 1);
+}
+
+tr {
+	border:1px solid black;
+}
+.division1 .team:nth-child(n+13), .division2 .team:nth-child(n+13), .division3 .team:nth-child(n+13) {
+	background-color:rgba(255, 0, 0, .25);
+}
+.team:nth-child(-n+6) {
+	background-color:rgba(0, 255, 0, .25);
+}
+
+th {
+	padding:5px 0px;
+	text-align:center;
+}
+
+td {
+	border:1px solid black;
+	text-align:center;
+	overflow:hidden;
+	font-size:75%;
+	padding:3px;
+}
