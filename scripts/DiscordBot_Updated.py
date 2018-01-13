@@ -97,8 +97,8 @@ def check_scores():
 
 	# repeat the task every 15 seconds
 	while not client.is_closed:
-		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y%m%d")
-#		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
+#		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y%m%d")
+		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
 #			announcements = ParseFeeds.parseScoreboard(date)
 			announcements = ParseFeeds.parseScoreboard2(date)
@@ -262,7 +262,7 @@ def on_message(message):
 						if home == team:
 							opp = away
 
-						if game["status"]["detailedState"] == "Scheduled":
+						if game["status"]["detailedState"] == "Scheduled" or game["status"]["detailedState"] == "Pre-Game":
 							yield from client.send_message(message.channel, emojis[team] + " " + team + "'s game against " + emojis[opp] + " " + opp + " has not started yet.")
 						else:
 							period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
@@ -278,6 +278,7 @@ def on_message(message):
 								yield from client.send_message(message.channel, "Current score: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
 
 						found = True
+						break
 
 				if not found:
 					yield from client.send_message(message.channel, "I do not think " + emojis[team] + " " + team + " plays tonight.")

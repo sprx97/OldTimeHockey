@@ -316,7 +316,6 @@ def parseScoreboard2(date): # YYYYmmdd format
 		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled"
 		isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
 
-		period = "(" + playbyplay["liveData"]["linescore"]["currentPeriodOrdinal"] + ")"
 		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
 		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
 
@@ -334,6 +333,7 @@ def parseScoreboard2(date): # YYYYmmdd format
 				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Started. Score is " + str(scoreboard[key][0]) + "-" + str(scoreboard[key][1]) + "."
 				stringsToAnnounce.append(s)
 			else:
+				period = "(" + playbyplay["liveData"]["linescore"]["currentPeriodOrdinal"] + ")"
 				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Finished. Final was " + str(scoreboard[key][0]) + "-" + str(scoreboard[key][1])
 				if period != "(3rd)":
 					s += " " + period
@@ -355,6 +355,7 @@ def parseScoreboard2(date): # YYYYmmdd format
 				en = "(EN) " if goal["result"]["emptyNet"] else "" 
 
 				team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
+				period = "(" + goal["about"]["ordinalNum"] + ")"
 				time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
 
 				score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
@@ -368,9 +369,9 @@ def parseScoreboard2(date): # YYYYmmdd format
 				awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
 				homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
 				periods = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
-				if periods == "(3rd)":
-					periods = ""
-				finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + periods
+				if period == "(3rd)":
+					period = ""
+				finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period
 				stringsToAnnounce.append(finalstring)
 				completed.append(key)
 
