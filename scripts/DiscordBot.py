@@ -8,6 +8,7 @@ import MySQLdb
 import urllib.request # url reading
 from lxml import etree
 from lxml import html # xml parsing
+import json
 
 import ParseFeeds
 import CheckTradeEmails
@@ -42,7 +43,7 @@ team_map["sjs"] = team_map["sj"] = team_map["san jose"] = team_map["sharks"]				
 team_map["tbl"] = team_map["tb"] = team_map["tampa bay"] = team_map["tampa"] = team_map["bolts"] = team_map["lightning"]= "TBL"
 team_map["tor"] = team_map["toronto"] = team_map["leafs"] = team_map["maple leafs"]					= "TOR"
 team_map["van"] = team_map["vancouver"] = team_map["canucks"] = team_map["nucks"]					= "VAN"
-team_map["vgk"] = team_map["vegas"] = team_map["las vegas"] = team_map["golden knights"]				= "VGK"
+team_map["vgk"] = team_map["vegas"] = team_map["las vegas"] = team_map["golden knights"] = team_map["knights"]		= "VGK"
 team_map["wsh"] = team_map["was"] = team_map["washington"] = team_map["capitals"] = team_map["caps"]			= "WSH"
 team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]						= "WPJ"
 
@@ -59,6 +60,7 @@ emojis["CBJ"] = "<:CBJ:269315288988647425>"
 emojis["DAL"] = "<:DAL:269315550188929024>"
 emojis["DET"] = "<:DET:269315577682722826>"
 emojis["EDM"] = "<:EDM:269315479464706048>"
+emojis["FLA"] = "<:FLO:269315494652280832>"
 emojis["FLO"] = "<:FLO:269315494652280832>"
 emojis["LAK"] = "<:LAK:269315457188626432>"
 emojis["MIN"] = "<:MIN:269315563606507521>"
@@ -77,10 +79,11 @@ emojis["TOR"] = "<:TOR:269315465069723648>"
 emojis["VAN"] = "<:VAN:269315315194658818>"
 emojis["VGK"] = "<:VGK:363836502859448320>"
 emojis["WSH"] = "<:WSH:269327070977458181>"
+emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
 client = discord.Client()
-soft_reset = False # temporarily set to true to avoid printing stuff once
+soft_reset = 0 # temporarily set to > 0 to avoid printing stuff once
 
 @asyncio.coroutine
 def check_scores():
@@ -88,24 +91,25 @@ def check_scores():
 
 	bot_channel = None
 	for channel in client.get_all_channels():
-		if channel.name == "general": # fuck it, we'll do it live
+		if channel.name == "general":
 			bot_channel = channel
 
-#	if not soft_reset:
+#	if soft_reset == 0:
 #		yield from client.send_message(bot_channel, "Scorebot reset... Sorry for the spam!")
 
-	# repeat the task every 60 seconds
+	# repeat the task every 15 seconds
 	while not client.is_closed:
-		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y%m%d")
+		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
 			announcements = ParseFeeds.parseScoreboard(date)
-			if not soft_reset:
+			if soft_reset == 0:
 				for str in announcements:
 					yield from client.send_message(bot_channel, str)
 		except Exception as e:
 			print("Error: %s" % e)
 
-		soft_reset = False
+		if soft_reset > 0:
+			soft_reset -= 1
 
 		yield from asyncio.sleep(15)
 
@@ -139,10 +143,8 @@ def on_ready():
 #	print(client.user.id)
 #	print("---------")
 
-#	print("ready")
-	fp = open("/var/www/roldtimehockey/scripts/wes.jpg", "rb")
-	yield from client.edit_profile(password=None, avatar=fp.read())
-#	print("done")
+#	fp = open("/var/www/roldtimehockey/scripts/wes.jpg", "rb")
+#	yield from client.edit_profile(password=None, avatar=fp.read())
 
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trade_emails())
@@ -208,6 +210,10 @@ def on_message(message):
 			db.close()
 
 	# Woppa cup check response
+#
+#	I think this will be a lot easier once the Challonge API v2 is out. That should allow me to just
+#	make calls instead of having to scrape the page.
+#
 	if message.content.startswith("!woppacup"):
 		if len(message.content.split(" ")) == 1:
 			yield from client.send_message(message.channel, "Usage: !woppacup <fleaflicker username>")
@@ -242,71 +248,42 @@ def on_message(message):
 			team = (" ".join(message.content.split(" ")[1:])).lower()
 			if team in team_map.keys():
 				team = team_map[team]
-				date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y%m%d")
+				date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 
 				try:
-					root = ParseFeeds.getFeed("https://www.mysportsfeeds.com/api/feed/pull/nhl/2017-2018-regular/scoreboard.xml?fordate=" + date)
+					root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
 				except Exception as e:
-					print("Failed to find feed.")
-#					yield from client.send_message(message.channel, "Failed to find feed")
+					yield from client.send_message(message.channel, "Failed to find feed")
 					return
 
-				games = root.cssselect("gameScore")
+				games = root["dates"][0]["games"]
 
 				found = False
 				for game in games:
-					away = game.cssselect("awayteam abbreviation")[0].text_content()
-					home = game.cssselect("hometeam abbreviation")[0].text_content()
+					away = team_map[game["teams"]["away"]["team"]["name"].split(" ")[-1].lower()]
+					home = team_map[game["teams"]["home"]["team"]["name"].split(" ")[-1].lower()]
 					if home == team or away == team:
 						opp = home
 						if home == team:
 							opp = away
-					
-						if game.cssselect("isUnplayed")[0].text_content() == "true":
+
+						if game["status"]["detailedState"] == "Scheduled" or game["status"]["detailedState"] == "Pre-Game":
 							yield from client.send_message(message.channel, emojis[team] + " " + team + "'s game against " + emojis[opp] + " " + opp + " has not started yet.")
 						else:
-							periods = game.cssselect("period")
-
-							awayScore = 0
-							homeScore = 0
-							if len(game.cssselect("awayScore")) > 0:
-								awayScore = int(game.cssselect("awayScore")[0].text_content())
-							if len(game.cssselect("homeScore")) > 0:
-								homeScore = int(game.cssselect("homeScore")[0].text_content())
-
-							timeleft = game.cssselect("currentPeriodSecondsRemaining")
-
-							if len(timeleft) > 0:
-								mins = int(int(timeleft[0].text_content()) / 60)
-								secs = int(timeleft[0].text_content()) - 60*mins
-								timeleft = " %d:%02d" % (mins, secs)
+							period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
+							awayScore = game["teams"]["away"]["score"]
+							homeScore = game["teams"]["home"]["score"]
+							if game["status"]["detailedState"] == "Final":
+								if period == "(3rd)":
+									period = ""
+								yield from client.send_message(message.channel, "Final: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
 							else:
-								timeleft = ""
-
-							if game.cssselect("isInProgress")[0].text_content() == "true":
-								if len(periods) == 1:
-									periods = "(1st" + timeleft + ")"
-								elif len(periods) == 2:
-									periods = "(2nd" + timeleft + ")"
-								elif len(periods) == 3:
-									periods = "(3rd" + timeleft + ")"
-								elif len(periods) == 4:
-									periods = "(OT" + timeleft + ")"
-								elif len(periods) == 5:
-									periods = "(SO)"
-
-								yield from client.send_message(message.channel, "Current score: %s %s %d, %s %s %d %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, periods))
-							else:
-								if len(periods) == 4:
-									periods = "(OT)"
-								elif len(periods) == 5:
-									periods = "(SO)"
-								else:
-									periods = ""
-
-								yield from client.send_message(message.channel, "Final: %s %s %d, %s %s %d %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, periods))
+								timeleft = game["linescore"]["currentPeriodTimeRemaining"]
+								period = period[:-1] + " " + timeleft + period[-1]
+								yield from client.send_message(message.channel, "Current score: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
 
 						found = True
+						break
 
 				if not found:
 					yield from client.send_message(message.channel, "I do not think " + emojis[team] + " " + team + " plays tonight.")
@@ -316,5 +293,5 @@ def on_message(message):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "soft":
-			soft_reset = True
+			soft_reset = 4
 	client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
