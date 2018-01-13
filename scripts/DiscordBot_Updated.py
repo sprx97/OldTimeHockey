@@ -100,8 +100,8 @@ def check_scores():
 		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y%m%d")
 #		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
-			announcements = ParseFeeds.parseScoreboard(date)
-#			announcements = ParseFeeds.parseScoreboard2(date)
+#			announcements = ParseFeeds.parseScoreboard(date)
+			announcements = ParseFeeds.parseScoreboard2(date)
 			if not soft_reset:
 				for str in announcements:
 					yield from client.send_message(bot_channel, str)

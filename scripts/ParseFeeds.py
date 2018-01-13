@@ -353,8 +353,13 @@ def parseScoreboard2(date): # YYYYmmdd format
 				if strength == "(EVEN) ":
 					strength = ""
 				en = "(EN) " if goal["result"]["emptyNet"] else "" 
-				
-				stringsToAnnounce.append("GOAL: " + strength + en + goal["result"]["description"])
+
+				team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
+				time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
+
+				score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
+
+				stringsToAnnounce.append("GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score)
 				reported.append(goalkey)
 
 		# print final result
