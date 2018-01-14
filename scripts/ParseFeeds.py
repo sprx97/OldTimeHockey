@@ -82,7 +82,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		key = away + "-" + home
 
 		isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
-		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled" or playbyplay["gameData"]["status"]["detailedState"] == "Pre-Game"
+		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled"
 		isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
 
 		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
@@ -128,7 +128,9 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				strength = "(" + goal["result"]["strength"]["code"] + ") "
 				if strength == "(EVEN) ":
 					strength = ""
-				en = "(EN) " if goal["result"]["emptyNet"] else "" 
+				en = ""
+				if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
+					en = "(EN) "
 
 				team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
 				period = "(" + goal["about"]["ordinalNum"] + ")"
