@@ -99,11 +99,11 @@ def parseScoreboard(date): # YYYYmmdd format
 			if scoreboard[key] == [0, 0]:
 				stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting")
 			elif isInProgress:
-				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Started. Score is " + str(scoreboard[key][0]) + "-" + str(scoreboard[key][1]) + "."
+				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Started. Score is " + str(awayScore) + "-" + str(homeScore) + "."
 				stringsToAnnounce.append(s)
 			else:
 				period = "(" + playbyplay["liveData"]["linescore"]["currentPeriodOrdinal"] + ")"
-				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Finished. Final was " + str(scoreboard[key][0]) + "-" + str(scoreboard[key][1])
+				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Finished. Final was " + str(awayScore) + "-" + str(homeScore)
 				if period != "(3rd)":
 					s += " " + period
 				s += "."
@@ -127,7 +127,7 @@ def parseScoreboard(date): # YYYYmmdd format
 			goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
 			if goalkey not in reported[game["gamePk"]]:
 				goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
-				if "(0)" in goal:
+				if "(0)" in goal["result"]["description"]:
 					continue # not complete yet. Wait a cycle
 
 				strength = "(" + goal["result"]["strength"]["code"] + ") "
@@ -145,11 +145,11 @@ def parseScoreboard(date): # YYYYmmdd format
 				reported[gamekey].append(goalkey)
 
 		# print final result
-		if isFinal:
+		if isFinal and key not in completed:
 			if playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END":
 				awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
 				homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
-				periods = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
+				period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
 				if period == "(3rd)":
 					period = ""
 				finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period

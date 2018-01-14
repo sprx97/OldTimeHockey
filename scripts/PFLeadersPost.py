@@ -14,7 +14,7 @@ sys.stdout = open("/var/www/roldtimehockey/scripts/PFs/" + str(year) + "_Week_" 
 db = MySQLdb.connect(host="localhost", user="root", passwd="12345", db="OldTimeHockey")
 cursor = db.cursor()
 cursor.execute("SELECT L.name, T.name, T.pointsFor, U.FFname FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID " + \
-	       "INNER JOIN Users U on T.ownerID = U.FFid WHERE year=" + str(year) + " ORDER BY T.pointsFor DESC")
+	       "INNER JOIN Users U on T.ownerID = U.FFid WHERE L.year=" + str(year) + " ORDER BY T.pointsFor DESC")
 teams = cursor.fetchall()
 s = "###OVERALL POINTS LEADERS - Who has scored hte most points this season?\n"
 s += "**Rank**|**League**|**Team**|**User**|**PF**\n"
