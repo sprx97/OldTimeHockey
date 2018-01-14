@@ -39,7 +39,7 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
-scoreboard = {}
+started = []
 completed = []
 reported = {}
 lastDate = None
@@ -51,13 +51,13 @@ def getFeed(url):
 	return json.loads(response.read().decode())
 
 # parses the NHL scoreboard for a given date
-def parseScoreboard(date): # YYYYmmdd format
-	global lastDate, scoreboard, reported, completed
+def parseScoreboard(date): # YYYY-mm-dd format
+	global lastDate, started, reported, completed
 
 	# reseet for new day
 	if date != lastDate:
-		scoreboard = {}
 		reported = {}
+		started = []
 		completed = []
 		lastDate = date
 	stringsToAnnounce = []
@@ -82,26 +82,19 @@ def parseScoreboard(date): # YYYYmmdd format
 		key = away + "-" + home
 
 		isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
-		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled"
+		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled" or playbyplay["gameData"]["status"]["detailedState"] == "Pre-Game"
 		isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
 
 		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
 		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
 
-		# add to scoreboard if it isn't there already
-		if key not in scoreboard:
-			print("Creating new key " + key)
-			scoreboard[key] = []
-
 		# game just started
-		if not isUnplayed and len(scoreboard[key]) == 0:
-			scoreboard[key] = [awayScore, homeScore]
-			if scoreboard[key] == [0, 0]:
-				stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting")
-			elif isInProgress:
+		if not isUnplayed and key not in started:
+			started.append(key)
+			if isInProgress:
 				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Started. Score is " + str(awayScore) + "-" + str(homeScore) + "."
 				stringsToAnnounce.append(s)
-			else:
+			elif isFinal:
 				period = "(" + playbyplay["liveData"]["linescore"]["currentPeriodOrdinal"] + ")"
 				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Finished. Final was " + str(awayScore) + "-" + str(homeScore)
 				if period != "(3rd)":
@@ -109,6 +102,8 @@ def parseScoreboard(date): # YYYYmmdd format
 				s += "."
 				stringsToAnnounce.append(s)
 				completed.append(key)
+			else:
+				stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
 
 
 		# check to see if score is different from what we have saved
