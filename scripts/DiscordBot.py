@@ -191,7 +191,7 @@ def on_message(message):
 			yield from client.send_message(message.channel, "Usage: !matchup <fleaflicker username>")
 		else:
 			# might be slow if opening too many DB connections
-			db = MySQLdb.connect(host="localhost", user="root", passwd="12345", db="OldTimeHockey")
+			db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
 			cursor = db.cursor()
 			team = message.content.split(" ")[1].lower()
 			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF FROM Teams AS me " + \

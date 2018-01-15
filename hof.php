@@ -35,7 +35,7 @@
 <div class="career">
 <h2><u>Wins</u></h2>
 <?php
-        $con = mysqli_connect("localhost", "root", "12345", "OldTimeHockey");
+        $con = mysqli_connect("localhost", "othuser", "othpassword", "OldTimeHockey");
         if(mysqli_connect_errno()) echo "Failed to connect to MySQL: " . mysqli_connect_errno();
 
 	$leaders = mysqli_query($con, "SELECT FFname, SUM(wins) as w from Teams INNER JOIN Users on FFid=ownerID where replacement != 1 GROUP BY ownerID ORDER BY w DESC");

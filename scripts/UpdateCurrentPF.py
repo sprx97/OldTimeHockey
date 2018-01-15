@@ -54,7 +54,7 @@ def updateCurrentPF(league, year):
 		cursor.execute("UPDATE Teams SET CurrOpp=" + teamID1 + " WHERE teamID=" + teamID2)
 		cursor.execute("UPDATE Teams SET CurrOpp=" + teamID2 + " WHERE teamID=" + teamID1)
 
-db = MySQLdb.connect(host="localhost", user="root", passwd="12345", db="OldTimeHockey")
+db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
 cursor = db.cursor()
 
 for year in years_to_update:

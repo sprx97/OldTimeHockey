@@ -11,7 +11,7 @@ if os.path.isfile("/var/www/roldtimehockey/scripts/PFs/" + str(year) + "_Week_" 
 
 sys.stdout = open("/var/www/roldtimehockey/scripts/PFs/" + str(year) + "_Week_" + str(week) + ".txt", "w")
 
-db = MySQLdb.connect(host="localhost", user="root", passwd="12345", db="OldTimeHockey")
+db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
 cursor = db.cursor()
 cursor.execute("SELECT L.name, T.name, T.pointsFor, U.FFname FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID " + \
 	       "INNER JOIN Users U on T.ownerID = U.FFid WHERE L.year=" + str(year) + " ORDER BY T.pointsFor DESC")

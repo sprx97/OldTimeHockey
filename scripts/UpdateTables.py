@@ -191,7 +191,7 @@ def getPlayoffs(leagueID, year):
 	return teams
 
 if __name__ == "__main__":
-	db = MySQLdb.connect(host="localhost", user="root", passwd="12345", db="OldTimeHockey")
+	db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
 	cursor = db.cursor()
 
 	for year in years_to_update:

@@ -11,7 +11,7 @@ if os.path.isfile("/var/www/roldtimehockey/scripts/weeks/" + str(year) + "_Week_
 
 sys.stdout = open("/var/www/roldtimehockey/scripts/weeks/" + str(year) + "_Week_" + str(week) + ".txt", "w")
 
-db = MySQLdb.connect(host="localhost", user="root", passwd="12345", db="OldTimeHockey")
+db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
 cursor = db.cursor()
 
 s = "###OVERALL POINTS LEADERS - Who has scored the most points this season?\n"

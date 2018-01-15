@@ -144,7 +144,7 @@
 	$curryear = trim(fgets($weekVars));
 	fclose($weekVars);
 
-        $con = mysqli_connect("localhost", "root", "12345", "OldTimeHockey");
+        $con = mysqli_connect("localhost", "othuser", "othpassword", "OldTimeHockey");
         if(mysqli_connect_errno()) echo "Failed to connect to MySQL: " . mysqli_connect_errno();
 
         function printLeaders($YEAR) {

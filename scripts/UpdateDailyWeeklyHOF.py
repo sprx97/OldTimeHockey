@@ -31,7 +31,7 @@ weeklyHighsPost2013 = []
 dailyHighs = []
 dailyHighsPost2013 = []
 
-db = MySQLdb.connect(host="localhost", user="root", passwd="12345", db="OldTimeHockey")
+db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
 cursor = db.cursor()
 
 MAX_LEN = 5
