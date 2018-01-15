@@ -39,10 +39,12 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
+cycles = 0
 started = []
 completed = []
 reported = {}
 lastDate = None
+waiting = {}
 
 # Gets the feed using the new NHL.com API
 def getFeed(url):
@@ -60,6 +62,8 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		started = []
 		completed = []
 		lastDate = date
+		cycles = 0
+		waiting = {}
 	stringsToAnnounce = []
 
 	try:
@@ -82,28 +86,10 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		key = away + "-" + home
 
 		isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
-#		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled"
 		isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
 
 		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
 		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
-
-		# game just started
-#		if not isUnplayed and key not in started:
-#			started.append(key)
-#			if isInProgress:
-#				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Started. Score is " + str(awayScore) + "-" + str(homeScore) + "."
-#				stringsToAnnounce.append(s)
-#			elif isFinal:
-#				period = "(" + playbyplay["liveData"]["linescore"]["currentPeriodOrdinal"] + ")"
-#				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Finished. Final was " + str(awayScore) + "-" + str(homeScore)
-#				if period != "(3rd)":
-#					s += " " + period
-#				s += "."
-#				stringsToAnnounce.append(s)
-#				completed.append(key)
-#			else:
-#				stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
 
 		if isInProgress and key not in started:
 			stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
@@ -127,6 +113,15 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
 				if "(0)" in goal["result"]["description"]:
 					continue # not complete yet. Wait a cycle
+				gamegoalkey = str(gamekey) + ":" + str(goalkey)
+				if gamegoalkey in waiting:
+					waiting[gamegoalkey] += 1
+					if waiting[gamegoalkey] > 2 or "assists: none" not in goal["result"]["description"]: # done waiting
+						del waiting[gamegoalkey]
+					continue # assists still haven't been reported, so keep waiting
+				elif "assists: none" in goal["result"]["description"]:
+					waiting[gamegoalkey] = 0
+					continue # skip  for now because assists haven't been reported
 
 				strength = "(" + goal["result"]["strength"]["code"] + ") "
 				if strength == "(EVEN) ":
@@ -156,6 +151,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				stringsToAnnounce.append(finalstring)
 				completed.append(key)
 
+	cycles += 1
 	return stringsToAnnounce
 
 if __name__ == "__main__":
