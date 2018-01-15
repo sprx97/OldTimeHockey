@@ -82,29 +82,32 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		key = away + "-" + home
 
 		isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
-		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled"
+#		isUnplayed = playbyplay["gameData"]["status"]["detailedState"] == "Scheduled"
 		isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
 
 		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
 		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
 
 		# game just started
-		if not isUnplayed and key not in started:
-			started.append(key)
-			if isInProgress:
-				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Started. Score is " + str(awayScore) + "-" + str(homeScore) + "."
-				stringsToAnnounce.append(s)
-			elif isFinal:
-				period = "(" + playbyplay["liveData"]["linescore"]["currentPeriodOrdinal"] + ")"
-				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Finished. Final was " + str(awayScore) + "-" + str(homeScore)
-				if period != "(3rd)":
-					s += " " + period
-				s += "."
-				stringsToAnnounce.append(s)
-				completed.append(key)
-			else:
-				stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
+#		if not isUnplayed and key not in started:
+#			started.append(key)
+#			if isInProgress:
+#				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Started. Score is " + str(awayScore) + "-" + str(homeScore) + "."
+#				stringsToAnnounce.append(s)
+#			elif isFinal:
+#				period = "(" + playbyplay["liveData"]["linescore"]["currentPeriodOrdinal"] + ")"
+#				s = emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Already Finished. Final was " + str(awayScore) + "-" + str(homeScore)
+#				if period != "(3rd)":
+#					s += " " + period
+#				s += "."
+#				stringsToAnnounce.append(s)
+#				completed.append(key)
+#			else:
+#				stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
 
+		if isInProgress and key not in started:
+			stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
+			started.append(key)
 
 		# check to see if score is different from what we have saved
 		goals = playbyplay["liveData"]["plays"]["scoringPlays"]
