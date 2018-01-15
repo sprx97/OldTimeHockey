@@ -1,8 +1,3 @@
-dumps/*
-*.save
 jquery/bracket
 scripts/__pycache__
-scripts/wes.jpg
-scripts/seeds.txt
 scripts/nohup.out
-scripts/geckodriver.log
