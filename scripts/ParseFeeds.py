@@ -54,7 +54,7 @@ def getFeed(url):
 
 # parses the NHL scoreboard for a given date
 def parseScoreboard(date): # YYYY-mm-dd format
-	global lastDate, started, reported, completed
+	global lastDate, started, reported, completed, cycles, waiting
 
 	# reseet for new day
 	if date != lastDate:
@@ -114,15 +114,16 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				if "(0)" in goal["result"]["description"]:
 					continue # not complete yet. Wait a cycle
 
-				gamegoalkey = str(gamekey) + ":" + str(goalkey)
-				if gamegoalkey in waiting:
-					waiting[gamegoalkey] += 1
-					if waiting[gamegoalkey] <= 2 and "assists: none" in goal["result"]["description"]:
-						continue # assists still haven't been reported, so keep waiting
-				elif "assists: none" in goal["result"]["description"]:
-					waiting[gamegoalkey] = 0
-					continue # skip  for now because assists haven't been reported
-				waiting.pop(gamegoalkey, None)
+#				gamegoalkey = str(gamekey) + ":" + str(goalkey)
+#				if gamegoalkey in waiting:
+#					waiting[gamegoalkey] += 1
+#					if waiting[gamegoalkey] <= 2 and "assists: none" in goal["result"]["description"]:
+#						continue # assists still haven't been reported, so keep waiting
+#				elif "assists: none" in goal["result"]["description"]:
+#					print("No assists found. Waiting 30 seconds...")
+#					waiting[gamegoalkey] = 0
+#					continue # skip  for now because assists haven't been reported
+#				waiting.pop(gamegoalkey, None)
 
 				strength = "(" + goal["result"]["strength"]["code"] + ") "
 				if strength == "(EVEN) ":
