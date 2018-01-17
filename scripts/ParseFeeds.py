@@ -55,7 +55,7 @@ def getFeed(url):
 
 # parses the NHL scoreboard for a given date
 def parseScoreboard(date): # YYYY-mm-dd format
-	global lastDate, started, reported, completed, cycles, waiting
+	global lastDate, started, reported, completed, cycles, waiting, messages
 
 	# reseet for new day
 	if date != lastDate:
