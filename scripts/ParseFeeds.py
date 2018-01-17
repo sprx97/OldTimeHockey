@@ -146,6 +146,13 @@ def parseScoreboard(date): # YYYY-mm-dd format
 			if playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END":
 				awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
 				homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
+
+				if awayScore == homeScore: # adjust for shootout winner
+					if playbyplay["liveData"]["linescore"]["shootoutInfo"]["away"]["scores"] > playbyplay["liveData"]["linescore"]["shootoutInfo"]["home"]["scores"]:
+						awayScore += 1
+					else:
+						homeScore += 1
+
 				period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
 				if period == "(3rd)":
 					period = ""
