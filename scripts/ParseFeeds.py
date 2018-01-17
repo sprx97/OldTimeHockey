@@ -45,6 +45,7 @@ completed = []
 reported = {}
 lastDate = None
 waiting = {}
+messages = {}
 
 # Gets the feed using the new NHL.com API
 def getFeed(url):
@@ -64,7 +65,9 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		lastDate = date
 		cycles = 0
 		waiting = {}
+		messages = {}
 	stringsToAnnounce = []
+	stringsToEdit = {}
 
 	try:
 		root = getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
@@ -93,7 +96,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 
 		if isInProgress and key not in started:
 			stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
-			started.append(key)
+			started.append((None, key))
 
 		# check to see if score is different from what we have saved
 		goals = playbyplay["liveData"]["plays"]["scoringPlays"]
@@ -105,7 +108,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				reported[gamekey] = []
 
 			while len(reported[gamekey]) > len(goals):
-				stringsToAnnounce.append("Last goal in " + away + "-" + home + " disallowed (beta feature, report to SPRX97 if incorrect).")
+				stringsToAnnounce.append((None, "Last goal in " + away + "-" + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
 				reported[gamekey] = reported[gamekey][:-1]
 
 			goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
@@ -138,7 +141,13 @@ def parseScoreboard(date): # YYYY-mm-dd format
 
 				score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 
-				stringsToAnnounce.append("GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score)
+				
+				goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score
+				stringsToAnnounce.append((goalkey, goalstr))
+				if gamegoalkey not in messages:
+					messages[gamegoalkey] = (goalstr, None)
+				elif messages[gamegoalkey][0] != goalstr:
+					stringsToEdit[messages[gamegoalkey][1]] = goalstr # update a previous posted goal that's been updated
 				reported[gamekey].append(goalkey)
 
 		# print final result
@@ -157,7 +166,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				if period == "(3rd)":
 					period = ""
 				finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period
-				stringsToAnnounce.append(finalstring)
+				stringsToAnnounce.append((None, finalstring))
 				completed.append(key)
 
 	cycles += 1
@@ -165,5 +174,5 @@ def parseScoreboard(date): # YYYY-mm-dd format
 
 if __name__ == "__main__":
 	date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
-	for s in parseScoreboard(date):
-		print(s)
+	for (k, s) in parseScoreboard(date):
+		print(k, s)
