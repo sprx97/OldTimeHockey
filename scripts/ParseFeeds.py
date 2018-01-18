@@ -39,7 +39,6 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
-cycles = 0
 started = []
 completed = []
 reported = {}
@@ -54,7 +53,7 @@ def getFeed(url):
 
 # parses the NHL scoreboard for a given date
 def parseScoreboard(date): # YYYY-mm-dd format
-	global lastDate, started, reported, completed, cycles, messages
+	global lastDate, started, reported, completed, messages
 
 	# reseet for new day
 	if date != lastDate:
@@ -62,7 +61,6 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		started = []
 		completed = []
 		lastDate = date
-		cycles = 0
 		messages = {}
 	stringsToAnnounce = []
 	stringsToEdit = {}
@@ -110,7 +108,8 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				reported[gamekey] = reported[gamekey][:-1]
 
 			goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
-			if goalkey not in reported[game["gamePk"]]:
+#			if goalkey not in reported[game["gamePk"]]:
+			if True:
 				goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
 
 				gamegoalkey = str(gamekey) + ":" + str(goalkey)
@@ -134,6 +133,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				if gamegoalkey not in messages:
 					messages[gamegoalkey] = (goalstr, None)
 				elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
+					print("Updating goal: " + gamegoalkey)
 					stringsToEdit[messages[gamegoalkey][1]] = goalstr
 					messages[gamegoalkey][0] = goalstr
 				reported[gamekey].append(goalkey)
@@ -157,7 +157,6 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				stringsToAnnounce.append((None, finalstring))
 				completed.append(key)
 
-	cycles += 1
 	return stringsToAnnounce, stringsToEdit
 
 if __name__ == "__main__":
