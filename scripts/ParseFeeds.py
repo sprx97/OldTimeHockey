@@ -126,17 +126,16 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
 
 				score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
-
 				
 				goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score
-				stringsToAnnounce.append((gamegoalkey, goalstr))
 				if gamegoalkey not in messages:
+					stringsToAnnounce.append((gamegoalkey, goalstr))
 					messages[gamegoalkey] = (goalstr, None)
+					reported[gamekey].append(goalkey)
 				elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
 					print("Updating goal: " + gamegoalkey)
 					stringsToEdit[messages[gamegoalkey][1]] = goalstr
 					messages[gamegoalkey][0] = goalstr
-				reported[gamekey].append(goalkey)
 
 		# print final result
 		if isFinal and key not in completed:
