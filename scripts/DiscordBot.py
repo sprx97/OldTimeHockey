@@ -101,13 +101,14 @@ def check_scores():
 	while not client.is_closed:
 		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
-			announcements = ParseFeeds.parseScoreboard(date)
+			announcements, edits = ParseFeeds.parseScoreboard(date)
 			if soft_reset == 0:
 				for (key, str) in announcements:
 					msg = yield from client.send_message(bot_channel, str)
 					if key != None:
 						ParseFeeds.messages[key][1] = msg
-						print(ParseFeeds.messages[key])
+				for msg in edits:
+					yield from client.edit_message(msg, edits[msg])
 		except Exception as e:
 			print("Error: %s" % e)
 

@@ -170,9 +170,9 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				completed.append(key)
 
 	cycles += 1
-	return stringsToAnnounce
+	return stringsToAnnounce, stringsToEdit
 
 if __name__ == "__main__":
 	date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
-	for (k, s) in parseScoreboard(date):
+	for (k, s) in parseScoreboard(date)[0]:
 		print(k, s)
