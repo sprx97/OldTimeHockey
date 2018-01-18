@@ -107,6 +107,7 @@ def check_scores():
 					msg = yield from client.send_message(bot_channel, str)
 					if key != None:
 						ParseFeeds.messages[key][1] = msg
+						print(ParseFeeds.messages[key])
 		except Exception as e:
 			print("Error: %s" % e)
 

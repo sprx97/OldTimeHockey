@@ -95,8 +95,8 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
 
 		if isInProgress and key not in started:
-			stringsToAnnounce.append(emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting.")
-			started.append((None, key))
+			stringsToAnnounce.append((None, emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting."))
+			started.append(key)
 
 		# check to see if score is different from what we have saved
 		goals = playbyplay["liveData"]["plays"]["scoringPlays"]
@@ -143,7 +143,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 
 				
 				goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score
-				stringsToAnnounce.append((goalkey, goalstr))
+				stringsToAnnounce.append((gamegoalkey, goalstr))
 				if gamegoalkey not in messages:
 					messages[gamegoalkey] = (goalstr, None)
 				elif messages[gamegoalkey][0] != goalstr:
