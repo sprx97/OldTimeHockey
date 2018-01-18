@@ -44,7 +44,6 @@ started = []
 completed = []
 reported = {}
 lastDate = None
-waiting = {}
 messages = {}
 
 # Gets the feed using the new NHL.com API
@@ -55,7 +54,7 @@ def getFeed(url):
 
 # parses the NHL scoreboard for a given date
 def parseScoreboard(date): # YYYY-mm-dd format
-	global lastDate, started, reported, completed, cycles, waiting, messages
+	global lastDate, started, reported, completed, cycles, messages
 
 	# reseet for new day
 	if date != lastDate:
@@ -64,7 +63,6 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		completed = []
 		lastDate = date
 		cycles = 0
-		waiting = {}
 		messages = {}
 	stringsToAnnounce = []
 	stringsToEdit = {}
@@ -114,19 +112,8 @@ def parseScoreboard(date): # YYYY-mm-dd format
 			goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
 			if goalkey not in reported[game["gamePk"]]:
 				goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
-				if "(0)" in goal["result"]["description"]:
-					continue # not complete yet. Wait a cycle
 
 				gamegoalkey = str(gamekey) + ":" + str(goalkey)
-				if gamegoalkey in waiting:
-					waiting[gamegoalkey] += 1
-					if waiting[gamegoalkey] <= 2 and "assists: none" in goal["result"]["description"]:
-						continue # assists still haven't been reported, so keep waiting
-				elif "assists: none" in goal["result"]["description"]:
-					print("No assists found. Waiting 30 seconds...")
-					waiting[gamegoalkey] = 0
-					continue # skip  for now because assists haven't been reported
-				waiting.pop(gamegoalkey, None)
 
 				strength = "(" + goal["result"]["strength"]["code"] + ") "
 				if strength == "(EVEN) ":
@@ -146,8 +133,9 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				stringsToAnnounce.append((gamegoalkey, goalstr))
 				if gamegoalkey not in messages:
 					messages[gamegoalkey] = (goalstr, None)
-				elif messages[gamegoalkey][0] != goalstr:
-					stringsToEdit[messages[gamegoalkey][1]] = goalstr # update a previous posted goal that's been updated
+				elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
+					stringsToEdit[messages[gamegoalkey][1]] = goalstr
+					messages[gamegoalkey][0] = goalstr
 				reported[gamekey].append(goalkey)
 
 		# print final result
