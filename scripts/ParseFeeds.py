@@ -87,9 +87,6 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
 		isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
 
-		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
-		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
-
 		if isInProgress and key not in started:
 			stringsToAnnounce.append((None, emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting."))
 			started.append(key)
@@ -108,10 +105,11 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				reported[gamekey] = reported[gamekey][:-1]
 
 			goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
-
 			goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
-
 			gamegoalkey = str(gamekey) + ":" + str(goalkey)
+
+			awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
+			homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
 
 			strength = "(" + goal["result"]["strength"]["code"] + ") "
 			if strength == "(EVEN) ":
@@ -126,13 +124,13 @@ def parseScoreboard(date): # YYYY-mm-dd format
 
 			score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 				
-			goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score
+			goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"]
 			if gamegoalkey not in messages:
-				stringsToAnnounce.append((gamegoalkey, goalstr))
-				messages[gamegoalkey] = [goalstr, None]
+				stringsToAnnounce.append((gamegoalkey, goalstr + " " + score))
+				messages[gamegoalkey] = [goalstr, score, None]
 				reported[gamekey].append(goalkey)
 			elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
-				stringsToEdit[messages[gamegoalkey][1]] = goalstr
+				stringsToEdit[messages[gamegoalkey][2]] = goalstr + " " + messages[gamegoalkey][1]
 				messages[gamegoalkey][0] = goalstr
 
 		# print final result

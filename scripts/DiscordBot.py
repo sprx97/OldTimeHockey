@@ -106,7 +106,7 @@ def check_scores():
 				for (key, str) in announcements:
 					msg = yield from client.send_message(bot_channel, str)
 					if key != None:
-						ParseFeeds.messages[key][1] = msg
+						ParseFeeds.messages[key][2] = msg
 				for msg in edits:
 					yield from client.edit_message(msg, edits[msg])
 		except Exception as e:
