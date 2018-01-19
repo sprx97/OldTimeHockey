@@ -115,7 +115,7 @@ def check_scores():
 		if soft_reset > 0:
 			soft_reset -= 1
 
-		yield from asyncio.sleep(15)
+		yield from asyncio.sleep(5)
 
 	if client.is_closed:
 		print("CLIENT CLOSED UNEXPECTEDLY")
