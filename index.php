@@ -19,9 +19,9 @@
 	</script>
 
 	<div style="width:100%;"><center>
-		<image src="images/alien1.png"></image>
-		<image src="images/Banner.png" width="75%"></image>
-		<image src="images/alien2.png"></image>
+		<image src="images/logos/alien1.png"></image>
+		<image src="images/logos/banner.png" width="75%"></image>
+		<image src="images/logos/alien2.png"></image>
 	</center></div>
 
 	<body style="padding-left:10px;">
