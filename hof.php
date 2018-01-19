@@ -28,7 +28,7 @@
 */
 	});
 </script>
-<link href="hof.css" rel="stylesheet"/>
+<link href="css/hof.css" rel="stylesheet"/>
 
 <body>
 <div class="header">Career Regular Season Records</div>

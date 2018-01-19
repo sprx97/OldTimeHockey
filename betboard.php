@@ -14,7 +14,7 @@
 <script type="text/javascript">
         document.getElementById("betboard").className += "selected";
 </script>
-<link href="betboard.css" rel="stylesheet"/>
+<link href="css/betboard.css" rel="stylesheet"/>
 
 <center><h2><u>Current bets</u></h2></center>
 <table width="90%">

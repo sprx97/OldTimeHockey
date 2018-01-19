@@ -14,8 +14,8 @@
 <script type="text/javascript">
 	document.getElementById("standings").className += "selected";
 </script>
-<link href="divisions.css" rel="stylesheet"/>
-<link href="standings.css" rel="stylesheet"/>
+<link href="css/divisions.css" rel="stylesheet"/>
+<link href="css/standings.css" rel="stylesheet"/>
 
 <?php
 	$con = mysqli_connect("localhost", "othuser", "othpassword", "OldTimeHockey");

@@ -11,8 +11,8 @@
 <title>Old Time Hockey!</title>
 
 <?php include("header.html");?>
-<link href="divisions.css" rel="stylesheet">
-<link href="leaders.css" rel="stylesheet">
+<link href="css/divisions.css" rel="stylesheet">
+<link href="css/leaders.css" rel="stylesheet">
 <script type="text/javascript" src="jquery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="jquery/jquery.tablesorter.js"></script>
 <script type="text/javascript">
