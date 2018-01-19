@@ -157,7 +157,7 @@ def on_ready():
 @client.event
 @asyncio.coroutine
 def on_message(message):
-	# don't replay to self
+	# don't reply to self
 	if message.author == client.user:
 		return
 
