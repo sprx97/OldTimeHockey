@@ -304,6 +304,11 @@ def on_message(message):
 
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
+		if sys.argv[1] == "test":
+			soft_reset = 4
+			client.run("NDAzODA2NTgwNzc4MjA1MTg0.DUMp7A.6Jq59cpOzECgIYVKj6PO3vpnrMg")
 		if sys.argv[1] == "soft":
 			soft_reset = 4
-	client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
+			client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
+	else:
+		client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
