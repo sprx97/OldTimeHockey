@@ -27,7 +27,7 @@ team_map["cbj"] = team_map["columbus"] = team_map["jackets"] = team_map["blue ja
 team_map["dal"] = team_map["dallas"] = team_map["stars"]								= "DAL"
 team_map["det"] = team_map["detroit"] = team_map["wings"] = team_map["red wings"]					= "DET"
 team_map["edm"] = team_map["edmonton"] = team_map["oilers"]								= "EDM"
-team_map["fla"] = team_map["flo"] = team_map["florida"] = team_map["panthers"]						= "FLO"
+team_map["fla"] = team_map["flo"] = team_map["florida"] = team_map["panthers"]						= "FLA"
 team_map["lak"] = team_map["la"] = team_map["los angeles"] = team_map["kings"]						= "LAK"
 team_map["min"] = team_map["minnesota"] = team_map["wild"]								= "MIN"
 team_map["mtl"] = team_map["mon"] = team_map["montreal"] = team_map["canadiens"] = team_map["habs"]			= "MTL"
