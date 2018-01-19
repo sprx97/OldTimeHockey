@@ -73,3 +73,14 @@ tr.div3 {
 tr.div4 {
 	background-color:rgba(128, 128, 192, .5);
 }
+
+@media (max-width: 767px) {
+	html {
+		margin: auto;
+		min-width: 500px;
+	}
+
+	table.tablesorter {
+		width: 90%;
+	}	
+}

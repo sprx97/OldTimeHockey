@@ -46,3 +46,9 @@ td {
 	font-size:75%;
 	padding:3px;
 }
+
+@media (max-width: 767px) {
+	.column {
+		width: 100%;
+	}
+}

@@ -18,10 +18,10 @@
 		document.getElementById("index").className += "selected";
 	</script>
 
-	<div style="width:100%;"><center>
-		<image src="images/logos/alien1.png"></image>
-		<image src="images/logos/banner.png" width="75%"></image>
-		<image src="images/logos/alien2.png"></image>
+	<div style="width: 100%; margin-top: 5px"><center>
+		<image src="images/logos/alien1.png" width="10%" />
+		<image src="images/logos/banner.png" width="75%" />
+		<image src="images/logos/alien2.png" width="10%" />
 	</center></div>
 
 	<body style="padding-left:10px;">
