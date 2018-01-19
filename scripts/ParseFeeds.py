@@ -104,38 +104,36 @@ def parseScoreboard(date): # YYYY-mm-dd format
 				reported[gamekey] = []
 
 			while len(reported[gamekey]) > len(goals):
-				stringsToAnnounce.append((None, "Last goal in " + away + "-" + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
+				stringsToAnnounce.append((None, "Last goal in " + emojis[away] + " " + away + "-" + emojis[home] + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
 				reported[gamekey] = reported[gamekey][:-1]
 
 			goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
-#			if goalkey not in reported[game["gamePk"]]:
-			if True:
-				goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
 
-				gamegoalkey = str(gamekey) + ":" + str(goalkey)
+			goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
 
-				strength = "(" + goal["result"]["strength"]["code"] + ") "
-				if strength == "(EVEN) ":
-					strength = ""
-				en = ""
-				if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
-					en = "(EN) "
+			gamegoalkey = str(gamekey) + ":" + str(goalkey)
 
-				team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
-				period = "(" + goal["about"]["ordinalNum"] + ")"
-				time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
+			strength = "(" + goal["result"]["strength"]["code"] + ") "
+			if strength == "(EVEN) ":
+				strength = ""
+			en = ""
+			if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
+				en = "(EN) "
 
-				score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
+			team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
+			period = "(" + goal["about"]["ordinalNum"] + ")"
+			time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
+
+			score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 				
-				goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score
-				if gamegoalkey not in messages:
-					stringsToAnnounce.append((gamegoalkey, goalstr))
-					messages[gamegoalkey] = (goalstr, None)
-					reported[gamekey].append(goalkey)
-				elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
-					print("Updating goal: " + gamegoalkey)
-					stringsToEdit[messages[gamegoalkey][1]] = goalstr
-					messages[gamegoalkey][0] = goalstr
+			goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"] + " " + score
+			if gamegoalkey not in messages:
+				stringsToAnnounce.append((gamegoalkey, goalstr))
+				messages[gamegoalkey] = [goalstr, None]
+				reported[gamekey].append(goalkey)
+			elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
+				stringsToEdit[messages[gamegoalkey][1]] = goalstr
+				messages[gamegoalkey][0] = goalstr
 
 		# print final result
 		if isFinal and key not in completed:
