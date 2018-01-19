@@ -175,6 +175,14 @@ def on_message(message):
 	if message.content.startswith("!pong"):
 		yield from client.send_message(message.channel, "ping")
 
+	# Reset response
+#	if message.content.startswith("!reset") and (message.channel.name == "mods" or message.channel.name == "bot-test"):
+#		yield from client.send_message(message.channel, "Rebooting bot")
+#		print("Bot reset from client by " + message.author)
+#		loop.run_until_complete(client.logout())
+#		client.close()
+#		quit()
+
 	# Trades response
 	if message.content.startswith("!trades") and (message.channel.name == "bot-test" or message.channel.name == "tradereview"):
 		bot_channel = None
