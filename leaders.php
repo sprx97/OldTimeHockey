@@ -13,8 +13,8 @@
 <?php include("header.html");?>
 <link href="css/divisions.css" rel="stylesheet">
 <link href="css/leaders.css" rel="stylesheet">
-<script type="text/javascript" src="jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="jquery/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="tools/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="tools/jquery/jquery.tablesorter.js"></script>
 <script type="text/javascript">
 	document.getElementById("leaders").className += "selected";
 

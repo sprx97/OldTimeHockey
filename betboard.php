@@ -10,7 +10,7 @@
 <title>Put it on the board!</title>
 
 <?php include("header.html");?>
-<script type="text/javascript" src="jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="tools/jquery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
         document.getElementById("betboard").className += "selected";
 </script>
