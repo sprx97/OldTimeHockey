@@ -69,7 +69,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		root = getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
 	except Exception as e:
 		print("Failed to find feed.")
-		return []
+		return [], {}
 
 	games = root["dates"][0]["games"]
 	for game in games:
@@ -78,7 +78,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 			playbyplay = getFeed(playbyplayURL)
 		except Exception as e:
 			print("Failed to find feed.")
-			return []
+			return [], {}
 
 		away = playbyplay["gameData"]["teams"]["away"]["abbreviation"]
 		home = playbyplay["gameData"]["teams"]["home"]["abbreviation"]
