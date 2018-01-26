@@ -83,7 +83,7 @@ emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
 client = discord.Client()
-soft_reset = 0 # temporarily set to > 0 to avoid printing stuff once
+soft_reset = False # temporarily set to True to avoid printing stuff once
 
 @asyncio.coroutine
 def check_scores():
@@ -99,7 +99,7 @@ def check_scores():
 		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
 			announcements, edits = yield from ParseFeeds.parseScoreboard(date)
-			if soft_reset == 0:
+			if not soft_reset:
 				for (key, str) in announcements:
 					msg = yield from client.send_message(bot_channel, str)
 					if key != None:
@@ -107,7 +107,7 @@ def check_scores():
 				for msg in edits:
 					yield from client.edit_message(msg, edits[msg])
 			else:
-				soft_reset -= 1
+				soft_reset = True
 		except Exception as e:
 			print("Error: %s" % e)
 
@@ -301,10 +301,9 @@ def on_message(message):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "test":
-#			soft_reset = 4
 			client.run("NDAzODA2NTgwNzc4MjA1MTg0.DUMp7A.6Jq59cpOzECgIYVKj6PO3vpnrMg")
 		if sys.argv[1] == "soft":
-			soft_reset = 4
+			soft_reset = True
 			client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
 	else:
 		client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
