@@ -106,11 +106,10 @@ def check_scores():
 						ParseFeeds.messages[key][2] = msg
 				for msg in edits:
 					yield from client.edit_message(msg, edits[msg])
+			else:
+				soft_reset -= 1
 		except Exception as e:
 			print("Error: %s" % e)
-
-		if soft_reset > 0:
-			soft_reset -= 1
 
 		yield from asyncio.sleep(10)
 
