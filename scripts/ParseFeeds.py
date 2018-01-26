@@ -3,6 +3,7 @@ import base64
 import datetime
 import threading
 import json
+import asyncio
 
 emojis = {}
 emojis["ARI"] = "<:ARI:269315353153110016>"
@@ -52,6 +53,7 @@ def getFeed(url):
 	return json.loads(response.read().decode())
 
 # parses the NHL scoreboard for a given date
+@asyncio.coroutine
 def parseScoreboard(date): # YYYY-mm-dd format
 	global lastDate, started, reported, completed, messages
 
@@ -156,5 +158,7 @@ def parseScoreboard(date): # YYYY-mm-dd format
 
 if __name__ == "__main__":
 	date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
-	for (k, s) in parseScoreboard(date)[0]:
+	loop = asyncio.get_event_loop()
+	announcements, edits = loop.run_until_complete(asyncio.gather(parseScoreboard(date)))[0]
+	for (k, s) in announcements:
 		print(k, s)

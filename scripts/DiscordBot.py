@@ -94,14 +94,11 @@ def check_scores():
 		if channel.name == "general":
 			bot_channel = channel
 
-#	if soft_reset == 0:
-#		yield from client.send_message(bot_channel, "Scorebot reset... Sorry for the spam!")
-
 	# repeat the task every 15 seconds
 	while not client.is_closed:
 		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
-			announcements, edits = ParseFeeds.parseScoreboard(date)
+			announcements, edits = yield from ParseFeeds.parseScoreboard(date)
 			if soft_reset == 0:
 				for (key, str) in announcements:
 					msg = yield from client.send_message(bot_channel, str)
@@ -305,7 +302,7 @@ def on_message(message):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "test":
-			soft_reset = 4
+#			soft_reset = 4
 			client.run("NDAzODA2NTgwNzc4MjA1MTg0.DUMp7A.6Jq59cpOzECgIYVKj6PO3vpnrMg")
 		if sys.argv[1] == "soft":
 			soft_reset = 4
