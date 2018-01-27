@@ -100,7 +100,9 @@ def check_scores():
 		try:
 			announcements, edits = yield from ParseFeeds.parseScoreboard(date)
 			if not soft_reset:
-				for (key, str) in announcements:
+				for tup in announcements:
+					key = tup[0]
+					str = tup[1]
 					msg = yield from client.send_message(bot_channel, str)
 					if key != None:
 						ParseFeeds.messages[key][2] = msg
