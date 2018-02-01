@@ -82,7 +82,7 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
-client = discord.Client()
+client = discord.Client(heartbeat_timeout=120.0)
 soft_reset = False # temporarily set to True to avoid printing stuff once
 
 @asyncio.coroutine
@@ -93,9 +93,6 @@ def check_scores():
 	for channel in client.get_all_channels():
 		if channel.name == "general":
 			bot_channel = channel
-
-#	if soft_reset == 0:
-#		yield from client.send_message(bot_channel, "Scorebot reset... Sorry for the spam!")
 
 	# repeat the task every 15 seconds
 	while not client.is_closed:
@@ -141,13 +138,10 @@ def check_trade_emails():
 @client.event
 @asyncio.coroutine 
 def on_ready():
-#	print("Logged in as")
-#	print(client.user.name)
-#	print(client.user.id)
-#	print("---------")
-
 #	fp = open("/var/www/roldtimehockey/scripts/wes.jpg", "rb")
 #	yield from client.edit_profile(password=None, avatar=fp.read())
+
+	yield from client.change_presence(game=discord.Game(name="NHL '94"))
 
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trade_emails())
@@ -159,12 +153,6 @@ def on_message(message):
 	# don't reply to self
 	if message.author == client.user:
 		return
-
-#	print(message.author)
-#	print(message.server)
-#	print(message.channel)
-#	print(message.content)
-#	print("---------")
 
 	# Ping response
 	if message.content.startswith("!ping"):
