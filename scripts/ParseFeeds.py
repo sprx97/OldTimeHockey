@@ -1,8 +1,8 @@
 import urllib.request
 import base64
 import datetime
-import threading
 import json
+import sys
 
 emojis = {}
 emojis["ARI"] = "<:ARI:269315353153110016>"
@@ -51,9 +51,99 @@ def getFeed(url):
 	response = urllib.request.urlopen(request)
 	return json.loads(response.read().decode())
 
+def parseGame(game):
+	global started, reported, completed, messages
+
+	stringsToAnnounce = []
+	stringsToEdit = {}
+
+	playbyplayURL = "https://statsapi.web.nhl.com" + game["link"]
+	try:
+		playbyplay = getFeed(playbyplayURL)
+	except Exception as e:
+		print("Failed to find feed.")
+		return [], {}
+
+	away = playbyplay["gameData"]["teams"]["away"]["abbreviation"]
+	home = playbyplay["gameData"]["teams"]["home"]["abbreviation"]
+	key = away + "-" + home
+
+	isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
+	isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
+
+	if isInProgress and key not in started:
+		stringsToAnnounce.append((None, emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting."))
+		started.append(key)
+
+	# check to see if score is different from what we have saved
+	goals = playbyplay["liveData"]["plays"]["scoringPlays"]
+
+	for goalindex in range(0, len(goals)):
+		goal = goals[goalindex]
+		gamekey = game["gamePk"]
+		if gamekey not in reported:
+			reported[gamekey] = []
+
+		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
+		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
+
+		while len(reported[gamekey]) > len(goals):
+			stringsToAnnounce.append((None, "Last goal in " + emojis[away] + " " + away + "-" + emojis[home] + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
+			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
+			# find the msg id for this goal
+			# add tilde to front and back of string
+			# update stringsToEdit
+
+		goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
+		goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
+		gamegoalkey = str(gamekey) + ":" + str(goalkey)
+
+		strength = "(" + goal["result"]["strength"]["code"] + ") "
+		if strength == "(EVEN) ":
+			strength = ""
+		en = ""
+		if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
+			en = "(EN) "
+
+		team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
+		period = "(" + goal["about"]["ordinalNum"] + ")"
+		time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
+
+		score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
+				
+		goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"]
+		if gamegoalkey not in messages:
+			stringsToAnnounce.append((gamegoalkey, goalstr + " " + score))
+			messages[gamegoalkey] = [goalstr, score, None]
+			reported[gamekey].append(goalkey)
+		elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
+			stringsToEdit[messages[gamegoalkey][2]] = goalstr + " " + messages[gamegoalkey][1]
+			messages[gamegoalkey][0] = goalstr
+
+	# print final result
+	if isFinal and key not in completed:
+		if playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END":
+			awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
+			homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
+
+			if awayScore == homeScore: # adjust for shootout winner
+				if playbyplay["liveData"]["linescore"]["shootoutInfo"]["away"]["scores"] > playbyplay["liveData"]["linescore"]["shootoutInfo"]["home"]["scores"]:
+					awayScore += 1
+				else:
+					homeScore += 1
+
+			period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
+			if period == "(3rd)":
+				period = ""
+			finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period
+			stringsToAnnounce.append((None, finalstring))
+			completed.append(key)
+	return stringsToAnnounce, stringsToEdit
+
+
 # parses the NHL scoreboard for a given date
 def parseScoreboard(date): # YYYY-mm-dd format
-	global lastDate, started, reported, completed, messages
+	global lastDate
 
 	# reseet for new day
 	if date != lastDate:
@@ -62,8 +152,6 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		completed = []
 		lastDate = date
 		messages = {}
-	stringsToAnnounce = []
-	stringsToEdit = {}
 
 	try:
 		root = getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
@@ -71,90 +159,20 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		print("Failed to find feed.")
 		return [], {}
 
+	stringsToAnnounce = []
+	stringsToEdit = {}
+
 	games = root["dates"][0]["games"]
 	for game in games:
-		playbyplayURL = "https://statsapi.web.nhl.com" + game["link"]
-		try:
-			playbyplay = getFeed(playbyplayURL)
-		except Exception as e:
-			print("Failed to find feed.")
-			return [], {}
-
-		away = playbyplay["gameData"]["teams"]["away"]["abbreviation"]
-		home = playbyplay["gameData"]["teams"]["home"]["abbreviation"]
-		key = away + "-" + home
-
-		isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
-		isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
-
-		if isInProgress and key not in started:
-			stringsToAnnounce.append((None, emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting."))
-			started.append(key)
-
-		# check to see if score is different from what we have saved
-		goals = playbyplay["liveData"]["plays"]["scoringPlays"]
-
-		for goalindex in range(0, len(goals)):
-			goal = goals[goalindex]
-			gamekey = game["gamePk"]
-			if gamekey not in reported:
-				reported[gamekey] = []
-
-			while len(reported[gamekey]) > len(goals):
-				stringsToAnnounce.append((None, "Last goal in " + emojis[away] + " " + away + "-" + emojis[home] + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
-				reported[gamekey] = reported[gamekey][:-1]
-
-			goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
-			goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
-			gamegoalkey = str(gamekey) + ":" + str(goalkey)
-
-			awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
-			homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
-
-			strength = "(" + goal["result"]["strength"]["code"] + ") "
-			if strength == "(EVEN) ":
-				strength = ""
-			en = ""
-			if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
-				en = "(EN) "
-
-			team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
-			period = "(" + goal["about"]["ordinalNum"] + ")"
-			time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
-
-			score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
-				
-			goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"]
-			if gamegoalkey not in messages:
-				stringsToAnnounce.append((gamegoalkey, goalstr + " " + score))
-				messages[gamegoalkey] = [goalstr, score, None]
-				reported[gamekey].append(goalkey)
-			elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
-				stringsToEdit[messages[gamegoalkey][2]] = goalstr + " " + messages[gamegoalkey][1]
-				messages[gamegoalkey][0] = goalstr
-
-		# print final result
-		if isFinal and key not in completed:
-			if playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END":
-				awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
-				homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
-
-				if awayScore == homeScore: # adjust for shootout winner
-					if playbyplay["liveData"]["linescore"]["shootoutInfo"]["away"]["scores"] > playbyplay["liveData"]["linescore"]["shootoutInfo"]["home"]["scores"]:
-						awayScore += 1
-					else:
-						homeScore += 1
-
-				period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
-				if period == "(3rd)":
-					period = ""
-				finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period
-				stringsToAnnounce.append((None, finalstring))
-				completed.append(key)
-
+		ann, edit = parseGame(game)
+		stringsToAnnounce.extend(ann)
+		stringsToEdit.update(edit)
 	return stringsToAnnounce, stringsToEdit
 
 if __name__ == "__main__":
 	date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
+	for (k, s) in parseScoreboard(date)[0]:
+		print(k, s)
+	print("Take2")
 	for (k, s) in parseScoreboard(date)[0]:
 		print(k, s)
