@@ -94,22 +94,41 @@ def check_scores():
 		if channel.name == "general":
 			bot_channel = channel
 
-	# repeat the task every 15 seconds
+	# repeat the task every 10 seconds
 	while not client.is_closed:
 		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
-			announcements, edits = ParseFeeds.parseScoreboard(date)
-			if soft_reset == 0:
-				for (key, str) in announcements:
+			# A new day has come
+			if date != ParseFeeds.lastDate:
+				ParseFeeds.reported = {}
+				ParseFeeds.started = []
+				ParseFeeds.completed = []
+				ParseFeeds.lastDate = date
+				ParseFeeds.messages = {}
+
+			root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
+
+			stringsToAnnounce = []
+			stringsToEdit = {}
+
+			games = root["dates"][0]["games"]
+			for game in games:
+				ann, edit = ParseFeeds.parseGame(game)
+				stringsToAnnounce.extend(ann)
+				stringsToEdit.update(edit)
+
+			if soft_reset == False:
+				for (key, str) in stringsToAnnounce:
 					msg = yield from client.send_message(bot_channel, str)
 					if key != None:
 						ParseFeeds.messages[key][2] = msg
-				for msg in edits:
-					yield from client.edit_message(msg, edits[msg])
+				for msg in stringsToEdit:
+					yield from client.edit_message(msg, stringsToEdit[msg])
 			else:
-				soft_reset = True
+				soft_reset = False
 		except Exception as e:
 			print("Error: %s" % e)
+			sys.stdout.flush()
 
 		yield from asyncio.sleep(10)
 
@@ -292,6 +311,7 @@ def on_message(message):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "test":
+			soft_reset = True
 			client.run("NDAzODA2NTgwNzc4MjA1MTg0.DUMp7A.6Jq59cpOzECgIYVKj6PO3vpnrMg")
 		if sys.argv[1] == "soft":
 			soft_reset = True
