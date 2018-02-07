@@ -86,14 +86,14 @@ def parseGame(game):
 
 		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
 		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
+		score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 
 		while len(reported[gamekey]) > len(goals):
 			stringsToAnnounce.append((None, "Last goal in " + emojis[away] + " " + away + "-" + emojis[home] + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
 			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
-			# find the msg id for this goal
-			# add tilde to front and back of string
-			# update stringsToEdit
-
+			msg = messages[gamegoalkey]
+			stringsToEdit[msg[2]] = "~" + msg[0] + "~ " + score
+			
 		goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
 		goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
 		gamegoalkey = str(gamekey) + ":" + str(goalkey)
@@ -108,8 +108,6 @@ def parseGame(game):
 		team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
 		period = "(" + goal["about"]["ordinalNum"] + ")"
 		time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
-
-		score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 				
 		goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"]
 		if gamegoalkey not in messages:
@@ -171,8 +169,5 @@ def parseScoreboard(date): # YYYY-mm-dd format
 
 if __name__ == "__main__":
 	date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
-	for (k, s) in parseScoreboard(date)[0]:
-		print(k, s)
-	print("Take2")
 	for (k, s) in parseScoreboard(date)[0]:
 		print(k, s)
