@@ -92,7 +92,7 @@ def parseGame(game):
 			stringsToAnnounce.append((None, "Last goal in " + emojis[away] + " " + away + "-" + emojis[home] + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
 			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
 			msg = messages[gamegoalkey]
-			stringsToEdit[msg[2]] = "~" + msg[0] + "~ " + score
+			stringsToEdit[msg[2]] = "~~" + msg[0] + "~~ " + score
 			
 		goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
 		goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
