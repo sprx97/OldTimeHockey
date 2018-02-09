@@ -111,21 +111,23 @@ def check_scores():
 			stringsToAnnounce = []
 			stringsToEdit = {}
 
-			games = root["dates"][0]["games"]
-			for game in games:
-				ann, edit = ParseFeeds.parseGame(game)
-				stringsToAnnounce.extend(ann)
-				stringsToEdit.update(edit)
+			if len(root["dates"]) > 0:
+				games = root["dates"][0]["games"]
+				for game in games:
+					ann, edit = ParseFeeds.parseGame(game)
+					stringsToAnnounce.extend(ann)
+					stringsToEdit.update(edit)
+					yield from asyncio.sleep(.25)
 
-			if soft_reset == False:
-				for (key, str) in stringsToAnnounce:
-					msg = yield from client.send_message(bot_channel, str)
-					if key != None:
-						ParseFeeds.messages[key][2] = msg
-				for msg in stringsToEdit:
-					yield from client.edit_message(msg, stringsToEdit[msg])
-			else:
-				soft_reset = False
+				if soft_reset == False:
+					for (key, str) in stringsToAnnounce:
+						msg = yield from client.send_message(bot_channel, str)
+						if key != None:
+							ParseFeeds.messages[key][2] = msg
+					for msg in stringsToEdit:
+						yield from client.edit_message(msg, stringsToEdit[msg])
+				else:
+					soft_reset = False
 		except Exception as e:
 			print("Error: %s" % e)
 			sys.stdout.flush()
