@@ -4,7 +4,7 @@ import email
 def checkEmails():
 	pop_conn = poplib.POP3_SSL("pop.gmail.com", 995)
 	pop_conn.user("roldtimehockey")
-	pop_conn.pass_("oldtimehockey")
+	pop_conn.pass_("roldtimehockey")
 
 	stringsToAnnounce = []
 
