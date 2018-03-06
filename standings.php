@@ -27,7 +27,7 @@
 		echo "<div class='column'>";
 		echo "<h1><u>Division Ranks</u></h1>";
 
-		$ranks = mysqli_query($con, "SELECT * from (SELECT Leagues.name, round(sum(pointsFor), 2) as PF, round(sum(pointsFor)/(wins+losses), 2) from Leagues inner join Teams on id=leagueID where year=" . $YEAR . " group by Leagues.name) as t order by PF desc");
+		$ranks = mysqli_query($con, "SELECT * from (SELECT Leagues.name, round(sum(pointsFor), 2) as PF, round(sum(pointsFor)/(count(*)), 2) from Leagues inner join Teams on id=leagueID where year=" . $YEAR . " group by Leagues.name) as t order by PF desc");
 
 		echo "<table class='rankings'>";
 
