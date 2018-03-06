@@ -214,21 +214,22 @@
                         echo "</thead>";
 
                         echo "<tbody>";
-			$teams = mysqli_query($con, "select FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2), round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, round(PA/(wins+losses), 2) as avgPA, trophies from (select FFname, count(*) as Seasons, sum(Teams_post.wins) as wins, sum(Teams_post.losses) as losses, sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, sum(isChamp) as trophies from Teams_post inner join Teams on Teams_post.teamID=Teams.teamID inner join Users on ownerID=FFid where replacement != 1 group by FFid) as T1 order by PF DESC");
+			$teams = mysqli_query($con, "select FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2), round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins) as wins, sum(Teams_post.losses) as losses, sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, sum(isChamp) as trophies, FFid from Teams_post inner join Teams on Teams_post.teamID=Teams.teamID inner join Users on ownerID=FFid where replacement != 1 group by FFid) as T1 order by PF DESC");
                         while($team = mysqli_fetch_array($teams)) {
-				$tier_query = mysqli_query($con, "select Leagues.name from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" . $curryear . " and replacement!=1 and FFname='" . $team[0] . "'");
+				$tier_query = mysqli_query($con, "select Leagues.tier from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" . $curryear . " and replacement!=1 and FFname='" . $team[0] . "'");
                                 $tierclass = "notactive";
                                 if($tier = mysqli_fetch_array($tier_query)) {
-                                        $tierclass = "div3";
-                                        if($tier[0] == 'Gretzky') $tierclass = "div1";
-                                        if($tier[0] == 'Western' || $tier[0] == 'Eastern') $tierclass = "div2";
+					$tierclass = "div" . $tier[0];
                                 }
 				echo "<tr class=\"" . $tierclass . "\">";
 				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
 				echo "<td>" . $team[0];
 				if($team[9] > 0) {
 					echo " ";
-					for($n = 0; $n < $team[9]; $n++) echo "<img src=\"images/trophy.png\" width=12px height=12px>";
+					$trophies = mysqli_query($con, "select Leagues.tier from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where isChamp=1 and FFid=" . $team[10] . " order by Leagues.tier ASC");
+					while ($trophy = mysqli_fetch_array($trophies)) {
+						echo "<img src=\"images/D" . $trophy[0] . "Champion.png\" width=12px height=24px>";
+					}
 				}
 				echo "</td>";
 				echo "<td>" . $team[1] . "</td>";
@@ -277,22 +278,22 @@
 			echo "</thead>";
 
 			echo "<tbody>";
-			$teams = mysqli_query($con, "select FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2), round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, round(PA/(wins+losses), 2) as avgPA, trophies, careerCR from (select FFname, count(*) as Seasons, sum(wins) as wins, sum(losses) as losses, sum(pointsFor) as PF, sum(pointsAgainst) as PA, sum(isChamp) as trophies, round(100*sum(pointsFor)/sum(100.0*pointsFor/coachRating), 2) as careerCR from Teams inner join Users on ownerID=FFid where replacement != 1 and pointsFor >=0 group by FFid) as T1 order by PF DESC");
+			$teams = mysqli_query($con, "select FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2), round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, round(PA/(wins+losses), 2) as avgPA, trophies, careerCR, FFid from (select FFname, count(*) as Seasons, sum(wins) as wins, sum(losses) as losses, sum(pointsFor) as PF, sum(pointsAgainst) as PA, sum(isChamp) as trophies, round(100*sum(pointsFor)/sum(100.0*pointsFor/coachRating), 2) as careerCR, FFid from Teams inner join Users on ownerID=FFid where replacement != 1 and pointsFor >=0 group by FFid) as T1 order by PF DESC");
 			while($team = mysqli_fetch_array($teams)) {
-				$tier_query = mysqli_query($con, "select Leagues.name from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" . $curryear . " and replacement!=1 and FFname='" . $team[0] . "'");
+				$tier_query = mysqli_query($con, "select Leagues.tier from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" . $curryear . " and replacement!=1 and FFname='" . $team[0] . "'");
 				$tierclass = "notactive";
 				if($tier = mysqli_fetch_array($tier_query)) {
-					$tierclass = "div4";
-					if($tier[0] == 'Yzerman' || $tier[0] == 'Jagr' || $tier[0] == 'Lemieux' || $tier[0] == 'Dionne' || $tier[0] == 'Howe') $tierclass = "div3";
-					if($tier[0] == 'Brodeur' || $tier[0] == 'Roy' || $tier[0] == 'Hasek') $tierclass = "div2";
-					if($tier[0] == 'Gretzky') $tierclass = "div1";
+					$tierclass = "div" . $tier[0];
 				}
 				echo "<tr class=\"" . $tierclass . "\">";
 				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
 				echo "<td>" . $team[0];
 				if($team[9] > 0) {
 					echo " ";
-					for($n = 0; $n < $team[9]; $n++) echo "<img src=\"images/trophy.png\" width=12px height=12px>";
+					$trophies = mysqli_query($con, "select Leagues.tier from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where isChamp=1 and FFid=" . $team[11] . " order by Leagues.tier ASC");
+					while ($trophy = mysqli_fetch_array($trophies)) {
+						echo "<img src=\"images/D" . $trophy[0] . "Champion.png\" width=12px height=24px>";
+					}
 				}
 				echo "</td>";
 				echo "<td>" . $team[1] . "</td>";
@@ -336,12 +337,14 @@
 			echo "</thead>";
 
 			echo "<tbody>";
-			$teams = mysqli_query($con, "SELECT Leagues.name, Teams.name, Users.FFname, Teams_post.wins, Teams_post.losses, Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on Teams.leagueID=Leagues.id INNER JOIN Users on Teams.ownerID=Users.FFid where Leagues.year=" . substr($YEAR, 0, -1) . " order by Teams_post.pointsFor DESC");
+			$teams = mysqli_query($con, "SELECT Leagues.name, Teams.name, Users.FFname, Teams_post.wins, Teams_post.losses, Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on Teams.leagueID=Leagues.id INNER JOIN Users on Teams.ownerID=Users.FFid where Leagues.year=" . substr($YEAR, 0, -1) . " order by Teams_post.pointsFor DESC");
 			while($team = mysqli_fetch_array($teams)) {
 				echo "<tr class='" . $team[0] . "'>";
 				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
 				echo "<td>" . $team[0];
-				if($team[7]) echo " <img src=\"images/trophy.png\" width=12px height=12px>";
+				if($team[7]) {
+					echo " <img src=\"images/D" . $team[9] . "Champion.png\" width=12px height=24px>";
+				}
 				echo "</td>";
 				echo "<td>(" . $team[8] . ") " . $team[1] . "</td>";
 				echo "<td>" . $team[2] . "</td>";
@@ -382,12 +385,14 @@
 			echo "</thead>";
 
 			echo "<tbody>";
-			$teams = mysqli_query($con, "SELECT Leagues.name, Teams.name, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" . $YEAR . " order by pointsFor DESC");
+			$teams = mysqli_query($con, "SELECT Leagues.name, Teams.name, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp, Leagues.tier from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" . $YEAR . " order by pointsFor DESC");
 			while($team = mysqli_fetch_array($teams)) {
 				echo "<tr class='" . $team[0] . "'>";
 				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
 				echo "<td>" . $team[0];
-				if($team[8]) echo " <img src=\"images/trophy.png\" width=12px height=12px>";
+				if($team[8]) {
+					echo " <img src=\"images/D" . $team[9] . "Champion.png\" width=12px height=24px>";
+				}
 				echo "</td>";
 				echo "<td>" . $team[1] . "</td>";
 				echo "<td>" . $team[2] . "</td>";
