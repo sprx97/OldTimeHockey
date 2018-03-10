@@ -180,7 +180,7 @@
         $curryear = trim(fgets($weekVars));
         fclose($weekVars);
 
-	$leaders = mysqli_query($con, "SELECT FFname, round(wins/(wins+losses), 3) as wpct, wins, losses, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and wins > 0 and year != 2012 and year != " . $curryear . " order by wpct DESC, wins DESC");
+	$leaders = mysqli_query($con, "SELECT FFname, round(wins/(wins+losses), 3) as wpct, wins, losses, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and wins > 0 and tier != 4 and year != 2012 and year != " . $curryear . " order by wpct DESC, wins DESC");
 
 	echo "<ul>";
 
@@ -206,9 +206,8 @@
 <br>
 
 <h2>Best Record (wins)</h2>
-<h6><i>currently active</i></h6>
 <?php
-	$leaders = mysqli_query($con, "SELECT FFname, wins, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 order by wins DESC");
+	$leaders = mysqli_query($con, "SELECT FFname, wins, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by wins DESC");
 
 	echo "<ul>";
 
@@ -239,10 +238,9 @@
 <br>
 
 <h2>Most Points For</h2>
-<h6><i>currently active</i></h6>
 <h6>* = 12-team league</h6>
 <?php
-	$leaders = mysqli_query($con, "SELECT FFname, pointsFor, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 order by pointsFor DESC");
+	$leaders = mysqli_query($con, "SELECT FFname, pointsFor, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by pointsFor DESC");
 
 	echo "<ul>";
 
@@ -273,7 +271,7 @@
 
 <h2>Highest Coaching Rating</h2>
 <?php
-	$leaders = mysqli_query($con, "SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and pointsFor > 0 and year != " . $curryear . " order by coachRating DESC");
+	$leaders = mysqli_query($con, "SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and pointsFor > 0 and tier != 4 and year != " . $curryear . " order by coachRating DESC");
 
 	echo "<ul>";
 
@@ -314,9 +312,8 @@
 <div class="header">Streaks</div>
 <div class="streaks">
 <h2>Longest Win Streak</h2>
-<h6><i>currently active</i></h6>
 <ul>
-	<li><i>tweedledunn - 26 (2013-14 Wk 21 - PRESENT)</i></li>
+	<li>tweedledunn - 26 (2013-14 Wk 21 - PRESENT)</li>
 	<li>Teratic - 24 (2013-14 Wk1 - 2014-15 Wk2)</li>
 	<li>Woppa - 23 (2013-14 Wk6 - 2014-15 Wk6)</li>
 	<li>dimwell - 19 (2014-15 Wk5 - 2014-15 Wk23)</li>
