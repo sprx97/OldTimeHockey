@@ -124,18 +124,21 @@ def parseGame(game):
 			awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
 			homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
 
+			skip = False
 			if awayScore == homeScore: # adjust for shootout winner
 				if playbyplay["liveData"]["linescore"]["shootoutInfo"]["away"]["scores"] > playbyplay["liveData"]["linescore"]["shootoutInfo"]["home"]["scores"]:
 					awayScore += 1
-				else:
+				elif playbyplay["liveData"]["linescore"]["shootoutInfo"]["away"]["scores"] < playbyplay["liveData"]["linescore"]["shootoutInfo"]["home"]["scores"]:
 					homeScore += 1
-
-			period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
-			if period == "(3rd)":
-				period = ""
-			finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period
-			stringsToAnnounce.append((None, finalstring))
-			completed.append(key)
+				else:
+					skip = True
+			if not skip:
+				period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
+				if period == "(3rd)":
+					period = ""
+				finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period
+				stringsToAnnounce.append((None, finalstring))
+				completed.append(key)
 	return stringsToAnnounce, stringsToEdit
 
 
