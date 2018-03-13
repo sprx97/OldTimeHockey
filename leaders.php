@@ -140,15 +140,16 @@
 
 
 <?php
-	$weekVars = fopen("/var/www/roldtimehockey/scripts/WeekVars.txt", "r");
-	$curryear = trim(fgets($weekVars));
+	$weekVars = file("/var/www/roldtimehockey/scripts/WeekVars.txt");
+	$curryear = $weekVars[0];
+	$currweek = $weekVars[1];
 	fclose($weekVars);
 
         $con = mysqli_connect("localhost", "othuser", "othpassword", "OldTimeHockey");
         if(mysqli_connect_errno()) echo "Failed to connect to MySQL: " . mysqli_connect_errno();
 
         function printLeaders($YEAR) {
-		global $con, $curryear;
+		global $con, $curryear, $currweek;
 		if($YEAR == "week") {
 			echo "<table class=\"tablesorter\" id=\"currentweek\">";
 			echo "<colgroup>";
@@ -170,7 +171,7 @@
 
 			echo "<tbody>";
 
-			$teams = mysqli_query($con, "select Leagues.name, Teams.name, Users.FFname, Teams.currentWeekPF, round(Teams.currentWeekPF + Teams.pointsFor, 2) as total from Teams inner join Users on Teams.ownerID=Users.FFid inner join Leagues on Teams.leagueID=Leagues.id  where Leagues.year=" . $curryear . " order by currentWeekPF");
+			$teams = mysqli_query($con, "select Leagues.name, Teams.name, Users.FFname, Teams.currentWeekPF, round(Teams.currentWeekPF + Teams.pointsFor, 2), round(IFNULL(Teams_post.pointsFor, 0) + Teams.currentWeekPF, 2) as total from Teams inner join Users on Teams.ownerID=Users.FFid inner join Leagues on Teams.leagueID=Leagues.id left outer join Teams_post on Teams_post.teamID=Users.FFid where Leagues.year=" . $curryear . " order by currentWeekPF");
 			while($team = mysqli_fetch_array($teams)) {
 				echo "<tr class='" . $team[0] . "'>";
 				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
@@ -178,7 +179,10 @@
 				echo "<td>" . $team[1] . "</td>";
 				echo "<td>" . $team[2] . "</td>";
 				echo "<td>" . $team[3] . "</td>";
-				echo "<td>" . $team[4] . "</td>";
+				if (intval($currweek) > 23)
+					echo "<td>" . $team[5] . "</td>";
+				else
+					echo "<td>" . $team[4] . "</td>";
 				echo "</tr>";
 			}
 
