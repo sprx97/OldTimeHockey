@@ -230,7 +230,7 @@
 				echo "<td>" . $team[0];
 				if($team[9] > 0) {
 					echo " ";
-					$trophies = mysqli_query($con, "select Leagues.tier from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where isChamp=1 and and Leagues.tier != 4 and FFid=" . $team[10] . " order by Leagues.tier ASC");
+					$trophies = mysqli_query($con, "select Leagues.tier from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where isChamp=1 and Leagues.tier != 4 and FFid=" . $team[10] . " order by Leagues.tier ASC");
 					while ($trophy = mysqli_fetch_array($trophies)) {
 						echo "<img src=\"images/D" . $trophy[0] . "Champion.png\" width=12px height=24px>";
 					}
@@ -430,6 +430,7 @@
 	<option value="2016">2016-2017 Regular Season</option>
 	<option value="2016p">2016-2017 Playoffs</option>
 	<option value="2017">2017-2018 Regular Season</option>
+	<option value="2017p">2017-2018 Playoffs</option>
 	<option value="career">Career Regular Season</option>
 	<option value="careerp">Career Playoffs</option>
 	<option value="week">This Week (live)</option>

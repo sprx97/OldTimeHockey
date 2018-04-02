@@ -5,7 +5,6 @@ import os.path
 f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
-week = 23
 f.close()
 if os.path.isfile("/var/www/roldtimehockey/scripts/weeks/" + str(year) + "_Week_" + str(week) + ".txt"):
 	raise Exception("Stats file for " + str(year) + " week " + str(week) + " already exists.")

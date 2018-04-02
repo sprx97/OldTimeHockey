@@ -2,16 +2,29 @@ import urllib2 # url reading
 from lxml import etree
 from lxml import html # xml parsing
 import MySQLdb # sql queries
+import sys
 
 years_to_update = [] # can manually seed if necessary
-f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
-year = int(f.readline().strip())
-years_to_update.append(year)
-
 playoffs_to_update = []
-if int(f.readline().strip()) > 23: # most years only have 23 weeks
-	playoffs_to_update.append(year)
-f.close()
+
+if len(sys.argv) == 1: # no arguments
+	f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
+	year = int(f.readline().strip())
+	years_to_update.append(year)
+
+	if int(f.readline().strip()) > 23: # most years only have 23 weeks
+		playoffs_to_update.append(year)
+	f.close()
+
+else:
+	for arg in sys.argv[1:]:
+		if len(arg) == 4:
+			years_to_update.append(int(arg))
+		elif len(arg) == 5 and arg[-1] == "p":
+			playoffs_to_update.append(int(arg[:-1]))
+		else:
+			print "Invalid argument"
+			quit()
 
 def printHtml(root, depth):
 	for n in range(0, depth):
