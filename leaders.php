@@ -172,9 +172,10 @@
 			echo "<tbody>";
 
 			$teams = mysqli_query($con, "select Leagues.name, Teams.name, Users.FFname, Teams.currentWeekPF, round(Teams.currentWeekPF + Teams.pointsFor, 2), round(IFNULL(Teams_post.pointsFor, 0) + Teams.currentWeekPF, 2) as total from Teams inner join Users on Teams.ownerID=Users.FFid inner join Leagues on Teams.leagueID=Leagues.id left outer join Teams_post on Teams_post.teamID=Users.FFid where Leagues.year=" . $curryear . " order by currentWeekPF");
+			$count = 1;
 			while($team = mysqli_fetch_array($teams)) {
 				echo "<tr class='" . $team[0] . "'>";
-				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
+				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count++ . "</td>";
 				echo "<td>" . $team[0] . "</td>";
 				echo "<td>" . $team[1] . "</td>";
 				echo "<td>" . $team[2] . "</td>";
@@ -219,6 +220,7 @@
 
                         echo "<tbody>";
 			$teams = mysqli_query($con, "select FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2), round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins) as wins, sum(Teams_post.losses) as losses, sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, sum(isChamp) as trophies, FFid from Teams_post inner join Teams on Teams_post.teamID=Teams.teamID inner join Users on ownerID=FFid where replacement != 1 group by FFid) as T1 order by PF DESC");
+			$count = 1;
                         while($team = mysqli_fetch_array($teams)) {
 				$tier_query = mysqli_query($con, "select Leagues.tier from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" . $curryear . " and replacement!=1 and FFname='" . $team[0] . "'");
                                 $tierclass = "notactive";
@@ -226,7 +228,7 @@
 					$tierclass = "div" . $tier[0];
                                 }
 				echo "<tr class=\"" . $tierclass . "\">";
-				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
+				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count++ . "</td>";
 				echo "<td>" . $team[0];
 				if($team[9] > 0) {
 					echo " ";
@@ -283,6 +285,7 @@
 
 			echo "<tbody>";
 			$teams = mysqli_query($con, "select FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2), round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, round(PA/(wins+losses), 2) as avgPA, trophies, careerCR, FFid from (select FFname, count(*) as Seasons, sum(wins) as wins, sum(losses) as losses, sum(pointsFor) as PF, sum(pointsAgainst) as PA, sum(isChamp) as trophies, round(100*sum(pointsFor)/sum(100.0*pointsFor/coachRating), 2) as careerCR, FFid from Teams inner join Users on ownerID=FFid where replacement != 1 and pointsFor >=0 group by FFid) as T1 order by PF DESC");
+			$count = 1;
 			while($team = mysqli_fetch_array($teams)) {
 				$tier_query = mysqli_query($con, "select Leagues.tier from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" . $curryear . " and replacement!=1 and FFname='" . $team[0] . "'");
 				$tierclass = "notactive";
@@ -290,7 +293,7 @@
 					$tierclass = "div" . $tier[0];
 				}
 				echo "<tr class=\"" . $tierclass . "\">";
-				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
+				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count++ . "</td>";
 				echo "<td>" . $team[0];
 				if($team[9] > 0) {
 					echo " ";
@@ -342,9 +345,10 @@
 
 			echo "<tbody>";
 			$teams = mysqli_query($con, "SELECT Leagues.name, Teams.name, Users.FFname, Teams_post.wins, Teams_post.losses, Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on Teams.leagueID=Leagues.id INNER JOIN Users on Teams.ownerID=Users.FFid where Leagues.year=" . substr($YEAR, 0, -1) . " order by Teams_post.pointsFor DESC");
+			$count = 1;
 			while($team = mysqli_fetch_array($teams)) {
 				echo "<tr class='" . $team[0] . "'>";
-				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
+				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count++ . "</td>";
 				echo "<td>" . $team[0];
 				if($team[7] && $team[9] != 4) {
 					echo " <img src=\"images/D" . $team[9] . "Champion.png\" width=12px height=24px>";
@@ -390,9 +394,10 @@
 
 			echo "<tbody>";
 			$teams = mysqli_query($con, "SELECT Leagues.name, Teams.name, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp, Leagues.tier from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" . $YEAR . " order by pointsFor DESC");
+			$count = 1;
 			while($team = mysqli_fetch_array($teams)) {
 				echo "<tr class='" . $team[0] . "'>";
-				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count . "</td>";
+				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count++ . "</td>";
 				echo "<td>" . $team[0];
 				if($team[8] && $team[9] != 4) {
 					echo " <img src=\"images/D" . $team[9] . "Champion.png\" width=12px height=24px>";
