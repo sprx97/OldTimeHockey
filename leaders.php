@@ -234,7 +234,7 @@
 					echo " ";
 					$trophies = mysqli_query($con, "select Leagues.tier from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where isChamp=1 and Leagues.tier != 4 and FFid=" . $team[10] . " order by Leagues.tier ASC");
 					while ($trophy = mysqli_fetch_array($trophies)) {
-						echo "<img src=\"images/D" . $trophy[0] . "Champion.png\" width=12px height=24px>";
+						echo "<img src=\"images/trophies/D" . $trophy[0] . "Champion.png\" width=12px height=24px>";
 					}
 				}
 				echo "</td>";
@@ -299,7 +299,7 @@
 					echo " ";
 					$trophies = mysqli_query($con, "select Leagues.tier from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where isChamp=1 and Leagues.tier != 4 and FFid=" . $team[11] . " order by Leagues.tier ASC");
 					while ($trophy = mysqli_fetch_array($trophies)) {
-						echo "<img src=\"images/D" . $trophy[0] . "Champion.png\" width=12px height=24px>";
+						echo "<img src=\"images/trophies/D" . $trophy[0] . "Champion.png\" width=12px height=24px>";
 					}
 				}
 				echo "</td>";
@@ -351,7 +351,7 @@
 				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count++ . "</td>";
 				echo "<td>" . $team[0];
 				if($team[7] && $team[9] != 4) {
-					echo " <img src=\"images/D" . $team[9] . "Champion.png\" width=12px height=24px>";
+					echo " <img src=\"images/trophies/D" . $team[9] . "Champion.png\" width=12px height=24px>";
 				}
 				echo "</td>";
 				echo "<td>(" . $team[8] . ") " . $team[1] . "</td>";
@@ -400,7 +400,7 @@
 				echo "<td style=\"background-color:rgba(175, 175, 175, 1)\">" . $count++ . "</td>";
 				echo "<td>" . $team[0];
 				if($team[8] && $team[9] != 4) {
-					echo " <img src=\"images/D" . $team[9] . "Champion.png\" width=12px height=24px>";
+					echo " <img src=\"images/trophies/D" . $team[9] . "Champion.png\" width=12px height=24px>";
 				}
 				echo "</td>";
 				echo "<td>" . $team[1] . "</td>";

@@ -89,7 +89,12 @@
 				while($team = mysqli_fetch_array($teams)) {
 					echo "<tr class='team'>";
 					echo "<td>" . $count++ . "</td>";
-					echo "<td>" . $team['name'] . "</td>";
+
+					$trophy = "";
+					if ($team['isChamp'] > 0) {
+						$trophy = "<img src=\"images/trophies/D" . $n . "Champion.png\" width=8px height=16px> ";
+					}
+					echo "<td>" . $trophy . $team['name'] . "</td>";
 					echo "<td>" . $team['FFname'] . "</td>";
 					echo "<td>" . $team['wins'] . "</td>";
 					echo "<td>" . $team['losses'] . "</td>";
