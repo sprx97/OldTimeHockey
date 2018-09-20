@@ -246,16 +246,18 @@ if __name__ == "__main__":
 				else:
 					raise Exception("Error: more than one team matches teamID: " + str(next[0]))
 
-				cursor.execute("SELECT * from Users where FFid = " + str(next[2]))
-				data = cursor.fetchall()
-				if len(data) == 0: # insert new user into table (should only happen once)
-					cursor.execute("INSERT into Users values (" + str(next[2]) + ", '" + next[3] + \
-					"', NULL)")
-				elif len(data) == 1:
-					cursor.execute("UPDATE Users set FFname='" + next[3] \
-					+ "' where FFid=" + str(next[2]))
-				else:
-					raise Exception("Error: more than one user matches userID: " + str(next[2]))
+				# only update the user if there is actually another user
+				if (next[2] != 0):
+					cursor.execute("SELECT * from Users where FFid = " + str(next[2]))
+					data = cursor.fetchall()
+					if len(data) == 0: # insert new user into table (should only happen once)
+						cursor.execute("INSERT into Users values (" + str(next[2]) + ", '" + next[3] + \
+							       "', NULL)")
+					elif len(data) == 1:
+						cursor.execute("UPDATE Users set FFname='" + next[3] \
+						+ "' where FFid=" + str(next[2]))
+					else:
+						raise Exception("Error: more than one user matches userID: " + str(next[2]))
 
 	for year in playoffs_to_update:
 		cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
