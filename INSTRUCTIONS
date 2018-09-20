@@ -2,8 +2,7 @@ Things to do at the beginning of a year:
 - Update scripts/WeekVars.txt
 - Update index.php to include the previous years champions and new rule info
 - Add the new year as a dropdown option in standings.php and make it the default
-- Add the new year (and previous playoffs as optoins in leaders.php
+- Add the new year (and previous playoffs as options in leaders.php
 - Add rows to the "Leagues" table for each of the new leagues
 - Uncoment the /etc/crontab lines for OTH (only do this the day the season starts)
 - Finally, run "UpdateTables.py" to grab all of the teams from each league (once the leagues are filled) -- normally this runs sunday night
-- Update the URL for mysportsfeeds in DiscordBot.py and ParseFeeds.py to the correct year (probably can be pulled from weekVars.txt pretty easily)

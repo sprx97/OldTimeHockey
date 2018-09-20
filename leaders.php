@@ -436,6 +436,7 @@
 	<option value="2016p">2016-2017 Playoffs</option>
 	<option value="2017">2017-2018 Regular Season</option>
 	<option value="2017p">2017-2018 Playoffs</option>
+	<option value="2018">2018-2019 Regular Season</option>
 	<option value="career">Career Regular Season</option>
 	<option value="careerp">Career Playoffs</option>
 	<option value="week">This Week (live)</option>
