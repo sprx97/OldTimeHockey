@@ -19,7 +19,8 @@ def checkEmails():
 				frm = msg['From']
 			if msg['subject'] != None:
 				subject = msg['Subject']
-			body += msg.get_payload() + "\n"
+			if msg.get_payload() and type(msg.get_payload()) != list:
+				body += msg.get_payload() + "\n"
 
 		# only return FF emails
 		if "info+noreply@fleaflicker.com" in frm:

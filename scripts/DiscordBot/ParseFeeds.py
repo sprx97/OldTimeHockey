@@ -45,6 +45,12 @@ reported = {}
 lastDate = None
 messages = {}
 
+# Gets the emoji for a team or returns blank
+def getEmoji(team):
+	if team in emojis:
+		return emojis[team]
+	return ""
+
 # Gets the feed using the new NHL.com API
 def getFeed(url):
 	request = urllib.request.Request(url)
@@ -72,7 +78,7 @@ def parseGame(game):
 	isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
 
 	if isInProgress and key not in started:
-		stringsToAnnounce.append((None, emojis[away] + " " + away + " at " + emojis[home] + " " + home + " Starting."))
+		stringsToAnnounce.append((None, getEmoji(away) + " " + away + " at " + getEmoji(home) + " " + home + " Starting."))
 		started.append(key)
 
 	# check to see if score is different from what we have saved
@@ -89,7 +95,7 @@ def parseGame(game):
 		score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 
 		while len(reported[gamekey]) > len(goals):
-			stringsToAnnounce.append((None, "Last goal in " + emojis[away] + " " + away + "-" + emojis[home] + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
+			stringsToAnnounce.append((None, "Last goal in " + getEmoji(away) + " " + away + "-" + getEmoji(home) + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
 			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
 			msg = messages[gamegoalkey]
 			stringsToEdit[msg[2]] = "~~" + msg[0] + "~~ " + score
@@ -105,7 +111,7 @@ def parseGame(game):
 		if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
 			en = "(EN) "
 
-		team = emojis[goal["team"]["triCode"]] + " " + goal["team"]["triCode"]
+		team = getEmoji(goal["team"]["triCode"]) + " " + goal["team"]["triCode"]
 		period = "(" + goal["about"]["ordinalNum"] + ")"
 		time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
 				
@@ -120,7 +126,10 @@ def parseGame(game):
 
 	# print final result
 	if isFinal and key not in completed:
-		if playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END":
+		# Some exhibition games don't get play-by-play data. Skip these.
+		if len(playbyplay["liveData"]["plays"]["allPlays"]) == 0:
+			pass
+		elif playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END":
 			awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
 			homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
 
@@ -136,9 +145,10 @@ def parseGame(game):
 				period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
 				if period == "(3rd)":
 					period = ""
-				finalstring = emojis[away] + " " + away + " " + str(awayScore) + ", " + emojis[home] + " " + home + " " + str(homeScore) + " Final " + period
+				finalstring = getEmoji(away) + " " + away + " " + str(awayScore) + ", " + getEmoji(home) + " " + home + " " + str(homeScore) + " Final " + period
 				stringsToAnnounce.append((None, finalstring))
 				completed.append(key)
+
 	return stringsToAnnounce, stringsToEdit
 
 
