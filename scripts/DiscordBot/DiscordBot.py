@@ -183,6 +183,12 @@ def on_message(message):
 	if message.content.startswith("!pong"):
 		yield from client.send_message(message.channel, "ping")
 
+	# Embed streamable recaps (test)
+#	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
+#		e = discord.Embed()
+#		e.set_image("http://md-akc.med.nhl.com/mp4/nhl/2018/09/30/7e7f1aee-cd37-499c-91a7-db15cfafb979/1538277700218/asset_1800k.mp4")
+#		yield from client.send_message(message.channel, embed=e)
+
 	# Reset response
 #	if message.content.startswith("!reset") and (message.channel.name == "mods" or message.channel.name == "oth-tech"):
 #		yield from client.send_message(message.channel, "Rebooting bot")
