@@ -114,7 +114,7 @@
 							json = JSON.parse(requests[n].responseText);
 							json.forEach(function(league) {
 								table = "<div class='column'>";
-								table += "<h3>" + league.name + "<img src='images/jerseys/" + league.name + ".png' width=50px></h3>";
+								table += "<h3>" + league.name + "<img src='images/jerseys/" + league.name + ".png' title='" + league.name + "' width=50px></h3>";
 								table += "<table class='" + league.name + "'>";
 
 								table += "<tr>";
@@ -145,7 +145,7 @@
 											row += "<td>" + count++ + "</td>";
 											var trophy = "";
 											if (team.isChamp > 0) {
-												trophy = "<img src='images/trophies/D" + n + "Champion.png' width=8px height=16px> ";
+												trophy = "<img src='images/trophies/D" + n + "Champion.png' title='Division " + n + "' width=8px height=16px> ";
 											}
 											row += "<td>" + trophy + " " + team.name + "</td>";
 											row += "<td>" + team.FFname + "</td>";
