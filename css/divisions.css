@@ -8,7 +8,7 @@ table.Eastern th, tr.Eastern, table.Hasek th, tr.Hasek {
         background-color:rgba(255, 0, 0, .5);
 } /* red */
 
-table.Western th, tr.Western, table.Brodeur th, tr.Brodeur, table.Price-Murray, tr.Price-Murray {
+table.Western th, tr.Western, table.Brodeur th, tr.Brodeur, table.Price-Murray th, tr.Price-Murray {
         background-color:rgba(0, 255, 0, .5);
 } /* green */
 
