@@ -146,30 +146,30 @@ for league in leagues:
 	s += league[0] + "|" + str(league[1]) + "\n"
 s += "-----\n"
 
-s += "###BIGGEST BLOWOUT - Who forgot to bring their 'A' game?\n"
+#s += "###BIGGEST BLOWOUT - Who forgot to bring their 'A' game?\n"
 
 #cursor.execute("SELECT L.name, T1.name, T2.name, T1.currentWeekPF, T2.currentWeekPF, ROUND(T1.currentWeekPF-T2.currentWeekPF, 2) AS diff FROM Leagues L " + \
 #	       "INNER JOIN Teams T1 ON L.id = T1.leagueID INNER JOIN Teams T2 ON T1.currOpp = T2.teamID " + \
 #	       "WHERE L.year=" + str(year) + " AND (T1.currentWeekPF > T2.currentWeekPF) ORDER BY diff DESC")
 
-teams = cursor.fetchall()
-if len(teams) != 0:
-	team = teams[0]
-	s += "**" + team[1] + "**|**" + team[2] + "**\n"
-	s += ":-:|:-:\n"
-	s += str(team[3]) + "|" + str(team[4]) + "\n"
-	s += "Difference:|" + str(team[5]) + "\n"
-	s += "League:|" + team[0] + "\n"
-	s += "-----\n"
-
-	s += "###CLOSEST MATCH - Who's really thankful for that extra shot and hit and who suffered a tough loss?\n"
-	team = teams[-1]
-	s += "**" + team[1] + "**|**" + team[2] + "**\n"
-	s += ":-:|:-:\n"
-	s += str(team[3]) + "|" + str(team[4]) + "\n"
-	s += "Difference:|" + str(team[5]) + "\n"
-	s += "League:|" + team[0] + "\n"
-	s += "-----\n"
+#teams = cursor.fetchall()
+#if len(teams) != 0:
+#	team = teams[0]
+#	s += "**" + team[1] + "**|**" + team[2] + "**\n"
+#	s += ":-:|:-:\n"
+#	s += str(team[3]) + "|" + str(team[4]) + "\n"
+#	s += "Difference:|" + str(team[5]) + "\n"
+#	s += "League:|" + team[0] + "\n"
+#	s += "-----\n"
+#
+#	s += "###CLOSEST MATCH - Who's really thankful for that extra shot and hit and who suffered a tough loss?\n"
+#	team = teams[-1]
+#	s += "**" + team[1] + "**|**" + team[2] + "**\n"
+#	s += ":-:|:-:\n"
+#	s += str(team[3]) + "|" + str(team[4]) + "\n"
+#	s += "Difference:|" + str(team[5]) + "\n"
+#	s += "League:|" + team[0] + "\n"
+#	s += "-----\n"
 
 # Generate top players for a week
 
