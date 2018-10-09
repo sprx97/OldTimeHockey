@@ -28,6 +28,9 @@
 	if (document.location.toString().indexOf("?") !== -1) {
 		year = document.location.toString().split("year=")[1];
 	}
+
+	ffbase = "http://www.fleaflicker.com/nhl/leagues/";
+	ffteambase = "/teams/"
 </script>
 
 <body><center>
@@ -73,9 +76,9 @@
 							json = JSON.parse(xmlhttp.responseText);
 							n = 1;
 							json.forEach(function(league) {
-								row = "<tr class=" + league.name + ">";
+								row = "<tr class=" + /*league.name +*/ ">";
 								row += "<td>" + n++ + "</td>";
-								row += "<td>" + league.name + "</td>";					
+								row += "<td><a class='leaguename' href='" + ffbase + league.id + "'>" + league.name + "</a></td>";					
 								row += "<td>" + league.PF + "</td>";					
 								row += "<td>" + league.avgPF + "</td>";
 								row += "</tr>";
@@ -114,7 +117,7 @@
 							json = JSON.parse(requests[n].responseText);
 							json.forEach(function(league) {
 								table = "<div class='column'>";
-								table += "<h3>" + league.name + "<img src='images/jerseys/" + league.name + ".png' title='" + league.name + "' width=50px></h3>";
+								table += "<h3><a href='" + ffbase + league.id + "'>" + league.name + "</a><img src='images/jerseys/" + league.name + ".png' title='" + league.name + "' width=50px></h3>";
 								table += "<table class='" + league.name + "'>";
 
 								table += "<tr>";
@@ -147,7 +150,7 @@
 											if (team.isChamp > 0) {
 												trophy = "<img src='images/trophies/D" + n + "Champion.png' title='Division " + n + "' width=8px height=16px> ";
 											}
-											row += "<td>" + trophy + " " + team.name + "</td>";
+											row += "<td>" + trophy + " <a href='" + ffbase + league.id + ffteambase + team.teamID + "'>" + team.name + "</a></td>";
 											row += "<td>" + team.FFname + "</td>";
 											row += "<td>" + team.wins + "</td>";
 											row += "<td>" + team.losses + "</td>";

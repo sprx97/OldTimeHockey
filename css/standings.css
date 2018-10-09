@@ -52,3 +52,11 @@ td {
 		width: 100%;
 	}
 }
+
+#leagueRanks tbody tr {
+	background-color:rgba(225, 225, 225);
+}
+
+td:first-of-type, tr th {
+	background-color:rgba(175, 175, 175);
+}

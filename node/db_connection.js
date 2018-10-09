@@ -34,7 +34,7 @@ http.createServer(function(request, response) {
 		response.end();
 	}
 	else if(path == "/leagueranks") {
-		conn.query("SELECT * from (SELECT Leagues.name, round(sum(pointsFor), 2) as PF, round(sum(pointsFor)/(count(*)), 2) as avgPF from Leagues \
+		conn.query("SELECT * from (SELECT Leagues.id, Leagues.name, round(sum(pointsFor), 2) as PF, round(sum(pointsFor)/(count(*)), 2) as avgPF from Leagues \
 				inner join Teams on id=leagueID where year=" + query.year + " group by Leagues.name) as t order by PF desc", 
 				function(err, result, fields) {
 					response.write(JSON.stringify(result));
