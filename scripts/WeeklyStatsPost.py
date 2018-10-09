@@ -88,21 +88,21 @@ for team in teams:
 	s += team[1] + "|" + team[2] + "|L" + str(abs(team[3])) + "|" + str(team[4]) + "-" + str(team[5]) + "\n"
 s += "-----\n"
 
-s += "###WEEKLY LEAGUE LEADERS - Who scored the most points this week?\n"
-s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
-s += ":-:|:-:|:-:|:-:|:-:\n"
+#s += "###WEEKLY LEAGUE LEADERS - Who scored the most points this week?\n"
+#s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
+#s += ":-:|:-:|:-:|:-:|:-:\n"
 
-cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
-	       "WHERE L.year=" + str(year) + " ORDER BY T.currentWeekPF DESC LIMIT 10")
+#cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
+#	       "WHERE L.year=" + str(year) + " ORDER BY T.currentWeekPF DESC LIMIT 10")
 
-teams = cursor.fetchall()
-count = 0
-for team in teams:
-	count += 1
-	s += team[0] + "|" + team[1] + "|" + team[2] + "|" + str(team[3]) + "|" + str(count) + "\n" 
-s += "-----\n"
+#teams = cursor.fetchall()
+#count = 0
+#for team in teams:
+#	count += 1
+#	s += team[0] + "|" + team[1] + "|" + team[2] + "|" + str(team[3]) + "|" + str(count) + "\n" 
+#s += "-----\n"
 
-s + "###DIVISION WEEKLY POINT LEADERS - Who scored  the most points in each division?\n"
+s += "###DIVISION WEEKLY POINT LEADERS - Who scored  the most points in each division?\n"
 s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
 s += ":-:|:-:|:-:|:-:|:-:\n"
 
