@@ -68,7 +68,7 @@
 				</tr>
 				<script>
 					xmlhttp = new XMLHttpRequest();
-					xmlhttp.open("GET", "http://roldtimehockey.com/node/leagueranks?year=" + year, false);
+					xmlhttp.open("GET", "http://www.roldtimehockey.com/node/leagueranks?year=" + year, false);
 					xmlhttp.onreadystatechange = function() {
 						if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 							table = document.getElementById("leagueRanks");
@@ -109,7 +109,7 @@
 
 				(function(n) {
 					requests[n] = new XMLHttpRequest();
-					requests[n].open("GET", "http://roldtimehockey.com/node/divisionleagues?year=" + year + "&tier=" + n, false);
+					requests[n].open("GET", "http://www.roldtimehockey.com/node/divisionleagues?year=" + year + "&tier=" + n, false);
 					requests[n].onreadystatechange = function() {
 						if(requests[n].readyState == 4 && requests[n].status == 200) {
 							mytier = document.getElementById("tier" + n);
@@ -138,7 +138,7 @@
 
 								// nested request for teams here...
 								teamreq = new XMLHttpRequest();
-								teamreq.open("GET", "http://roldtimehockey.com/node/leagueteams?id=" + league.id, false);
+								teamreq.open("GET", "http://www.roldtimehockey.com/node/leagueteams?id=" + league.id, false);
 								teamreq.onreadystatechange = function() {
 									if(teamreq.readyState == 4 && teamreq.status == 200) {
 										var count = 1;

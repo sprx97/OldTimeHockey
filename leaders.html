@@ -142,7 +142,7 @@
 	var currentyear = "";
 	var currentweek = "";
 	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET", "http://roldtimehockey.com/node/getyear", false);
+	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/getyear", false);
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			currentyear = xmlhttp.responseText;
@@ -150,7 +150,7 @@
 	}
 	xmlhttp.send();
 	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET", "http://roldtimehockey.com/node/getweek", false);
+	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/getweek", false);
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			currentweek = xmlhttp.responseText;
@@ -201,7 +201,7 @@
 			tiers = {};
 
 			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "http://roldtimehockey.com/node/currenttier?year=" + currentyear, false);
+			xmlhttp.open("GET", "http://www.roldtimehockey.com/node/currenttier?year=" + currentyear, false);
 			xmlhttp.onreadystatechange = function() {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					tierjson = JSON.parse(xmlhttp.responseText);
@@ -220,7 +220,7 @@
 			trophies = {};
 
 			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "http://roldtimehockey.com/node/gettrophies?year=" + year + "&skipd4=" + skipd4, false);
+			xmlhttp.open("GET", "http://www.roldtimehockey.com/node/gettrophies?year=" + year + "&skipd4=" + skipd4, false);
 			xmlhttp.onreadystatechange = function() {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					trophyjson = JSON.parse(xmlhttp.responseText);
@@ -241,7 +241,7 @@
 			table = document.getElementsByClassName("tablesorter")[0];
 
 			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "http://roldtimehockey.com/node/leaders?year=" + year, false);
+			xmlhttp.open("GET", "http://www.roldtimehockey.com/node/leaders?year=" + year, false);
 			xmlhttp.onreadystatechange = function() {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					colwidths = []
