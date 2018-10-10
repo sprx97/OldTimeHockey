@@ -16,6 +16,6 @@ Other notes:
 - Everything is depoyed from a DigitalOcean droplet running Ubuntu 14.04 x64
 - The droplet takes weekly backups in case of catastrophic failure
 - After making changes to DiscordBot.py or the related modules, 
-  make sure to kill the python3 process running DiscordBot.
-  The MonitorBot.sh script will automatically restart it and pick up
+  make sure to kill the python3 process running DiscordBot on the server.
+  The forever.js script will automatically restart it and pick up
   the new changes.
