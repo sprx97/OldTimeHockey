@@ -18,12 +18,6 @@ table.tablesorter thead tr .headerSortDown {
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 	background-color: #8dbdd8;
 }
-table.tablesorter tbody tr.odd {
-	background-color: rgba(250, 250, 250, 1.0);
-}
-table.tablesorter tbody tr.even {
-	background-color: rgba(200, 200, 200, 1.0);
-}
 
 table.tablesorter {
 	table-layout:fixed;
@@ -33,13 +27,14 @@ table.tablesorter {
 
 tr {
 	border:1px solid black;
-	background-color:rgba(100, 100, 100, .5);
+	background-color:White;
 }
 
 th {
 	border:1px solid black;
 	padding:5px 0px;
 	text-align:center;
+	background-color:rgba(100, 100, 100, .5);
 }
 
 td {
@@ -49,10 +44,6 @@ td {
 	font-size:75%;
 	padding:3px;
 	height:31px;
-}
-
-table.Jagr th {
-        background-color:rgba(128, 0, 32, .5);
 }
 
 tr.notactive {

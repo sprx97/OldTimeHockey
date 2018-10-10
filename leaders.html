@@ -16,8 +16,8 @@
 <script type="text/javascript">
         document.getElementById("leaders").className += "selected";
 </script>
-<link href="css/divisions.css" rel="stylesheet"/>
 <link href="css/leaders.css" rel="stylesheet"/>
+<link href="css/divisions.css" rel="stylesheet"/>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -257,7 +257,7 @@
 
 						json.forEach(function(team) {
 							rows += "<tr class='" + team.leaguename + "'>";
-							rows += "<td style='background-color:rgba(175, 175, 175, 1)'>" + count++ + "</td>";
+							rows += "<td>" + count++ + "</td>";
 							rows += "<td>" + team.leaguename + "</td>";
 							rows += "<td>" + team.teamname + "</td>";
 							rows += "<td>" + team.FFname + "</td>";
@@ -285,7 +285,7 @@
 							else
 								rows += "<tr class='notactive'>";
 
-							rows += "<td style='background-color:rgba(175, 175, 175, 1)'>" + count++ + "</td>";
+							rows += "<td>" + count++ + "</td>";
 							rows += "<td>" + team.FFname;
 							if (team.FFname in trophies) {
 								rows += " ";
@@ -320,7 +320,7 @@
 							else
 								rows += "<tr class='notactive'>";
 	
-							rows += "<td style='background-color:rgba(175, 175, 175, 1)'>" + count++ + "</td>";
+							rows += "<td>" + count++ + "</td>";
 							rows += "<td>" + team.FFname;
 							if (team.FFname in trophies) {
 								rows += " ";
@@ -352,7 +352,7 @@
 						json.forEach(function(team) {
 							rows += "<tr class='" + team.leaguename + "'>";
 	
-							rows += "<td style='background-color:rgba(175, 175, 175, 1)'>" + count++ + "</td>";
+							rows += "<td>" + count++ + "</td>";
 							rows += "<td>" + team.leaguename;
 							if (team.FFname in trophies) {
 								rows += " ";
@@ -381,7 +381,7 @@
 						json.forEach(function(team) {
 							rows += "<tr class='" + team.leaguename + "'>";
 	
-							rows += "<td style='background-color:rgba(175, 175, 175, 1)'>" + count++ + "</td>";
+							rows += "<td>" + count++ + "</td>";
 							rows += "<td>" + team.leaguename;
 							if (team.FFname in trophies) {
 								rows += " ";
@@ -436,6 +436,15 @@
 
 	<script>
 		setTableCols(year);
+
+		if (year != "careerp" && year != "career")
+		{
+			$("tbody tr").hover(function() {
+				$("tr." + $(this).attr("class") + " td").not(":first-child").css("background-color", "#AAAAAA");
+			}, function() {
+				$("tr." + $(this).attr("class") + " td").not(":first-child").css("background-color", "White");
+			});
+		}
 	</script>
 </div>
 
