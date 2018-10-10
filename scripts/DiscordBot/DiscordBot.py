@@ -82,6 +82,9 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
+f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
+year = int(f.readline().strip())
+
 client = discord.Client(heartbeat_timeout=120.0)
 soft_reset = False # temporarily set to True to avoid printing stuff once
 
@@ -171,6 +174,8 @@ def on_ready():
 @client.event
 @asyncio.coroutine
 def on_message(message):
+	global year
+
 	# don't reply to self
 	if message.author == client.user:
 		return
@@ -224,7 +229,8 @@ def on_message(message):
 				       "INNER JOIN Teams AS opp ON me.CurrOpp=opp.teamID " + \
 				       "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
 				       "INNER JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
-				       "WHERE LOWER(me_u.FFname)='" + team + "'")
+				       "INNER JOIN Leagues AS l ON me.leagueID=l.id " + \
+				       "WHERE LOWER(me_u.FFname)='" + team + "' and l.year=%d" % year)
 
 			results = cursor.fetchall()
 			if len(results) == 0:
@@ -241,16 +247,14 @@ def on_message(message):
 #	make calls instead of having to scrape the page.
 #
 	if message.content.startswith("!woppacup"):
+		global year
 		if len(message.content.split(" ")) == 1:
 			yield from client.send_message(message.channel, "Usage: !woppacup <fleaflicker username>")
 		else:
 			myteam = message.content.split(" ")[1]
 
-			f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
-			year = int(f.readline().strip()) + 1
-
 			# might need selenium or scrapy for delay load
-			url = "http://challonge.com/woppacup%d" % (year)
+			url = "http://challonge.com/woppacup%d" % (year+1)
 			req = urllib.request.Request(url, headers={"User-Agent" : "Magic Browser"})
 			response = urllib.request.urlopen(req)
 			page = response.read()
