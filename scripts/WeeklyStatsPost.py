@@ -49,20 +49,25 @@ cursor.execute("SELECT T.ownerID, L.name, U.FFname, T.streak, T.wins, T.losses F
 
 teams = cursor.fetchall()
 # adjust to add in previous years streaks
+teamslist = []
 for team in teams:
-	if teams[4] == 0 or teams[5] == 0: # streak extends to previous years
+	team = list(team)
+	if team[4] == 0 or team[5] == 0: # streak extends to previous years
 		tmpyear = year-1
 		while 1:
-			cursor.execute("SELECT T.streak, T.wins, T.losses FROM Teams T WHERE T.ownerID = " + str(team[0]) + " AND year = " + str(tmpyear))
+			cursor.execute("SELECT T.streak, T.wins, T.losses FROM Teams T INNER JOIN Leagues L ON T.leagueID=L.id WHERE T.ownerID = " + str(team[0]) + " AND T.replacement != 1 AND L.year = " + str(tmpyear))
 			prev = cursor.fetchall()
-			if len(prev) == 0:
+			if len(prev) == 0 or len(prev) > 1:
 				break
+			prev = prev[0]
 			if prev[0]*team[3] > 0: # streaks are same direction
-				teams[3] += prev[0]
+				team[3] += prev[0]
 			if (prev[0] > 0 and prev[0] == prev[1]) or (prev[0] < 0 and prev[0] == prev[2]):
 				tmpyear -= 1
 				continue
 			break
+	teamslist.append(team)
+teams = teamslist
 
 teams = sorted(teams, key=lambda x: x[3], reverse=True)
 last = teams[0][3]
@@ -88,19 +93,19 @@ for team in teams:
 	s += team[1] + "|" + team[2] + "|L" + str(abs(team[3])) + "|" + str(team[4]) + "-" + str(team[5]) + "\n"
 s += "-----\n"
 
-#s += "###WEEKLY LEAGUE LEADERS - Who scored the most points this week?\n"
-#s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
-#s += ":-:|:-:|:-:|:-:|:-:\n"
+s += "###WEEKLY LEAGUE LEADERS - Who scored the most points this week?\n"
+s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
+s += ":-:|:-:|:-:|:-:|:-:\n"
 
-#cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
-#	       "WHERE L.year=" + str(year) + " ORDER BY T.currentWeekPF DESC LIMIT 10")
+cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
+	       "WHERE L.year=" + str(year) + " ORDER BY T.currentWeekPF DESC LIMIT 10")
 
-#teams = cursor.fetchall()
-#count = 0
-#for team in teams:
-#	count += 1
-#	s += team[0] + "|" + team[1] + "|" + team[2] + "|" + str(team[3]) + "|" + str(count) + "\n" 
-#s += "-----\n"
+teams = cursor.fetchall()
+count = 0
+for team in teams:
+	count += 1
+	s += team[0] + "|" + team[1] + "|" + team[2] + "|" + str(team[3]) + "|" + str(count) + "\n" 
+s += "-----\n"
 
 s += "###DIVISION WEEKLY POINT LEADERS - Who scored  the most points in each division?\n"
 s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
