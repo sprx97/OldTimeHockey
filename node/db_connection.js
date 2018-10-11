@@ -77,7 +77,7 @@ http.createServer(function(request, response) {
 		myquery = "";
 		if (query.year == "week") {
 			year = fs.readFileSync("/var/www/roldtimehockey/scripts/WeekVars.txt").toString().split("\n")[0]
-			myquery = "SELECT Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.currentWeekPF, round(Teams.currentWeekPF + Teams.pointsFor, 2) regTotal, \
+			myquery = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.currentWeekPF, round(Teams.currentWeekPF + Teams.pointsFor, 2) regTotal, \
 				  round(IFNULL(Teams_post.pointsFor, 0) + Teams.currentWeekPF, 2) as postTotal \
 				  from Teams inner join Users on Teams.ownerID=Users.FFid inner join Leagues on Teams.leagueID=Leagues.id left outer join Teams_post on Teams_post.teamID=Users.FFid \
 				  where Leagues.year=" + year + " order by currentWeekPF";
@@ -96,13 +96,13 @@ http.createServer(function(request, response) {
 		}
 		else if (query.year.charAt(query.year.length-1) == "p") {
 			year = query.year.slice(0, -1);
-			myquery = "SELECT Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
+			myquery = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
 				  Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier \
 				  from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on Teams.leagueID=Leagues.id INNER JOIN Users on Teams.ownerID=Users.FFid \
 				  where Leagues.year=" + year + " order by Teams_post.pointsFor DESC";
 		}
 		else {
-			myquery = "SELECT Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp, Leagues.tier \
+			myquery = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp, Leagues.tier \
 				  from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" + query.year + " order by pointsFor DESC";
 		}
 		conn.query(myquery, 

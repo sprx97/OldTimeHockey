@@ -145,7 +145,7 @@
 	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/getyear", false);
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			currentyear = xmlhttp.responseText;
+			currentyear = xmlhttp.responseText.slice(1, -1);
 		}
 	}
 	xmlhttp.send();
@@ -168,6 +168,12 @@
         if (document.location.toString().indexOf("?") !== -1) {
                 year = document.location.toString().split("year=")[1];
         }
+
+        ffbase = "http://www.fleaflicker.com/nhl/leagues/";
+        ffteambase = "/teams/"
+	ffyear = year;
+	if (ffyear.length == 5) ffyear = ffyear.slice(0, -1);
+	if (ffyear == "week") ffyear = currentyear;
 </script>
 
 <body><center>
@@ -258,8 +264,8 @@
 						json.forEach(function(team) {
 							rows += "<tr class='" + team.leaguename + "'>";
 							rows += "<td>" + count++ + "</td>";
-							rows += "<td>" + team.leaguename + "</td>";
-							rows += "<td>" + team.teamname + "</td>";
+							rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a></td>";
+							rows += "<td><a href='" + ffbase + team.leagueID + ffteambase + team.teamID + "?season=" + ffyear + "'>" + team.teamname + "</a></td>";
 							rows += "<td>" + team.FFname + "</td>";
 							rows += "<td>" + team.currentWeekPF + "</td>";
 
@@ -353,8 +359,8 @@
 							rows += "<tr class='" + team.leaguename + "'>";
 	
 							rows += "<td>" + count++ + "</td>";
-							rows += "<td>" + team.leaguename;
-							if (team.FFname in trophies) {
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a>";
+ 							if (team.FFname in trophies) {
 								rows += " ";
 								trophies[team.FFname].forEach(function(trophy) {
 									rows += "<img src='images/trophies/D" + trophy + "Champion.png' title='Division " + trophy + "' width=12px height=24px>";
@@ -362,7 +368,7 @@
 							}
 							rows += "</td>";
 
-							rows += "<td>(" + team.seed + ") " + team.teamname + "</td>";
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + ffteambase + team.teamID + "?season=" + ffyear + "'>(" + team.seed + ") " + team.teamname + "</a></td>";
 							rows += "<td>" + team.FFname + "</td>";
 							rows += "<td>" + team.wins + "</td>";
 							rows += "<td>" + team.losses + "</td>";
@@ -372,7 +378,7 @@
 							rows += "</tr>";
 						});
 					}
-					else {
+					else { // regular season
 						colwidths = [5, 12, 18, 15, 10, 10, 9, 9, 10];
 						colheaders = ["", "League", "Team", "User", "Wins", "Losses", "PF", "PA", "CR%"];
 						table.id = "yearlyleaders";
@@ -382,8 +388,8 @@
 							rows += "<tr class='" + team.leaguename + "'>";
 	
 							rows += "<td>" + count++ + "</td>";
-							rows += "<td>" + team.leaguename;
-							if (team.FFname in trophies) {
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a></td>";
+ 							if (team.FFname in trophies) {
 								rows += " ";
 								trophies[team.FFname].forEach(function(trophy) {
 									rows += "<img src='images/trophies/D" + trophy + "Champion.png' title='Division " + trophy + "' width=12px height=24px>";
@@ -391,7 +397,7 @@
 							}
 							rows += "</td>";
 
-							rows += "<td>" + team.teamname + "</td>";
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + ffteambase + team.teamID + "?season=" + ffyear + "'>" + team.teamname + "</a></td>";
 							rows += "<td>" + team.FFname + "</td>";
 							rows += "<td>" + team.Wins + "</td>";
 							rows += "<td>" + team.Losses + "</td>";
@@ -440,7 +446,7 @@
 		if (year != "careerp" && year != "career")
 		{
 			$("tbody tr").hover(function() {
-				$("tr." + $(this).attr("class") + " td").not(":first-child").css("background-color", "#AAAAAA");
+				$("tr." + $(this).attr("class") + " td").not(":first-child").css("background-color", "#CCCCCC");
 			}, function() {
 				$("tr." + $(this).attr("class") + " td").not(":first-child").css("background-color", "White");
 			});
