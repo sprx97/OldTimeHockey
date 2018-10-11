@@ -188,6 +188,17 @@ def on_message(message):
 	if message.content.startswith("!pong"):
 		yield from client.send_message(message.channel, "ping")
 
+	# Help response
+	if message.content.startswith("!help"):
+		yield from client.send_message(message.channel, "I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
+								"\t!help: Displays this list of commands.\n" + \
+								"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
+								"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
+								"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" 
+#								"\t!points <NHL team>: Posts a summary of the goal scorers for a team's game tonight.\n" + \
+#								"\twoppacup <fleaflicker username>: Posts the score of the user's woppa cup matchup this week.\n" + \
+								)
+
 	# Embed streamable recaps (test)
 #	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
 #		e = discord.Embed()
