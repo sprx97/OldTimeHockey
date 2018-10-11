@@ -95,7 +95,7 @@ def parseGame(game):
 		score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 
 		while len(reported[gamekey]) > len(goals):
-			stringsToAnnounce.append((None, "Last goal in " + getEmoji(away) + " " + away + "-" + getEmoji(home) + " " + home + " disallowed (beta feature, report to SPRX97 if incorrect)."))
+			stringsToAnnounce.append((None, "Last goal in " + getEmoji(away) + " " + away + "-" + getEmoji(home) + " " + home + " disallowed."))
 			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
 			msg = messages[gamegoalkey]
 			stringsToEdit[msg[2]] = "~~" + msg[0] + "~~ " + score
@@ -122,6 +122,8 @@ def parseGame(game):
 			reported[gamekey].append(goalkey)
 		elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
 			stringsToEdit[messages[gamegoalkey][2]] = goalstr + " " + messages[gamegoalkey][1]
+			if messages[gamegoalkey][0][0] == "~":
+				goalstr = "~~" + goalstr + "~~"
 			messages[gamegoalkey][0] = goalstr
 
 	# print final result
