@@ -48,11 +48,13 @@ def updateCurrentPF(league, year):
 
 	# This only needs to run once per week, but not worth the time to optimize right now
 	matchups = root.cssselect(".scoreboard")
+	matchupLinks = root.cssselect("tr.small")
 	for n in xrange(0, len(matchups), 2):
 		teamID1 = matchups[n].cssselect("a")[0].get("href").split("/")[-1]
 		teamID2 = matchups[n+1].cssselect("a")[0].get("href").split("/")[-1]
-		cursor.execute("UPDATE Teams SET CurrOpp=" + teamID1 + " WHERE teamID=" + teamID2)
-		cursor.execute("UPDATE Teams SET CurrOpp=" + teamID2 + " WHERE teamID=" + teamID1)
+		matchupID = matchupLinks[n/2].cssselect("a")[0].get("href").split("/")[-1]
+		cursor.execute("UPDATE Teams SET CurrOpp=" + teamID1 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID2)
+		cursor.execute("UPDATE Teams SET CurrOpp=" + teamID2 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID1)
 
 db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
 cursor = db.cursor()
