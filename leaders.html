@@ -388,7 +388,7 @@
 							rows += "<tr class='" + team.leaguename + "'>";
 	
 							rows += "<td>" + count++ + "</td>";
-                                                        rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a></td>";
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a>";
  							if (team.FFname in trophies) {
 								rows += " ";
 								trophies[team.FFname].forEach(function(trophy) {

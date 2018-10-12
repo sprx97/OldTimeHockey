@@ -111,4 +111,54 @@ http.createServer(function(request, response) {
 				response.end();
 			});
 	}
+	else if (path == "/winsrecord") {
+		conn.query("SELECT FFname, SUM(wins) as w from Teams INNER JOIN Users on FFid=ownerID where replacement != 1 GROUP BY ownerID ORDER BY w DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+
+	}
+	else if (path == "/winpctrecord") {
+		conn.query("SELECT FFname, ROUND(wpct, 4) as wpct, total, w, l from (SELECT FFname, w/(w+l) as wpct, (w+l) as total, w, l \
+			    from (SELECT FFname, sum(wins) as w, sum(losses) as l from (Users INNER JOIN Teams on FFid=ownerID) \
+			    where replacement != 1 group by ownerID) as T1) as T2 where total > 40 ORDER BY wpct desc",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
+	else if (path == "/pfrecord") {
+		conn.query("SELECT FFname, ROUND(SUM(pointsFor), 2) as PF from Teams INNER JOIN Users on FFid=ownerID where replacement != 1 GROUP BY ownerID ORDER BY PF DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
+	else if (path == "/avgpfrecord") {
+		conn.query("SELECT FFname, ROUND(PF/total, 2) as avg, total from (SELECT FFname, SUM(pointsFor) as PF, (SUM(wins)+SUM(losses)) as total \
+                                from Users INNER JOIN Teams on FFid=ownerID where replacement != 1 GROUP BY ownerID) as T1 where total > 40 order by avg DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
+	else if (path == "/coachratingrecord") {
+		conn.query("SELECT FFname, careerCR, total from (SELECT FFname, ROUND(100*sum(pointsFor)/SUM(100.0*pointsFor/coachRating), 2) as careerCR, (SUM(wins)+SUM(losses)) as total \
+				from Users INNER JOIN Teams on FFid=ownerID where replacement != 1 and pointsFor > 0 group by ownerID) as T1 where total > 40 order by careerCR DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
+	else if (path == "/seasonwinpctrecord") {
+		year = fs.readFileSync("/var/www/roldtimehockey/scripts/WeekVars.txt").toString().split("\n")[0];
+		conn.query("SELECT FFname, round(wins/(wins+losses), 3) as wpct, wins, losses, Leagues.name, year \
+                                from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID \
+                                where replacement != 1 and wins > 0 and tier != 4 and year != 2012 and year != " + year + " order by wpct DESC, wins DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
 }).listen(8001, "0.0.0.0");

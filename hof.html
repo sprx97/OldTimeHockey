@@ -1,0 +1,391 @@
+<!--
+	hof.html
+	Jeremy "sprx97" Vercillo
+	10/10/18
+
+	OTH Record book. Some parts are still updated manually.
+-->
+
+<html>
+<title>Hall of Fame</title>
+
+<!--#include file="header.html"-->
+<script type="text/javascript" src="tools/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
+	document.getElementById("hof").className += "selected";
+
+	$(document).ready(function() {
+/*		$(document).scroll(function() {
+			$(".header").each(function(index) {
+				if($(this).offset().top - $(window).scrollTop() <= $("nav").height() && $(this).not(".anchored")) {
+					$(this).addClass("anchored");
+				}
+				else if($(this).hasClass("anchored")) {
+					$(this).removeClass("anchored");
+				}
+			});
+		});
+*/
+	});
+</script>
+<link href="css/hof.css" rel="stylesheet"/>
+
+<body>
+<div class="header">Career Regular Season Records</div>
+<div class="career">
+<h2><u>Wins</u></h2>
+<script>
+	div = document.getElementsByClassName("career")[0];
+
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/winsrecord", false);
+	xmlhttp.onreadystatechange = function() {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			json = JSON.parse(xmlhttp.responseText);
+			
+			list = "<ul>";
+
+			count = 0;
+			lastval = 0;
+			fontSize = 28;
+			json.forEach(function(team) {
+				// Break after 5 entries (or more if there's a tie)
+				if (count >= 5 && lastval != team.w)
+					return;
+
+				if (count != 0 && lastval != team.w)
+					fontSize -= 4;
+
+				list += "<li style='font-size:" + fontSize + "px'>" + team.w + " - " + team.FFname + "</li>";
+				lastval = team.w;
+				count++;
+			});
+
+			list += "</ul>";
+
+			div.insertAdjacentHTML("beforeend", list);
+		}
+		else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+			alert("Failed to connect to NodeJS server");
+		}
+	}
+	xmlhttp.send();
+</script>
+
+<br>
+<h2><u>Winning Percentage</u></h2>
+<h6>Minimum 40 GP (2 seasons)</h6>
+<script>
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/winpctrecord", false);
+	xmlhttp.onreadystatechange = function() {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			json = JSON.parse(xmlhttp.responseText);
+			
+			list = "<ul>";
+
+			count = 0;
+			lastval = 0;
+			fontSize = 28;
+			json.forEach(function(team) {
+				// Break after 5 entries (or more if there's a tie)
+				if (count >= 5 && lastval != team.wpct)
+					return;
+
+				if (count != 0 && lastval != team.wpct)
+					fontSize -= 4;
+
+				list += "<li style='font-size:" + fontSize + "px'>" + team.wpct + " - " + team.FFname + " (" + team.w + "-" + team.l + ")" + "</li>";
+				lastval = team.wpct;
+				count++;
+			});
+
+			list += "</ul>";
+
+			div.insertAdjacentHTML("beforeend", list);
+		}
+		else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+			alert("Failed to connect to NodeJS server");
+		}
+	}
+	xmlhttp.send();
+</script>
+
+<br>
+<h2><u>Points For</u></h2>
+<script>
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/pfrecord", false);
+	xmlhttp.onreadystatechange = function() {
+		if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			json = JSON.parse(xmlhttp.responseText);
+			
+			list = "<ul>";
+
+			count = 0;
+			lastval = 0;
+			fontSize = 28;
+			json.forEach(function(team) {
+				// Break after 5 entries (or more if there's a tie)
+				if (count >= 5 && lastval != team.PF)
+					return;
+
+				if (count != 0 && lastval != team.PF)
+					fontSize -= 4;
+
+				list += "<li style='font-size:" + fontSize + "px'>" + team.PF + " - " + team.FFname + "</li>";
+				lastval = team.PF;
+				count++;
+			});
+
+			list += "</ul>";
+
+			div.insertAdjacentHTML("beforeend", list);
+		}
+		else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+			alert("Failed to connect to NodeJS server");
+		}
+	}
+	xmlhttp.send();
+</script>
+<br>
+
+<h2><u>Average Points For</u></h2>
+<h6>Minimum 40 GP (2 seasons)</h6>
+<script>
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/avgpfrecord", false);
+        xmlhttp.onreadystatechange = function() {
+                if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        json = JSON.parse(xmlhttp.responseText);
+
+                        list = "<ul>";
+
+                        count = 0;
+                        lastval = 0;
+                        fontSize = 28;
+                        json.forEach(function(team) {
+                                // Break after 5 entries (or more if there's a tie)
+                                if (count >= 5 && lastval != team.avg)
+                                        return;
+
+                                if (count != 0 && lastval != team.avg)
+                                        fontSize -= 4;
+
+                                list += "<li style='font-size:" + fontSize + "px'>" + team.avg + " - " + team.FFname + "</li>";
+                                lastval = team.w;
+                                count++;
+                        });
+
+                        list += "</ul>";
+
+                        div.insertAdjacentHTML("beforeend", list);
+                }
+                else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+                        alert("Failed to connect to NodeJS server");
+                }
+        }
+	xmlhttp.send();
+</script>
+<br>
+
+<h2><u>Coach Rating</u></h2>
+<h6> Minimum 40 GP (2 seasons)</h6>
+<script>
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/coachratingrecord", false);
+        xmlhttp.onreadystatechange = function() {
+                if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        json = JSON.parse(xmlhttp.responseText);
+                        list = "<ul>";
+
+                        count = 0;
+                        lastval = 0;
+                        fontSize = 28;
+                        json.forEach(function(team) {
+                                // Break after 5 entries (or more if there's a tie)
+                                if (count >= 5 && lastval != team.careerCR)
+                                       return;
+
+                                if (count != 0 && lastval != team.careerCR)
+                                        fontSize -= 4;
+
+                                list += "<li style='font-size:" + fontSize + "px'>" + team.careerCR + "% - " + team.FFname + " (" + team.total + " GP)</li>";
+                                lastval = team.careerCR;
+                                count++;
+                        });
+
+                        list += "</ul>";
+
+                        div.insertAdjacentHTML("beforeend", list);
+                }
+                else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+                        alert("Failed to connect to NodeJS server");
+                }
+        }
+	xmlhttp.send();
+</script>
+</div>
+<br>
+
+<div class="header">Single Season Records</div>
+<div class="season">
+<h2><u>Best Record (pct)</u></h2>
+<script>
+	div = document.getElementsByClassName("season")[0];
+
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/seasonwinpctrecord", false);
+        xmlhttp.onreadystatechange = function() {
+                if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        json = JSON.parse(xmlhttp.responseText);
+                        list = "<ul>";
+
+                        count = 0;
+                        lastval = 0;
+                        fontSize = 28;
+                        json.forEach(function(team) {
+                                // Break after 5 entries (or more if there's a tie)
+                                if (count >= 5 && lastval != team.wpct)
+                                       return;
+
+                                if (count != 0 && lastval != team.wpct)
+                                        fontSize -= 4;
+
+				list += "<li style='font-size:" + fontSize + "px'>" + team.wins + "-" + team.losses + " (" + team.wpct.toFixed(3) + ") - " + team.FFname +
+					" (" + team.year + "-" + (team.year + 1) + " " + team.name + ")</li>";
+                                lastval = team.wpct;
+                                count++;
+                        });
+
+                        list += "</ul>";
+
+                        div.insertAdjacentHTML("beforeend", list);
+                }
+                else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+                        alert("Failed to connect to NodeJS server");
+                }
+        }
+	xmlhttp.send();
+</script>
+<br>
+
+<h2><u>Best Record (wins)</u></h2>
+/*
+	$leaders = mysqli_query($con, "SELECT FFname, wins, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by wins DESC");
+
+	echo "<ul>";
+
+	$count = 0;
+	$lastVal = 0;
+	$fontSize = 28;
+	while(1) {
+		$next = mysqli_fetch_array($leaders);
+		if($count >= 5 && $lastVal != $next[1])
+			break;
+		// break after 5 entries, or more if there's a tie
+
+		if($count != 0 && $lastVal != $next[1])
+			$fontSize -= 4;
+
+		echo "<li style='font-size:" . $fontSize . "px'>";
+		if($next[3] == $curryear) echo "<i>";
+		echo $next[1] . " - " . $next[0] . " (" . $next[3] . "-" . ($next[3] + 1) . " " . $next[2] . ")";
+		if($next[3] == $curryear) echo "</i>";
+		echo "</li>";
+
+		$lastVal = $next[1];
+		$count++;
+	}
+
+	echo "</ul>";
+*/
+<br>
+
+<h2><u>Most Points For</u></h2>
+/*
+	$leaders = mysqli_query($con, "SELECT FFname, pointsFor, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by pointsFor DESC");
+
+	echo "<ul>";
+
+	$count = 0;
+	$lastVal = 0;
+	$fontSize = 28;
+	while(1) {
+		$next = mysqli_fetch_array($leaders);
+		if($count >= 5 && $lastVal != $next[1])
+			break;
+		// break after 5 entries, or more if there's a tie
+
+		if($count != 0 && $lastVal != $next[1])
+			$fontSize -= 4;
+
+		echo "<li style='font-size:" . $fontSize . "px'>";
+		echo $next[1] . " - " . $next[0] . " (" . $next[3] . "-" . ($next[3] + 1) . " " . $next[2] . ")";
+		echo "</li>";
+
+		$lastVal = $next[1];
+		$count++;
+	}
+
+	echo "</ul>";
+*/
+<br>
+
+<h2><u>Highest Coaching Rating</u></h2>
+/*
+	$leaders = mysqli_query($con, "SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and pointsFor > 0 and tier != 4 and year != " . $curryear . " order by coachRating DESC");
+
+	echo "<ul>";
+
+	$count = 0;
+	$lastVal = 0;
+	$fontSize = 28;
+	while(1) {
+		$next = mysqli_fetch_array($leaders);
+		if($count >= 5 && $lastVal != $next[1])
+			break;
+		// break after 5 entries, or more if there's a tie
+
+		if($count != 0 && $lastVal != $next[1])
+			$fontSize -= 4;
+
+		echo "<li style='font-size:" . $fontSize . "px'>" . $next[1] .  " - " . $next[0] . " (" . $next[3] . "-" . ($next[3] + 1) . " " . $next[2] . ")</li>";
+		$lastVal = $next[1];
+		$count++;
+	}
+
+	echo "</ul>";
+*/
+</div>
+
+<div class="header">Daily/Weekly Records</div>
+<div class="daily">
+<h1 style="color:red">WARNING! Under renovation beyond here!</h1>
+<h5><i>*Last Updated 10/10/2016</i></h5>
+<h2><u>Best Night</u></h2>
+<ul><li>SPEMason - 111.4 (11/8/2014)</li></ul>
+<ul><li>InvisibleTaco - 109.95 (10/11/2014)</li></ul>
+<ul><li>iamslm22 - 104.25 (1/19/2013)</li></ul>
+<br>
+<h2><u>Best Week</u></h2>
+<ul><li>KilroyLeges - 362.5 (4/1/13 - 4/7/13, Week 11)</li></ul>
+</div>
+
+<div class="header">Streaks</div>
+<div class="streaks">
+<h2><u>Longest Win Streak</u></h2>
+<ul>
+	<li>tweedledunn - 26 (2013-14 Wk 21 - PRESENT)</li>
+	<li>Teratic - 24 (2013-14 Wk1 - 2014-15 Wk2)</li>
+	<li>Woppa - 23 (2013-14 Wk6 - 2014-15 Wk6)</li>
+	<li>dimwell - 19 (2014-15 Wk5 - 2014-15 Wk23)</li>
+</ul>
+</div>
+<br>
+<br>
+<br>
+<h5><i>*Last Updated 10/10/2016</i></h5>
+
+</body>
+</html>
