@@ -161,4 +161,27 @@ http.createServer(function(request, response) {
 				response.end();
 			});
 	}
+	else if (path == "/seasonwinsrecord") {
+		conn.query("SELECT FFname, wins, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by wins DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
+	else if (path == "/seasonpfrecord") {
+		conn.query("SELECT FFname, pointsFor, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by pointsFor DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
+	else if (path == "/seasoncoachratingrecord") {
+		year = fs.readFileSync("/var/www/roldtimehockey/scripts/WeekVars.txt").toString().split("\n")[0];
+		conn.query("SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID \
+			   where replacement != 1 and pointsFor > 0 and tier != 4 and year != " + year + " order by coachRating DESC",
+			function(err, result, fields) {
+				response.write(JSON.stringify(result));
+				response.end();
+			});
+	}
 }).listen(8001, "0.0.0.0");

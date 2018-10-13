@@ -271,92 +271,114 @@
 <br>
 
 <h2><u>Best Record (wins)</u></h2>
-/*
-	$leaders = mysqli_query($con, "SELECT FFname, wins, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by wins DESC");
+<script>
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/seasonwinsrecord", false);
+        xmlhttp.onreadystatechange = function() {
+                if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        json = JSON.parse(xmlhttp.responseText);
+                        list = "<ul>";
 
-	echo "<ul>";
+                        count = 0;
+                        lastval = 0;
+                        fontSize = 28;
+                        json.forEach(function(team) {
+                                // Break after 5 entries (or more if there's a tie)
+                                if (count >= 5 && lastval != team.wins)
+                                       return;
 
-	$count = 0;
-	$lastVal = 0;
-	$fontSize = 28;
-	while(1) {
-		$next = mysqli_fetch_array($leaders);
-		if($count >= 5 && $lastVal != $next[1])
-			break;
-		// break after 5 entries, or more if there's a tie
+                                if (count != 0 && lastval != team.wins)
+                                        fontSize -= 4;
 
-		if($count != 0 && $lastVal != $next[1])
-			$fontSize -= 4;
+				list += "<li style='font-size:" + fontSize + "px'>" + team.wins + " - " + team.FFname + " (" + team.year + "-" + (team.year+1) + " " + team.name + ")</li>";
+                                lastval = team.wins;
+                                count++;
+                        });
 
-		echo "<li style='font-size:" . $fontSize . "px'>";
-		if($next[3] == $curryear) echo "<i>";
-		echo $next[1] . " - " . $next[0] . " (" . $next[3] . "-" . ($next[3] + 1) . " " . $next[2] . ")";
-		if($next[3] == $curryear) echo "</i>";
-		echo "</li>";
+                        list += "</ul>";
 
-		$lastVal = $next[1];
-		$count++;
-	}
-
-	echo "</ul>";
-*/
+                        div.insertAdjacentHTML("beforeend", list);
+                }
+                else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+                        alert("Failed to connect to NodeJS server");
+                }
+        }
+	xmlhttp.send();
+</script>
 <br>
 
 <h2><u>Most Points For</u></h2>
-/*
-	$leaders = mysqli_query($con, "SELECT FFname, pointsFor, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by pointsFor DESC");
+<script>
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/seasonpfrecord", false);
+        xmlhttp.onreadystatechange = function() {
+                if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        json = JSON.parse(xmlhttp.responseText);
+                        list = "<ul>";
 
-	echo "<ul>";
+                        count = 0;
+                        lastval = 0;
+                        fontSize = 28;
+                        json.forEach(function(team) {
+                                // Break after 5 entries (or more if there's a tie)
+                                if (count >= 5 && lastval != team.pointsFor)
+                                       return;
 
-	$count = 0;
-	$lastVal = 0;
-	$fontSize = 28;
-	while(1) {
-		$next = mysqli_fetch_array($leaders);
-		if($count >= 5 && $lastVal != $next[1])
-			break;
-		// break after 5 entries, or more if there's a tie
+                                if (count != 0 && lastval != team.pointsFor)
+                                        fontSize -= 4;
 
-		if($count != 0 && $lastVal != $next[1])
-			$fontSize -= 4;
+				list += "<li style='font-size:" + fontSize + "px'>" + team.pointsFor + " - " + team.FFname + " (" + team.year + "-" + (team.year+1) + " " + team.name + ")</li>";
+                                lastval = team.pointsFor;
+                                count++;
+                        });
 
-		echo "<li style='font-size:" . $fontSize . "px'>";
-		echo $next[1] . " - " . $next[0] . " (" . $next[3] . "-" . ($next[3] + 1) . " " . $next[2] . ")";
-		echo "</li>";
+                        list += "</ul>";
 
-		$lastVal = $next[1];
-		$count++;
-	}
-
-	echo "</ul>";
-*/
+                        div.insertAdjacentHTML("beforeend", list);
+                }
+                else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+                        alert("Failed to connect to NodeJS server");
+                }
+        }
+	xmlhttp.send();
+</script>
 <br>
 
 <h2><u>Highest Coaching Rating</u></h2>
-/*
-	$leaders = mysqli_query($con, "SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and pointsFor > 0 and tier != 4 and year != " . $curryear . " order by coachRating DESC");
+<script>
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/seasoncoachratingrecord", false);
+        xmlhttp.onreadystatechange = function() {
+                if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        json = JSON.parse(xmlhttp.responseText);
+                        list = "<ul>";
 
-	echo "<ul>";
+                        count = 0;
+                        lastval = 0;
+                        fontSize = 28;
+                        json.forEach(function(team) {
+                                // Break after 5 entries (or more if there's a tie)
+                                if (count >= 5 && lastval != team.coachRating)
+                                       return;
 
-	$count = 0;
-	$lastVal = 0;
-	$fontSize = 28;
-	while(1) {
-		$next = mysqli_fetch_array($leaders);
-		if($count >= 5 && $lastVal != $next[1])
-			break;
-		// break after 5 entries, or more if there's a tie
+                                if (count != 0 && lastval != team.coachRating)
+                                        fontSize -= 4;
 
-		if($count != 0 && $lastVal != $next[1])
-			$fontSize -= 4;
+				list += "<li style='font-size:" + fontSize + "px'>" + team.coachRating + "% - " + team.FFname + " (" + team.year + "-" + (team.year+1) + " " + team.name + ")</li>";
+                                lastval = team.coachRating;
+                                count++;
+                        });
 
-		echo "<li style='font-size:" . $fontSize . "px'>" . $next[1] .  " - " . $next[0] . " (" . $next[3] . "-" . ($next[3] + 1) . " " . $next[2] . ")</li>";
-		$lastVal = $next[1];
-		$count++;
-	}
+                        list += "</ul>";
 
-	echo "</ul>";
-*/
+                        div.insertAdjacentHTML("beforeend", list);
+                }
+                else if(xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+                        alert("Failed to connect to NodeJS server");
+                }
+        }
+	xmlhttp.send();
+</script>
 </div>
 
 <div class="header">Daily/Weekly Records</div>
