@@ -5,6 +5,7 @@ import urllib2 # url reading
 from lxml import etree
 from lxml import html # xml parsing
 import MySQLdb # sql queries
+import Config
 
 # Check for argument (for weekly vs backfill)
 # Find all weekly scores for week
@@ -13,9 +14,6 @@ import MySQLdb # sql queries
 # Discount long weeks
 # Update tables if necessary
 
-years_to_update = [2012, 2013, 2014, 2015, 2016] # can manually seed if necessary
-weekIDs = [1, 6, 13, 20, 27, 34, 41, 48, 55, 62, 69, 76, 83, 90, 97, 104, 111, 118, 125, 132, 139, 146, 153, 160, 167, 174]
-weekShift = {2012 : 10, 2013 : 7, 2014 : 6, 2015 : 6, 2016 : 6}
 def getWeekStart(year, week):
 	if week == 1:
 		return 1
@@ -27,60 +25,69 @@ def getWeekStart(year, week):
 	return shift + 7*(week-2)
 
 weeklyHighs = []
-weeklyHighsPost2013 = []
 dailyHighs = []
-dailyHighsPost2013 = []
 
-db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
+db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
 
+f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+year = int(f.readline().strip())
+week = int(f.readline().strip())
+f.close()
+
+# only check the most recent week
+years_to_update = [year] # can maually seed if necessary
+weekIDs = [1, 6, 13, 20, 27, 34, 41, 48, 55, 62, 69, 76, 83, 90, 97, 104, 111, 118, 125, 132, 139, 146, 153, 160, 167, 174]
+weekIDs = weekIDs[week-1:week]
+weekShift = {2012 : 10, 2013 : 7, 2014 : 6, 2015 : 6, 2016 : 6}
+
 MAX_LEN = 5
-def insertIntoWeeklyHighs(score1, score2, highs):
+def insertIntoWeeklyHighs(score1, score2):
 	# insert first score if necessary
 	inserted = False
-	for n in xrange(0, len(highs)):
-		if score1 >= highs[n][0]:
-			highs.insert(n, [score1, team1, league[0], year, weekIndex])
+	for n in xrange(0, len(weeklyHighs)):
+		if score1 >= weeklyHighs[n][0]:
+			weeklyHighs.insert(n, [score1, team1, league[0], year, weekIndex])
 			inserted = True
 			break
-	if not inserted and len(highs) < MAX_LEN:
-		highs.append([score1, team1, league[0], year, weekIndex])
+	if not inserted and len(weeklyHighs) < MAX_LEN:
+		weeklyHighs.append([score1, team1, league[0], year, weekIndex])
 		inserted = True
 
 	# insert second score if necessary
 	inserted2 = False
-	for n in xrange(0, len(highs)):
-		if score2 >= highs[n][0]:
-			highs.insert(n, [score2, team2, league[0], year, weekIndex])
+	for n in xrange(0, len(weeklyHighs)):
+		if score2 >= weeklyHighs[n][0]:
+			weeklyHighs.insert(n, [score2, team2, league[0], year, weekIndex])
 			inserted2 = True
 			break
-	if not inserted2 and len(highs) < MAX_LEN:
-		highs.append([score2, team2, league[0], year, weekIndex])
+	if not inserted2 and len(weeklyHighs) < MAX_LEN:
+		weeklyHighs.append([score2, team2, league[0], year, weekIndex])
 		inserted2 = True
 
 	# trim the list down
-	while (inserted or inserted2) and len(highs) > MAX_LEN:
-		if highs[-1][0] == highs[-2][0] == highs[MAX_LEN-1][0]:
+	while (inserted or inserted2) and len(weeklyHighs) > MAX_LEN:
+		if weeklyHighs[-1][0] == weeklyHighs[-2][0] == weeklyHighs[MAX_LEN-1][0]:
 			break
-		highs.pop()
+		weeklyHighs.pop()
 
-def insertIntoDailyHighs(team, score, highs, index):
+def insertIntoDailyHighs(team, score, index):
 	inserted = False
-	for n in xrange(0, len(highs)):
-		if score >= highs[n][0]:
-			highs.insert(n, [score, team, league[0], year, weekIndex, index, matchid]) # week and index can be used to find the actual date
+	for n in xrange(0, len(dailyHighs)):
+		if score >= dailyHighs[n][0]:
+			dailyHighs.insert(n, [score, team, league[0], year, weekIndex, index, matchid]) # week and index can be used to find the actual date
 			inserted = True
 			break
 
-	if not inserted and len(highs) < MAX_LEN:
-		highs.append([score, team, league[0], year, weekIndex, index, matchid]) # week and index can be used to find the actual date
+	if not inserted and len(dailyHighs) < MAX_LEN:
+		dailyHighs.append([score, team, league[0], year, weekIndex, index, matchid]) # week and index can be used to find the actual date
 		inserted = True
 
 	# trim the list down to 5
-	while inserted and len(highs) > MAX_LEN:
-		if highs[-1][0] == highs[-2][0] == highs[MAX_LEN-1][0]:
+	while inserted and len(dailyHighs) > MAX_LEN:
+		if dailyHighs[-1][0] == dailyHighs[-2][0] == dailyHighs[MAX_LEN-1][0]:
 			break
-		highs.pop()
+		dailyHighs.pop()
 
 if __name__ == "__main__":
 	for year in years_to_update:
@@ -149,10 +156,7 @@ if __name__ == "__main__":
 							team = team2
 							index -= len(days)/2
 
-						if year > 2013:
-							insertIntoDailyHighs(team, int(day.text_content()), dailyHighsPost2013, index)
-						else:
-							insertIntoDailyHighs(team, int(day.text_content()), dailyHighs, index)
+						insertIntoDailyHighs(team, int(day.text_content()), index)
 
 						count += 1
 
@@ -163,22 +167,10 @@ if __name__ == "__main__":
 					score1 = float(days[len(days)/2 - 1].text_content())
 					score2 = float(days[-1].text_content())
 
-					if year > 2013:
-						insertIntoWeeklyHighs(score1, score2, weeklyHighsPost2013)
-					else:
-						insertIntoWeeklyHighs(score1, score2, weeklyHighs)
+					insertIntoWeeklyHighs(score1, score2)
 
-
-	print weeklyHighs
-	print weeklyHighsPost2013
-	print dailyHighs
-
+	for high in weeklyHighs:
+		print high
 	for high in dailyHighs:
 		url = "www.fleaflicker.com/nhl/leagues/" + str(high[2]) + "/scores/" + high[6] + "?season=" + str(high[3]) + "&week=" + str(getWeekStart(high[3], high[4]) + high[5])
-		print url
-
-	print dailyHighsPost2013
-
-	for high in dailyHighsPost2013:
-		url = "www.fleaflicker.com/nhl/leagues/" + str(high[2]) + "/scores/" + high[6] + "?season=" + str(high[3]) + "&week=" + str(getWeekStart(high[3], high[4]) + high[5])
-		print url
+		print high, url
