@@ -1,13 +1,14 @@
 var http = require('http'), 
     url = require('url'), 
     mysql = require('mysql'),
-    fs = require('fs')
+    fs = require('fs'),
+    config = require("../config.json")
 
 var conn = mysql.createConnection({
-	host: "104.236.183.115",
-	user: "othuser",
-	password: "othpassword",
-	database: "OldTimeHockey"
+	host: config.sql_hostname,
+	user: config.sql_username,
+	password: config.sql_password,
+	database: config.sql_dbname
 });
 
 conn.connect(function(err) {
@@ -18,8 +19,8 @@ conn.connect(function(err) {
 http.createServer(function(request, response) {
 	path = url.parse(request.url).pathname;
 	query = url.parse(request.url, true).query;
-	year = fs.readFileSync("/var/www/roldtimehockey/scripts/WeekVars.txt").toString().split("\n")[0];
-	week = fs.readFileSync("/var/www/roldtimehockey/scripts/WeekVars.txt").toString().split("\n")[1];
+	year = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
+	week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
 	sql = "";
 
 	if(path == "/getyear") {

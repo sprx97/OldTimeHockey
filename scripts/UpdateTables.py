@@ -3,12 +3,13 @@ from lxml import etree
 from lxml import html # xml parsing
 import MySQLdb # sql queries
 import sys
+import Config
 
 years_to_update = [] # can manually seed if necessary
 playoffs_to_update = []
 
 if len(sys.argv) == 1: # no arguments
-	f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
+	f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 	year = int(f.readline().strip())
 	years_to_update.append(year)
 
@@ -204,7 +205,7 @@ def getPlayoffs(leagueID, year):
 	return teams
 
 if __name__ == "__main__":
-	db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
+	db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 	cursor = db.cursor()
 
 	for year in years_to_update:

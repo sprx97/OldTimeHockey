@@ -1,0 +1,34 @@
+These instructions will hopefully get a local copy up and running for contributors. It was written with a linux environment in mind, but should be pretty similar in windows. 
+The tricky part would be getting mysql instead of sql server. If that isn't possible, I can host a copy of the prod database on my server for testing. Let me know what you think is easier.
+If you have any suggestions for improving these instructions or streamlining the dev environment, feel free to ping me on discord!
+
+Part 1: Copy Sql database
+- Install mysql
+- Get the test database dump from SPRX. This is a snapshot from an earlier prod database.
+- Apply the dump with "mysql OldTimeHockey < oth.sql"
+- Test access to the database by selecting and updating tables
+
+Part 2: Fork git repository
+- FORK my git repo from the github website.
+- Clone your new fork using "git clone"
+
+Part 3: Update conf file
+- You'll have to update your config file to allow datatbase access.
+- Update the username and passwords for your login to your local instance of mysql.
+
+Part 4: Install nodeJS and test lcaol site
+- Install nodejs
+- Run "node node/db_connection.js", then try viewing the html files
+- If everything works, you should see the same stuff as the real site, just with stale data.
+	- If it doesn't work, double check our config file or contact SPRX for help
+
+Part 5: Make a minor change and commit
+- Make a minor change and commit/push to your fork of the project
+- On github, create a new pull request fore your change
+- Contact SPRX to review/merge the pull request
+
+Part 6 (Optional): Install python for scripts
+- In order to get scripts running, you'll need an install of python3 and some dependencies
+- You should be able to find all the dependencies in pip, but let me know if you can't find something
+- If you're just working on the site itself you won't need to run these, so consider this optional.
+	- You won't be able to run the bot anyway.

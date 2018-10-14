@@ -5,11 +5,12 @@ import urllib2
 from lxml import html
 import smtplib
 from email.mime.text import MIMEText
+import Config
 
 unclaimed = {}
 inactives = {}
 
-f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
+f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
 f.close()
@@ -75,7 +76,7 @@ def sendEmail():
 		print e, e.reason()
 
 if __name__ == "__main__":
-        db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
+        db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
         cursor = db.cursor()
 
         cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
