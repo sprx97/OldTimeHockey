@@ -12,9 +12,12 @@ Part 2: Fork git repository
 - FORK my git repo from the github website.
 - Clone your new fork using "git clone"
 
-Part 3: Update conf file
+Part 3: Update config_default.json file
 - You'll have to update your config file to allow datatbase access.
+- Update the path of your local roldtimehockey project
 - Update the username and passwords for your login to your local instance of mysql.
+- You shouldn't need the other logins, but if you think you do contact SPRX
+- Then rename config_default.json to config.json.
 
 Part 4: Install nodeJS and test lcaol site
 - Install nodejs
