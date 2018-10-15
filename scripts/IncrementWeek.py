@@ -1,7 +1,7 @@
 import MySQLdb
 import Config
 
-f = open(Config.config["srcroot"] + scripts/WeekVars.txt", "r")
+f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
 f.close()
