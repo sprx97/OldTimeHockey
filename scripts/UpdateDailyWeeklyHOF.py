@@ -39,7 +39,7 @@ f.close()
 years_to_update = [year] # can maually seed if necessary
 weekIDs = [1, 6, 13, 20, 27, 34, 41, 48, 55, 62, 69, 76, 83, 90, 97, 104, 111, 118, 125, 132, 139, 146, 153, 160, 167, 174]
 weekIDs = weekIDs[week-1:week]
-weekShift = {2012 : 10, 2013 : 7, 2014 : 6, 2015 : 6, 2016 : 6}
+weekShift = {2012 : 10, 2013 : 7, 2014 : 6, 2015 : 6, 2016 : 6 }
 
 MAX_LEN = 5
 def insertIntoWeeklyHighs(score1, score2):
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 				response.close()
 
 			        if len(root.cssselect(".scoreboard-win")) == 0:
-					print "Scores for " + league[2] + " " + str(year) + " week " + str(weekIndex) + " not final"
+					print "Scores for " + league[2] + " " + str(year) + " week ID " + week + " not final"
 					continue
 
 				# get each individual box score link
@@ -174,3 +174,5 @@ if __name__ == "__main__":
 	for high in dailyHighs:
 		url = "www.fleaflicker.com/nhl/leagues/" + str(high[2]) + "/scores/" + high[6] + "?season=" + str(high[3]) + "&week=" + str(getWeekStart(high[3], high[4]) + high[5])
 		print high, url
+
+
