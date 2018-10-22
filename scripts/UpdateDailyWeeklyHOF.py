@@ -1,10 +1,11 @@
-# 10/28/2016
 # Checks scores to update daily/weekly scoring records
 
 import urllib2 # url reading
 from lxml import etree
 from lxml import html # xml parsing
 import MySQLdb # sql queries
+import smtplib
+from email.mime.text import MIMEText
 import Config
 
 # Check for argument (for weekly vs backfill)
@@ -169,10 +170,27 @@ if __name__ == "__main__":
 
 					insertIntoWeeklyHighs(score1, score2)
 
+	body = ""
 	for high in weeklyHighs:
-		print high
+		body += str(high) + "\n"
 	for high in dailyHighs:
 		url = "www.fleaflicker.com/nhl/leagues/" + str(high[2]) + "/scores/" + high[6] + "?season=" + str(high[3]) + "&week=" + str(getWeekStart(high[3], high[4]) + high[5])
-		print high, url
+		body += str(high) + ", " + url + "\n"
+
+        try:
+                msg = MIMEText(body)
+                msg["Subject"] = "Check Daily/Weekly HOF records for week " + str(week)
+                msg["From"] = "no-reply@roldtimehockey.com"
+                recips = ["jeremy.vercillo@gmail.com"]
+                msg["To"] = ",".join(recips)
+
+                s = smtplib.SMTP("localhost")
+                s.sendmail(msg["From"], recips, msg.as_string())
+                s.quit()
+
+                print "HOF Email Sent"
+        except Exception as e:
+                print "Error sending HOF email."
+                print e
 
 
