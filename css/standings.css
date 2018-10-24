@@ -27,7 +27,7 @@ table {
 tr {
 	border:1px solid black;
 }
-.division1 .team:nth-child(n+13), .division2 .team:nth-child(n+13), .division3 .team:nth-child(n+13) {
+.division1 .team:nth-child(n+13) {
 	background-color:rgba(255, 0, 0, .25);
 }
 .team:nth-child(-n+6) {
