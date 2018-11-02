@@ -39,6 +39,39 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
+tricode = {}
+tricode[1] = "NJD"
+tricode[2] = "NYI"
+tricode[3] = "NYR"
+tricode[4] = "PHI"
+tricode[5] = "PIT"
+tricode[6] = "BOS"
+tricode[7] = "BUF"
+tricode[8] = "MTL"
+tricode[9] = "OTT"
+tricode[10] = "TOR"
+tricode[12] = "CAR"
+tricode[13] = "FLA"
+tricode[14] = "TBL"
+tricode[15] = "WSH"
+tricode[16] = "CHI"
+tricode[17] = "DET"
+tricode[18] = "NSH"
+tricode[19] = "STL"
+tricode[20] = "CGY"
+tricode[21] = "COL"
+tricode[22] = "EDM"
+tricode[23] = "VAN"
+tricode[24] = "ANA"
+tricode[25] = "DAL"
+tricode[26] = "LAK"
+tricode[28] = "SJS"
+tricode[29] = "CBJ"
+tricode[30] = "MIN"
+tricode[52] = "WPG"
+tricode[53] = "ARI"
+tricode[54] = "VGK"
+
 started = []
 completed = []
 reported = {}
@@ -111,7 +144,7 @@ def parseGame(game):
 		if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
 			en = "(EN) "
 
-		team = getEmoji(goal["team"]["triCode"]) + " " + goal["team"]["triCode"]
+		team = getEmoji(tricode[goal["team"]["id"]]) + " " + tricode[goal["team"]["id"]]
 		period = "(" + goal["about"]["ordinalNum"] + ")"
 		time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
 				
