@@ -94,7 +94,7 @@ def check_scores():
 
 	bot_channel = None
 	for channel in client.get_all_channels():
-		if channel.name == "general":
+		if channel.name == "hockey-general":
 			bot_channel = channel
 
 	# repeat the task every 10 seconds

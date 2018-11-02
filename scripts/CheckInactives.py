@@ -63,7 +63,7 @@ def sendEmail():
 		msg = MIMEText(body)
 		msg["Subject"] = "OTH Inactives for week " + str(week)
 		msg["From"] = "no-reply@roldtimehockey.com"
-		recips = ["jeremy.vercillo@gmail.com", "2planksprevail@gmail.com"]
+		recips = ["jeremy.vercillo@gmail.com", "2planksprevail@gmail.com", "zmc1031@gmail.com"]
 		msg["To"] = ",".join(recips)
 
 		s = smtplib.SMTP("localhost")

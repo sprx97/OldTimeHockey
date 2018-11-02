@@ -43,8 +43,8 @@ def updateCurrentPF(league, year):
 		# projections don't count!
 		if isProjected:
 			score = 0.0
-
-		cursor.execute("UPDATE Teams set currentWeekPF=" + str(score) + " where teamID=" + str(teamID))
+		else:
+			cursor.execute("UPDATE Teams set currentWeekPF=" + str(score) + " where teamID=" + str(teamID))
 
 	# This only needs to run once per week, but not worth the time to optimize right now
 	matchups = root.cssselect(".scoreboard")

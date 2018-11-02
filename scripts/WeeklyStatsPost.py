@@ -114,7 +114,7 @@ s += ":-:|:-:|:-:|:-:|:-:\n"
 
 cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
 	       "INNER JOIN (SELECT leagueID, MAX(currentWeekPF) AS leader FROM Teams GROUP BY leagueID) maxpf ON T.currentWeekPF = maxpf.leader " + \
-	       "WHERE L.year=" + str(year) + " ORDER BY T.currentWeekPF DESC")
+	       "WHERE L.year=" + str(year) + " and maxpf.leader != 0.0 ORDER BY T.currentWeekPF DESC")
 
 teams = cursor.fetchall()
 for team in teams:

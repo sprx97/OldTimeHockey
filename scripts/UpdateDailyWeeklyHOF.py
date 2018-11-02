@@ -110,7 +110,7 @@ if __name__ == "__main__":
 				response.close()
 
 			        if len(root.cssselect(".scoreboard-win")) == 0:
-					print "Scores for " + league[2] + " " + str(year) + " week ID " + week + " not final"
+					print "Scores for " + league[2] + " " + str(year) + " week ID " + str(week) + " not final"
 					continue
 
 				# get each individual box score link
