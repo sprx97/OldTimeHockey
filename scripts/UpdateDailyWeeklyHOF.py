@@ -95,14 +95,14 @@ if __name__ == "__main__":
 		cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
 	        leagues = cursor.fetchall()
 	        for league in leagues:
-			for week in weekIDs:
-				if year == 2012 and week == 1:
+			for weekid in weekIDs:
+				if year == 2012 and weekid == 1:
 					continue # first week of 2012 was weird
-				weekIndex = weekIDs.index(week)
+				weekIndex = weekIDs.index(weekid)
 				if year != 2012:
 					weekIndex += 1
 
-				URL = "http://www.fleaflicker.com/nhl/leagues/" + str(league[0]) + "/scores?season=" + str(year) + "&week=" + str(week)
+				URL = "http://www.fleaflicker.com/nhl/leagues/" + str(league[0]) + "/scores?season=" + str(year) + "&week=" + str(weekid)
 				print URL
 			        response = urllib2.urlopen(URL)
 	        		page = response.read()
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 				response.close()
 
 			        if len(root.cssselect(".scoreboard-win")) == 0:
-					print "Scores for " + league[2] + " " + str(year) + " week ID " + str(week) + " not final"
+					print "Scores for " + league[2] + " " + str(year) + " week ID " + str(weekid) + " not final"
 					continue
 
 				# get each individual box score link

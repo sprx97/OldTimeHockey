@@ -42,7 +42,7 @@ def updateCurrentPF(league, year):
 
 		# projections don't count!
 		if isProjected:
-			score = 0.0
+                        cursor.execute("UPDATE Teams set currentWeekPF=0.0 where teamID=" + str(teamID))
 		else:
 			cursor.execute("UPDATE Teams set currentWeekPF=" + str(score) + " where teamID=" + str(teamID))
 
