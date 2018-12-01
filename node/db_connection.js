@@ -73,7 +73,7 @@ http.createServer(function(request, response) {
 			       sum(pointsAgainst) as PA, sum(isChamp) as trophies, round(100*sum(pointsFor)/sum(100.0*pointsFor/coachRating), 2) as careerCR, FFid \
 			       from Teams inner join Users on ownerID=FFid where replacement != 1 and pointsFor >=0 group by FFid) as T1 order by PF DESC";
 		}
-		else if (query.year.charAt(query.year.length-1) == "p") {
+		else if (query.year[query.year.length-1] == "p") {
 			year = query.year.slice(0, -1);
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
 			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier \
@@ -121,7 +121,7 @@ http.createServer(function(request, response) {
 	}
 
 	conn.query(sql, function(err, result, fields) {
-		response.write(JSON.stringify(result));
+		response.write("" + JSON.stringify(result));
 		response.end();
 	});
 }).listen(8001, "0.0.0.0");
