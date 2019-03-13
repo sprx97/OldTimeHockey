@@ -155,6 +155,7 @@
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			currentweek = xmlhttp.responseText;
+			currentweek = currentweek.substr(1, currentweek.length-2);
 		}
 	}
 	xmlhttp.send();
@@ -205,6 +206,7 @@
 			<option value="2017">2017-2018 Regular Season</option>
 			<option value="2017p">2017-2018 Playoffs</option>
 			<option value="2018">2018-2019 Regular Season</option>
+			<option value="2018p">2018-2019 Playoffs</option>
 			<option value="career">Career Regular Season</option>
 			<option value="careerp">Career Playoffs</option>
 			<option value="week">This Week (live)</option>
