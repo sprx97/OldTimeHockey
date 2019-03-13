@@ -21,7 +21,7 @@ print "\tAuthor: Sprx97"
 print "LeagueEnd"
 
 print "SortBegin"
-print "League: Points, IfSomeTiesBrokenReturnHere, SweptAll, Average Points HeadToHead, GoalsFor, SweptByAll"
+print "League: Wins, Wins HeadToHead, GoalsFor"
 print "SortEnd"
 
 print "RulesBegin"
