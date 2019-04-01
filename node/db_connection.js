@@ -117,7 +117,7 @@ http.createServer(function(request, response) {
 	}
 	else if (path == "/seasoncoachratingrecord") {
 		sql = "SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID \
-		       where replacement != 1 and pointsFor > 0 and tier != 4 and year != " + year + " order by coachRating DESC";
+		       where replacement != 1 and pointsFor > 0 and tier != 4 and (year != " + year + " or " + (week > 23 ? "true" : "false") + ") order by coachRating DESC";
 	}
 
 	conn.query(sql, function(err, result, fields) {
