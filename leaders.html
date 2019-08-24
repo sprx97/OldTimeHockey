@@ -270,8 +270,8 @@
 					rows = "";
 					count = 1;
 					if (year == "week") {
-						colwidths = [5, 15, 20, 15, 10, 10];
-						colheaders = ["", "League", "Team", "User", "PF Week", "PF Total"];
+						colwidths = [5, 15, 20, 15, 10, 10, 10, 10];
+						colheaders = ["", "League", "Team", "User", "PF Week", "PF Total", "PA Week", "PA Total"];
 						table.id = "currentweek";
 
 						json.forEach(function(team) {
@@ -286,6 +286,13 @@
 								rows += "<td>" + team.postTotal + "</td>";
 							else
 								rows += "<td>" + team.regTotal + "</td>";
+
+							rows += "<td>" + team.PA + "</td>";
+
+							if (parseInt(currentweek) > 23)
+								rows += "<td>" + team.postPATotal + "</td>";
+							else
+								rows += "<td>" + team.regPATotal + "</td>";
 
 							rows += "</tr>";
 						});
