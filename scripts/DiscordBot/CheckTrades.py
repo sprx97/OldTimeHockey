@@ -22,7 +22,6 @@ def checkFleaflickerTrades():
 	cursor.execute("SELECT id from Leagues where year=" + str(year))
 	for league in cursor.fetchall():
 		tradesURL = "http://www.fleaflicker.com/nhl/leagues/" + str(league[0]) + "/trades"
-		tradesURL = "https://www.fleaflicker.com/mlb/leagues/21581/trades?status=EXECUTED"
 		response = urllib.request.urlopen(tradesURL)
 		page = response.read()
 		root = html.document_fromstring(page)
