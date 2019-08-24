@@ -11,7 +11,7 @@ from lxml import html # xml parsing
 import json
 
 import ParseFeeds
-import CheckTradeEmails
+import CheckTrades
 
 sys.path.append("../")
 import Config
@@ -144,21 +144,20 @@ def check_scores():
 		print("CLIENT CLOSED UNEXPECTEDLY")
 
 @asyncio.coroutine
-def check_trade_emails():
+def check_trades():
 	bot_channel = None
 	for channel in client.get_all_channels():
 		if channel.name == "tradereview":
 			bot_channel = channel
 
-	# repeat the task every hour
+	# repeat the task every day
 	while not client.is_closed:
-#		announcements = CheckTradeEmails.checkEmails()
-		announcements = CheckTradeEmails.checkFleaflickerTrades()
+		announcements = CheckTrades.checkFleaflickerTrades()
 		for str in announcements:
 			str = "<@&235926008266620929> " + str
 			yield from client.send_message(bot_channel, str)
 
-		yield from asyncio.sleep(1800)
+		yield from asyncio.sleep(86400)
 
 	if client.is_closed:
 		print("CLIENT CLOSED UNEXPECTEDLY")
@@ -172,7 +171,7 @@ def on_ready():
 	yield from client.change_presence(game=discord.Game(name="NHL '94"))
 
 	client.loop.create_task(check_scores())
-	client.loop.create_task(check_trade_emails())
+	client.loop.create_task(check_trades())
 	return
 
 @client.event
