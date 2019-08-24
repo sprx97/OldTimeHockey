@@ -13,6 +13,9 @@ import json
 import ParseFeeds
 import CheckTradeEmails
 
+sys.path.append("../")
+import Config
+
 # team name mappings, ALL LOWERCASE
 team_map = {}
 team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]			= "ARI"
@@ -174,8 +177,6 @@ def on_ready():
 @client.event
 @asyncio.coroutine
 def on_message(message):
-	global year
-
 	# don't reply to self
 	if message.author == client.user:
 		return
@@ -258,7 +259,6 @@ def on_message(message):
 #	make calls instead of having to scrape the page.
 #
 	if message.content.startswith("!woppacup"):
-		global year
 		if len(message.content.split(" ")) == 1:
 			yield from client.send_message(message.channel, "Usage: !woppacup <fleaflicker username>")
 		else:
@@ -335,9 +335,9 @@ if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "test":
 			soft_reset = True
-			client.run("NDAzODA2NTgwNzc4MjA1MTg0.DUMp7A.6Jq59cpOzECgIYVKj6PO3vpnrMg")
+			client.run(Config.config["discord_token_beta"])
 		if sys.argv[1] == "soft":
 			soft_reset = True
-			client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
+			client.run(Config.config["discord_token"])
 	else:
-		client.run("MjUwODI2MTA5MjE2NjIwNTQ1.CxahLA.OkcmOowsvtCQkwt2WEAbCt5yJsk")
+		client.run(Config.config["discord_token"])
