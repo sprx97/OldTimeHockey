@@ -152,7 +152,8 @@ def check_trade_emails():
 
 	# repeat the task every hour
 	while not client.is_closed:
-		announcements = CheckTradeEmails.checkEmails()
+#		announcements = CheckTradeEmails.checkEmails()
+		announcements = CheckTradeEmails.checkFleaflickerTrades()
 		for str in announcements:
 			str = "<@&235926008266620929> " + str
 			yield from client.send_message(bot_channel, str)

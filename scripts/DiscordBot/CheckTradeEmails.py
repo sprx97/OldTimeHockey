@@ -1,10 +1,23 @@
 import poplib
 import email
 
+import urllib2 # url reading
+from lxml import etree
+from lxml import html # xml parsing
+
+import sys
+sys.path.append("../")
+import Config
+
+def checkFleaflickerTrades():
+	pass
+
+# Old method from when Fleaflicker included the non-player commish on trade emalis.
+# Can probably remove once hte new method is working.
 def checkEmails():
 	pop_conn = poplib.POP3_SSL("pop.gmail.com", 995)
-	pop_conn.user("roldtimehockey")
-	pop_conn.pass_("roldtimehockey")
+	pop_conn.user(Config.config["email_username"])
+	pop_conn.pass_(Config.config["email_password"])
 
 	stringsToAnnounce = []
 
