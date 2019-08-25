@@ -14,3 +14,10 @@ To restart Wes:
 To restart website NodeJS:
 - forever node/db_connection.js &
 - Ctrl-A Ctrl-D to detach session
+
+To restart web server (SPRX only):
+- sudo /etc/init.d/apache2 start/stop/restart
+
+Web config location:
+- /etc/apache2/sites-available/000-default.conf
+
