@@ -85,7 +85,7 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
-f = open("/var/www/roldtimehockey/scripts/WeekVars.txt", "r")
+f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
 client = discord.Client(heartbeat_timeout=120.0)
@@ -165,7 +165,7 @@ def check_trades():
 @client.event
 @asyncio.coroutine 
 def on_ready():
-#	fp = open("/var/www/roldtimehockey/scripts/wes.jpg", "rb")
+#	fp = open(Config.config["srcroot"] + "scripts/wes.jpg", "rb")
 #	yield from client.edit_profile(password=None, avatar=fp.read())
 
 	yield from client.change_presence(game=discord.Game(name="NHL '94"))
