@@ -8,5 +8,7 @@ Things to do at the beginning of a year:
 - Finally, run "UpdateTables.py" to grab all of the teams from each league (once the leagues are filled) -- normally this runs sunday night
 
 To restart Wes:
-- nohup forever start -c python3 DiscordBot.py
+- nohup forever start -c python3 DiscordBot.py &
 
+To restart website NodeJS:
+- nohup forever node/db_connection.js &

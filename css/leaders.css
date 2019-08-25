@@ -2,6 +2,43 @@ select {
 	margin:10px;
 }
 
+/* profile modal */
+.modal {
+	display: none; // hide by default
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, .5);
+}
+
+.modal-content {
+	background-color: #bcbcbc;
+	opacity: 1.0;
+	margin: 15% auto;
+	border: 1px solid #888;
+	width: 60%;
+	height: 50%;
+}
+
+.modal-title {
+	position: absolute;
+	left: 25px;
+	top: 5px;
+	font-size: 48pt;
+	font-weight: bold;
+}
+
+.modal-separator {
+	background-color: #DA635D;
+	height: 5px;
+	margin-top: 20px;
+	border: 0;
+}
+
 /* tables */
 table.tablesorter thead tr .header {
 	background-image: url('../images/tablesorter/bg.gif');

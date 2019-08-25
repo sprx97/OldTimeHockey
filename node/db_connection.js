@@ -54,9 +54,14 @@ http.createServer(function(request, response) {
 		if (query.year != "") sql += " and year=" + query.year;
 		sql += " order by Leagues.tier ASC"; 
 	}
+	else if (path == "/getplayerinfo") {
+		sql = "SELECT L.name as leaguename, L.tier, U.FFname, L.year \
+		       from Teams T INNER JOIN Leagues L on T.leagueID=L.id LEFT OUTER JOIN Teams_post TP on T.teamID=TP.teamID INNER JOIN Users U on T.ownerID=U.FFid \
+		       where T.ownerID=" + query.ffid;
+	}
 	else if (path == "/leaders") {
 		if (query.year == "week") {
-			sql = "SELECT Leagues.id as leagueID, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
+			sql = "SELECT Leagues.id as leagueID, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
 			       round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA, round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal \
 			       from Teams as t1 inner join Users on t1.ownerID=Users.FFid inner join Leagues on t1.leagueID=Leagues.id left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
 			       INNER JOIN Teams as t2 on t1.CurrOpp=t2.teamID \
@@ -122,6 +127,7 @@ http.createServer(function(request, response) {
 	}
 
 	conn.query(sql, function(err, result, fields) {
+//		console.log(JSON.stringify(result));
 		response.write("" + JSON.stringify(result));
 		response.end();
 	});

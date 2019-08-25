@@ -21,6 +21,40 @@
 <link href="css/divisions.css" rel="stylesheet"/>
 
 <script type="text/javascript">
+	function showModal(id) {
+	        xmlhttp = new XMLHttpRequest();
+	        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/getplayerinfo?ffid=" + id, false);
+	        xmlhttp.onreadystatechange = function() {
+	                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	                        player = JSON.parse(xmlhttp.responseText);
+				if (player.length > 0)
+				{
+					$(".modal-title").html(player[0].FFname);
+				}
+//				player.forEach(function(team) {
+//
+//				});
+	                }
+	        }
+	        xmlhttp.send();
+
+		$("#modal").fadeIn(500);
+	}
+
+	$(document).click(function (e) {
+		if ($(e.target).is("#modal")) {
+			$("#modal").fadeOut(500);
+		}
+		if ($(e.target).is("#modal-content")) {
+			e.stopPropagation();
+		}
+	});
+	$(document).keydown(function(e) { 
+		if (e.keyCode === 27) { 
+        		$("#modal").fadeOut(500);
+		} 
+	});
+
 	$(document).ready(function() {
 		$.tablesorter.addWidget({
 			id: "numbering",
@@ -190,6 +224,14 @@
 
 <body><center>
 
+<div id="modal" class="modal">
+	<div id="modal-content" class="modal-content">
+		<h1 class="modal-title"></h1>
+		<hr class="modal-separator" />
+		<hr class="modal-separator" style="margin-top: 55px"/>
+	</div>
+</div>
+
 <div style="margin:10px">
 	<form method="GET" style="margin:-7px 0px;">
 		<select name="year" onchange="this.form.submit()">
@@ -279,7 +321,7 @@
 							rows += "<td>" + count++ + "</td>";
 							rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a></td>";
 							rows += "<td><a href='" + ffbase + team.leagueID + ffteambase + team.teamID + "?season=" + ffyear + "'>" + team.teamname + "</a></td>";
-							rows += "<td>" + team.FFname + "</td>";
+							rows += "<td><a href='#' onclick='showModal(" + team.FFid + ");'>" + team.FFname + "</a></td>";
 							rows += "<td>" + team.currentWeekPF + "</td>";
 
 							if (parseInt(currentweek) > 23)
