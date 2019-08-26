@@ -128,6 +128,7 @@ http.createServer(function(request, response) {
 
 	conn.query(sql, function(err, result, fields) {
 //		console.log(JSON.stringify(result));
+		response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
 		response.write("" + JSON.stringify(result));
 		response.end();
 	});
