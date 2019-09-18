@@ -8,10 +8,10 @@ Things to do at the beginning of a year:
 - Finally, run "UpdateTables.py" to grab all of the teams from each league (once the leagues are filled) -- normally this runs sunday night
 
 To restart Wes:
-- pm2 start DiscordBot.py --interpreter=python3
+- sudo pm2 start DiscordBot.py -- soft --interpreter=python3
 
 To restart website NodeJS:
-- pm2 node/db_connection.js
+- sudo pm2 node/db_connection.js
 
 To restart web server (SPRX only):
 - sudo /etc/init.d/apache2 start/stop/restart
