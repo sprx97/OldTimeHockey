@@ -216,6 +216,7 @@ if __name__ == "__main__":
 			for next in teams:
 				next[1] = next[1].replace(";", "") # prevent sql injection
 				next[1] = next[1].replace("'", "''") # correct quote escaping
+				next[1] = next[1].replace(u"\u2019", "''") # another type of quote?
 				next[3] = next[3].replace(";", "") # prevent sql injection
 				next[3] = next[3].replace("'", "''") # correct quote escaping
 				try:
@@ -226,13 +227,14 @@ if __name__ == "__main__":
 
 				if str(next[2]) == "591742":
 					next[2] = 157129 # override for rellek...
-		
+
 				cursor.execute("SELECT * from Teams where teamID = " + next[0])
 				data = cursor.fetchall()
 				if len(data) == 0: # insert new team into table (should only happen once)
+#					print(next[1])
 					cursor.execute("INSERT into Teams values (" + str(next[0]) + ", " + str(league[0]) + ", " + str(next[2]) + ", '" + \
 					next[1] + "', " + str(next[5]) + ", " + str(next[6]) + ", " + str(next[7]) + ", " + str(next[8]) + ", " + \
-					str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1,-1," + str(next[2]) + ")")
+					str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ")")
 
 				elif len(data) == 1:
 					if intP(data[0][2]) != intP(next[2]):
