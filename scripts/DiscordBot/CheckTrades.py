@@ -26,7 +26,6 @@ def checkFleaflickerTrades():
 		page = response.read()
 		root = html.document_fromstring(page)
 
-
 		items = root.cssselect("div.list-group-item div.text-muted.media-info a")
 		for item in items:
 			link = item.get("href")
@@ -36,7 +35,13 @@ def checkFleaflickerTrades():
 			if tradeID in posted:
 				continue
 
-			strs.append("https://www.fleaflicker.com" + link)
+			url = "https://www.fleaflicker.com" + link
+			response2 = urllib.request.urlopen(url)
+			page2 = response2.read()
+			root2 = html.document_fromstring(page2)
+
+			trade = root2.cssselect("div.player-inline")[0]
+			strs.append(trade.text_content() + "\n" + url)
 
 			with open("posted_trades.txt", "a") as f:
 				f.write(str(tradeID) + "\n")
