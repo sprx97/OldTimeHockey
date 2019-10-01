@@ -1,7 +1,7 @@
 # Checks fleaflicker leagues for inactive owners
 
 import MySQLdb
-import urllib2
+import urllib.request
 from lxml import html
 import smtplib
 from email.mime.text import MIMEText
@@ -16,10 +16,10 @@ week = int(f.readline().strip())
 f.close()
 
 def checkInactives(league):
-        standingsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(league[0]) + "?season=" + str(league[1])
-        response = urllib2.urlopen(standingsURL)
-        page = response.read()
-        root = html.document_fromstring(page)
+	standingsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(league[0]) + "?season=" + str(league[1])
+	response = urllib.request.urlopen(standingsURL)
+	page = response.read()
+	root = html.document_fromstring(page)
 
 	users = root.cssselect("a.user-name.inactive")
 	if len(users) > 0:
@@ -70,18 +70,20 @@ def sendEmail():
 		s.sendmail(msg["From"], recips, msg.as_string())
 		s.quit()
 
-		print "Inactives email sent"
+		print("Inactives email sent")
 	except Exception as e:
-		print "Error sending inactives email."
-		print e, e.reason()
+		print("Error sending inactives email.")
+		print(e, e.reason())
 
-if __name__ == "__main__":
-        db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
-        cursor = db.cursor()
+def checkAllLeagues():
+	db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+	cursor = db.cursor()
 
-        cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
-        leagues = cursor.fetchall()
-        for league in leagues:
+	cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
+	leagues = cursor.fetchall()
+	for league in leagues:
 		checkInactives(league)
 
+if __name__ == "__main__":
+	checkAllLeagues()
 	sendEmail()

@@ -12,6 +12,7 @@ import json
 
 import ParseFeeds
 import CheckTrades
+import CheckInactives
 
 sys.path.append("../")
 import Config
@@ -144,6 +145,42 @@ def check_scores():
 		print("CLIENT CLOSED UNEXPECTEDLY")
 
 @asyncio.coroutine
+def check_inactives():
+	bot_channel = None
+	for channel in client.get_all_channels():
+		if channel.name == "mods":
+			bot_channel = channel
+
+	# repeat the task every week
+	while not client.is_closed:		
+		CheckInactives.checkAllLeagues()
+		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
+			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
+		else:
+			body = ""
+			for league in unclaimed:
+				body += str(unclaimed[league]) + " unclaimed team(s) in " + league + "\n"
+
+			if body != "":
+				body += "\n"
+			else:
+				body += "No unclaimed teams.\n\n"
+
+			count = 0
+			for league in inactives:
+				body += str(len(inactives[league])) + " inactive(s) in " + league + "\n"
+				count += len(inactives[league])
+				for user in inactives[league]:
+					body += "\t" + user + "\n"
+				body += "\n"
+			if count == 0:
+				body += "No inactive teams.\n"
+
+			yield from client.send_message(bot_channel, body)
+
+		yield from asyncio.sleep(7*86400)
+
+@asyncio.coroutine
 def check_trades():
 	bot_channel = None
 	for channel in client.get_all_channels():
@@ -159,8 +196,8 @@ def check_trades():
 
 		yield from asyncio.sleep(86400)
 
-	if client.is_closed:
-		print("CLIENT CLOSED UNEXPECTEDLY")
+#	if client.is_closed:
+#		print("CLIENT CLOSED UNEXPECTEDLY")
 
 @client.event
 @asyncio.coroutine 
@@ -172,6 +209,7 @@ def on_ready():
 
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trades())
+	client.loop.create_task(check_inactives())
 	return
 
 @client.event
@@ -221,12 +259,44 @@ def on_message(message):
 			if channel.name == "tradereview":
 				bot_channel = channel
 
-		announcements = CheckTradeEmails.checkEmails()
+		announcements = CheckTrades.checkFleaflickerTrades()
 		for str in announcements:
-         		yield from client.send_message(bot_channel, str)
+			str = "<@&235926008266620929> " + str
+			yield from client.send_message(bot_channel, str)
 
 		yield from client.send_message(message.channel, "Done checking trades")
 
+	# Inactives response
+	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods"):
+		bot_channel = None
+		for channel in client.get_all_channels():
+			if channel.name == "mods":
+				bot_channel = channel
+
+		CheckInactives.checkAllLeagues()
+		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
+			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
+		else:
+			body = ""
+			for league in unclaimed:
+				body += str(unclaimed[league]) + " unclaimed team(s) in " + league + "\n"
+
+			if body != "":
+				body += "\n"
+			else:
+				body += "No unclaimed teams.\n\n"
+
+			count = 0
+			for league in inactives:
+				body += str(len(inactives[league])) + " inactive(s) in " + league + "\n"
+				count += len(inactives[league])
+				for user in inactives[league]:
+					body += "\t" + user + "\n"
+				body += "\n"
+			if count == 0:
+				body += "No inactive teams.\n"
+
+			yield from client.send_message(bot_channel, body)
 
 	# Fantasy matchup check response
 	if message.content.startswith("!matchup"):
