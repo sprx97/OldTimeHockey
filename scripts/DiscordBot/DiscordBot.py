@@ -260,11 +260,12 @@ def on_message(message):
 				bot_channel = channel
 
 		announcements = CheckTrades.checkFleaflickerTrades()
-		for str in announcements:
-			str = "<@&235926008266620929> " + str
-			yield from client.send_message(bot_channel, str)
-
-		yield from client.send_message(message.channel, "Done checking trades")
+		if len(announcements) == 0:
+			yield from client.send_message(bot_channel, "No pending trades to review.")
+		else:
+			for str in announcements:
+				str = "<@&235926008266620929> " + str
+				yield from client.send_message(bot_channel, str)
 
 	# Inactives response
 	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods"):
