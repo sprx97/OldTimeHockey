@@ -191,7 +191,7 @@ def check_trades():
 	while not client.is_closed:
 		announcements = CheckTrades.checkFleaflickerTrades()
 		for str in announcements:
-			str = "<@&235926008266620929> " + str
+			str = "<@&235926008266620929>\n" + str
 			yield from client.send_message(bot_channel, str)
 
 		yield from asyncio.sleep(86400)
