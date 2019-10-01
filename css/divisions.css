@@ -8,7 +8,7 @@ table.Eastern th, tr.Eastern td:first-child, table.Hasek th, tr.Hasek td:first-c
         background-color:rgba(255, 0, 0, .5);
 } /* red */
 
-table.Western th, tr.Western td:first-child, table.Brodeur th, tr.Brodeur td:first-child, table.Price-Murray th, tr.Price-Murray td:first-child {
+table.Western th, tr.Western td:first-child, table.Brodeur th, tr.Brodeur td:first-child, table.Price-Murray th, tr.Price-Murray td:first-child, table.Jones-Allen th, tr.Jones-Allen td:first-child {
         background-color:rgba(0, 255, 0, .5);
 } /* green */
 
