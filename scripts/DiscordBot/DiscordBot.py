@@ -238,6 +238,12 @@ def on_message(message):
 #								"\twoppacup <fleaflicker username>: Posts the score of the user's woppa cup matchup this week.\n" + \
 								)
 
+	if message.author.name.startswith("Minnesnota") and "Wes " in message.content:
+		yield from client.send_message(message.channel, "@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \ 
+								"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
+								"make you funny or clever, just a coward hiding behind a computer")
+
+
 	# Embed streamable recaps (test)
 #	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
 #		e = discord.Embed()
