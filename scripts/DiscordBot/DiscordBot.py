@@ -239,7 +239,7 @@ def on_message(message):
 								)
 
 	if message.author.name.startswith("Minnesnota") and "Wes " in message.content:
-		yield from client.send_message(message.channel, "@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \ 
+		yield from client.send_message(message.channel, "@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
 								"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
 								"make you funny or clever, just a coward hiding behind a computer")
 
@@ -311,7 +311,7 @@ def on_message(message):
 			yield from client.send_message(message.channel, "Usage: !matchup <fleaflicker username>")
 		else:
 			# might be slow if opening too many DB connections
-			db = MySQLdb.connect(host="localhost", user="othuser", passwd="othpassword", db="OldTimeHockey")
+			db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 			cursor = db.cursor()
 			team = message.content.split(" ")[1].lower()
 			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID FROM Teams AS me " + \
