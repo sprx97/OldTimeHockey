@@ -23,7 +23,7 @@
 <script type="text/javascript">
 	function showModal(id) {
 	        xmlhttp = new XMLHttpRequest();
-	        xmlhttp.open("GET", "http://www.roldtimehockey.com/node/getplayerinfo?ffid=" + id, false);
+	        xmlhttp.open("GET", noderoot + "getplayerinfo?ffid=" + id, false);
 	        xmlhttp.onreadystatechange = function() {
 	                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	                        player = JSON.parse(xmlhttp.responseText);
@@ -177,7 +177,7 @@
 	var currentyear = "";
 	var currentweek = "";
 	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/getyear", false);
+	xmlhttp.open("GET", noderoot + "getyear", false);
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			currentyear = xmlhttp.responseText.slice(1, -1);
@@ -185,7 +185,7 @@
 	}
 	xmlhttp.send();
 	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET", "http://www.roldtimehockey.com/node/getweek", false);
+	xmlhttp.open("GET", noderoot + "getweek", false);
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			currentweek = xmlhttp.responseText;
@@ -264,7 +264,7 @@
 			tiers = {};
 
 			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "http://www.roldtimehockey.com/node/currenttier?year=" + currentyear, false);
+			xmlhttp.open("GET", noderoot + "currenttier?year=" + currentyear, false);
 			xmlhttp.onreadystatechange = function() {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					tierjson = JSON.parse(xmlhttp.responseText);
@@ -283,7 +283,7 @@
 			trophies = {};
 
 			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "http://www.roldtimehockey.com/node/gettrophies?year=" + year + "&skipd4=" + skipd4, false);
+			xmlhttp.open("GET", noderoot + "gettrophies?year=" + year + "&skipd4=" + skipd4, false);
 			xmlhttp.onreadystatechange = function() {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					trophyjson = JSON.parse(xmlhttp.responseText);
@@ -304,7 +304,7 @@
 			table = document.getElementsByClassName("tablesorter")[0];
 
 			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open("GET", "http://www.roldtimehockey.com/node/leaders?year=" + year, false);
+			xmlhttp.open("GET", noderoot + "leaders?year=" + year, false);
 			xmlhttp.onreadystatechange = function() {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					colwidths = []

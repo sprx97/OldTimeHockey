@@ -1,0 +1,11 @@
+These instructions are specifically for people who want to work on the frontend -- the html and css of the site. PM SPRX97 on Discord before you start, but changes to this should be relatively easy to make
+and low risk. This should work on linux or windows environments.
+
+Part 1: Fork git repository
+- FORK my git repo from the github website.
+- Clone your new fork using "git clone"
+
+Part 2: Make a minor change and commit
+- Make a minor change and commit/push to your fork of the project
+- On github, create a new pull request fore your change
+- Contact SPRX to review/merge the pull request

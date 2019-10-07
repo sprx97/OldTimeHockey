@@ -1,3 +1,6 @@
+These instructions are specifically for people who want to work on the backend -- the fleaflicker scrapers, database, and nodeJS.
+It is highly recommended you DO NOT work on this, as the code is a bit of a jenga tower, but PM SPRX97 on Discord first if you insist.
+
 These instructions will hopefully get a local copy up and running for contributors. It was written with a linux environment in mind, but should be pretty similar in windows. 
 The tricky part would be getting mysql instead of sql server. If that isn't possible, I can host a copy of the prod database on my server for testing. Let me know what you think is easier.
 If you have any suggestions for improving these instructions or streamlining the dev environment, feel free to ping me on discord!
@@ -19,8 +22,9 @@ Part 3: Update config_default.json file
 - You shouldn't need the other logins, but if you think you do contact SPRX
 - Then rename config_default.json to config.json.
 
-Part 4: Install nodeJS and test lcaol site
+Part 4: Install nodeJS and test local site
 - Install nodejs
+- Update "var noderoot" in header.html to point to your local node server 
 - Run "node node/db_connection.js", then try viewing the html files
 - If everything works, you should see the same stuff as the real site, just with stale data.
 	- If it doesn't work, double check our config file or contact SPRX for help
