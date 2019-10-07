@@ -13,7 +13,7 @@ year = int(f.readline().strip())
 
 with open("posted_trades.txt") as f:
 	posted = f.readlines()
-posted = [x.strip() for x in posted]
+posted = [int(x.strip()) for x in posted]
 
 def checkFleaflickerTrades():
 	strs = []
@@ -31,7 +31,7 @@ def checkFleaflickerTrades():
 			link = item.get("href")
 
 			# skip trades that have already been posted in the channel
-			tradeID = re.split("/", link)[-1]
+			tradeID = int(re.split("/", link)[-1])
 			if tradeID in posted:
 				continue
 

@@ -187,14 +187,14 @@ def check_trades():
 		if channel.name == "tradereview":
 			bot_channel = channel
 
-	# repeat the task every day
+	# repeat the task every hour
 	while not client.is_closed:
 		announcements = CheckTrades.checkFleaflickerTrades()
 		for str in announcements:
 			str = "<@&235926008266620929>\n" + str
 			yield from client.send_message(bot_channel, str)
 
-		yield from asyncio.sleep(86400)
+		yield from asyncio.sleep(3600)
 
 #	if client.is_closed:
 #		print("CLIENT CLOSED UNEXPECTEDLY")
@@ -270,7 +270,7 @@ def on_message(message):
 			yield from client.send_message(bot_channel, "No pending trades to review.")
 		else:
 			for str in announcements:
-				str = "<@&235926008266620929> " + str
+				str = "<@&235926008266620929>\n" + str
 				yield from client.send_message(bot_channel, str)
 
 	# Inactives response
