@@ -2,7 +2,7 @@ import praw
 import Config
 
 r = praw.Reddit("/r/oldtimehockey stats bot by /u/SPRX97 v1.0")
-r.login(Config.config["reddit_username"], Config.config["reddit_password"])
+r.login(Config.config["reddit_username"], Config.config["reddit_password"], disable_warning=True)
 disclaimer = "I am a bot written and maintained by /u/SPRX97. Message him with any comments, suggestions, or complaints."
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
