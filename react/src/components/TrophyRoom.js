@@ -77,6 +77,8 @@ const TrophyRoom = () => {
             <Image src="http://www.roldtimehockey.com/images/banners/WC/2019.png" />
           </Grid.Column>
         </Grid.Row>
+
+        <Grid.Row columns={1}>Last Updated 4/1/19</Grid.Row>
       </Grid>
     </Segment>
   );
