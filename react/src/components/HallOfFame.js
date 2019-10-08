@@ -33,7 +33,7 @@ const HallOfFame = () => {
             </Grid.Column>
             <Grid.Column>
               <Header as="h2" attached="top">
-                Winning Percentage
+                Winning Percentage (Min. 40 GP)
               </Header>
               <Segment attached>
                 <List ordered>
@@ -75,7 +75,7 @@ const HallOfFame = () => {
             </Grid.Column>
             <Grid.Column>
               <Header as="h2" attached="top">
-                Average Points For
+                Average Points For (Min. 40 GP)
               </Header>
               <Segment attached>
                 <List ordered>
