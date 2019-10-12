@@ -10,7 +10,7 @@ const TrophyRoom = () => {
           Division 1 Champions
         </Header>
         <Grid centered>
-          <Grid.Row columns={4}>
+          <Grid.Row columns={6}>
             <Grid.Column>
               <Image src="http://www.roldtimehockey.com/images/banners/D1/2014.png" />
             </Grid.Column>
@@ -36,7 +36,7 @@ const TrophyRoom = () => {
           Points For Champions
         </Header>
         <Grid centered>
-          <Grid.Row columns={4}>
+          <Grid.Row columns={6}>
             <Grid.Column>
               <Image src="http://www.roldtimehockey.com/images/banners/PF/2013.png" />
             </Grid.Column>
@@ -65,7 +65,7 @@ const TrophyRoom = () => {
           Woppa Cup Champions
         </Header>
         <Grid centered>
-          <Grid.Row columns={4}>
+          <Grid.Row columns={6}>
             <Grid.Column>
               <Image src="http://www.roldtimehockey.com/images/banners/WC/2013.png" />
             </Grid.Column>
@@ -89,7 +89,7 @@ const TrophyRoom = () => {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row columns={1}>Last Updated 4/1/19</Grid.Row>
+          <Grid.Row columns={6}>Last Updated 4/1/19</Grid.Row>
         </Grid>
       </Segment>
     </Container>
