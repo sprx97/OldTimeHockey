@@ -1,116 +1,114 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Container, Grid, Header, Segment, List } from 'semantic-ui-react';
-
-const useFetch = url => {
-  const [data, setData] = useState(null);
-
-  async function fetchData() {
-    const response = await fetch(url);
-    const json = await response.json();
-    setData(json.splice(0, 5));
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, [url]);
-
-  return data;
-};
+import { useFetch } from '../hooks/useFetch';
 
 const HallOfFame = () => {
-  const winsRecord = useFetch('http://www.roldtimehockey.com/node/winsrecord');
+  const [winsRecord, winsRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/winsrecord',
+  );
+
+  const [winPctRecord, winPctRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/winpctrecord',
+  );
+
+  const [pfRecord, pfRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/pfrecord',
+  );
+
+  const [avgPfRecord, avgPfRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/avgpfrecord',
+  );
+
+  const [coachRatingRecord, coachRatingRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/coachratingrecord',
+  );
+
+  const [seasonWinPctRecord, seasonWinPctRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/seasonwinpctrecord',
+  );
+
+  const [seasonWinsRecord, seasonWinsRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/seasonwinsrecord',
+  );
+
+  const [seasonPfRecord, seasonPfRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/seasonwinsrecord',
+  );
+
+  const [seasonCoachRatingRecord, seasonCoachRatingRecordLoading] = useFetch(
+    'http://www.roldtimehockey.com/node/seasoncoachratingrecord',
+  );
+
   const winsRecordList =
     winsRecord &&
-    winsRecord.map(item => (
+    winsRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.w}
       </List.Item>
     ));
 
-  const winPctRecord = useFetch(
-    'http://www.roldtimehockey.com/node/winpctrecord',
-  );
   const winPctRecordList =
     winPctRecord &&
-    winPctRecord.map(item => (
+    winPctRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.wpct} ({item.w}-{item.l})
       </List.Item>
     ));
 
-  const pfRecord = useFetch('http://www.roldtimehockey.com/node/pfrecord');
   const pfRecordList =
     pfRecord &&
-    pfRecord.map(item => (
+    pfRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.PF}
       </List.Item>
     ));
 
-  const avgPfRecord = useFetch(
-    'http://www.roldtimehockey.com/node/avgpfrecord',
-  );
   const avgPfRecordList =
     avgPfRecord &&
-    avgPfRecord.map(item => (
+    avgPfRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.avg}
       </List.Item>
     ));
 
-  const coachRatingRecord = useFetch(
-    'http://www.roldtimehockey.com/node/coachratingrecord',
-  );
   const coachRatingRecordList =
     coachRatingRecord &&
-    coachRatingRecord.map(item => (
+    coachRatingRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.careerCR}% ({item.total} GP)
       </List.Item>
     ));
 
-  const seasonWinPctRecord = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinpctrecord',
-  );
   const seasonWinPctRecordList =
     seasonWinPctRecord &&
-    seasonWinPctRecord.map(item => (
+    seasonWinPctRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.wpct.toFixed(3)} ({item.wins}-{item.losses}) (
         {item.year}-{item.year + 1} {item.name})
       </List.Item>
     ));
 
-  const seasonWinsRecord = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinsrecord',
-  );
   const seasonWinsRecordList =
     seasonWinsRecord &&
-    seasonWinsRecord.map(item => (
+    seasonWinsRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.wins} ({item.year}-{item.year + 1} {item.name})
       </List.Item>
     ));
 
-  const seasonPfRecord = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinsrecord',
-  );
   const seasonPfRecordList =
     seasonPfRecord &&
-    seasonPfRecord.map(item => (
+    seasonPfRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.pointsFor} ({item.year}-{item.year + 1}{' '}
         {item.name})
       </List.Item>
     ));
 
-  const seasonCoachRatingRecord = useFetch(
-    'http://www.roldtimehockey.com/node/seasoncoachratingrecord',
-  );
   const seasonCoachRatingRecordList =
     seasonCoachRatingRecord &&
-    seasonCoachRatingRecord.map(item => (
+    seasonCoachRatingRecord.slice(0, 5).map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.coachRating.toFixed(2)}% ({item.year}-
         {item.year + 1} {item.name})
