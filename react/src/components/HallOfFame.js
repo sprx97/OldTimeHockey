@@ -33,7 +33,7 @@ const HallOfFame = () => {
   );
 
   const [seasonPfRecord, seasonPfRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinsrecord',
+    'http://www.roldtimehockey.com/node/seasonpfrecord',
   );
 
   const [seasonCoachRatingRecord, seasonCoachRatingRecordLoading] = useFetch(
@@ -128,7 +128,9 @@ const HallOfFame = () => {
                 Wins
               </Header>
               <Segment attached>
-                <List ordered>{winsRecordList}</List>
+                <List ordered size="big">
+                  {winsRecordList}
+                </List>
               </Segment>
             </Grid.Column>
             <Grid.Column>
@@ -136,7 +138,9 @@ const HallOfFame = () => {
                 Winning Percentage (Min. 40 GP)
               </Header>
               <Segment attached>
-                <List ordered>{winPctRecordList}</List>
+                <List ordered size="big">
+                  {winPctRecordList}
+                </List>
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -146,7 +150,9 @@ const HallOfFame = () => {
                 Points For
               </Header>
               <Segment attached>
-                <List ordered>{pfRecordList}</List>
+                <List ordered size="big">
+                  {pfRecordList}
+                </List>
               </Segment>
             </Grid.Column>
             <Grid.Column>
@@ -154,7 +160,9 @@ const HallOfFame = () => {
                 Average Points For (Min. 40 GP)
               </Header>
               <Segment attached>
-                <List ordered>{avgPfRecordList}</List>
+                <List ordered size="big">
+                  {avgPfRecordList}
+                </List>
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -164,7 +172,9 @@ const HallOfFame = () => {
                 Coach Rating
               </Header>
               <Segment attached>
-                <List ordered>{coachRatingRecordList}</List>
+                <List ordered size="big">
+                  {coachRatingRecordList}
+                </List>
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -181,7 +191,9 @@ const HallOfFame = () => {
                 Best Record (Win Pct.)
               </Header>
               <Segment attached>
-                <List ordered>{seasonWinPctRecordList}</List>
+                <List ordered size="big">
+                  {seasonWinPctRecordList}
+                </List>
               </Segment>
             </Grid.Column>
             <Grid.Column>
@@ -189,7 +201,9 @@ const HallOfFame = () => {
                 Best Record (Wins)
               </Header>
               <Segment attached>
-                <List ordered>{seasonWinsRecordList}</List>
+                <List ordered size="big">
+                  {seasonWinsRecordList}
+                </List>
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -199,7 +213,9 @@ const HallOfFame = () => {
                 Points For
               </Header>
               <Segment attached>
-                <List ordered>{seasonPfRecordList}</List>
+                <List ordered size="big">
+                  {seasonPfRecordList}
+                </List>
               </Segment>
             </Grid.Column>
             <Grid.Column>
@@ -207,7 +223,9 @@ const HallOfFame = () => {
                 Coach Rating
               </Header>
               <Segment attached>
-                <List ordered>{seasonCoachRatingRecordList}</List>
+                <List ordered size="big">
+                  {seasonCoachRatingRecordList}
+                </List>
               </Segment>
             </Grid.Column>
           </Grid.Row>
