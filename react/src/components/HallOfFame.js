@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container, Grid, Header, Segment, List } from 'semantic-ui-react';
 import { useFetch } from '../hooks/useFetch';
 
