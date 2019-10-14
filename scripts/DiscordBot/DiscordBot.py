@@ -154,7 +154,9 @@ def check_inactives():
 	# repeat the task every week
 	while not client.is_closed:		
 		CheckInactives.checkAllLeagues()
-		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
+		unclaimed = CheckInactives.unclaimed
+		inactives = CheckInactives.inactives
+		if len(inactives) == 0 and len(unclaimed) == 0:
 			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
 		else:
 			body = ""

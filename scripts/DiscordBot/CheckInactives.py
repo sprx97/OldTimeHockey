@@ -5,6 +5,9 @@ import urllib.request
 from lxml import html
 import smtplib
 from email.mime.text import MIMEText
+import sys
+
+sys.path.append("../")
 import Config
 
 unclaimed = {}
