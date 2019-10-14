@@ -239,7 +239,7 @@ if __name__ == "__main__":
 				elif len(data) == 1:
 					if intP(data[0][2]) != intP(next[2]):
 						cursor.execute("UPDATE Teams set ownerID=" + str(next[2]) + ", replacement=1 where teamID=" + str(next[0]))
-						with open("/var/www/roldtimehockey/scripts/replacement_teams.txt", "a") as myfile:
+						with open(Config.config["srcroot"] + "scripts/replacement_teams.txt", "a") as myfile:
 							myfile.write(str(next[0]) + "\n")
 
 					cursor.execute("UPDATE Teams set  name='" + next[1] + \
