@@ -11,11 +11,11 @@ import Config
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
-with open("posted_trades.txt") as f:
-	posted = f.readlines()
-posted = [int(x.strip()) for x in posted]
-
 def checkFleaflickerTrades():
+	with open("posted_trades.txt") as f:
+		posted = f.readlines()
+	posted = [int(x.strip()) for x in posted]
+
 	strs = []
 	db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 	cursor = db.cursor()
