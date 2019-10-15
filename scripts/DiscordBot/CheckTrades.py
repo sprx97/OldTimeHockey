@@ -31,7 +31,7 @@ def checkFleaflickerTrades():
 			link = item.get("href")
 
 			# skip trades that have already been posted in the channel
-			tradeID = int(re.split("/", link)[-1])
+			tradeID = int(re.split("/", link)[-1].strip())
 			if tradeID in posted:
 				continue
 
