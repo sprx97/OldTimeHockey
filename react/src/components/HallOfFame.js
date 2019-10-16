@@ -8,6 +8,7 @@ import {
   Segment,
   List,
   Loader,
+  Placeholder,
 } from 'semantic-ui-react';
 
 const HallOfFame = () => {
@@ -139,7 +140,13 @@ const HallOfFame = () => {
                   {!winsRecordLoading ? (
                     winsRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -153,7 +160,13 @@ const HallOfFame = () => {
                   {!winPctRecordLoading ? (
                     winPctRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -169,7 +182,13 @@ const HallOfFame = () => {
                   {!pfRecordLoading ? (
                     pfRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -183,7 +202,13 @@ const HallOfFame = () => {
                   {!avgPfRecordLoading ? (
                     avgPfRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -199,7 +224,13 @@ const HallOfFame = () => {
                   {!coachRatingRecordLoading ? (
                     coachRatingRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -222,7 +253,13 @@ const HallOfFame = () => {
                   {!seasonWinPctRecordLoading ? (
                     seasonWinPctRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -236,7 +273,13 @@ const HallOfFame = () => {
                   {!seasonWinsRecordLoading ? (
                     seasonWinsRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -252,7 +295,13 @@ const HallOfFame = () => {
                   {!seasonPfRecordLoading ? (
                     seasonPfRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
@@ -266,7 +315,13 @@ const HallOfFame = () => {
                   {!seasonCoachRatingRecordLoading ? (
                     seasonCoachRatingRecordList
                   ) : (
-                    <Loader active size="massive" />
+                    <Placeholder>
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                      <Placeholder.Line />
+                    </Placeholder>
                   )}
                 </List>
               </Segment>
