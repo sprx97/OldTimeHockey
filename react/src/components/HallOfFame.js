@@ -1,7 +1,14 @@
 /* eslint-disable */
 import React from 'react';
 import { useFetch } from '../hooks/useFetch';
-import { Container, Grid, Header, Segment, List } from 'semantic-ui-react';
+import {
+  Container,
+  Grid,
+  Header,
+  Segment,
+  List,
+  Loader,
+} from 'semantic-ui-react';
 
 const HallOfFame = () => {
   const [winsRecord, winsRecordLoading] = useFetch(
@@ -129,7 +136,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {winsRecordList}
+                  {!winsRecordLoading ? (
+                    winsRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -139,7 +150,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {winPctRecordList}
+                  {!winPctRecordLoading ? (
+                    winPctRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -151,7 +166,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {pfRecordList}
+                  {!pfRecordLoading ? (
+                    pfRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -161,7 +180,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {avgPfRecordList}
+                  {!avgPfRecordLoading ? (
+                    avgPfRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -173,7 +196,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {coachRatingRecordList}
+                  {!coachRatingRecordLoading ? (
+                    coachRatingRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -192,7 +219,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {seasonWinPctRecordList}
+                  {!seasonWinPctRecordLoading ? (
+                    seasonWinPctRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -202,7 +233,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {seasonWinsRecordList}
+                  {!seasonWinsRecordLoading ? (
+                    seasonWinsRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -214,7 +249,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {seasonPfRecordList}
+                  {!seasonPfRecordLoading ? (
+                    seasonPfRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
@@ -224,7 +263,11 @@ const HallOfFame = () => {
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {seasonCoachRatingRecordList}
+                  {!seasonCoachRatingRecordLoading ? (
+                    seasonCoachRatingRecordList
+                  ) : (
+                    <Loader active size="massive" />
+                  )}
                 </List>
               </Segment>
             </Grid.Column>
