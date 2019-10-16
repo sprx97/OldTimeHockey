@@ -50,7 +50,7 @@ export default class Leaderboard extends Component {
       <Container>
         <Segment basic>
           {!data ? (
-            <Loader active size="massive" />
+            <Loader active size="massive" style={{ marginTop: '150px' }} />
           ) : (
             <Table definition sortable celled fixed>
               <Table.Header>
