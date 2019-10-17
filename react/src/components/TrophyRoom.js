@@ -12,22 +12,40 @@ const TrophyRoom = () => {
         <Grid centered>
           <Grid.Row columns={6}>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/D1/2014.png" />
+              <Image
+                src="/images/banners/D1/2014.png"
+                alt="division 1 champion 2014"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/D1/2015.png" />
+              <Image
+                src="/images/banners/D1/2015.png"
+                alt="division 1 champion 2015"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/D1/2016.png" />
+              <Image
+                src="/images/banners/D1/2016.png"
+                alt="division 1 champion 2016"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/D1/2017.png" />
+              <Image
+                src="/images/banners/D1/2017.png"
+                alt="division 1 champion 2017"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/D1/2018.png" />
+              <Image
+                src="/images/banners/D1/2018.png"
+                alt="division 1 champion 2018"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/D1/2019.png" />
+              <Image
+                src="/images/banners/D1/2019.png"
+                alt="division 1 champion 2019"
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -38,25 +56,46 @@ const TrophyRoom = () => {
         <Grid centered>
           <Grid.Row columns={6}>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/PF/2013.png" />
+              <Image
+                src="/images/banners/PF/2013.png"
+                alt="points for champion 2013"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/PF/2014.png" />
+              <Image
+                src="/images/banners/PF/2014.png"
+                alt="points for champion 2014"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/PF/2015.png" />
+              <Image
+                src="/images/banners/PF/2015.png"
+                alt="points for champion 2015"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/PF/2016.png" />
+              <Image
+                src="/images/banners/PF/2016.png"
+                alt="points for champion 2016"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/PF/2017.png" />
+              <Image
+                src="/images/banners/PF/2017.png"
+                alt="points for champion 2017"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/PF/2018.png" />
+              <Image
+                src="/images/banners/PF/2018.png"
+                alt="points for champion 2018"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/PF/2019.png" />
+              <Image
+                src="/images/banners/PF/2019.png"
+                alt="points for champion 2019"
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -67,25 +106,46 @@ const TrophyRoom = () => {
         <Grid centered>
           <Grid.Row columns={6}>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/WC/2013.png" />
+              <Image
+                src="/images/banners/WC/2013.png"
+                alt="woppa cup champion 2013"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/WC/2014.png" />
+              <Image
+                src="/images/banners/WC/2014.png"
+                alt="woppa cup champion 2014"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/WC/2015.png" />
+              <Image
+                src="/images/banners/WC/2015.png"
+                alt="woppa cup champion 2015"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/WC/2016.png" />
+              <Image
+                src="/images/banners/WC/2016.png"
+                alt="woppa cup champion 2016"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/WC/2017.png" />
+              <Image
+                src="/images/banners/WC/2017.png"
+                alt="woppa cup champion 2017"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/WC/2018.png" />
+              <Image
+                src="/images/banners/WC/2018.png"
+                alt="woppa cup champion 2018"
+              />
             </Grid.Column>
             <Grid.Column>
-              <Image src="http://www.roldtimehockey.com/images/banners/WC/2019.png" />
+              <Image
+                src="/images/banners/WC/2019.png"
+                alt="woppa cup champion 2019"
+              />
             </Grid.Column>
           </Grid.Row>
 
