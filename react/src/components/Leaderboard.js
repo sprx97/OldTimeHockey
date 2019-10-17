@@ -137,6 +137,7 @@ export default class Leaderboard extends Component {
                       <Table.Cell textAlign="center">
                         <a
                           href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
+                          target="_blank"
                         >
                           {leaguename}
                         </a>
@@ -144,6 +145,7 @@ export default class Leaderboard extends Component {
                       <Table.Cell textAlign="center">
                         <a
                           href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
+                          target="_blank"
                         >
                           {teamname}
                         </a>
