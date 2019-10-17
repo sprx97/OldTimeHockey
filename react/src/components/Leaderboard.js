@@ -58,15 +58,15 @@ export default class Leaderboard extends Component {
                   <Table.HeaderCell />
                   <Table.HeaderCell
                     textAlign="center"
-                    sorted={column === 'league' ? direction : null}
-                    onClick={this.handleSort('league')}
+                    sorted={column === 'leaguename' ? direction : null}
+                    onClick={this.handleSort('leaguename')}
                   >
                     League
                   </Table.HeaderCell>
                   <Table.HeaderCell
                     textAlign="center"
-                    sorted={column === 'teamName' ? direction : null}
-                    onClick={this.handleSort('teamName')}
+                    sorted={column === 'teamname' ? direction : null}
+                    onClick={this.handleSort('teamname')}
                   >
                     Team
                   </Table.HeaderCell>
@@ -79,15 +79,15 @@ export default class Leaderboard extends Component {
                   </Table.HeaderCell>
                   <Table.HeaderCell
                     textAlign="center"
-                    sorted={column === 'wins' ? direction : null}
-                    onClick={this.handleSort('wins')}
+                    sorted={column === 'Wins' ? direction : null}
+                    onClick={this.handleSort('Wins')}
                   >
                     Wins
                   </Table.HeaderCell>
                   <Table.HeaderCell
                     textAlign="center"
-                    sorted={column === 'losses' ? direction : null}
-                    onClick={this.handleSort('losses')}
+                    sorted={column === 'Losses' ? direction : null}
+                    onClick={this.handleSort('Losses')}
                   >
                     Losses
                   </Table.HeaderCell>
