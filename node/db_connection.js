@@ -37,27 +37,27 @@ http.createServer(function(request, response) {
 	}
 	else if(path == "/leagueranks") {
 		sql = "SELECT * from (SELECT Leagues.id, Leagues.name, round(sum(pointsFor), 2) as PF, round(sum(pointsFor)/(count(*)), 2) as avgPF from Leagues \
-		       inner join Teams on id=leagueID where year=" + query.year + " group by Leagues.name) as t order by PF desc";
+		       inner join Teams on id=leagueID where year=" + mysql.escape(query.year) + " group by Leagues.name) as t order by PF desc";
 	}
 	else if(path == "/divisionleagues") {
-		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + query.year + " AND tier=" + query.tier;
+		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + " AND tier=" + mysql.escape(query.tier);
 	}
 	else if(path == "/leagueteams") {
-		sql = "SELECT * from (Teams INNER JOIN Users on ownerID=FFid) where leagueID=" + query.id + " ORDER BY gamesBack ASC, pointsFor DESC";
+		sql = "SELECT * from (Teams INNER JOIN Users on ownerID=FFid) where leagueID=" + mysql.escape(query.id) + " ORDER BY gamesBack ASC, pointsFor DESC";
 	}
 	else if (path == "/currenttier") {
-		sql = "SELECT Leagues.tier, Users.FFname from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" + query.year + " and replacement != 1";
+		sql = "SELECT Leagues.tier, Users.FFname from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" + mysql.escape(query.year) + " and replacement != 1";
 	}
 	else if (path == "/gettrophies") {
 		sql = "SELECT Leagues.tier, Leagues.year, Users.FFname from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where isChamp=1";
 		if (!query.skipd4) sql += " and Leagues.tier != 4";
-		if (query.year != "") sql += " and year=" + query.year;
+		if (query.year) sql += " and year=" + mysql.escape(query.year);
 		sql += " order by Leagues.tier ASC"; 
 	}
 	else if (path == "/getplayerinfo") {
 		sql = "SELECT L.name as leaguename, L.tier, U.FFname, L.year \
 		       from Teams T INNER JOIN Leagues L on T.leagueID=L.id LEFT OUTER JOIN Teams_post TP on T.teamID=TP.teamID INNER JOIN Users U on T.ownerID=U.FFid \
-		       where T.ownerID=" + query.ffid;
+		       where T.ownerID=" + mysql.escape(query.ffid);
 	}
 	else if (path == "/leaders") {
 		if (query.year == "week") {
@@ -80,7 +80,7 @@ http.createServer(function(request, response) {
 			       from Teams inner join Users on ownerID=FFid where replacement != 1 and pointsFor >=0 group by FFid) as T1 order by PF DESC";
 		}
 		else if (query.year[query.year.length-1] == "p") {
-			year = query.year.slice(0, -1);
+			year = mysql.escape(query.year.slice(0, -1));
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
 			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier \
 			       from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on Teams.leagueID=Leagues.id INNER JOIN Users on Teams.ownerID=Users.FFid \
@@ -88,7 +88,7 @@ http.createServer(function(request, response) {
 		}
 		else {
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp, Leagues.tier \
-			       from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" + query.year + " order by pointsFor DESC";
+			       from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" + mysql.escape(query.year) + " order by pointsFor DESC";
 		}
 	}
 	else if (path == "/winsrecord") {
@@ -129,7 +129,7 @@ http.createServer(function(request, response) {
 	limit = "";
 	if (query.limit)
 	{
-		limit = " LIMIT " + query.limit;
+		limit = " LIMIT " + mysql.escape(query.limit);
 	}
 
 	sql += limit; // Can add limit to any query, even though it really only makes sense for certain ones.
