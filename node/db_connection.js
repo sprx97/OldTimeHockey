@@ -129,10 +129,15 @@ http.createServer(function(request, response) {
 	limit = "";
 	if (query.limit)
 	{
-		limit = " LIMIT " + mysql.escape(query.limit);
+		parsed = parseInt(query.limit);
+		if (!isNaN(parsed))
+		{
+			limit = " LIMIT " + parsed;
+		}
 	}
 
 	sql += limit; // Can add limit to any query, even though it really only makes sense for certain ones.
+	console.log(sql);
 
 	conn.query(sql, function(err, result, fields) {
 //		console.log(JSON.stringify(result));
