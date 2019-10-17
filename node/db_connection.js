@@ -126,6 +126,14 @@ http.createServer(function(request, response) {
 		       where replacement != 1 and pointsFor > 0 and tier != 4 and (year != " + year + " or " + (week > 23 ? "true" : "false") + ") order by coachRating DESC";
 	}
 
+	limit = "";
+	if (query.limit)
+	{
+		limit = " LIMIT " + query.limit;
+	}
+
+	sql += limit; // Can add limit to any query, even though it really only makes sense for certain ones.
+
 	conn.query(sql, function(err, result, fields) {
 //		console.log(JSON.stringify(result));
 		response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
