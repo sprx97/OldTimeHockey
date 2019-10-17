@@ -127,8 +127,8 @@ def check_scores():
 					yield from asyncio.sleep(.25)
 
 				if soft_reset == False:
-					for (key, str) in stringsToAnnounce:
-						msg = yield from client.send_message(bot_channel, str)
+					for (key, mystr) in stringsToAnnounce:
+						msg = yield from client.send_message(bot_channel, mystr)
 						if key != None:
 							ParseFeeds.messages[key][2] = msg
 					for msg in stringsToEdit:
@@ -192,9 +192,9 @@ def check_trades():
 	# repeat the task every hour
 	while not client.is_closed:
 		announcements = CheckTrades.checkFleaflickerTrades()
-		for str in announcements:
-			str = "<@&235926008266620929>\n" + str
-			yield from client.send_message(bot_channel, str)
+		for mystr in announcements:
+			mystr = "<@&235926008266620929>\n" + mystr
+			yield from client.send_message(bot_channel, mystr)
 
 		yield from asyncio.sleep(3600)
 
@@ -271,9 +271,9 @@ def on_message(message):
 		if len(announcements) == 0:
 			yield from client.send_message(bot_channel, "No pending trades to review.")
 		else:
-			for str in announcements:
-				str = "<@&235926008266620929>\n" + str
-				yield from client.send_message(bot_channel, str)
+			for mystr in announcements:
+				mystr = "<@&235926008266620929>\n" + mystr
+				yield from client.send_message(bot_channel, mystr)
 
 	# Inactives response
 	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods"):
@@ -287,8 +287,8 @@ def on_message(message):
 			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
 		else:
 			body = ""
-			for league in unclaimed:
-				body += str(unclaimed[league]) + " unclaimed team(s) in " + league + "\n"
+			for league in CheckInactives.unclaimed:
+				body += str(CheckInactives.unclaimed[league]) + " unclaimed team(s) in " + league + "\n"
 
 			if body != "":
 				body += "\n"
@@ -296,10 +296,10 @@ def on_message(message):
 				body += "No unclaimed teams.\n\n"
 
 			count = 0
-			for league in inactives:
-				body += str(len(inactives[league])) + " inactive(s) in " + league + "\n"
-				count += len(inactives[league])
-				for user in inactives[league]:
+			for league in CheckInactives.inactives:
+				body += str(len(CheckInactives.inactives[league])) + " inactive(s) in " + league + "\n"
+				count += len(CheckInactives.inactives[league])
+				for user in CheckInactives.inactives[league]:
 					body += "\t" + user + "\n"
 				body += "\n"
 			if count == 0:
