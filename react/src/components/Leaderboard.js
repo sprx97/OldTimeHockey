@@ -66,7 +66,7 @@ export default class Leaderboard extends Component {
                   <Table.HeaderCell
                     textAlign="center"
                     sorted={column === 'teamName' ? direction : null}
-                    onClick={this.handleSort('teamaName')}
+                    onClick={this.handleSort('teamName')}
                   >
                     Team
                   </Table.HeaderCell>
