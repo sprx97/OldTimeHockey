@@ -55,7 +55,7 @@ export default class Leaderboard extends Component {
             <Table definition sortable celled fixed>
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell />
+                  <Table.HeaderCell width={1} />
                   <Table.HeaderCell
                     textAlign="center"
                     sorted={column === 'leaguename' ? direction : null}
