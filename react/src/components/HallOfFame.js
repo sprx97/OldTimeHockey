@@ -13,44 +13,44 @@ import {
 
 const HallOfFame = () => {
   const [winsRecord, winsRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/winsrecord',
+    'http://www.roldtimehockey.com/node/winsrecord?limit=5',
   );
 
   const [winPctRecord, winPctRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/winpctrecord',
+    'http://www.roldtimehockey.com/node/winpctrecord?limit=5',
   );
 
   const [pfRecord, pfRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/pfrecord',
+    'http://www.roldtimehockey.com/node/pfrecord?limit=5',
   );
 
   const [avgPfRecord, avgPfRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/avgpfrecord',
+    'http://www.roldtimehockey.com/node/avgpfrecord?limit=5',
   );
 
   const [coachRatingRecord, coachRatingRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/coachratingrecord',
+    'http://www.roldtimehockey.com/node/coachratingrecord?limit=5',
   );
 
   const [seasonWinPctRecord, seasonWinPctRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinpctrecord',
+    'http://www.roldtimehockey.com/node/seasonwinpctrecord?limit=5',
   );
 
   const [seasonWinsRecord, seasonWinsRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinsrecord',
+    'http://www.roldtimehockey.com/node/seasonwinsrecord?limit=5',
   );
 
   const [seasonPfRecord, seasonPfRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasonpfrecord',
+    'http://www.roldtimehockey.com/node/seasonpfrecord?limit=5',
   );
 
   const [seasonCoachRatingRecord, seasonCoachRatingRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasoncoachratingrecord',
+    'http://www.roldtimehockey.com/node/seasoncoachratingrecord?limit=5',
   );
 
   const winsRecordList =
     winsRecord &&
-    winsRecord.slice(0, 5).map(item => (
+    winsRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.w}
       </List.Item>
@@ -58,7 +58,7 @@ const HallOfFame = () => {
 
   const winPctRecordList =
     winPctRecord &&
-    winPctRecord.slice(0, 5).map(item => (
+    winPctRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.wpct} ({item.w}-{item.l})
       </List.Item>
@@ -66,7 +66,7 @@ const HallOfFame = () => {
 
   const pfRecordList =
     pfRecord &&
-    pfRecord.slice(0, 5).map(item => (
+    pfRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.PF}
       </List.Item>
@@ -74,7 +74,7 @@ const HallOfFame = () => {
 
   const avgPfRecordList =
     avgPfRecord &&
-    avgPfRecord.slice(0, 5).map(item => (
+    avgPfRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.avg}
       </List.Item>
@@ -82,7 +82,7 @@ const HallOfFame = () => {
 
   const coachRatingRecordList =
     coachRatingRecord &&
-    coachRatingRecord.slice(0, 5).map(item => (
+    coachRatingRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.careerCR}% ({item.total} GP)
       </List.Item>
@@ -90,7 +90,7 @@ const HallOfFame = () => {
 
   const seasonWinPctRecordList =
     seasonWinPctRecord &&
-    seasonWinPctRecord.slice(0, 5).map(item => (
+    seasonWinPctRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.wpct.toFixed(3)} ({item.wins}-{item.losses}) (
         {item.year}-{item.year + 1} {item.name})
@@ -99,7 +99,7 @@ const HallOfFame = () => {
 
   const seasonWinsRecordList =
     seasonWinsRecord &&
-    seasonWinsRecord.slice(0, 5).map(item => (
+    seasonWinsRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.wins} ({item.year}-{item.year + 1} {item.name})
       </List.Item>
@@ -107,7 +107,7 @@ const HallOfFame = () => {
 
   const seasonPfRecordList =
     seasonPfRecord &&
-    seasonPfRecord.slice(0, 5).map(item => (
+    seasonPfRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.pointsFor} ({item.year}-{item.year + 1}{' '}
         {item.name})
@@ -116,7 +116,7 @@ const HallOfFame = () => {
 
   const seasonCoachRatingRecordList =
     seasonCoachRatingRecord &&
-    seasonCoachRatingRecord.slice(0, 5).map(item => (
+    seasonCoachRatingRecord.map(item => (
       <List.Item key={item.FFname}>
         {item.FFname} - {item.coachRating.toFixed(2)}% ({item.year}-
         {item.year + 1} {item.name})
