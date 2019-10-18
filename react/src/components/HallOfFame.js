@@ -246,12 +246,12 @@ const HallOfFame = () => {
           <Grid.Row columns={2}>
             <Grid.Column>
               <Header as="h2" attached="top">
-                Best Record (Win Pct.)
+                Wins
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {!seasonWinPctRecordLoading ? (
-                    seasonWinPctRecordList
+                  {!seasonWinsRecordLoading ? (
+                    seasonWinsRecordList
                   ) : (
                     <Placeholder>
                       <Placeholder.Line />
@@ -266,12 +266,12 @@ const HallOfFame = () => {
             </Grid.Column>
             <Grid.Column>
               <Header as="h2" attached="top">
-                Best Record (Wins)
+                Best Record (Win Pct.)
               </Header>
               <Segment attached>
                 <List ordered size="big">
-                  {!seasonWinsRecordLoading ? (
-                    seasonWinsRecordList
+                  {!seasonWinPctRecordLoading ? (
+                    seasonWinPctRecordList
                   ) : (
                     <Placeholder>
                       <Placeholder.Line />
