@@ -7,7 +7,6 @@ import {
   Header,
   Segment,
   List,
-  Loader,
   Placeholder,
 } from 'semantic-ui-react';
 
@@ -132,7 +131,7 @@ const HallOfFame = () => {
         <Grid centered>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Wins
               </Header>
               <Segment attached>
@@ -152,7 +151,7 @@ const HallOfFame = () => {
               </Segment>
             </Grid.Column>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Winning Percentage (Min. 40 GP)
               </Header>
               <Segment attached>
@@ -174,7 +173,7 @@ const HallOfFame = () => {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Points For
               </Header>
               <Segment attached>
@@ -194,7 +193,7 @@ const HallOfFame = () => {
               </Segment>
             </Grid.Column>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Average Points For (Min. 40 GP)
               </Header>
               <Segment attached>
@@ -216,7 +215,7 @@ const HallOfFame = () => {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Coach Rating
               </Header>
               <Segment attached>
@@ -245,7 +244,7 @@ const HallOfFame = () => {
         <Grid centered>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Wins
               </Header>
               <Segment attached>
@@ -265,7 +264,7 @@ const HallOfFame = () => {
               </Segment>
             </Grid.Column>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Best Record (Win Pct.)
               </Header>
               <Segment attached>
@@ -287,7 +286,7 @@ const HallOfFame = () => {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Points For
               </Header>
               <Segment attached>
@@ -307,7 +306,7 @@ const HallOfFame = () => {
               </Segment>
             </Grid.Column>
             <Grid.Column>
-              <Header as="h2" attached="top">
+              <Header as="h2" attached="top" textAlign="center">
                 Coach Rating
               </Header>
               <Segment attached>
