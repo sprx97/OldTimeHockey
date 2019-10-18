@@ -52,7 +52,7 @@ export default class Leaderboard extends Component {
           {!data ? (
             <Loader active size="massive" style={{ marginTop: '150px' }} />
           ) : (
-            <Table definition sortable celled fixed>
+            <Table definition sortable celled fixed compact>
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell width={1} />
