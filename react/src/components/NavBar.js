@@ -6,64 +6,65 @@ import { Menu } from 'semantic-ui-react';
 export default class NavBar extends Component {
   state = {};
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  handleItemClick = name => this.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
 
     return (
       <Menu size="large" inverted attached>
-        <Link to="/">
-          <Menu.Item
-            name="home"
-            active={activeItem === 'home'}
-            onClick={this.handleItemClick}
-          >
+        <Link to="/" onClick={() => this.handleItemClick('home')}>
+          <Menu.Item name="home" active={activeItem === 'home'} link={false}>
             Home
           </Menu.Item>
         </Link>
-        <Link to="/standings">
+        <Link to="/standings" onClick={() => this.handleItemClick('standings')}>
           <Menu.Item
             name="standings"
             active={activeItem === 'standings'}
-            onClick={this.handleItemClick}
+            link={false}
           >
             Standings
           </Menu.Item>
         </Link>
-        <Link to="/leaderboard">
+        <Link
+          to="/leaderboard"
+          onClick={() => this.handleItemClick('leaderboard')}
+        >
           <Menu.Item
             name="leaderboard"
             active={activeItem === 'leaderboard'}
-            onClick={this.handleItemClick}
+            link={false}
           >
             Leaderboard
           </Menu.Item>
         </Link>
-        <Link to="/trophyroom">
+        <Link
+          to="/trophyroom"
+          onClick={() => this.handleItemClick('trophyRoom')}
+        >
           <Menu.Item
-            name="trophyoom"
+            name="trophyRoom"
             active={activeItem === 'trophyRoom'}
-            onClick={this.handleItemClick}
+            link={false}
           >
             Tropy Room
           </Menu.Item>
         </Link>
-        <Link to="/halloffame">
+        <Link
+          to="/halloffame"
+          onClick={() => this.handleItemClick('hallOfFame')}
+        >
           <Menu.Item
             name="hallOfFame"
             active={activeItem === 'hallOfFame'}
-            onClick={this.handleItemClick}
+            link={false}
           >
             Hall of Fame
           </Menu.Item>
         </Link>
-        <Link to="/chat">
-          <Menu.Item
-            name="chat"
-            active={activeItem === 'chat'}
-            onClick={this.handleItemClick}
-          >
+        <Link to="/chat" onClick={() => this.handleItemClick('chat')}>
+          <Menu.Item name="chat" active={activeItem === 'chat'} link={false}>
             Chat
           </Menu.Item>
         </Link>
