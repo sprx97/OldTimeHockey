@@ -5,9 +5,9 @@ import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 
 export default class Leaderboard extends Component {
   state = {
-    column: null,
+    column: 'pointsFor',
     data: null,
-    direction: null,
+    direction: 'descending',
   };
 
   getData = async () => {
