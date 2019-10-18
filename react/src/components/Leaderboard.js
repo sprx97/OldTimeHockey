@@ -57,6 +57,7 @@ export default class Leaderboard extends Component {
                 <Table.Row>
                   <Table.HeaderCell width={1} />
                   <Table.HeaderCell
+                    width={3}
                     textAlign="center"
                     sorted={column === 'leaguename' ? direction : null}
                     onClick={this.handleSort('leaguename')}
@@ -64,6 +65,7 @@ export default class Leaderboard extends Component {
                     League
                   </Table.HeaderCell>
                   <Table.HeaderCell
+                    width={6}
                     textAlign="center"
                     sorted={column === 'teamname' ? direction : null}
                     onClick={this.handleSort('teamname')}
@@ -71,6 +73,7 @@ export default class Leaderboard extends Component {
                     Team
                   </Table.HeaderCell>
                   <Table.HeaderCell
+                    width={3}
                     textAlign="center"
                     sorted={column === 'FFname' ? direction : null}
                     onClick={this.handleSort('FFname')}
@@ -78,6 +81,7 @@ export default class Leaderboard extends Component {
                     User
                   </Table.HeaderCell>
                   <Table.HeaderCell
+                    width={2}
                     textAlign="center"
                     sorted={column === 'Wins' ? direction : null}
                     onClick={this.handleSort('Wins')}
@@ -85,6 +89,7 @@ export default class Leaderboard extends Component {
                     Wins
                   </Table.HeaderCell>
                   <Table.HeaderCell
+                    width={2}
                     textAlign="center"
                     sorted={column === 'Losses' ? direction : null}
                     onClick={this.handleSort('Losses')}
@@ -92,6 +97,7 @@ export default class Leaderboard extends Component {
                     Losses
                   </Table.HeaderCell>
                   <Table.HeaderCell
+                    width={2}
                     textAlign="center"
                     sorted={column === 'pointsFor' ? direction : null}
                     onClick={this.handleSort('pointsFor')}
@@ -99,6 +105,7 @@ export default class Leaderboard extends Component {
                     PF
                   </Table.HeaderCell>
                   <Table.HeaderCell
+                    width={2}
                     textAlign="center"
                     sorted={column === 'pointsAgainst' ? direction : null}
                     onClick={this.handleSort('pointsAgainst')}
@@ -106,6 +113,7 @@ export default class Leaderboard extends Component {
                     PA
                   </Table.HeaderCell>
                   <Table.HeaderCell
+                    width={2}
                     textAlign="center"
                     sorted={column === 'coachRating' ? direction : null}
                     onClick={this.handleSort('coachRating')}
