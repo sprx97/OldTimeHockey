@@ -96,6 +96,7 @@ export default class Leaderboard extends Component {
         key: '2019p',
         text: '2019-2020 Playoffs',
         value: '2019p',
+        disabled: true,
       },
       {
         key: 'career',
