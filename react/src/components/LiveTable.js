@@ -42,42 +42,34 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                 <Table.HeaderCell
                   width={2}
                   textAlign="center"
-                  sorted={column === 'Wins' ? direction : null}
-                  onClick={handleSort('Wins')}
+                  sorted={column === 'currentWeekPF' ? direction : null}
+                  onClick={handleSort('currentWeekPF')}
                 >
-                  Wins
+                  PF Week
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   width={2}
                   textAlign="center"
-                  sorted={column === 'Losses' ? direction : null}
-                  onClick={handleSort('Losses')}
+                  sorted={column === 'regTotal' ? direction : null}
+                  onClick={handleSort('regTotal')}
                 >
-                  Losses
+                  PF Total
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   width={2}
                   textAlign="center"
-                  sorted={column === 'pointsFor' ? direction : null}
-                  onClick={handleSort('pointsFor')}
+                  sorted={column === 'PA' ? direction : null}
+                  onClick={handleSort('PA')}
                 >
-                  PF
+                  PA Week
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   width={2}
                   textAlign="center"
-                  sorted={column === 'pointsAgainst' ? direction : null}
-                  onClick={handleSort('pointsAgainst')}
+                  sorted={column === 'regPATotal' ? direction : null}
+                  onClick={handleSort('regPATotal')}
                 >
-                  PA
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  width={2}
-                  textAlign="center"
-                  sorted={column === 'coachRating' ? direction : null}
-                  onClick={handleSort('coachRating')}
-                >
-                  CR%
+                  PA Total
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -91,11 +83,10 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                     teamID,
                     teamname,
                     FFname,
-                    Wins,
-                    Losses,
-                    pointsFor,
-                    pointsAgainst,
-                    coachRating,
+                    currentWeekPF,
+                    regTotal,
+                    PA,
+                    regPATotal,
                   },
                   index,
                 ) => (
@@ -120,11 +111,10 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                       </a>
                     </Table.Cell>
                     <Table.Cell textAlign="center">{FFname}</Table.Cell>
-                    <Table.Cell textAlign="center">{Wins}</Table.Cell>
-                    <Table.Cell textAlign="center">{Losses}</Table.Cell>
-                    <Table.Cell textAlign="center">{pointsFor}</Table.Cell>
-                    <Table.Cell textAlign="center">{pointsAgainst}</Table.Cell>
-                    <Table.Cell textAlign="center">{coachRating}%</Table.Cell>
+                    <Table.Cell textAlign="center">{currentWeekPF}</Table.Cell>
+                    <Table.Cell textAlign="center">{regTotal}</Table.Cell>
+                    <Table.Cell textAlign="center">{PA}</Table.Cell>
+                    <Table.Cell textAlign="center">{regPATotal}</Table.Cell>
                   </Table.Row>
                 ),
               )}

@@ -2,9 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 
-const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
-  handleSort('pointsFor');
-
+const PlayoffsTable = ({ column, data, direction, handleSort }) => {
   return (
     <Container>
       <Segment basic>
@@ -42,16 +40,16 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                 <Table.HeaderCell
                   width={2}
                   textAlign="center"
-                  sorted={column === 'Wins' ? direction : null}
-                  onClick={handleSort('Wins')}
+                  sorted={column === 'wins' ? direction : null}
+                  onClick={handleSort('wins')}
                 >
                   Wins
                 </Table.HeaderCell>
                 <Table.HeaderCell
                   width={2}
                   textAlign="center"
-                  sorted={column === 'Losses' ? direction : null}
-                  onClick={handleSort('Losses')}
+                  sorted={column === 'losses' ? direction : null}
+                  onClick={handleSort('losses')}
                 >
                   Losses
                 </Table.HeaderCell>
@@ -71,14 +69,6 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                 >
                   PA
                 </Table.HeaderCell>
-                <Table.HeaderCell
-                  width={2}
-                  textAlign="center"
-                  sorted={column === 'coachRating' ? direction : null}
-                  onClick={handleSort('coachRating')}
-                >
-                  CR%
-                </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -91,11 +81,10 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                     teamID,
                     teamname,
                     FFname,
-                    Wins,
-                    Losses,
+                    wins,
+                    losses,
                     pointsFor,
                     pointsAgainst,
-                    coachRating,
                   },
                   index,
                 ) => (
@@ -120,11 +109,10 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                       </a>
                     </Table.Cell>
                     <Table.Cell textAlign="center">{FFname}</Table.Cell>
-                    <Table.Cell textAlign="center">{Wins}</Table.Cell>
-                    <Table.Cell textAlign="center">{Losses}</Table.Cell>
+                    <Table.Cell textAlign="center">{wins}</Table.Cell>
+                    <Table.Cell textAlign="center">{losses}</Table.Cell>
                     <Table.Cell textAlign="center">{pointsFor}</Table.Cell>
                     <Table.Cell textAlign="center">{pointsAgainst}</Table.Cell>
-                    <Table.Cell textAlign="center">{coachRating}%</Table.Cell>
                   </Table.Row>
                 ),
               )}
@@ -136,4 +124,4 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
   );
 };
 
-export default RegularSeasonTable;
+export default PlayoffsTable;

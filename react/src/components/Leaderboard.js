@@ -3,12 +3,40 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Container, Segment, Dropdown, Grid } from 'semantic-ui-react';
 import RegularSeasonTable from './RegularSeasonTable';
+import PlayoffsTable from './PlayoffsTable';
+import CareerRegularSeasonTable from './CareerRegularSeasonTable';
+import CareerPlayoffsTable from './CareerPlayoffsTable';
+import LiveTable from './LiveTable';
+
+const regularSeason = [
+  '2012',
+  '2013',
+  '2014',
+  '2015',
+  '2016',
+  '2017',
+  '2018',
+  '2019',
+];
+const playoffs = [
+  '2012p',
+  '2013p',
+  '2014p',
+  '2015p',
+  '2016p',
+  '2017p',
+  '2018p',
+  '2019p',
+];
+const careerRegularSeason = ['career'];
+const careerPlayoffs = ['careerp'];
+const live = ['week'];
 
 export default class Leaderboard extends Component {
   state = {
-    column: 'pointsFor',
+    column: 'currentWeekPF',
     data: null,
-    query: '2019',
+    query: 'week',
     direction: 'descending',
     dropdownOptions: [
       {
@@ -127,9 +155,38 @@ export default class Leaderboard extends Component {
   onChange = (event, result) => {
     const { value } = result || event.target;
     this.setState({ query: value });
+
+    setTimeout(() => {
+      this.setDefaultSort();
+    }, 10);
+
     setTimeout(() => {
       this.getData();
-    }, 50);
+    }, 10);
+  };
+
+  setDefaultSort = () => {
+    if (regularSeason.indexOf(this.state.query) > -1) {
+      this.setState({
+        column: 'pointsFor',
+      });
+    } else if (playoffs.indexOf(this.state.query) > -1) {
+      this.setState({
+        column: 'wins',
+      });
+    } else if (careerRegularSeason.indexOf(this.state.query) > -1) {
+      this.setState({
+        column: 'PF',
+      });
+    } else if (careerPlayoffs.indexOf(this.state.query) > -1) {
+      this.setState({
+        column: 'pct',
+      });
+    } else if (live.indexOf(this.state.query) > -1) {
+      this.setState({
+        column: 'currentWeekPF',
+      });
+    }
   };
 
   handleSort = clickedColumn => () => {
@@ -174,12 +231,56 @@ export default class Leaderboard extends Component {
               <Grid.Column />
             </Grid.Row>
           </Grid>
-          <RegularSeasonTable
-            column={column}
-            data={data}
-            direction={direction}
-            handleSort={this.handleSort}
-          />
+          {regularSeason.indexOf(this.state.query) > -1 ? (
+            <RegularSeasonTable
+              column={column}
+              data={data}
+              direction={direction}
+              handleSort={this.handleSort}
+            />
+          ) : (
+            ''
+          )}
+          {playoffs.indexOf(this.state.query) > -1 ? (
+            <PlayoffsTable
+              column={column}
+              data={data}
+              direction={direction}
+              handleSort={this.handleSort}
+            />
+          ) : (
+            ''
+          )}
+          {careerRegularSeason.indexOf(this.state.query) > -1 ? (
+            <CareerRegularSeasonTable
+              column={column}
+              data={data}
+              direction={direction}
+              handleSort={this.handleSort}
+            />
+          ) : (
+            ''
+          )}
+          {careerPlayoffs.indexOf(this.state.query) > -1 ? (
+            <CareerPlayoffsTable
+              column={column}
+              data={data}
+              direction={direction}
+              handleSort={this.handleSort}
+            />
+          ) : (
+            ''
+          )}
+          {live.indexOf(this.state.query) > -1 ? (
+            <LiveTable
+              column={column}
+              data={data}
+              direction={direction}
+              handleSort={this.handleSort}
+            />
+          ) : (
+            ''
+          )}
         </Segment>
       </Container>
     );
