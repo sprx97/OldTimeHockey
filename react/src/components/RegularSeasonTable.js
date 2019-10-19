@@ -103,6 +103,7 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                       <a
                         href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
                         target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {leaguename}
                       </a>
@@ -111,6 +112,7 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                       <a
                         href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
                         target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {teamname}
                       </a>
