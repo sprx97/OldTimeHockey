@@ -166,7 +166,7 @@ export default class Leaderboard extends Component {
                   search
                   selection
                   options={dropdownOptions}
-                  defaultValue="This Week (Live)"
+                  defaultValue={this.state.query}
                   wrapSelection={false}
                   onChange={this.onChange}
                 />
