@@ -5,9 +5,9 @@ import { Container, Segment, Table, Loader, Header } from 'semantic-ui-react';
 
 export default class Standings extends Component {
   state = {
-    column: null,
+    column: 'PF',
     data: null,
-    direction: null,
+    direction: 'descending',
   };
 
   getData = async () => {
