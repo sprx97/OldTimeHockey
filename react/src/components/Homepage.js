@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { Container, Segment, Tab } from 'semantic-ui-react';
+import { Container, Segment, Tab, Header, Grid } from 'semantic-ui-react';
 import Banner from './Banner';
 
 const panes = [
@@ -226,38 +226,51 @@ const Homepage = () => {
     <div>
       <Banner />
       <Container>
-        <Segment basic textAlign="left">
-          <div>
-            <center>
-              <h1>About</h1>
-            </center>
-            <p>
-              OldTimeHockey is a fantasy hockey "super league" run by redditors
-              using <a href="http://www.fleaflicker.com/nhl">fleaflicker</a>,
-              featuring 224 teams sorted into 16 leagues across 4 divisions.
-              English Premier League style relegation dictates movement between
-              divisions each season.
-            </p>
-            <h1>Rules</h1>
-            <h3>
-              <a href="https://www.reddit.com/r/OldTimeHockey/wiki/index#wiki_oth_constitution">
-                OTH Constitution
-              </a>
-            </h3>
-            <h1>Contacts</h1>
-            <p>
-              League Commissioner:{' '}
-              <a href="http://www.reddit.com/u/NextLevelFantasy">
-                NextLevelFantasy
-              </a>
-              <br />
-              Website Administator:{' '}
-              <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>
-            </p>
-            <br />
-          </div>
-          <h1>History</h1>
-          <Tab panes={panes} />
+        <Segment basic>
+          <Grid centered>
+            <Grid.Row columns={1}>
+              <Grid.Column>
+                <Header as="h1" textAlign="center">
+                  About
+                </Header>
+                OldTimeHockey is a fantasy hockey super league run by redditors
+                using <a href="http://www.fleaflicker.com/nhl">Fleaflicker</a>{' '}
+                featuring 224 teams sorted into 16 leagues across 4 divisions.
+                English Premier League style relegation dictates movement
+                between divisions each season.
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Header as="h1" textAlign="center">
+                  Rules
+                </Header>
+                <Header as="h3" textAlign="center">
+                  <a href="https://www.reddit.com/r/OldTimeHockey/wiki/index#wiki_oth_constitution">
+                    OTH Constitution
+                  </a>
+                </Header>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h1" textAlign="center">
+                  Contacts
+                </Header>
+                <center>
+                  League Commissioner:{' '}
+                  <a href="http://www.reddit.com/u/NextLevelFantasy">
+                    NextLevelFantasy
+                  </a>
+                  <br />
+                  Website Administators:{' '}
+                  <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>, <a href="http://www.reddit.com/u/phillycheeeeez">phillycheeeeez</a>
+                </center>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <Header as="h1" textAlign="center">
+            History
+          </Header>
+          <Tab panes={panes} menu={{ attached: true, tabular: true, style: { display: "flex", justifyContent: "center" } }}/>
         </Segment>
       </Container>
     </div>
