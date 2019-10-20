@@ -11,16 +11,16 @@ const panes = [
         2019-2020: 224 teams, 16 leagues, 4 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b>
+            <b>Division 1 Champion:</b> TBD
           </li>
           <li>
-            <b>Points For Champion:</b>
+            <b>Points For Champion:</b> TBD
           </li>
           <li>
-            <b>Coaches Rating Champion:</b>
+            <b>Coaches Rating Champion:</b> TBD
           </li>
           <li>
-            <b>Woppa Cup Champion:</b>
+            <b>Woppa Cup Champion:</b> TBD
           </li>
           <u>Rule Changes</u>
           <ul>
@@ -229,48 +229,52 @@ const Homepage = () => {
         <Segment basic>
           <Grid centered>
             <Grid.Row columns={1}>
-              <Grid.Column>
-                <Header as="h1" textAlign="center">
-                  About
-                </Header>
+              <Grid.Column textAlign="center">
+                <Header as="h1">About</Header>
                 OldTimeHockey is a fantasy hockey super league run by redditors
-                using <a href="http://www.fleaflicker.com/nhl">Fleaflicker</a>{' '}
+                using <a href="http://www.fleaflicker.com/nhl">
+                  Fleaflicker
+                </a>{' '}
                 featuring 224 teams sorted into 16 leagues across 4 divisions.
                 English Premier League style relegation dictates movement
                 between divisions each season.
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={2}>
-              <Grid.Column>
-                <Header as="h1" textAlign="center">
-                  Rules
-                </Header>
-                <Header as="h3" textAlign="center">
+              <Grid.Column textAlign="center">
+                <Header as="h1">Rules</Header>
+                <Header as="h3">
                   <a href="https://www.reddit.com/r/OldTimeHockey/wiki/index#wiki_oth_constitution">
                     OTH Constitution
                   </a>
                 </Header>
               </Grid.Column>
-              <Grid.Column>
-                <Header as="h1" textAlign="center">
-                  Contacts
-                </Header>
-                <center>
-                  League Commissioner:{' '}
-                  <a href="http://www.reddit.com/u/NextLevelFantasy">
-                    NextLevelFantasy
-                  </a>
-                  <br />
-                  Website Administators:{' '}
-                  <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>, <a href="http://www.reddit.com/u/phillycheeeeez">phillycheeeeez</a>
-                </center>
+              <Grid.Column textAlign="center">
+                <Header as="h1">Contacts</Header>
+                League Commissioner:{' '}
+                <a href="http://www.reddit.com/u/NextLevelFantasy">
+                  NextLevelFantasy
+                </a>
+                <br />
+                Website Administators:{' '}
+                <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>,{' '}
+                <a href="http://www.reddit.com/u/phillycheeeeez">
+                  phillycheeeeez
+                </a>
               </Grid.Column>
             </Grid.Row>
           </Grid>
           <Header as="h1" textAlign="center">
             History
           </Header>
-          <Tab panes={panes} menu={{ attached: true, tabular: true, style: { display: "flex", justifyContent: "center" } }}/>
+          <Tab
+            panes={panes}
+            menu={{
+              attached: true,
+              tabular: true,
+              style: { display: 'flex', justifyContent: 'center' },
+            }}
+          />
         </Segment>
       </Container>
     </div>
