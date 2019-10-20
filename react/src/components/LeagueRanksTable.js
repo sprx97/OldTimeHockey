@@ -41,7 +41,7 @@ export default class LeagueRanksTable extends Component {
               <Table definition celled fixed compact>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell width={1} />
+                    <Table.HeaderCell width={2} />
                     <Table.HeaderCell
                       width={4}
                       textAlign="center"
