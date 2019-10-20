@@ -76,8 +76,13 @@ export default class LeagueStandingsTable extends Component {
                     ) => (
                       <Table.Row
                         key={teamID}
-                        positive={index < 6 ? this.props.promotion : false}
-                        negative={index > 11 ? this.props.relegation : false}
+                        style={
+                          index < 6 && this.props.promotion
+                            ? { backgroundColor: '#BFFFBF' }
+                            : index > 11 && this.props.relegation
+                            ? { backgroundColor: '#FFBFBF' }
+                            : { backgroundColor: '' }
+                        }
                       >
                         <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                         <Table.Cell textAlign="center">
