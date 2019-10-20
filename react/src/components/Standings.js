@@ -1,115 +1,186 @@
 /* eslint-disable */
 import _ from 'lodash';
-import React, { Component } from 'react';
-import { Container, Segment, Table, Loader, Header } from 'semantic-ui-react';
+import React from 'react';
+import { Container, Segment, Header, Divider, Grid } from 'semantic-ui-react';
+import LeagueRanksTable from './LeagueRanksTable';
+import LeagueStandingsTable from './LeagueStandingsTable';
 
-export default class Standings extends Component {
-  state = {
-    column: 'PF',
-    data: null,
-    direction: 'descending',
-  };
+const Standings = () => {
+  return (
+    <Container fluid>
+      <Segment basic>
+        <Header as="h1" textAlign="center" block>
+          League Ranks
+        </Header>
+        <Grid centered>
+          <Grid.Row columns={3}>
+            <Grid.Column width={5}>
+              <LeagueRanksTable query="http://www.roldtimehockey.com/node/leagueranks?year=2019" />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Divider hidden />
+        <Header as="h1" textAlign="center" block>
+          Division 1
+        </Header>
+        <Grid centered>
+          <Grid.Row columns={3}>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Gretzky"
+                leagueID="12086"
+                imgSrc="/images/jerseys/Gretzky.png"
+                promotion={true}
+                relegation={true}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Divider hidden />
+        <Header as="h1" textAlign="center" block>
+          Division 2
+        </Header>
+        <Grid centered>
+          <Grid.Row columns={3}>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Jones-Allen"
+                leagueID="12087"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Roy"
+                leagueID="12088"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Hasek"
+                leagueID="12089"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Header as="h1" textAlign="center" block>
+          Division 3
+        </Header>
+        <Grid centered>
+          <Grid.Row columns={3}>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Yzerman"
+                leagueID="12090"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Jagr"
+                leagueID="12091"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Lemieux"
+                leagueID="12092"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Dionne"
+                leagueID="12093"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Howe"
+                leagueID="12094"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Header as="h1" textAlign="center" block>
+          Division 4
+        </Header>
+        <Grid centered>
+          <Grid.Row columns={3}>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Borque"
+                leagueID="12095"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Orr"
+                leagueID="12096"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Lidstrom"
+                leagueID="12097"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Niedermayer"
+                leagueID="12098"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Leetch"
+                leagueID="12099"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Chelios"
+                leagueID="12100"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <LeagueStandingsTable
+                leagueName="Pronger"
+                leagueID="12101"
+                promotion={true}
+                relegation={false}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+    </Container>
+  );
+};
 
-  getData = async () => {
-    const res = await fetch(
-      'http://www.roldtimehockey.com/node/leagueranks?year=2019',
-    );
-    const leaders = await res.json();
-    this.setState({
-      data: leaders,
-    });
-  };
-
-  componentDidMount() {
-    this.getData();
-  }
-
-  handleSort = clickedColumn => () => {
-    const { column, data, direction } = this.state;
-
-    if (column !== clickedColumn) {
-      this.setState({
-        column: clickedColumn,
-        data: _.sortBy(data, [clickedColumn]),
-        direction: 'ascending',
-      });
-
-      return;
-    }
-
-    this.setState({
-      data: data.reverse(),
-      direction: direction === 'ascending' ? 'descending' : 'ascending',
-    });
-  };
-
-  render() {
-    const { column, data, direction } = this.state;
-
-    return (
-      <Container fluid>
-        <Segment basic>
-          {!data ? (
-            <Loader active size="massive" style={{ marginTop: '150px' }} />
-          ) : (
-            <center>
-              <Container>
-                <Header as="h1" textAlign="center" block>
-                  League Ranks
-                </Header>
-              </Container>
-              <Table definition sortable celled fixed compact collapsing>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell width={1} />
-                    <Table.HeaderCell
-                      width={4}
-                      textAlign="center"
-                      sorted={column === 'name' ? direction : null}
-                      onClick={this.handleSort('name')}
-                    >
-                      League
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={4}
-                      textAlign="center"
-                      sorted={column === 'PF' ? direction : null}
-                      onClick={this.handleSort('PF')}
-                    >
-                      Total PF
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={4}
-                      textAlign="center"
-                      sorted={column === 'avgPF' ? direction : null}
-                      onClick={this.handleSort('avgPF')}
-                    >
-                      Avg PF
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {_.map(data, ({ id, name, PF, avgPF }, index) => (
-                    <Table.Row key={id}>
-                      <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                      <Table.Cell textAlign="center">
-                        <a
-                          href={`https://www.fleaflicker.com/nhl/leagues/${id}`}
-                          target="_blank"
-                        >
-                          {name}
-                        </a>
-                      </Table.Cell>
-                      <Table.Cell textAlign="center">{PF}</Table.Cell>
-                      <Table.Cell textAlign="center">{avgPF}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            </center>
-          )}
-        </Segment>
-      </Container>
-    );
-  }
-}
+export default Standings;
