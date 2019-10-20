@@ -39,14 +39,14 @@ export default class LeagueStandingsTable extends Component {
             ''
           ) : (
             <center>
-              <Header as="h3" textAlign="center">
-                <Image src={this.props.imgSrc} />
+              <Header as="h2" textAlign="center">
+                <Image src={this.props.imgSrc} />{' '}
                 <a
                   href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${year}`}
                   target="_blank"
                 >
                   {this.props.leagueName}
-                </a>
+                </a>{' '}
                 <Image src={this.props.imgSrc} />
               </Header>
               <Table definition celled fixed compact>
