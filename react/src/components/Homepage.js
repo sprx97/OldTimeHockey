@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { Container, Segment, Tab } from 'semantic-ui-react';
-import Header from './Header';
+import Banner from './Banner';
 
 const panes = [
   {
@@ -224,11 +224,13 @@ const panes = [
 const Homepage = () => {
   return (
     <div>
-      <Header />
+      <Banner />
       <Container>
         <Segment basic textAlign="left">
           <div>
-            <h1>About</h1>
+            <center>
+              <h1>About</h1>
+            </center>
             <p>
               OldTimeHockey is a fantasy hockey "super league" run by redditors
               using <a href="http://www.fleaflicker.com/nhl">fleaflicker</a>,
@@ -242,8 +244,6 @@ const Homepage = () => {
                 OTH Constitution
               </a>
             </h3>
-            <h1>History</h1>
-            <Tab panes={panes} />
             <h1>Contacts</h1>
             <p>
               League Commissioner:{' '}
@@ -256,6 +256,8 @@ const Homepage = () => {
             </p>
             <br />
           </div>
+          <h1>History</h1>
+          <Tab panes={panes} />
         </Segment>
       </Container>
     </div>
