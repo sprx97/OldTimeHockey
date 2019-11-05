@@ -316,7 +316,8 @@ def on_message(message):
 			db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 			cursor = db.cursor()
 			team = message.content.split(" ")[1].lower()
-			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID FROM Teams AS me " + \
+			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID, me.wins, me.losses, opp.wins, opp.losses " + \
+				       "FROM Teams AS me " + \
 				       "INNER JOIN Teams AS opp ON me.CurrOpp=opp.teamID " + \
 				       "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
 				       "INNER JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
@@ -327,7 +328,7 @@ def on_message(message):
 			if len(results) == 0:
 				yield from client.send_message(message.channel, "User " + team + " not found.");
 			else:
-				yield from client.send_message(message.channel, "%s %0.2f, %s %0.2f https://www.fleaflicker.com/nhl/leagues/%d/scores/%d" % (results[0][0], results[0][1], results[0][2], results[0][3], results[0][4], results[0][5]))
+				yield from client.send_message(message.channel, "%s (%d-%d) %0.2f, %s (%d-%d) %0.2f https://www.fleaflicker.com/nhl/leagues/%d/scores/%d" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
 
 			cursor.close()
 			db.close()
