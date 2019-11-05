@@ -13,7 +13,6 @@ import Config
 
 unclaimed = {}
 inactives = {}
-updated = True
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -84,11 +83,8 @@ def checkAllLeagues():
 	timefile = open(Config.config["srcroot"] + "scripts/DiscordBot/last_inactives_timestamp.txt", "r+")
 	lasttime = int(timefile.read())
 	newtime = int(time.time())
-	updated = True
 	if (newtime-lasttime) < 604800:
-		updated = False
-		return
-
+		return False # Limit to posting this once a week.
 	timefile.seek(0)
 	timefile.write(str(newtime))
 
@@ -99,6 +95,8 @@ def checkAllLeagues():
 	leagues = cursor.fetchall()
 	for league in leagues:
 		checkInactives(league)
+
+	return True
 
 if __name__ == "__main__":
 	checkAllLeagues()
