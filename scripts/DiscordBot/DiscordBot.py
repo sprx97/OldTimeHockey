@@ -180,7 +180,7 @@ def check_inactives():
 
 			yield from client.send_message(bot_channel, body)
 
-		yield from asyncio.sleep(7*86400)
+		yield from asyncio.sleep(43200)
 
 @asyncio.coroutine
 def check_trades():
