@@ -13,6 +13,7 @@ import Config
 
 unclaimed = {}
 inactives = {}
+updated = True
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -83,7 +84,9 @@ def checkAllLeagues():
 	timefile = open(Config.config["srcroot"] + "scripts/DiscordBot/last_inactives_timestamp.txt", "r+")
 	lasttime = int(timefile.read())
 	newtime = int(time.time())
+	updated = True
 	if (newtime-lasttime) < 604800:
+		updated = False
 		return
 
 	timefile.seek(0)

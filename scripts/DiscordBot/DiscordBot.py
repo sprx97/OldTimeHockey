@@ -154,6 +154,8 @@ def check_inactives():
 	# repeat the task every week
 	while not client.is_closed:		
 		CheckInactives.checkAllLeagues()
+		if CheckInactives.updated == False:
+			continue
 		unclaimed = CheckInactives.unclaimed
 		inactives = CheckInactives.inactives
 		if len(inactives) == 0 and len(unclaimed) == 0:
@@ -328,7 +330,7 @@ def on_message(message):
 			if len(results) == 0:
 				yield from client.send_message(message.channel, "User " + team + " not found.");
 			else:
-				yield from client.send_message(message.channel, "%s (%d-%d) %0.2f, %s (%d-%d) %0.2f https://www.fleaflicker.com/nhl/leagues/%d/scores/%d" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
+				yield from client.send_message(message.channel, "%s (%d-%d) %0.2f\n%s (%d-%d) %0.2f\nhttps://www.fleaflicker.com/nhl/leagues/%d/scores/%d" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
 
 			cursor.close()
 			db.close()
