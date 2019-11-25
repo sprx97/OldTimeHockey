@@ -153,7 +153,7 @@ def check_inactives():
 
 	# repeat the task every week
 	while not client.is_closed:		
-		updated = CheckInactives.checkAllLeagues()
+		updated = CheckInactives.checkAllLeagues(False) # no force
 		unclaimed = CheckInactives.unclaimed
 		inactives = CheckInactives.inactives
 		if not updated:
@@ -284,7 +284,7 @@ def on_message(message):
 			if channel.name == "mods":
 				bot_channel = channel
 
-		CheckInactives.checkAllLeagues()
+		CheckInactives.checkAllLeagues(True) # force
 		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
 			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
 		else:

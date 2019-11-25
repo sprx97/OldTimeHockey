@@ -79,11 +79,11 @@ def sendEmail():
 		print("Error sending inactives email.")
 		print(e, e.reason())
 
-def checkAllLeagues():
+def checkAllLeagues(force = False):
 	timefile = open(Config.config["srcroot"] + "scripts/DiscordBot/last_inactives_timestamp.txt", "r+")
 	lasttime = int(timefile.read())
 	newtime = int(time.time())
-	if (newtime-lasttime) < 604800:
+	if (newtime-lasttime) < 604800 and not force:
 		return False # Limit to posting this once a week.
 	timefile.seek(0)
 	timefile.write(str(newtime))
@@ -99,5 +99,5 @@ def checkAllLeagues():
 	return True
 
 if __name__ == "__main__":
-	checkAllLeagues()
+	checkAllLeagues(True)
 	sendEmail()
