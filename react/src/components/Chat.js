@@ -7,7 +7,7 @@ const Chat = () => {
     <Segment basic>
       <center>
         <Image
-          src="/images/discord.png"
+          src="/images/logos/discord.png"
           as="a"
           href="https://discord.gg/47KRYxA"
           target="_blank"
