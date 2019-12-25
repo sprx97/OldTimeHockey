@@ -251,16 +251,18 @@ const Homepage = () => {
               </Grid.Column>
               <Grid.Column textAlign="center">
                 <Header as="h1">Contacts</Header>
-                League Commissioner:{' '}
+                League Founder:{' '}
                 <a href="http://www.reddit.com/u/NextLevelFantasy">
                   NextLevelFantasy
                 </a>
                 <br />
+                League Commissioners:{' '}
+                <a href="http://www.reddit.com/u/sprx97">SPRX97</a>,{' '}
+                <a href="http://www.reddit.com/u/TwoPlanksPrevail">Planks</a>
+                <br />
                 Website Administators:{' '}
                 <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>,{' '}
-                <a href="http://www.reddit.com/u/phillycheeeeez">
-                  phillycheeeeez
-                </a>
+                <a href="http://www.reddit.com/u/phillycheeeeez">phillycheeeeez</a>
               </Grid.Column>
             </Grid.Row>
           </Grid>
