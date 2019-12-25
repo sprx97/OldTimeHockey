@@ -6,6 +6,7 @@ from lxml import html
 import smtplib
 from email.mime.text import MIMEText
 import sys
+import time
 
 sys.path.append("../")
 import Config
@@ -78,7 +79,15 @@ def sendEmail():
 		print("Error sending inactives email.")
 		print(e, e.reason())
 
-def checkAllLeagues():
+def checkAllLeagues(force = False):
+	timefile = open(Config.config["srcroot"] + "scripts/DiscordBot/last_inactives_timestamp.txt", "r+")
+	lasttime = int(timefile.read())
+	newtime = int(time.time())
+	if (newtime-lasttime) < 604800 and not force:
+		return False # Limit to posting this once a week.
+	timefile.seek(0)
+	timefile.write(str(newtime))
+
 	db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 	cursor = db.cursor()
 
@@ -87,6 +96,8 @@ def checkAllLeagues():
 	for league in leagues:
 		checkInactives(league)
 
+	return True
+
 if __name__ == "__main__":
-	checkAllLeagues()
+	checkAllLeagues(True)
 	sendEmail()

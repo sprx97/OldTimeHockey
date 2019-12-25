@@ -79,7 +79,7 @@ emojis["PIT"] = "<:PIT:269315504324214786>"
 emojis["STL"] = "<:STL:269315296328679436>"
 emojis["SJS"] = "<:SJS:269315542509289472>"
 emojis["TBL"] = "<:TBL:269315471919022090>"
-emojis["TOR"] = "<:TOR:269315465069723648>"
+emojis["TOR"] = "<:TOR:645064999659896842>"
 emojis["VAN"] = "<:VAN:269315315194658818>"
 emojis["VGK"] = "<:VGK:363836502859448320>"
 emojis["WSH"] = "<:WSH:269327070977458181>"
@@ -153,10 +153,12 @@ def check_inactives():
 
 	# repeat the task every week
 	while not client.is_closed:		
-		CheckInactives.checkAllLeagues()
+		updated = CheckInactives.checkAllLeagues(False) # no force
 		unclaimed = CheckInactives.unclaimed
 		inactives = CheckInactives.inactives
-		if len(inactives) == 0 and len(unclaimed) == 0:
+		if not updated:
+			pass
+		elif len(inactives) == 0 and len(unclaimed) == 0:
 			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
 		else:
 			body = ""
@@ -180,7 +182,7 @@ def check_inactives():
 
 			yield from client.send_message(bot_channel, body)
 
-		yield from asyncio.sleep(7*86400)
+		yield from asyncio.sleep(43200)
 
 @asyncio.coroutine
 def check_trades():
@@ -282,7 +284,7 @@ def on_message(message):
 			if channel.name == "mods":
 				bot_channel = channel
 
-		CheckInactives.checkAllLeagues()
+		CheckInactives.checkAllLeagues(True) # force
 		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
 			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
 		else:
@@ -316,7 +318,8 @@ def on_message(message):
 			db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 			cursor = db.cursor()
 			team = message.content.split(" ")[1].lower()
-			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID FROM Teams AS me " + \
+			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID, me.wins, me.losses, opp.wins, opp.losses " + \
+				       "FROM Teams AS me " + \
 				       "INNER JOIN Teams AS opp ON me.CurrOpp=opp.teamID " + \
 				       "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
 				       "INNER JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
@@ -327,7 +330,7 @@ def on_message(message):
 			if len(results) == 0:
 				yield from client.send_message(message.channel, "User " + team + " not found.");
 			else:
-				yield from client.send_message(message.channel, "%s %0.2f, %s %0.2f https://www.fleaflicker.com/nhl/leagues/%d/scores/%d" % (results[0][0], results[0][1], results[0][2], results[0][3], results[0][4], results[0][5]))
+				yield from client.send_message(message.channel, "%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**\n<https://www.fleaflicker.com/nhl/leagues/%d/scores/%d>" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
 
 			cursor.close()
 			db.close()
