@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
 export default class NavBar extends Component {
-  state = {};
+  state = { activeItem: location.pathname }
 
   handleItemClick = name => this.setState({ activeItem: name });
 
@@ -13,15 +13,15 @@ export default class NavBar extends Component {
 
     return (
       <Menu size="large" inverted attached>
-        <Link to="/" onClick={() => this.handleItemClick('home')}>
-          <Menu.Item name="home" active={activeItem === 'home'} link={false}>
+        <Link to="/" onClick={() => this.handleItemClick('/')}>
+          <Menu.Item name="home" active={activeItem === '/'} link={false}>
             Home
           </Menu.Item>
         </Link>
-        <Link to="/standings" onClick={() => this.handleItemClick('standings')}>
+        <Link to="/standings" onClick={() => this.handleItemClick('/standings')}>
           <Menu.Item
             name="standings"
-            active={activeItem === 'standings'}
+            active={activeItem === '/standings'}
             link={false}
           >
             Standings
@@ -29,11 +29,11 @@ export default class NavBar extends Component {
         </Link>
         <Link
           to="/leaderboard"
-          onClick={() => this.handleItemClick('leaderboard')}
+          onClick={() => this.handleItemClick('/leaderboard')}
         >
           <Menu.Item
             name="leaderboard"
-            active={activeItem === 'leaderboard'}
+            active={activeItem === '/leaderboard'}
             link={false}
           >
             Leaderboard
@@ -41,11 +41,11 @@ export default class NavBar extends Component {
         </Link>
         <Link
           to="/trophyroom"
-          onClick={() => this.handleItemClick('trophyRoom')}
+          onClick={() => this.handleItemClick('/trophyroom')}
         >
           <Menu.Item
             name="trophyRoom"
-            active={activeItem === 'trophyRoom'}
+            active={activeItem === '/trophyroom'}
             link={false}
           >
             Tropy Room
@@ -53,18 +53,18 @@ export default class NavBar extends Component {
         </Link>
         <Link
           to="/halloffame"
-          onClick={() => this.handleItemClick('hallOfFame')}
+          onClick={() => this.handleItemClick('/halloffame')}
         >
           <Menu.Item
             name="hallOfFame"
-            active={activeItem === 'hallOfFame'}
+            active={activeItem === '/halloffame'}
             link={false}
           >
             Hall of Fame
           </Menu.Item>
         </Link>
-        <Link to="/chat" onClick={() => this.handleItemClick('chat')}>
-          <Menu.Item name="chat" active={activeItem === 'chat'} link={false}>
+        <Link to="/chat" onClick={() => this.handleItemClick('/chat')}>
+          <Menu.Item name="chat" active={activeItem === '/chat'} link={false}>
             Chat
           </Menu.Item>
         </Link>
