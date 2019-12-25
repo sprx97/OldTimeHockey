@@ -5,10 +5,10 @@ import Banner from './Banner';
 
 const panes = [
   {
-    menuItem: '2019',
+    menuItem: '2019-2020',
     render: () => (
       <Tab.Pane>
-        2019-2020: 224 teams, 16 leagues, 4 divisions
+        224 teams, 16 leagues, 4 divisions
         <ul>
           <li>
             <b>Division 1 Champion:</b> TBD
@@ -30,7 +30,7 @@ const panes = [
             </li>
             <li>+/- completely eliminated</li>
             <li>OT Losses now worth 1 point</li>
-            <li>Saves switched from .24 to .25</li>
+            <li>Saves increased from .24 to .25</li>
             <li>Goalies now receive SHP and PPP like skaters</li>
             <li>Mid-season promotions when D3 and higher teams go inactive</li>
           </ul>
@@ -39,22 +39,26 @@ const panes = [
     ),
   },
   {
-    menuItem: '2018',
+    menuItem: '2018-2019',
     render: () => (
       <Tab.Pane>
-        2018-2019: 224 teams, 16 leagues, 4 divisions
+        224 teams, 16 leagues, 4 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b> ch1zzle
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/11371/teams/59124?season=2018">ch1zzle</a>
           </li>
           <li>
-            <b>Points For Champion:</b> russtyj - 5477.09
+            <b>Points For Champion: </b> 
+            <a href="https://www.fleaflicker.com/nhl/leagues/11372/teams/59258?season=2018">russtyj</a> - 5477.09
           </li>
           <li>
-            <b>Coaches Rating Champion:</b> sickboy1965 - 98.86%
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/11348/teams/59007?season=2018">sickboy1965</a> - 98.86%
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> yaheardwperd
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/11381/teams/59349?season=2018">yaheardwperd</a>
           </li>
           <u>Rule Changes</u>
           <ul>
@@ -65,26 +69,30 @@ const panes = [
     ),
   },
   {
-    menuItem: '2017',
+    menuItem: '2017-2018',
     render: () => (
       <Tab.Pane>
-        2017-2018: 224 teams, 16 leagues, 4 divisions
+        224 teams, 16 leagues, 4 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b> SleepTalkerz
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/10030/teams/54417?season=2017">SleepTalkerz</a>
           </li>
           <li>
-            <b>Points For Champion:</b> SPRX97 - 5193.49
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/10032/teams/54543?season=2017">SPRX97</a> - 5193.49
           </li>
           <li>
-            <b>Coaches Rating Champion:</b> LAGunsHockey - 98.37%
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/10032/teams/54491?season=2017">LAGunsHockey</a> - 98.37%
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> akacesfan
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/10036/teams/54435?season=2017">akacesfan</a>
           </li>
           <u>Rule Changes</u>
           <ul>
-            <li>+/- switched from 1 to .25</li>
+            <li>+/- decreased from 1 to .25</li>
             <li>IR slots switched to IR+</li>
           </ul>
         </ul>
@@ -92,22 +100,26 @@ const panes = [
     ),
   },
   {
-    menuItem: '2016',
+    menuItem: '2016-2017',
     render: () => (
       <Tab.Pane>
-        2016-2017: 224 teams, 16 leagues, 4 divisions
+        224 teams, 16 leagues, 4 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b> Noddan
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/9001/teams/48833?season=2016">Noddan</a>
           </li>
           <li>
-            <b>Points For Champion:</b> Coyle1096 - 5080.32
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/9011/teams/49625?season=2016">Coyle1096</a> - 5080.32
           </li>
           <li>
-            <b>Coaches Rating Champion:</b> Woppa1 - 96.54%
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/9001/teams/48839?season=2016">Woppa</a> - 96.54%
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> Boboombang
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/9013/teams/49894?season=2016">Boboombang</a>
           </li>
           <u>Rule Changes</u>
           <p>None</p>
@@ -116,28 +128,32 @@ const panes = [
     ),
   },
   {
-    menuItem: '2015',
+    menuItem: '2015-2016',
     render: () => (
       <Tab.Pane>
-        2015-2016: 224 teams, 16 leagues, 3 divisions
+        224 teams, 16 leagues, 3 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b> Woppa1
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/7526/teams/41604?season=2015">Woppa</a>
           </li>
           <li>
-            <b>Points For Champion:</b> Woppa1 - 4875.55
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/7526/teams/41604?season=2015">Woppa</a> - 4875.55
           </li>
           <li>
-            <b>Coaches Rating Champion:</b> racer4 - 97.58%
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/7531/teams/41668?season=2015">racer4</a> - 97.58%
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> SleepTalkerz
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/7529/teams/41316?season=2015">SleepTalkerz</a>
           </li>
           <u>Rule Changes</u>
           <ul>
-            <li>Wins and losses switched from 4 and -2 to 3 and -1.5.</li>
-            <li>Shutouts switched from 3 to 2.5.</li>
-            <li>Saves switched from .2 to .24.</li>
+            <li>Wins and losses decreased from 4 and -2 to 3 and -1.5.</li>
+            <li>Shutouts decreased from 3 to 2.5.</li>
+            <li>Saves increased from .2 to .24.</li>
             <li>Future relegation planned for 4 tiers instead of 3.</li>
           </ul>
         </ul>
@@ -145,27 +161,31 @@ const panes = [
     ),
   },
   {
-    menuItem: '2014',
+    menuItem: '2014-2015',
     render: () => (
       <Tab.Pane>
-        2014-2015: 196 teams, 14 leagues, 3 divisions
+        196 teams, 14 leagues, 3 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b> Teratic
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/5709/teams/32448?season=2014">Teratic</a>
           </li>
           <li>
-            <b>Points For Champion:</b> InvisibleTaco - 5184.9
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/5710/teams/32638?season=2014">InvisibleTaco</a> - 5184.9
           </li>
           <li>
-            <b>Coaches Rating Champion:</b> concini - 96.11%
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/5709/teams/32454?season=2014">concini</a> - 96.11%
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> hkyplyr
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/5711/teams/32595?season=2014">hkyplyr</a>
           </li>
           <u>Rule Changes</u>
           <ul>
-            <li>D2/D3 leagues upped from 12 to 14 teams.</li>
-            <li>Wins and losses switched from 6 and -3 to 4 and -2.</li>
+            <li>D2/D3 leagues increased from 12 to 14 teams.</li>
+            <li>Wins and losses decreased from 6 and -3 to 4 and -2.</li>
             <li>Saved decreased from .3 to .2 per.</li>
             <li>Assists increased from 2 to 2.5 per.</li>
           </ul>
@@ -174,22 +194,26 @@ const panes = [
     ),
   },
   {
-    menuItem: '2013',
+    menuItem: '2013-2014',
     render: () => (
       <Tab.Pane>
-        2013-2014: 134 teams, 11 leagues, 3 divisions
+        134 teams, 11 leagues, 3 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b> concini
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/4633/teams/26883?season=2013">concini</a>
           </li>
           <li>
-            <b>Points For Champion:</b> Teratic - 4907.85
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/4634/teams/26815?season=2013">Teratic</a> - 4907.85
           </li>
           <li>
-            <b>Coaches Rating Chapmion:</b> Teratic - 96.73%
+            <b>Coaches Rating Chapmion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/4634/teams/26815?season=2013">Teratic</a> - 96.73%
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> FCBcn19
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/4641/teams/26622?season=2013">FCBcn19</a>
           </li>
           <u>Rule Changes</u>
           <p>None</p>
@@ -198,22 +222,26 @@ const panes = [
     ),
   },
   {
-    menuItem: '2012',
+    menuItem: '2012-2013',
     render: () => (
       <Tab.Pane>
-        2012-2013 (lockout-shortened season): 108 teams, 10 leagues, 1 division.
+        <i>*lockout-shortened season</i><br/>
+	108 teams, 10 leagues, 1 division.
         <ul>
           <li>
-            <b>Division 1 Champion:</b> N/A
+            <b>Division 1 Champion: </b>N/A
           </li>
           <li>
-            <b>Points For Champion:</b> Woppa1 - 2552.7
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/3801/teams/21590?season=2012">Woppa</a> - 2552.7
           </li>
           <li>
-            <b>Coaches Rating Chapmion:</b> IAmAChemicalEngineer - 96.15%
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/3798/teams/21659?season=2012">IAmAChemicalEngineer</a> - 96.15%
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> Cannon49
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/3800/teams/21501?season=2012">Cannon49</a>
           </li>
         </ul>
       </Tab.Pane>
@@ -272,8 +300,8 @@ const Homepage = () => {
           <Tab
             panes={panes}
             menu={{
-              attached: true,
-              tabular: true,
+              vertical: true,
+              tabular: false,
               style: { display: 'flex', justifyContent: 'center' },
             }}
           />
