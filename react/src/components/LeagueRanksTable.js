@@ -28,6 +28,11 @@ export default class LeagueRanksTable extends Component {
     this.getData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.year != this.props.year)
+      this.getData();
+  }
+
   render() {
     const { column, data, direction } = this.state;
 

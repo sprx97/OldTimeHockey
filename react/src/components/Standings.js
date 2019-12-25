@@ -1,45 +1,130 @@
 /* eslint-disable */
 import _ from 'lodash';
-import React from 'react';
-import { Container, Segment, Header, Divider, Grid } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Container, Segment, Dropdown, Header, Divider, Grid } from 'semantic-ui-react';
 import LeagueRanksTable from './LeagueRanksTable';
 import LeagueStandingsTable from './LeagueStandingsTable';
 
-const Standings = () => {
-  return (
-    <Container fluid>
-      <Segment basic>
-        <Header as="h1" textAlign="center" block>
-          League Ranks
-        </Header>
-        <Grid centered>
-          <Grid.Row columns={3}>
-            <Grid.Column width={5}>
-              <LeagueRanksTable year="2019" />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <Divider hidden />
-        <Header as="h1" textAlign="center" block>
-          Division 1
-        </Header>
-        <Grid centered>
-          <Grid.Row columns={3}>
-            <Grid.Column width={5}>
-              <LeagueStandingsTable
-                leagueName="Gretzky"
-                leagueID="12086"
-                imgSrc="/images/jerseys/Gretzky.png"
-                promotion={true}
-                relegation={true}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <Divider hidden />
-        <Header as="h1" textAlign="center" block>
-          Division 2
-        </Header>
+export default class Standings extends Component {
+  state = {
+    data: null,
+    query: "2019",
+    dropdownOptions: [
+      {
+        key: "2019",
+        text: "2019-2020",
+        value: "2019",
+      },
+      {
+        key: "2018",
+        text: "2018-2019",
+        value: "2018",
+      },
+      {
+        key: "2017",
+        text: "2017-2018",
+        value: "2017",
+      },
+      {
+        key: "2016",
+        text: "2016-2017",
+        value: "2016",
+      },
+      {
+        key: "2015",
+        text: "2015-2016",
+        value: "2015",
+      },
+      {
+        key: "2014",
+        text: "2014-2015",
+        value: "2014",
+      },
+      {
+        key: "2013",
+        text: "2013-2014",
+        value: "2013",
+      },
+      {
+        key: "2012",
+        text: "2012-2013",
+        value: "2012",
+      },      
+    ],
+  };
+
+/*  getData = async () => {
+    const res = await fetch("http://www.roldtimehockey.com/node/
+  };*/
+
+  onChange = (event, result) => {
+    const {value} = result || event.target;
+    this.setState({query: value});
+
+    // GetData here
+  };
+
+  render() {
+    const {data, query, dropdownOptions} = this.state;
+
+    return (
+      <Container fluid>
+        <Segment basic>
+          <Grid>
+            <Grid.Row columns={7}>
+              <Grid.Column /><Grid.Column /><Grid.Column />
+              <Grid.Column>
+                <Dropdown
+                  fluid
+                  search
+                  selection
+                  options={dropdownOptions}
+                  defaultValue={query}
+                  wrapSelection={false}
+                  onChange={this.onChange}
+                />
+              </Grid.Column>
+              <Grid.Column /><Grid.Column /><Grid.Column />
+            </Grid.Row>
+          </Grid>
+          <Header as="h1" textAlign="center" block>League Ranks</Header>
+          <Grid centered>
+            <Grid.Row columns={3}>
+              <Grid.Column width={5}>
+                <LeagueRanksTable year={query} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <Divider hidden />
+          <Header as="h1" textAlign="center" block>Division 1</Header>
+          <Grid centered>
+            <Grid.Row columns={3}>
+              <Grid.Column width={5}>
+                <LeagueStandingsTable
+                  leagueName="Gretzky"
+                  leagueID="12086"
+                  imgSrc="/images/jerseys/Gretzky.png"
+                  promotion={true}
+                  relegation={true}
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <Divider hidden />
+
+          <Header as="h1" textAlign="center" block>Division 2</Header>
+
+
+
+
+
+        </Segment>
+      </Container>
+    );
+  }
+}
+
+/*const Standings = () => {
         <Grid centered>
           <Grid.Row columns={3}>
             <Grid.Column width={5}>
@@ -199,3 +284,4 @@ const Standings = () => {
 };
 
 export default Standings;
+*/
