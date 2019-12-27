@@ -61,7 +61,7 @@ export default class Standings extends Component {
     const {value} = result || event.target;
     this.setState({query: value});
 
-    // GetData here
+    // GetData here -- list of divisions for a year... at least name and ID
   };
 
   render() {
