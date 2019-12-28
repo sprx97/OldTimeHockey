@@ -252,12 +252,42 @@ export default class Leaderboard extends Component {
             ''
           )}
           {careerRegularSeason.indexOf(this.state.query) > -1 ? (
-            <CareerRegularSeasonTable
-              column={column}
-              data={data}
-              direction={direction}
-              handleSort={this.handleSort}
-            />
+            <React.Fragment>
+              <Grid centered>
+                <Grid.Row columns={4}>
+                  <Grid.Column />
+                  <Grid.Column>
+                    <Dropdown
+                      fluid
+                      search
+                      multiple
+                      selection
+                      placeholder="Season(s)"
+//                      options={dropdownOptions}
+//                      defaultValue={this.state.query}
+//                      wrapSelection={false}
+//                      onChange={this.onChange}
+                    />
+                  </Grid.Column>
+                  <Grid.Column>
+                   <Dropdown
+                      fluid
+                      search
+                      multiple
+                      selection
+                      placeholder="Division(s)"
+                    />
+                  </Grid.Column>
+                  <Grid.Column />
+                </Grid.Row>
+              </Grid>
+              <CareerRegularSeasonTable
+                column={column}
+                data={data}
+                direction={direction}
+                handleSort={this.handleSort}
+              />
+            </React.Fragment>
           ) : (
             ''
           )}

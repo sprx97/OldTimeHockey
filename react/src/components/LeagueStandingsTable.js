@@ -27,10 +27,13 @@ export default class LeagueStandingsTable extends Component {
     this.getData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.leagueID != this.props.leagueID)
+      this.getData();
+  }
+
   render() {
     const { data } = this.state;
-
-    const year = 2019;
 
     return (
       <Container fluid>
@@ -42,7 +45,7 @@ export default class LeagueStandingsTable extends Component {
               <Header as="h2" textAlign="center">
                 <Image src={this.props.imgSrc} />{' '}
                 <a
-                  href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${year}`}
+                  href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year-1}`}
                   target="_blank"
                 >
                   {this.props.leagueName}

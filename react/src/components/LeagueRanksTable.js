@@ -76,7 +76,7 @@ export default class LeagueRanksTable extends Component {
                       <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                       <Table.Cell textAlign="center">
                         <a
-                          href={`https://www.fleaflicker.com/nhl/leagues/${id}`}
+                          href={`https://www.fleaflicker.com/nhl/leagues/${id}?season=${this.props.year-1}`}
                           target="_blank"
                         >
                           {name}
