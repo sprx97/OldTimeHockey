@@ -2,7 +2,7 @@ import urllib2 # url reading
 from lxml import etree
 from lxml import html # xml parsing
 
-link = "http://www.fleaflicker.com/nhl/leagues/11371"
+link = "http://www.fleaflicker.com/nhl/leagues/12086"
 response = urllib2.urlopen(link)
 page = response.read()
 root = html.document_fromstring(page)
@@ -16,7 +16,7 @@ for team in teams:
 
 print "\tKind: fantasy"
 print "\tSport: hockey"
-print "\tSeason 2018 (current: True)"
+print "\tSeason 2019 (current: True)"
 print "\tAuthor: Sprx97"
 print "LeagueEnd"
 
