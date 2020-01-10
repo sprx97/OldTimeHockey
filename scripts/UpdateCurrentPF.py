@@ -29,17 +29,16 @@ def updateCurrentPF(league, year):
 	else:
 		isProjected = False
 
-	panel = root.cssselect(".panel-default")[0]
 	if len(root.cssselect(".scoreboard-win")) > 0:
 		isProjected = True
-	panelrows = panel.findall("tr")
+	panelrows = root.cssselect(".panel-default tr")
 	for row in panelrows:
-		teamID = row.findall("a")[0].get("href")
+		teamID = row.cssselect("a")[0].get("href")
 	        if "?season" in teamID:
 	               teamID = teamID[(teamID.find("/teams/") + 7):teamID.find("?season")]
    		else:
 	               teamID = teamID[(teamID.find("/teams/") + 7):]
-		score = panel.findall("td")[1].text_content()
+		score = row.cssselect("td")[1].text_content()
 
 		# projections don't count!
 		if isProjected:
