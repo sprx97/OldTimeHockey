@@ -239,6 +239,8 @@ export default class Leaderboard extends Component {
 
     this.setState({lastSeasonFilters : this.state.seasonFilters});
     this.setState({lastTierFilters : this.state.tierFilters});
+
+    // also need to get /currenttier?year=this.state.query and /gettrophies?year=this.state.query
   };
 
   componentDidMount() {
@@ -327,50 +329,52 @@ export default class Leaderboard extends Component {
             ''
           )}
           {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1) ? (
-            <React.Fragment>
-              <Grid centered>
-                <Grid.Row columns="equal">
-                  <Grid.Column>
-                    <Dropdown
-                      fluid
-                      search
-                      multiple
-                      selection
-                      placeholder="Season(s)"
-                      options={this.state.seasonOptions}
-                      wrapSelection={false}
-                      onChange={this.handleSeasonFilterChange}
-                    />
-                  </Grid.Column>
-                  <Grid.Column>
-                   <Dropdown
-                      fluid
-                      search
-                      multiple
-                      selection
-                      placeholder="Division(s)"
-                      options={this.state.tierOptions}
-                      wrapSelection={false}
-                      onChange={this.handleTierFilterChange}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={1}>
-                    <Button
-                      primary
-                      content="Apply"
-                      color="blue"
-                      onClick={this.onFilter}
-                    />
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
+            <Grid centered>
+              <Grid.Row columns="equal">
+                <Grid.Column>
+                  <Dropdown
+                    fluid
+                    search
+                    multiple
+                    selection
+                    placeholder="Season(s)"
+                    options={this.state.seasonOptions}
+                    wrapSelection={false}
+                    onChange={this.handleSeasonFilterChange}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <Dropdown
+                    fluid
+                    search
+                    multiple
+                    selection
+                    placeholder="Division(s)"
+                    options={this.state.tierOptions}
+                    wrapSelection={false}
+                    onChange={this.handleTierFilterChange}
+                  />
+                </Grid.Column>
+                <Grid.Column width={1}>
+                  <Button
+                    primary
+                    content="Apply"
+                    color="blue"
+                    onClick={this.onFilter}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            ) : (
+            ''
+            )}
+            {(careerRegularSeason.indexOf(this.state.query) > -1) ? (
               <CareerRegularSeasonTable
                 column={column}
                 data={data}
                 direction={direction}
                 handleSort={this.handleSort}
               />
-            </React.Fragment>
           ) : (
             ''
           )}
