@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 
-const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
+const LiveTable = ({ column, data, direction, handleSort }) => {
   handleSort('pointsFor');
 
   return (
@@ -126,4 +126,4 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
   );
 };
 
-export default RegularSeasonTable;
+export default LiveTable;

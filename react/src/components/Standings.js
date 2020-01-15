@@ -74,12 +74,7 @@ export default class Standings extends Component {
 
   onChange = (event, result) => {
     const {value} = result || event.target;
-    this.setState({query: value});
-
-    // Get the list of leagues for a given year
-    setTimeout(() => {
-      this.getData();
-    }, 10);
+    this.setState({query: value}, () => this.getData());
   };
 
   layoutGrid = (leaguelist, relegate) => {

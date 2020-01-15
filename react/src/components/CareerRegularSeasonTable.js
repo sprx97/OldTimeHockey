@@ -3,6 +3,8 @@ import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 
 const CareerRegularSeasonTable = ({ column, data, direction, handleSort }) => {
+  handleSort('pointsFor');
+
   return (
     <Container>
       <Segment basic>

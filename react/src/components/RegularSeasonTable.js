@@ -43,7 +43,7 @@ function highlightLeague(e) {
     }
   }
 
-  alert(tr.parentElement.getElementsByClassName(league).length);
+//  alert(tr.parentElement.getElementsByClassName(league).length);
 
   // for (var row in tr.parentElement.childNodes) {
   //   if (row.classList.contains(league)) {
