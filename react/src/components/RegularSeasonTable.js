@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
-import '../styles/App.css';
+import '../styles/Leagues.css';
 
 const divisionMapping = {
   "Gretzky":"d1",
@@ -33,13 +33,41 @@ const divisionMapping = {
 }
 
 function highlightLeague(e) {
-  e.target.closest("tr").classList.add("highlight");
-  // also need to find all siblings of the same league (needs to also be a classname)
-  // and highlight them too.
+  var league = "NONE";
+  var tr = e.target.closest("tr");
+
+  for (var div in divisionMapping) {
+    if (tr.classList.contains(div)) {
+      league = div;
+      break;
+    }
+  }
+
+  alert(tr.parentElement.getElementsByClassName(league).length);
+
+  // for (var row in tr.parentElement.childNodes) {
+  //   if (row.classList.contains(league)) {
+  //     row.classList.add("highlight");
+  //   }
+  // }
 }
 
 function unhighlightLeague(e) {
-  e.target.closest("tr").classList.remove("highlight");
+  var league = "NONE";
+  var tr = e.target.closest("tr");
+
+  for (var div in divisionMapping) {
+    if (tr.classList.contains(div)) {
+      league = div;
+      break;
+    }
+  }
+
+  // for (var row in tr.parentElement.childNodes) {
+  //   if (row.classList.contains(league)) {
+  //     row.classList.remove("highlight");
+  //   }
+  // }
 }
 
 const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
@@ -139,7 +167,7 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                   },
                   index,
                 ) => (
-                  <Table.Row key={teamID} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
+                  <Table.Row key={teamID} className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                     <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
                       <a

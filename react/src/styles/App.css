@@ -20,24 +20,3 @@
 .App-link {
   color: #09d3ac;
 }
-
-td.d1 {
-  background-color: rgba(205, 173, 0, 0.5);
-}
-td.d2 {
-  background-color: rgba(92, 92, 92, 0.5);
-}
-td.d3 {
-  background-color: rgba(205, 127, 50, 0.5);
-}
-td.d4 {
-  background-color: rgba(51, 51, 145, 0.5);
-}
-
-table.ui.table {
-  border-collapse: collapse;
-}
-
-tr.highlight {
-  outline: 1px solid rgb(175, 175, 175);
-}
