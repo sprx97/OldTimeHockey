@@ -90,7 +90,7 @@ const PlayoffsTable = ({ column, data, direction, handleSort }) => {
                   },
                   index,
                 ) => (
-                  <Table.Row key={teamID} className={leaguename}>
+                  <Table.Row className={leaguename}>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                     <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
                       <a

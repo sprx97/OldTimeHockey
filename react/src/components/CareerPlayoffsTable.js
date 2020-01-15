@@ -92,7 +92,6 @@ const CareerPlayoffsTable = ({ column, data, direction, handleSort }) => {
                 data,
                 (
                   {
-                    FFid,
                     FFname,
                     seasons,
                     wins,
@@ -106,7 +105,7 @@ const CareerPlayoffsTable = ({ column, data, direction, handleSort }) => {
                   },
                   index,
                 ) => (
-                  <Table.Row key={FFid}>
+                  <Table.Row>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                     <Table.Cell textAlign="center">{FFname}</Table.Cell>
                     <Table.Cell textAlign="center">{seasons}</Table.Cell>

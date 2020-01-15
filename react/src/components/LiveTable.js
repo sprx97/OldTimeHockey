@@ -84,7 +84,6 @@ const LiveTable = ({ column, data, direction, handleSort }) => {
                     teamID,
                     teamname,
                     FFname,
-                    FFid,
                     currentWeekPF,
                     regTotal,
                     PA,
@@ -92,7 +91,7 @@ const LiveTable = ({ column, data, direction, handleSort }) => {
                   },
                   index,
                 ) => (
-                  <Table.Row key={FFid} className={leaguename}>
+                  <Table.Row className={leaguename}>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                     <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
                       <a

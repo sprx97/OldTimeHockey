@@ -137,7 +137,7 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                   },
                   index,
                 ) => (
-                  <Table.Row key={teamID} className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
+                  <Table.Row className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                     <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
                       <a
