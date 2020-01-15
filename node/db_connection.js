@@ -104,13 +104,14 @@ http.createServer(function(request, response) {
 		else if (query.year[query.year.length-1] == "p") {
 			year = mysql.escape(query.year.slice(0, -1));
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
-			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier \
+			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid \
 			       from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on Teams.leagueID=Leagues.id INNER JOIN Users on Teams.ownerID=Users.FFid \
 			       where Leagues.year=" + year + " order by Teams_post.pointsFor DESC";
 		}
-		else {
-			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp, Leagues.tier \
-			       from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" + mysql.escape(query.year) + " order by pointsFor DESC";
+		else { // just a single-year
+			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, \
+			      isChamp, Leagues.tier, Users.FFid \
+			      from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" + mysql.escape(query.year) + " order by pointsFor DESC";
 		}
 	}
 	else if (path == "/winsrecord") {
