@@ -247,7 +247,7 @@ export default class Leaderboard extends Component {
 
   onChange = (event, result) => {
     const { value } = result || event.target;
-    this.setState({ query: value }, () => this.getData());
+    this.setState({ query: value, seasonFilters: null, tierFilters: null, lastSeasonFilters: null, lastTierFilters: null }, () => this.getData());
   };
 
   handleSort = clickedColumn => () => {

@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
+import { divisionMapping } from './App'
+import '../styles/Leagues.css';
 
 const LiveTable = ({ column, data, direction, handleSort }) => {
-  handleSort('pointsFor');
 
   return (
     <Container>
@@ -83,6 +84,7 @@ const LiveTable = ({ column, data, direction, handleSort }) => {
                     teamID,
                     teamname,
                     FFname,
+                    FFid,
                     currentWeekPF,
                     regTotal,
                     PA,
@@ -90,9 +92,9 @@ const LiveTable = ({ column, data, direction, handleSort }) => {
                   },
                   index,
                 ) => (
-                  <Table.Row key={teamID}>
+                  <Table.Row key={FFid} className={leaguename}>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                    <Table.Cell textAlign="center">
+                    <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
                       <a
                         href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
                         target="_blank"

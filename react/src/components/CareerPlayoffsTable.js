@@ -3,8 +3,6 @@ import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 
 const CareerPlayoffsTable = ({ column, data, direction, handleSort }) => {
-  handleSort('wins');
-
   return (
     <Container>
       <Segment basic>
