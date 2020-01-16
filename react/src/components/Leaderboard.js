@@ -205,6 +205,8 @@ export default class Leaderboard extends Component {
     lastSeasonFilters: null,
     lastTierFilters: null,
   };
+  
+  currentTiers = {};
 
   getData = async () => {
     var filters = "";
@@ -231,6 +233,15 @@ export default class Leaderboard extends Component {
     }
     else if (live.indexOf(this.state.query) > -1) {
       defaultSort = "currentWeekPF";
+    }
+
+    // Get the current tier styling if this is a career leaderboard
+    if (Object.keys(this.currentTiers).length == 0 && (careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1)) {
+      const tierres = await fetch("http://www.roldtimehockey.com/node/currenttier?year=" + this.state.seasonOptions[this.state.seasonOptions.length - 1].key);
+      const tiers = await tierres.json();
+      for(var i = 0; i < tiers.length; i++) {
+        this.currentTiers[tiers[i].FFname] = tiers[i].tier;
+      }
     }
 
     this.setState({
@@ -374,6 +385,7 @@ export default class Leaderboard extends Component {
                 data={data}
                 direction={direction}
                 handleSort={this.handleSort}
+                tiers={this.currentTiers}
               />
           ) : (
             ''
@@ -384,6 +396,7 @@ export default class Leaderboard extends Component {
               data={data}
               direction={direction}
               handleSort={this.handleSort}
+              tiers={this.currentTiers}
             />
           ) : (
             ''

@@ -7,6 +7,10 @@ td.D2 {
 td.D3 {
   background-color: rgba(205, 127, 50, 0.5);
 }
+td.DInactive {
+  color: rgba(128, 128, 128, 0.5);
+  font-style: italic;
+}
   
 table.ui.table {
   border-collapse: collapse;

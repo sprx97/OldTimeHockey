@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 
-const CareerPlayoffsTable = ({ column, data, direction, handleSort }) => {
+const CareerPlayoffsTable = ({ column, data, direction, handleSort, tiers }) => {
   return (
     <Container>
       <Segment basic>
@@ -107,7 +107,7 @@ const CareerPlayoffsTable = ({ column, data, direction, handleSort }) => {
                 ) => (
                   <Table.Row>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                    <Table.Cell textAlign="center">{FFname}</Table.Cell>
+                    <Table.Cell textAlign="center" className={`D${tiers[FFname] ? tiers[FFname] : "Inactive"}`}>{FFname}</Table.Cell>
                     <Table.Cell textAlign="center">{seasons}</Table.Cell>
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
