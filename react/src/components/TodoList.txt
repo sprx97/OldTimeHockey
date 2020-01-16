@@ -1,0 +1,11 @@
+Blocking
+- Leaderboard -- Hover highlighting in all leaderboards
+- Leaderboard -- No trophies displayed next to champions' names in career leaderboards
+- Leaderboard -- Sorts not working after filtering and resorting same column
+- General -- Major layout issues on mobile (Philly)
+
+Non-blocking
+- Leaderboard -- Re-add "key" property to table rows to improve performance
+- Leaderboard -- really slow/jumpy loading on tables
+- Leaderboard -- "Show only active managers" checkbox implementation (and add to CareerPlayoffs)
+- Leaderboard -- Default sort direction should be descending
