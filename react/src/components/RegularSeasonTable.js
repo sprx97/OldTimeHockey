@@ -134,6 +134,7 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                     pointsFor,
                     pointsAgainst,
                     coachRating,
+                    isChamp
                   },
                   index,
                 ) => (
@@ -149,6 +150,7 @@ const RegularSeasonTable = ({ column, data, direction, handleSort }) => {
                       </a>
                     </Table.Cell>
                     <Table.Cell textAlign="center">
+                      {isChamp ? (<img src={`/images/trophies/${divisionMapping[leaguename]}Champion.png`} align="center" title={`${divisionMapping[leaguename]}`} width="12px" height="24px" />) : ''}
                       <a
                         href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
                         target="_blank"
