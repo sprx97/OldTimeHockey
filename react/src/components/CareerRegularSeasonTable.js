@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Container, Segment, Table, Loader } from 'semantic-ui-react';
+import { Container, Segment, Table, Loader, Checkbox } from 'semantic-ui-react';
 
 const CareerRegularSeasonTable = ({ column, data, direction, handleSort, tiers }) => {
   return (
@@ -9,6 +9,12 @@ const CareerRegularSeasonTable = ({ column, data, direction, handleSort, tiers }
         {!data ? (
           <Loader active size="massive" style={{ marginTop: '150px' }} />
         ) : (
+        <React.Fragment>
+          <Checkbox
+            label="Only show active players"
+            onChange={(event, value) => {alert(value.checked);} }
+          >
+          </Checkbox>
           <Table definition sortable celled selectable fixed compact>
             <Table.Header>
               <Table.Row>
@@ -131,6 +137,7 @@ const CareerRegularSeasonTable = ({ column, data, direction, handleSort, tiers }
               )}
             </Table.Body>
           </Table>
+        </React.Fragment>
         )}
       </Segment>
     </Container>
