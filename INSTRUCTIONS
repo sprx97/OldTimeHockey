@@ -20,4 +20,7 @@ Web config location:
 - /etc/apache2/sites-available/000-default.conf
 
 Rebuild react site
-- sudo npm run-script build
+- sudo npm run-script build (from react folder)
+
+Redeploy react site
+- sudo servce -s build -l 33353 (from react folder)

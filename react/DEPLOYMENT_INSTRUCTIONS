@@ -1,2 +1,0 @@
-To rebuild: sudo npm run-script build
-To deploy: sudo serve -s build -l 33353
