@@ -2,11 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader, Checkbox } from 'semantic-ui-react';
 
-const CareerRegularSeasonTable = ({ column, data, direction, handleSort, tiers }) => {
+const CareerRegularSeasonTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => {
   return (
     <Container>
       <Segment basic>
-        {!data ? (
+        {!isLoaded ? (
           <Loader active size="massive" style={{ marginTop: '150px' }} />
         ) : (
         <React.Fragment>

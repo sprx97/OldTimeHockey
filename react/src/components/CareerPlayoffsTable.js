@@ -2,11 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 
-const CareerPlayoffsTable = ({ column, data, direction, handleSort, tiers }) => {
+const CareerPlayoffsTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => {
   return (
     <Container>
       <Segment basic>
-        {!data ? (
+        {!isLoaded ? (
           <Loader active size="massive" style={{ marginTop: '150px' }} />
         ) : (
           <Table definition sortable celled selectable fixed compact>

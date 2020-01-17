@@ -246,12 +246,10 @@ export default class Leaderboard extends Component {
 
     this.setState({
       data: _.sortBy(leaders, defaultSort).reverse(),
+      isLoaded: true,
+      lastSeasonFilters: this.state.seasonFilters,
+      lastTierFilters: this.state.tierFilters,
     });
-
-    this.setState({lastSeasonFilters : this.state.seasonFilters});
-    this.setState({lastTierFilters : this.state.tierFilters});
-
-    // also need to get /currenttier?year=this.state.query and /gettrophies?year=this.state.query
   };
 
   componentDidMount() {
@@ -260,7 +258,7 @@ export default class Leaderboard extends Component {
 
   onChange = (event, result) => {
     const { value } = result || event.target;
-    this.setState({ query: value, seasonFilters: null, tierFilters: null, lastSeasonFilters: null, lastTierFilters: null }, () => this.getData());
+    this.setState({ query: value, isLoaded: false, seasonFilters: null, tierFilters: null, lastSeasonFilters: null, lastTierFilters: null }, () => this.getData());
   };
 
   handleSort = clickedColumn => () => {
@@ -323,6 +321,7 @@ export default class Leaderboard extends Component {
             <RegularSeasonTable
               column={column}
               data={data}
+              isLoaded={this.state.isLoaded}
               direction={direction}
               handleSort={this.handleSort}
             />
@@ -333,6 +332,7 @@ export default class Leaderboard extends Component {
             <PlayoffsTable
               column={column}
               data={data}
+              isLoaded={this.state.isLoaded}
               direction={direction}
               handleSort={this.handleSort}
             />
@@ -383,6 +383,7 @@ export default class Leaderboard extends Component {
               <CareerRegularSeasonTable
                 column={column}
                 data={data}
+                isLoaded={this.state.isLoaded}
                 direction={direction}
                 handleSort={this.handleSort}
                 tiers={this.currentTiers}
@@ -394,6 +395,7 @@ export default class Leaderboard extends Component {
             <CareerPlayoffsTable
               column={column}
               data={data}
+              isLoaded={this.state.isLoaded}
               direction={direction}
               handleSort={this.handleSort}
               tiers={this.currentTiers}
@@ -405,6 +407,7 @@ export default class Leaderboard extends Component {
             <LiveTable
               column={column}
               data={data}
+              isLoaded={this.state.isLoaded}
               direction={direction}
               handleSort={this.handleSort}
             />

@@ -19,3 +19,5 @@ To restart web server (SPRX only):
 Web config location:
 - /etc/apache2/sites-available/000-default.conf
 
+Rebuild react site
+- sudo npm run-script build

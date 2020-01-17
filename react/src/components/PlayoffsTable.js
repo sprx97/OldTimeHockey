@@ -4,11 +4,11 @@ import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 import { divisionMapping } from './App'
 import '../styles/Leagues.css';
 
-const PlayoffsTable = ({ column, data, direction, handleSort }) => {
+const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
   return (
     <Container>
       <Segment basic>
-        {!data ? (
+        {!isLoaded ? (
           <Loader active size="massive" style={{ marginTop: '150px' }} />
         ) : (
           <Table definition sortable celled selectable fixed compact>
@@ -103,7 +103,7 @@ const PlayoffsTable = ({ column, data, direction, handleSort }) => {
                       </a>
                     </Table.Cell>
                     <Table.Cell textAlign="center">
-                      {isChamp ? (<img src={`/images/trophies/${divisionMapping[leaguename]}Champion.png`} align="center" title={`${divisionMapping[leaguename]}`} width="12px" height="24px" />) : ''}
+                      {isChamp ? (<img src={`/images/trophies/${divisionMapping[leaguename]}Champion.png`} align="center" title={`${divisionMapping[leaguename]}`} alt={`${leaguename} winner`} width="12px" height="24px" />) : ''}
                       <a
                         href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
                         target="_blank"

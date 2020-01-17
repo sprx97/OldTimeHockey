@@ -4,12 +4,11 @@ import { Container, Segment, Table, Loader } from 'semantic-ui-react';
 import { divisionMapping } from './App'
 import '../styles/Leagues.css';
 
-const LiveTable = ({ column, data, direction, handleSort }) => {
-
+const LiveTable = ({ column, data, isLoaded, direction, handleSort }) => {
   return (
     <Container>
       <Segment basic>
-        {!data ? (
+        {!isLoaded ? (
           <Loader active size="massive" style={{ marginTop: '150px' }} />
         ) : (
           <Table definition sortable celled selectable fixed compact>
