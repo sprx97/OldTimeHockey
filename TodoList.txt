@@ -7,3 +7,4 @@ Non-blocking
 - Leaderboard -- Re-add "key" property to table rows to improve performance
 - Leaderboard -- "Show only active managers" checkbox implementation (and add to CareerPlayoffs)
 - Leaderboard -- Default sort direction should be descending (for most columns)
+- General -- Replace react favicon/logos
