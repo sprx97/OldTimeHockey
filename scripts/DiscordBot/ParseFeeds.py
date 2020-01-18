@@ -127,11 +127,11 @@ def parseGame(game):
 		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
 		score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
 
-		while len(reported[gamekey]) > len(goals):
-			stringsToAnnounce.append((None, "Last goal in " + getEmoji(away) + " " + away + "-" + getEmoji(home) + " " + home + " disallowed."))
-			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
-			msg = messages[gamegoalkey]
-			stringsToEdit[msg[2]] = "~~" + msg[0] + "~~ " + score
+#		while len(reported[gamekey]) > len(goals):
+#			stringsToAnnounce.append((None, "Last goal in " + getEmoji(away) + " " + away + "-" + getEmoji(home) + " " + home + " disallowed."))
+#			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
+#			msg = messages[gamegoalkey]
+#			stringsToEdit[msg[2]] = "~~" + msg[0] + "~~ " + score
 			
 		goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
 		goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
