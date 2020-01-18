@@ -202,8 +202,6 @@ export default class Leaderboard extends Component {
     ],
     seasonFilters: null,
     tierFilters: null,
-    lastSeasonFilters: null,
-    lastTierFilters: null,
   };
   
   currentTiers = {};
@@ -247,8 +245,6 @@ export default class Leaderboard extends Component {
     this.setState({
       data: _.sortBy(leaders, defaultSort).reverse(),
       isLoaded: true,
-      lastSeasonFilters: this.state.seasonFilters,
-      lastTierFilters: this.state.tierFilters,
     });
   };
 
@@ -258,7 +254,7 @@ export default class Leaderboard extends Component {
 
   onChange = (event, result) => {
     const { value } = result || event.target;
-    this.setState({ query: value, isLoaded: false, seasonFilters: null, tierFilters: null, lastSeasonFilters: null, lastTierFilters: null }, () => this.getData());
+    this.setState({ query: value, isLoaded: false, seasonFilters: null, tierFilters: null }, () => this.getData());
   };
 
   handleSort = clickedColumn => () => {
@@ -281,18 +277,12 @@ export default class Leaderboard extends Component {
   };
 
   handleSeasonFilterChange = (event, value) => {
-    this.setState({seasonFilters : value.value});
+    this.setState({seasonFilters : value.value}, () => {this.getData();});
   }
 
   handleTierFilterChange = (event, value) => {
-    this.setState({tierFilters : value.value});
+    this.setState({tierFilters : value.value}, () => {this.getData();});
   }
-
-  onFilter = () => {
-    if (this.state.lastSeasonFilters != this.state.seasonFilters || this.state.lastTierFilters != this.state.tierFilters) {
-      this.getData();
-    }
-  };
 
   render() {
     const { column, data, direction } = this.state;
@@ -364,14 +354,6 @@ export default class Leaderboard extends Component {
                     options={this.state.tierOptions}
                     wrapSelection={false}
                     onChange={this.handleTierFilterChange}
-                  />
-                </Grid.Column>
-                <Grid.Column width={1}>
-                  <Button
-                    primary
-                    content="Apply"
-                    color="blue"
-                    onClick={this.onFilter}
                   />
                 </Grid.Column>
               </Grid.Row>
