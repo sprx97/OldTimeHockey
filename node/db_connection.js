@@ -81,7 +81,8 @@ http.createServer(function(request, response) {
 
 			sql = "SELECT FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2) as PF, round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, \
 			       round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins) as wins, sum(Teams_post.losses) as losses, \
-			       sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, sum(isChamp) as trophies, FFid \
+			       sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, \
+                               round(exp(sum(log(CASE WHEN isChamp = 0 THEN 1 WHEN tier = 1 THEN isChamp*7 WHEN tier = 2 THEN isChamp*5 WHEN tier = 3 THEN isChamp*3 WHEN tier = 4 THEN isChamp*2 END)))) as trophies, FFid \
 			       from Teams_post inner join Teams on Teams_post.teamID=Teams.teamID inner join Users on ownerID=FFid inner join Leagues on leagueID=Leagues.id \
 			       where replacement != 1 " + yearfilter + tierfilter + "group by FFid) as T1 order by PF DESC";
 		}
