@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
-import { divisionMapping } from './Helpers'
+import { divisionMapping, highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
 const LiveTable = ({ column, data, isLoaded, direction, handleSort }) => {
@@ -90,7 +90,7 @@ const LiveTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   },
                   index,
                 ) => (
-                  <Table.Row className={leaguename}>
+                  <Table.Row className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                     <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
                       <a

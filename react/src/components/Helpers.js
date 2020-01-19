@@ -55,14 +55,11 @@ export function highlightLeague(e) {
       break;
     }
   }
-  
-//  alert(tr.parentElement.getElementsByClassName(league).length);
-  
-// for (var row in tr.parentElement.childNodes) {
-//   if (row.classList.contains(league)) {
-//     row.classList.add("highlight");
-//   }
-// }
+    
+  for (let row of tr.parentElement.getElementsByClassName(league)) {
+    if (!row.className.includes("highlight"))
+      row.className += " highlight";
+  }
 }
   
 // function for unhighlighting all rows of the same league on unhover
@@ -77,9 +74,7 @@ export function unhighlightLeague(e) {
     }
   }
 
-// for (var row in tr.parentElement.childNodes) {
-//   if (row.classList.contains(league)) {
-//     row.classList.remove("highlight");
-//   }
-// }
+  for (let row of tr.parentElement.getElementsByClassName(league)) {
+    row.className = row.className.replace(/\b highlight\b/, "");
+  }
 }
