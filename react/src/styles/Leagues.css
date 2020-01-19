@@ -25,7 +25,7 @@ table.ui.table {
 }
   
 tr.highlight {
-  outline: 1px solid rgb(175, 175, 175);
+  outline: 1px solid rgb(100, 100, 100);
 }
 
 span.trophies {

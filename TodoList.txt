@@ -3,4 +3,6 @@ Blocking
 
 Non-blocking
 - Leaderboard -- Re-add "key" property to table rows to improve performance
+- Leaderboard -- add a "holdHighlight" class on click
+- Leaderboard -- invert number or darker league column on highlight to make it stand out more
 - General -- Replace react favicon/logos
