@@ -370,19 +370,19 @@ export default class Leaderboard extends Component {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            ) : (
-            ''
-            )}
-            {(careerRegularSeason.indexOf(this.state.query) > -1) ? (
-              <CareerRegularSeasonTable
-                column={column}
-                data={data}
-                isLoaded={this.state.isLoaded}
-                direction={direction}
-                handleSort={this.handleSort}
-                tiers={this.currentTiers}
-                hideInactives={this.state.hideInactives}
-              />
+          ) : (
+          ''
+          )}
+          {(careerRegularSeason.indexOf(this.state.query) > -1) ? (
+            <CareerRegularSeasonTable
+              column={column}
+              data={data}
+              isLoaded={this.state.isLoaded}
+              direction={direction}
+              handleSort={this.handleSort}
+              tiers={this.currentTiers}
+              hideInactives={this.state.hideInactives}
+            />
           ) : (
             ''
           )}
