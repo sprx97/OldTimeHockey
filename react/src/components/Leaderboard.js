@@ -264,8 +264,8 @@ export default class Leaderboard extends Component {
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
-        data: _.sortBy(data, [clickedColumn]),
-        direction: 'ascending',
+        data: _.sortBy(data, [clickedColumn]).reverse(),
+        direction: 'descending',
       });
 
       return;
