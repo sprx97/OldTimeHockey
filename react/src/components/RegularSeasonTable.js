@@ -1,46 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
-import { divisionMapping } from './App'
+import { divisionMapping, highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
-
-function highlightLeague(e) {
-  var league = "NONE";
-  var tr = e.target.closest("tr");
-
-  for (var div in divisionMapping) {
-    if (tr.classList.contains(div)) {
-      league = div;
-      break;
-    }
-  }
-
-//  alert(tr.parentElement.getElementsByClassName(league).length);
-
-  // for (var row in tr.parentElement.childNodes) {
-  //   if (row.classList.contains(league)) {
-  //     row.classList.add("highlight");
-  //   }
-  // }
-}
-
-function unhighlightLeague(e) {
-  var league = "NONE";
-  var tr = e.target.closest("tr");
-
-  for (var div in divisionMapping) {
-    if (tr.classList.contains(div)) {
-      league = div;
-      break;
-    }
-  }
-
-  // for (var row in tr.parentElement.childNodes) {
-  //   if (row.classList.contains(league)) {
-  //     row.classList.remove("highlight");
-  //   }
-  // }
-}
 
 const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) => {
   return (

@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Container, Segment, Table, Header, Image } from 'semantic-ui-react';
-import { divisionMapping } from './App'
+import { divisionMapping } from './Helpers'
 
 export default class LeagueStandingsTable extends Component {
   constructor(props) {

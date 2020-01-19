@@ -1,21 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
+import { generateTrophies } from './Helpers';
 
 const CareerPlayoffsTable = ({ column, data, isLoaded, direction, handleSort, tiers, hideInactives }) => {
-  function generateTrophies(trophies) {
-    var primes = {7: "D1", 5: "D2", 3: "D3", 2: "D4"};
-    var output = [];
-    Object.keys(primes).forEach(key => {
-      while (trophies % key === 0) {
-        var value = primes[key];
-        output.unshift(<img src={`/images/trophies/${value}Champion.png`} align="center" title={`${value}`} alt={`${value} winner`} width="12px" height="24px" />);
-        trophies /= key;
-      }
-    });
-    return <span className="trophies">{output}</span>;
-  }
-  
   return (
     <Container>
       <Segment basic>

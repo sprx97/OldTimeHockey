@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Container, Segment, Table, Loader } from 'semantic-ui-react';
-import { divisionMapping } from './App'
+import { divisionMapping } from './Helpers'
 import '../styles/Leagues.css';
 
 const LiveTable = ({ column, data, isLoaded, direction, handleSort }) => {
