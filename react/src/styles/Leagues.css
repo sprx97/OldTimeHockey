@@ -11,7 +11,10 @@ td.DInactive {
   color: rgba(128, 128, 128, 0.5);
   font-style: italic;
 }
-  
+tr.hidden {
+  display: none;
+}
+
 table.ui.table {
   border-collapse: collapse;
 }
@@ -19,4 +22,3 @@ table.ui.table {
 tr.highlight {
   outline: 1px solid rgb(175, 175, 175);
 }
-  

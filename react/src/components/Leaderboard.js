@@ -1,7 +1,7 @@
 /* eslint-disable */
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Container, Segment, Dropdown, Grid, Button } from 'semantic-ui-react';
+import { Container, Segment, Dropdown, Grid, Checkbox } from 'semantic-ui-react';
 import RegularSeasonTable from './RegularSeasonTable';
 import PlayoffsTable from './PlayoffsTable';
 import CareerRegularSeasonTable from './CareerRegularSeasonTable';
@@ -202,6 +202,7 @@ export default class Leaderboard extends Component {
     ],
     seasonFilters: null,
     tierFilters: null,
+    hideInactives: false,
   };
   
   currentTiers = {};
@@ -357,6 +358,17 @@ export default class Leaderboard extends Component {
                   />
                 </Grid.Column>
               </Grid.Row>
+              <Grid.Row>
+                <Grid.Column>
+                  <Checkbox
+                    label="Only show active players"
+                    onChange={(event, value) => {
+                      this.setState({hideInactives: value.checked});
+                    }}
+                  >
+                  </Checkbox>
+                </Grid.Column>
+              </Grid.Row>
             </Grid>
             ) : (
             ''
@@ -369,6 +381,7 @@ export default class Leaderboard extends Component {
                 direction={direction}
                 handleSort={this.handleSort}
                 tiers={this.currentTiers}
+                hideInactives={this.state.hideInactives}
               />
           ) : (
             ''
@@ -381,6 +394,7 @@ export default class Leaderboard extends Component {
               direction={direction}
               handleSort={this.handleSort}
               tiers={this.currentTiers}
+              hideInactives={this.state.hideInactives}
             />
           ) : (
             ''
