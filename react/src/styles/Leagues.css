@@ -1,3 +1,4 @@
+/* Tier coloring in leaderboards and standings*/
 td.D1 {
   background-color: rgba(205, 173, 0, 0.5);
 }
@@ -7,27 +8,45 @@ td.D2 {
 td.D3 {
   background-color: rgba(205, 127, 50, 0.5);
 }
-
 td.D4, td.DInactive {
   background-color: rgba(255, 255, 242, 1.0);
 }
-
 td.DInactive {
   color: rgba(128, 128, 128, 0.5);
   font-style: italic;
 }
-tr.hidden {
-  display: none;
-}
 
-table.ui.table {
-  border-collapse: collapse;
-}
-  
+/* Hover highlighting for leaderboards*/
 tr.highlight {
   outline: 1px solid rgb(100, 100, 100);
 }
+tr.highlight td.D1 {
+  background-color: rgba(205, 173, 0, 1.0);
+}
+tr.highlight td.D2 {
+  background-color: rgba(92, 92, 92, 1.0);
+}
+tr.highlight td.D3 {
+  background-color: rgba(205, 127, 50, 1.0);
+}
+tr.highlight td.D4 {
+  background-color: rgba(255, 255, 200, 1.0);
+}
+.ui.definition.table tr.highlight td:first-child {
+  background-color: black;
+  color: white;
+}
 
+/* Hiding inactive managers in leaderboards*/
+tr.hidden {
+  display: none;
+}
+/*
+table.ui.table {
+  border-collapse: collapse;
+}*/
+
+/* Trophy display in leaderboards*/
 span.trophies {
   display: inline-block;
   margin-right: 2px;
