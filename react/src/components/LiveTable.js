@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Container, Segment, Table, Loader } from 'semantic-ui-react';
+import { Table, Loader } from 'semantic-ui-react';
 import { divisionMapping, highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Container, Segment, Dropdown, Grid, Checkbox } from 'semantic-ui-react';
+import { Container, Segment, Dropdown, Grid, Checkbox, Divider } from 'semantic-ui-react';
 import RegularSeasonTable from './RegularSeasonTable';
 import PlayoffsTable from './PlayoffsTable';
 import CareerRegularSeasonTable from './CareerRegularSeasonTable';
@@ -34,7 +34,7 @@ const live = ['week'];
 
 export default class Leaderboard extends Component {
   state = {
-    column: 'currentWeekPF',
+    column: null,
     data: null,
     query: 'week',
     direction: 'descending',
@@ -246,6 +246,7 @@ export default class Leaderboard extends Component {
     this.setState({
       data: _.sortBy(leaders, defaultSort).reverse(),
       isLoaded: true,
+      column: null,
     });
   };
 
@@ -300,6 +301,7 @@ export default class Leaderboard extends Component {
             wrapSelection={false}
             onChange={this.onChange}
           />
+          <Divider hidden />
           {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1) ? (
             <Grid centered>
               <Grid.Row columns="equal">
@@ -342,7 +344,7 @@ export default class Leaderboard extends Component {
             </Grid>
           ) : (
           ''
-          )}        
+          )}
         </Segment>
         {regularSeason.indexOf(this.state.query) > -1 ? (
           <RegularSeasonTable

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { Container, Segment, Table, Loader } from 'semantic-ui-react';
+import { Table, Loader } from 'semantic-ui-react';
 import { generateTrophies } from './Helpers';
 
 const CareerPlayoffsTable = ({ column, data, isLoaded, direction, handleSort, tiers, hideInactives }) => {
