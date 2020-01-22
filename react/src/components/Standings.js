@@ -87,7 +87,6 @@ export default class Standings extends Component {
           leagueName={leaguelist[i].name}
           leagueID={leaguelist[i].id}
           year={this.state.query}
-          imgSrc={"/images/jerseys/" + leaguelist[i].name + ".png"}
           promotion={true}
           relegation={relegate}
         /></Grid.Column>);
@@ -108,27 +107,19 @@ export default class Standings extends Component {
 
     return (
       <Container fluid>
-        <Segment basic>
-          <Grid>
-            <Grid.Row columns={7}>
-              <Grid.Column /><Grid.Column /><Grid.Column />
-              <Grid.Column>
-                <Dropdown
-                  fluid
-                  search
-                  selection
-                  options={dropdownOptions}
-                  defaultValue={query}
-                  wrapSelection={false}
-                  onChange={this.onChange}
-                />
-              </Grid.Column>
-              <Grid.Column /><Grid.Column /><Grid.Column />
-            </Grid.Row>
-          </Grid>
+        <Segment basic textAlign="center">
+          <Dropdown
+            compact
+            search
+            selection
+            options={dropdownOptions}
+            defaultValue={query}
+            wrapSelection={false}
+            onChange={this.onChange}
+          />
           <Header as="h1" textAlign="center" block>League Ranks</Header>
-          <Grid centered>
-            <Grid.Row columns={3}>
+          <Grid centered stackable>
+            <Grid.Row>
               <Grid.Column width={5}>
                 <LeagueRanksTable year={query} />
               </Grid.Column>
@@ -138,7 +129,7 @@ export default class Standings extends Component {
             <React.Fragment>
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 1</Header>
-              <Grid centered>
+              <Grid centered stackable>
                 {this.layoutGrid(leagues[1], true)}
               </Grid>
             </React.Fragment>)
@@ -147,7 +138,7 @@ export default class Standings extends Component {
             <React.Fragment>
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 2</Header>
-              <Grid centered>
+              <Grid centered stackable>
                 {this.layoutGrid(leagues[2], false)}
               </Grid>
             </React.Fragment>)
@@ -156,7 +147,7 @@ export default class Standings extends Component {
             <React.Fragment>
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 3</Header>
-              <Grid centered>
+              <Grid centered stackable>
                 {this.layoutGrid(leagues[3], false)}
               </Grid>
             </React.Fragment>)
@@ -165,7 +156,7 @@ export default class Standings extends Component {
             <React.Fragment>
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 4</Header>
-              <Grid centered>
+              <Grid centered stackable>
                 {this.layoutGrid(leagues[4], false)}
               </Grid>
             </React.Fragment>)

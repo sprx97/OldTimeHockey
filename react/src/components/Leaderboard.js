@@ -290,46 +290,16 @@ export default class Leaderboard extends Component {
 
     return (
       <Container>
-        <Segment basic>
-          <Grid centered>
-            <Grid.Row columns={3}>
-              <Grid.Column />
-              <Grid.Column>
-                <Dropdown
-                  fluid
-                  search
-                  selection
-                  options={this.state.dropdownOptions}
-                  defaultValue={this.state.query}
-                  wrapSelection={false}
-                  onChange={this.onChange}
-                />
-              </Grid.Column>
-              <Grid.Column />
-            </Grid.Row>
-          </Grid>
-          {regularSeason.indexOf(this.state.query) > -1 ? (
-            <RegularSeasonTable
-              column={column}
-              data={data}
-              isLoaded={this.state.isLoaded}
-              direction={direction}
-              handleSort={this.handleSort}
-            />
-          ) : (
-            ''
-          )}
-          {playoffs.indexOf(this.state.query) > -1 ? (
-            <PlayoffsTable
-              column={column}
-              data={data}
-              isLoaded={this.state.isLoaded}
-              direction={direction}
-              handleSort={this.handleSort}
-            />
-          ) : (
-            ''
-          )}
+        <Segment basic textAlign="center">
+          <Dropdown
+            compact
+            search
+            selection
+            options={this.state.dropdownOptions}
+            defaultValue={this.state.query}
+            wrapSelection={false}
+            onChange={this.onChange}
+          />
           {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1) ? (
             <Grid centered>
               <Grid.Row columns="equal">
@@ -372,45 +342,67 @@ export default class Leaderboard extends Component {
             </Grid>
           ) : (
           ''
-          )}
-          {(careerRegularSeason.indexOf(this.state.query) > -1) ? (
-            <CareerRegularSeasonTable
-              column={column}
-              data={data}
-              isLoaded={this.state.isLoaded}
-              direction={direction}
-              handleSort={this.handleSort}
-              tiers={this.currentTiers}
-              hideInactives={this.state.hideInactives}
-            />
-          ) : (
-            ''
-          )}
-          {careerPlayoffs.indexOf(this.state.query) > -1 ? (
-            <CareerPlayoffsTable
-              column={column}
-              data={data}
-              isLoaded={this.state.isLoaded}
-              direction={direction}
-              handleSort={this.handleSort}
-              tiers={this.currentTiers}
-              hideInactives={this.state.hideInactives}
-            />
-          ) : (
-            ''
-          )}
-          {live.indexOf(this.state.query) > -1 ? (
-            <LiveTable
-              column={column}
-              data={data}
-              isLoaded={this.state.isLoaded}
-              direction={direction}
-              handleSort={this.handleSort}
-            />
-          ) : (
-            ''
-          )}
+          )}        
         </Segment>
+        {regularSeason.indexOf(this.state.query) > -1 ? (
+          <RegularSeasonTable
+            column={column}
+            data={data}
+            isLoaded={this.state.isLoaded}
+            direction={direction}
+            handleSort={this.handleSort}
+          />
+        ) : (
+          ''
+        )}
+        {playoffs.indexOf(this.state.query) > -1 ? (
+          <PlayoffsTable
+            column={column}
+            data={data}
+            isLoaded={this.state.isLoaded}
+            direction={direction}
+            handleSort={this.handleSort}
+          />
+        ) : (
+          ''
+        )}
+        {(careerRegularSeason.indexOf(this.state.query) > -1) ? (
+          <CareerRegularSeasonTable
+            column={column}
+            data={data}
+            isLoaded={this.state.isLoaded}
+            direction={direction}
+            handleSort={this.handleSort}
+            tiers={this.currentTiers}
+            hideInactives={this.state.hideInactives}
+          />
+        ) : (
+          ''
+        )}
+        {careerPlayoffs.indexOf(this.state.query) > -1 ? (
+          <CareerPlayoffsTable
+            column={column}
+            data={data}
+            isLoaded={this.state.isLoaded}
+            direction={direction}
+            handleSort={this.handleSort}
+            tiers={this.currentTiers}
+            hideInactives={this.state.hideInactives}
+          />
+        ) : (
+          ''
+        )}
+        {live.indexOf(this.state.query) > -1 ? (
+          <LiveTable
+            column={column}
+            data={data}
+            isLoaded={this.state.isLoaded}
+            direction={direction}
+            handleSort={this.handleSort}
+          />
+        ) : (
+          ''
+        )}
       </Container>
     );
   }

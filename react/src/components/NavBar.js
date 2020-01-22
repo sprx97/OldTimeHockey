@@ -12,7 +12,8 @@ export default class NavBar extends Component {
     const { activeItem } = this.state;
 
     return (
-      <Menu size="large" inverted attached>
+      // Probably should wrap this all in a hamburger button at mobile resolutions...
+      <Menu size="large" inverted stackable attached>
         <Link to="/" onClick={() => this.handleItemClick('/')}>
           <Menu.Item name="home" active={activeItem === '/'} link={false}>
             Home

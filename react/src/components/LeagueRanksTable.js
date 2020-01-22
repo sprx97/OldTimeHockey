@@ -37,61 +37,57 @@ export default class LeagueRanksTable extends Component {
     const { column, data, direction } = this.state;
 
     return (
-      <Container fluid>
-        <Segment basic>
-          {!data ? (
-            <Loader active size="large" style={{ marginTop: '13px' }} />
-          ) : (
-            <center>
-              <Table definition celled fixed compact>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell width={2} />
-                    <Table.HeaderCell
-                      width={4}
-                      textAlign="center"
-                      sorted={column === 'name' ? direction : null}
+      <div>
+        {!data ? (
+          <Loader active size="large" style={{ marginTop: '13px' }} />
+        ) : (
+          <Table definition celled compact unstackable center>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell width={2} />
+                <Table.HeaderCell
+                  width={4}
+                  textAlign="center"
+                  sorted={column === 'name' ? direction : null}
+                >
+                  League
+                </Table.HeaderCell>
+                <Table.HeaderCell
+                  width={4}
+                  textAlign="center"
+                  sorted={column === 'PF' ? direction : null}
+                >
+                  Total PF
+                </Table.HeaderCell>
+                <Table.HeaderCell
+                  width={4}
+                  textAlign="center"
+                  sorted={column === 'avgPF' ? direction : null}
+                >
+                  Avg PF
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {_.map(data, ({ id, name, PF, avgPF }, index) => (
+                <Table.Row key={id}>
+                  <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <a
+                      href={`https://www.fleaflicker.com/nhl/leagues/${id}?season=${this.props.year-1}`}
+                      target="_blank"
                     >
-                      League
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={4}
-                      textAlign="center"
-                      sorted={column === 'PF' ? direction : null}
-                    >
-                      Total PF
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={4}
-                      textAlign="center"
-                      sorted={column === 'avgPF' ? direction : null}
-                    >
-                      Avg PF
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {_.map(data, ({ id, name, PF, avgPF }, index) => (
-                    <Table.Row key={id}>
-                      <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                      <Table.Cell textAlign="center">
-                        <a
-                          href={`https://www.fleaflicker.com/nhl/leagues/${id}?season=${this.props.year-1}`}
-                          target="_blank"
-                        >
-                          {name}
-                        </a>
-                      </Table.Cell>
-                      <Table.Cell textAlign="center">{PF}</Table.Cell>
-                      <Table.Cell textAlign="center">{avgPF}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            </center>
-          )}
-        </Segment>
-      </Container>
+                      {name}
+                    </a>
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{PF}</Table.Cell>
+                  <Table.Cell textAlign="center">{avgPF}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        )}
+      </div>
     );
   }
 }

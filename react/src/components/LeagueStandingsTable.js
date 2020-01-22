@@ -37,79 +37,77 @@ export default class LeagueStandingsTable extends Component {
     const { data } = this.state;
 
     return (
-      <Container fluid>
-        <Segment basic>
-          {!data ? (
-            ''
-          ) : (
-            <center>
-              <Header as="h2" textAlign="center">
-                <Image src={this.props.imgSrc} />{' '}
-                <a
-                  href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year-1}`}
-                  target="_blank"
-                >
-                  {this.props.leagueName}
-                </a>{' '}
-                <Image src={this.props.imgSrc} />
-              </Header>
-              <Table definition celled fixed compact>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell width={2} />
-                    <Table.HeaderCell width={6} textAlign="center">
-                      Team
-                    </Table.HeaderCell>
-                    <Table.HeaderCell width={3} textAlign="center">
-                      Owner
-                    </Table.HeaderCell>
-                    <Table.HeaderCell width={2} textAlign="center">
-                      Wins
-                    </Table.HeaderCell>
-                    <Table.HeaderCell width={2} textAlign="center">
-                      Losses
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {_.map(
-                    data,
-                    (
-                      { teamID, leagueID, name, FFname, wins, losses, isChamp },
-                      index,
-                    ) => (
-                      <Table.Row
-                        key={teamID}
-                        style={
-                          index < 6 && this.props.promotion
-                            ? { backgroundColor: '#BFFFBF' }
-                            : index > 11 && this.props.relegation
-                            ? { backgroundColor: '#FFBFBF' }
-                            : { backgroundColor: '' }
-                        }
+      <div>
+        {!data ? (
+          ''
+        ) : (
+        <center>
+          <Header as="h2" textAlign="center">
+            <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />{' '}
+            <a
+              href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year-1}`}
+              target="_blank"
+            >
+              {this.props.leagueName}
+            </a>{' '}
+            <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />
+          </Header>
+          <Table definition celled compact unstackable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell width={2} />
+                <Table.HeaderCell width={6} textAlign="center">
+                  Team
+                </Table.HeaderCell>
+                <Table.HeaderCell width={3} textAlign="center">
+                  Owner
+                </Table.HeaderCell>
+                <Table.HeaderCell width={2} textAlign="center">
+                  Wins
+                </Table.HeaderCell>
+                <Table.HeaderCell width={2} textAlign="center">
+                  Losses
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {_.map(
+                data,
+                (
+                  { teamID, leagueID, name, FFname, wins, losses, isChamp },
+                  index,
+                ) => (
+                  <Table.Row
+                    key={teamID}
+                    style={
+                      index < 6 && this.props.promotion
+                        ? { backgroundColor: '#BFFFBF' }
+                        : index > 11 && this.props.relegation
+                        ? { backgroundColor: '#FFBFBF' }
+                        : { backgroundColor: '' }
+                    }
+                  >
+                    <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {isChamp ? (<img src={`/images/trophies/${divisionMapping[this.props.leagueName]}Champion.png`} align="center" title={`${divisionMapping[this.props.leagueName]}`} width="12px" height="24px" />) : ''}
+                      <a
+                        href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
+                        target="_blank"
                       >
-                        <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                        <Table.Cell textAlign="center">
-                          {isChamp ? (<img src={`/images/trophies/${divisionMapping[this.props.leagueName]}Champion.png`} align="center" title={`${divisionMapping[this.props.leagueName]}`} width="12px" height="24px" />) : ''}
-                          <a
-                            href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
-                            target="_blank"
-                          >
-                            {name}
-                          </a>
-                        </Table.Cell>
-                        <Table.Cell textAlign="center">{FFname}</Table.Cell>
-                        <Table.Cell textAlign="center">{wins}</Table.Cell>
-                        <Table.Cell textAlign="center">{losses}</Table.Cell>
-                      </Table.Row>
-                    ),
-                  )}
-                </Table.Body>
-              </Table>
-            </center>
-          )}
-        </Segment>
-      </Container>
+                        {name}
+                      </a>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{FFname}</Table.Cell>
+                    <Table.Cell textAlign="center">{wins}</Table.Cell>
+                    <Table.Cell textAlign="center">{losses}</Table.Cell>
+                  </Table.Row>
+                ),
+              )}
+            </Table.Body>
+          </Table>
+        </center>
+      )}
+    </div>
     );
   }
 }

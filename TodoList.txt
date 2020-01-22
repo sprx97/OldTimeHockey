@@ -1,8 +1,5 @@
-Blocking
-- General -- Major layout issues on mobile (Philly)
-
 Non-blocking
 - Leaderboard -- Re-add "key" property to table rows to improve performance
 - Leaderboard -- add a "holdHighlight" class on click
-- Leaderboard -- invert number or darker league column on highlight to make it stand out more
+- Leaderboard -- retrigger sorts on filter add/remove
 - General -- Replace react favicon/logos
