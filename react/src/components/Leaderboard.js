@@ -1,6 +1,6 @@
 /* eslint-disable */
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Segment, Dropdown, Grid, Checkbox, Divider } from 'semantic-ui-react';
 import RegularSeasonTable from './RegularSeasonTable';
 import PlayoffsTable from './PlayoffsTable';
@@ -301,47 +301,49 @@ export default class Leaderboard extends Component {
             wrapSelection={false}
             onChange={this.onChange}
           />
-          <Divider hidden />
           {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1) ? (
-            <Grid centered>
-              <Grid.Row columns="equal">
-                <Grid.Column>
-                  <Dropdown
-                    fluid
-                    search
-                    multiple
-                    selection
-                    placeholder="Season(s)"
-                    options={this.state.seasonOptions}
-                    wrapSelection={false}
-                    onChange={this.handleSeasonFilterChange}
-                  />
-                </Grid.Column>
-                <Grid.Column>
-                  <Dropdown
-                    fluid
-                    search
-                    multiple
-                    selection
-                    placeholder="Division(s)"
-                    options={this.state.tierOptions}
-                    wrapSelection={false}
-                    onChange={this.handleTierFilterChange}
-                  />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column>
-                  <Checkbox
-                    label="Only show active players"
-                    onChange={(event, value) => {
-                      this.setState({hideInactives: value.checked});
-                    }}
-                  >
-                  </Checkbox>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+            <Fragment>
+              <Divider hidden />
+              <Grid centered>
+                <Grid.Row columns="equal">
+                  <Grid.Column>
+                    <Dropdown
+                      fluid
+                      search
+                      multiple
+                      selection
+                      placeholder="Season(s)"
+                      options={this.state.seasonOptions}
+                      wrapSelection={false}
+                      onChange={this.handleSeasonFilterChange}
+                    />
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Dropdown
+                      fluid
+                      search
+                      multiple
+                      selection
+                      placeholder="Division(s)"
+                      options={this.state.tierOptions}
+                      wrapSelection={false}
+                      onChange={this.handleTierFilterChange}
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                  <Grid.Column>
+                    <Checkbox
+                      label="Only show active players"
+                      onChange={(event, value) => {
+                        this.setState({hideInactives: value.checked});
+                      }}
+                    >
+                    </Checkbox>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </Fragment> 
           ) : (
           ''
           )}
