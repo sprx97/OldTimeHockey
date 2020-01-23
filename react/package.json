@@ -9,8 +9,9 @@
     "react": "^16.10.2",
     "react-app": "^1.1.2",
     "react-dom": "^16.10.2",
+    "react-ga": "^2.7.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
+    "react-scripts": "^3.3.0",
     "react-scroll-up-button": "^1.6.4",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.1"
@@ -18,7 +19,6 @@
   "devDependencies": {
     "babel-eslint": "^10.0.3",
     "concurrently": "^5.0.0",
-    "eslint": "6.5.1",
     "eslint-config-airbnb": "18.0.1",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-config-prettier": "6.4.0",
