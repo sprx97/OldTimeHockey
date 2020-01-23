@@ -1,0 +1,548 @@
+<!--
+	leaders.html
+	Jeremy "sprx97" Vercillo
+	10/8/18
+
+	This page displays the leaguewide leaderboard. Should just be
+	a massive sortable table.
+-->
+
+<html>
+<head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156842946-1"></script>
+        <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'UA-156842946-1');
+        </script>
+</head>
+
+<title>League Leaders</title>
+
+<!--#include file="header.html"-->
+
+<script type="text/javascript" src="tools/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="tools/jquery/jquery.tablesorter.js"></script>
+<script type="text/javascript">
+        document.getElementById("leaders").className += "selected";
+</script>
+<link href="css/leaders.css" rel="stylesheet"/>
+<link href="css/divisions.css" rel="stylesheet"/>
+
+<script type="text/javascript">
+	function showModal(id) {
+	        xmlhttp = new XMLHttpRequest();
+	        xmlhttp.open("GET", noderoot + "getplayerinfo?ffid=" + id, false);
+	        xmlhttp.onreadystatechange = function() {
+	                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	                        player = JSON.parse(xmlhttp.responseText);
+				if (player.length > 0)
+				{
+					$(".modal-title").html(player[0].FFname);
+				}
+//				player.forEach(function(team) {
+//
+//				});
+	                }
+	        }
+	        xmlhttp.send();
+
+		$("#modal").fadeIn(500);
+	}
+
+	$(document).click(function (e) {
+		if ($(e.target).is("#modal")) {
+			$("#modal").fadeOut(500);
+		}
+		if ($(e.target).is("#modal-content")) {
+			e.stopPropagation();
+		}
+	});
+	$(document).keydown(function(e) { 
+		if (e.keyCode === 27) { 
+        		$("#modal").fadeOut(500);
+		} 
+	});
+
+	$(document).ready(function() {
+		$.tablesorter.addWidget({
+			id: "numbering",
+			format: function(table) {
+				var c = table.config;
+				$("tr:visible", table.tBodies[0]).each(function(i) {
+					$(this).find('td').eq(0).text(i+1);
+				})
+			}
+		});
+		$("#currentweek").tablesorter({
+			sortList:[[4,1],[5,1]],
+			sortRestart:true,
+			headers: {
+				0: {sorter:false},
+				1: {sortInitialOrder:'asc'},
+				2: {sortInitialOrder:'asc'},
+				3: {sortInitialOrder:'asc'},
+				4: {sortInitialOrder:'desc'},
+				5: {sortInitialOrder:'desc'},
+				6: {sortInitialOrder:'desc'},
+				7: {sortInitialOrder:'desc'},
+			},
+			widgets: ['numbering']
+		});
+		$("#playoffleaders").tablesorter({
+			sortList:[[4, 1]],
+			sortRestart:true,
+			headers: {
+				0: {sorter:false},
+				1: {sortInitialOrder:'asc'},
+				2: {sortInitialOrder:'asc'},
+				3: {sortInitialOrder:'asc'},
+				4: {sortInitialOrder:'desc'},
+				5: {sortInitialOrder:'asc'},
+				6: {sortInitialOrder:'desc'},
+				7: {sortInitialOrder:'desc'},
+			},
+			widgets: ['numbering']
+		});
+		$("#yearlyleaders").tablesorter({
+			sortList:[[6, 1]],
+			sortRestart:true,
+			headers: {
+				0: {sorter:false},
+				1: {sortInitialOrder:'asc'},
+				2: {sortInitialOrder:'asc'},
+				3: {sortInitialOrder:'asc'},
+				4: {sortInitialOrder:'desc'},
+				5: {sortInitialOrder:'desc'},
+				6: {sortInitialOrder:'desc'},
+				7: {sortInitialOrder:'desc'},
+				8: {sortInitialOrder:'desc'},
+			},
+			widgets: ['numbering']
+		});
+		$("#careerleaders").tablesorter({
+			sortList:[[6, 1]],
+			sortRestart:true,
+			textExtraction:
+				function(node, table, cellIndex) {
+					$minGP = 40; // can be changed, currently two full seasons
+
+					if($(node).index() == 5 || $(node).index() == 7 || $(node).index() == 9 || $(node).index() == 10) {
+						$GP = 0;
+						$(node).siblings().each(function() {
+							if($(this).index() == 3 || $(this).index() == 4) $GP += parseInt($(this).text(), 10);
+						});
+						if($GP >= $minGP) return (1000.0 * parseFloat($(node).text(), 10)).toString();
+						else return $(node).text();
+					}
+					return $(node).text();
+				},
+			headers: {
+				0: {sorter:false},
+				1: {sortInitialOrder:'asc'},
+				2: {sortInitialOrder:'desc'},
+				3: {sortInitialOrder:'desc'},
+				4: {sortInitialOrder:'desc'},
+				5: {sortInitialOrder:'desc'},
+				6: {sortInitialOrder:'desc'},
+				7: {sortInitialOrder:'desc'},
+				8: {sortInitialOrder:'desc'},
+				9: {sortInitialOrder:'desc'},
+				10:{sortInitialOrder:'desc'},
+			},
+			widgets: ['numbering'],
+		});
+                $("#careerplayoffs").tablesorter({
+                        sortList:[[5, 1]],
+                        sortRestart:true,
+                        textExtraction:
+                                function(node, table, cellIndex) {
+                                        $minGP = 6;
+
+                                        if($(node).index() == 5 || $(node).index() == 7 || $(node).index() == 9) {
+                                                $GP = 0;
+                                                $(node).siblings().each(function() {
+                                                        if($(this).index() == 3 || $(this).index() == 4) $GP += parseInt($(this).text(), 10);
+                                                });
+                                                if($GP >= $minGP) return (1000.0 * parseFloat($(node).text(), 10)).toString();
+                                                else return $(node).text();
+                                        }
+                                        return $(node).text();
+                                },
+                        headers: {
+                                0: {sorter:false},
+                                1: {sortInitialOrder:'asc'},
+                                2: {sortInitialOrder:'desc'},
+                                3: {sortInitialOrder:'desc'},
+                                4: {sortInitialOrder:'desc'},
+                                5: {sortInitialOrder:'desc'},
+                                6: {sortInitialOrder:'desc'},
+                                7: {sortInitialOrder:'desc'},
+                                8: {sortInitialOrder:'desc'},
+                                9: {sortInitialOrder:'desc'},
+                        },
+                        widgets: ['numbering'],
+                });
+	});
+
+	var currentyear = "";
+	var currentweek = "";
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET", noderoot + "getyear", false);
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			currentyear = xmlhttp.responseText.slice(1, -1);
+		}
+	}
+	xmlhttp.send();
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET", noderoot + "getweek", false);
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			currentweek = xmlhttp.responseText;
+			currentweek = currentweek.substr(1, currentweek.length-2);
+		}
+	}
+	xmlhttp.send();
+
+	function setDropdown($year) {
+		$("option").each(function() {
+			if($(this).attr("value") == $year) $(this).parent().attr("selectedIndex", $(this).index());
+		});
+	}
+
+        var year = "week";
+        if (document.location.toString().indexOf("?") !== -1) {
+                year = document.location.toString().split("year=")[1];
+        }
+
+        ffbase = "http://www.fleaflicker.com/nhl/leagues/";
+        ffteambase = "/teams/"
+	ffyear = year;
+	if (ffyear.length == 5) ffyear = ffyear.slice(0, -1);
+	if (ffyear == "week") ffyear = currentyear;
+</script>
+
+<head>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-9124506526136693",
+          enable_page_level_ads: true
+     });
+</script>
+</head>
+
+<body><center>
+
+<div id="modal" class="modal">
+	<div id="modal-content" class="modal-content">
+		<h1 class="modal-title"></h1>
+		<hr class="modal-separator" />
+		<hr class="modal-separator" style="margin-top: 55px"/>
+	</div>
+</div>
+
+<div style="margin:10px">
+	<form method="GET" style="margin:-7px 0px;">
+		<select name="year" onchange="this.form.submit()">
+			<option value="2012">2012-2013 Regular Season</option>
+			<option value="2012p">2012-2013 Playoffs</option>
+			<option value="2013">2013-2014 Regular Season</option>
+			<option value="2013p">2013-2014 Playoffs</option>
+			<option value="2014">2014-2015 Regular Season</option>
+			<option value="2014p">2014-2015 Playoffs</option>
+			<option value="2015">2015-2016 Regular Season</option>
+			<option value="2015p">2015-2016 Playoffs</option>
+			<option value="2016">2016-2017 Regular Season</option>
+			<option value="2016p">2016-2017 Playoffs</option>
+			<option value="2017">2017-2018 Regular Season</option>
+			<option value="2017p">2017-2018 Playoffs</option>
+			<option value="2018">2018-2019 Regular Season</option>
+			<option value="2018p">2018-2019 Playoffs</option>
+			<option value="2019">2019-2020 Regular Season</option>
+			<option value="2019p" disabled>2019-2020 Playoffs</option>
+			<option value="career">Career Regular Season</option>
+			<option value="careerp">Career Playoffs</option>
+			<option value="week">This Week (live)</option>
+		</select>
+	</form>
+
+	<script>
+		setDropdown(year);
+
+		function getTiers() {
+			tiers = {};
+
+			xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("GET", noderoot + "currenttier?year=" + currentyear, false);
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					tierjson = JSON.parse(xmlhttp.responseText);
+
+					tierjson.forEach(function(team) {
+						tiers[team.FFname] = String(team.tier);
+					});
+				}
+			}
+			xmlhttp.send();
+
+			return tiers;
+		}
+
+		function getTrophies(year, skipd4) {
+			trophies = {};
+
+			xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("GET", noderoot + "gettrophies?year=" + year + "&skipd4=" + skipd4, false);
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					trophyjson = JSON.parse(xmlhttp.responseText);
+
+					trophyjson.forEach(function(trophy) {
+						if (!(trophy.FFname in trophies))
+							trophies[trophy.FFname] = []
+						trophies[trophy.FFname].push(String(trophy.tier));
+					});
+				}
+			}
+			xmlhttp.send();
+
+			return trophies;
+		}
+
+		function setTableCols(year) {
+			table = document.getElementsByClassName("tablesorter")[0];
+
+			xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("GET", noderoot + "leaders?year=" + year, false);
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					colwidths = []
+					colheaders = []
+					json = JSON.parse(xmlhttp.responseText);
+
+					rows = "";
+					count = 1;
+					if (year == "week") {
+						colwidths = [5, 15, 20, 15, 10, 10, 10, 10];
+						colheaders = ["", "League", "Team", "User", "PF Week", "PF Total", "PA Week", "PA Total"];
+						table.id = "currentweek";
+
+						json.forEach(function(team) {
+							rows += "<tr class='" + team.leaguename + "'>";
+							rows += "<td>" + count++ + "</td>";
+							rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a></td>";
+							rows += "<td><a href='" + ffbase + team.leagueID + ffteambase + team.teamID + "?season=" + ffyear + "'>" + team.teamname + "</a></td>";
+							rows += "<td><a href='#' onclick='showModal(" + team.FFid + ");'>" + team.FFname + "</a></td>";
+							rows += "<td>" + team.currentWeekPF + "</td>";
+
+							if (parseInt(currentweek) > 23)
+								rows += "<td>" + team.postTotal + "</td>";
+							else
+								rows += "<td>" + team.regTotal + "</td>";
+
+							rows += "<td>" + team.PA + "</td>";
+
+							if (parseInt(currentweek) > 23)
+								rows += "<td>" + team.postPATotal + "</td>";
+							else
+								rows += "<td>" + team.regPATotal + "</td>";
+
+							rows += "</tr>";
+						});
+					}
+					else if (year == "careerp") {
+						table.insertAdjacentHTML("beforebegin", "<i>*Win Percentage and PF/PA Average sorts require 6GP minimum.<br></i>");
+						colwidths = [6, 20, 8, 10, 10, 10, 10, 8, 10, 8];
+						colheaders = ["", "User", "Yrs", "Wins", "Losses", "PCT", "PF", "Avg", "PA", "Avg"];
+						table.id = "careerplayoffs";
+
+						tiers = getTiers();
+						trophies = getTrophies("", true);
+						json.forEach(function(team) {
+							if (team.FFname in tiers)
+								rows += "<tr class='div" + tiers[team.FFname] + "'>";
+							else
+								rows += "<tr class='notactive'>";
+
+							rows += "<td>" + count++ + "</td>";
+							rows += "<td>" + team.FFname;
+							if (team.FFname in trophies) {
+								rows += " ";
+								trophies[team.FFname].forEach(function(trophy) {
+									rows += "<img src='images/trophies/D" + trophy + "Champion.png' title='Division " + trophy + "' width=12px height=24px>";
+								});
+							}
+							rows += "</td>";
+
+							rows += "<td>" + team.seasons + "</td>";
+							rows += "<td>" + team.wins + "</td>";
+							rows += "<td>" + team.losses + "</td>";
+							rows += "<td>" + team.pct + "</td>";
+							rows += "<td>" + team.PF + "</td>";
+							rows += "<td>" + team.avgPF + "</td>";
+							rows += "<td>" + team.PA + "</td>";
+							rows += "<td>" + team.avgPA + "</td>";
+							rows += "</tr>";							
+						});
+					}
+					else if (year == "career") {
+						table.insertAdjacentHTML("beforebegin", "<i>*Win Percentage, PF/PA Average, and Coach Rating sorts require 40GP minimum.<br></i>");
+						colwidths = [6, 20, 6, 8, 8, 10, 10, 6, 10, 6, 10];
+						colheaders = ["", "User", "Yrs", "Wins", "Losses", "PCT", "PF", "Avg", "PA", "Avg", "CR%"];
+						table.id = "careerleaders";
+
+						tiers = getTiers();
+						trophies = getTrophies("", true);
+						json.forEach(function(team) {
+							if (team.FFname in tiers)
+								rows += "<tr class='div" + tiers[team.FFname] + "'>";
+							else
+								rows += "<tr class='notactive'>";
+	
+							rows += "<td>" + count++ + "</td>";
+							rows += "<td>" + team.FFname;
+							if (team.FFname in trophies) {
+								rows += " ";
+								trophies[team.FFname].forEach(function(trophy) {
+									rows += "<img src='images/trophies/D" + trophy + "Champion.png' title='Division " + trophy + "' width=12px height=24px>";
+								});
+							}
+							rows += "</td>";
+
+							rows += "<td>" + team.seasons + "</td>";
+							rows += "<td>" + team.wins + "</td>";
+							rows += "<td>" + team.losses + "</td>";
+							rows += "<td>" + team.pct + "</td>";
+							rows += "<td>" + team.PF + "</td>";
+							rows += "<td>" + team.avgPF + "</td>";
+							rows += "<td>" + team.PA + "</td>";
+							rows += "<td>" + team.avgPA + "</td>";
+							rows += "<td>" + team.careerCR + "</td>";
+
+							rows += "</tr>";
+						});
+					}
+					else if (year.charAt(year.length-1) == "p") {
+						colwidths = [5, 12, 18, 15, 10, 10, 9, 9]
+						colheaders = ["", "League", "Team", "User", "Wins", "Losses", "PF", "PA"];
+						table.id = "playoffleaders";
+
+						trophies = getTrophies(year.slice(0, -1), false);
+						json.forEach(function(team) {
+							rows += "<tr class='" + team.leaguename + "'>";
+	
+							rows += "<td>" + count++ + "</td>";
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a>";
+ 							if (team.FFname in trophies) {
+								rows += " ";
+								trophies[team.FFname].forEach(function(trophy) {
+									rows += "<img src='images/trophies/D" + trophy + "Champion.png' title='Division " + trophy + "' width=12px height=24px>";
+								});
+							}
+							rows += "</td>";
+
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + ffteambase + team.teamID + "?season=" + ffyear + "'>(" + team.seed + ") " + team.teamname + "</a></td>";
+							rows += "<td>" + team.FFname + "</td>";
+							rows += "<td>" + team.wins + "</td>";
+							rows += "<td>" + team.losses + "</td>";
+							rows += "<td>" + team.pointsFor + "</td>";
+							rows += "<td>" + team.pointsAgainst + "</td>";
+
+							rows += "</tr>";
+						});
+					}
+					else { // regular season
+						colwidths = [5, 12, 18, 15, 10, 10, 9, 9, 10];
+						colheaders = ["", "League", "Team", "User", "Wins", "Losses", "PF", "PA", "CR%"];
+						table.id = "yearlyleaders";
+
+						trophies = getTrophies(year, false);
+						json.forEach(function(team) {
+							rows += "<tr class='" + team.leaguename + "'>";
+	
+							rows += "<td>" + count++ + "</td>";
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + "?season=" + ffyear + "'>" + team.leaguename + "</a>";
+ 							if (team.FFname in trophies) {
+								rows += " ";
+								trophies[team.FFname].forEach(function(trophy) {
+									rows += "<img src='images/trophies/D" + trophy + "Champion.png' title='Division " + trophy + "' width=12px height=24px>";
+								});
+							}
+							rows += "</td>";
+
+                                                        rows += "<td><a href='" + ffbase + team.leagueID + ffteambase + team.teamID + "?season=" + ffyear + "'>" + team.teamname + "</a></td>";
+							rows += "<td>" + team.FFname + "</td>";
+							rows += "<td>" + team.Wins + "</td>";
+							rows += "<td>" + team.Losses + "</td>";
+							rows += "<td>" + team.pointsFor + "</td>";
+							rows += "<td>" + team.pointsAgainst + "</td>";
+							rows += "<td>" + team.coachRating + "</td>";
+
+							rows += "</tr>";
+						});
+					}
+
+					header = "<colgroup>";
+					colwidths.forEach(function(width) {
+						header += "<col width='" + width + "%'>";
+					});
+					header += "</colgroup>";
+
+					header += "<thead>";
+					colheaders.forEach(function(colheader) {
+						header += "<th style='font-size:14px'>" + colheader + "</th>";
+					});
+					header += "</thead>";
+
+					header += "<tbody>";
+					header += rows;
+					header += "</tbody>";
+
+					table.insertAdjacentHTML("beforeend", header);
+				}
+				else if (xmlhttp.readyState == 4 && xmlhttp.status != 200) {
+					alert("Failed to connect to NodeJS server");
+				}
+			}
+			xmlhttp.send();
+		}
+	</script>
+
+	<br>
+	<table class="tablesorter">
+	</table>
+	<br>
+
+	<script>
+		setTableCols(year);
+
+		if (year != "careerp" && year != "career")
+		{
+			$("tbody tr").hover(function() {
+				$("tr." + $(this).attr("class") + " td").not(":first-child").css("background-color", "#CCCCCC");
+			}, function() {
+				$("tr." + $(this).attr("class") + " td").not(":first-child").css("background-color", "White");
+			});
+		}
+	</script>
+</div>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner OTH -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9124506526136693"
+     data-ad-slot="9915780679"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</center></body>
+
+</html>
+
