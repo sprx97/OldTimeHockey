@@ -51,6 +51,14 @@ export default class LeagueStandingsTable extends Component {
               {this.props.leagueName}
             </a>{' '}
             <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />
+            <Header.Subheader>
+              <a
+                href={`http://www.sportsclubstats.com/You/${this.props.leagueName}${this.props.year.toString().substring(2,4)}${parseInt(this.props.year.toString().substring(2,4))+1}.html`}
+                target="_blank"
+              >
+                {'Playoff Odds'}
+              </a>
+            </Header.Subheader>
           </Header>
           <Table definition celled compact unstackable>
             <Table.Header>
