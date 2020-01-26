@@ -23,4 +23,5 @@ Rebuild react site
 - sudo npm run-script build (from react folder)
 
 Redeploy react site
-- sudo servce -s build -l 33353 (from react folder)
+- sudo serve -s build -l 33353 & (from react folder) -- test site
+- sudo serve -s build -l 42426 & (from react folder) -- main site

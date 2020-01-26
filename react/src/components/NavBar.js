@@ -49,7 +49,7 @@ export default class NavBar extends Component {
             active={activeItem === '/trophyroom'}
             link={false}
           >
-            Tropy Room
+            Trophy Room
           </Menu.Item>
         </Link>
         <Link
