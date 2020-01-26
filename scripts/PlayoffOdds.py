@@ -112,7 +112,8 @@ db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql
 cursor = db.cursor()
 
 cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
-leagues = cursor.fetchall()
+fetched_leagues = cursor.fetchall()
+leagues = fetched_leagues + (9559L, "OTHKeeper", 2019L, 0L, 0L)
 for league in leagues:
 	updatePlayoffOdds(league[0])
 
