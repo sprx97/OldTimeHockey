@@ -1,12 +1,12 @@
 /* Tier coloring in leaderboards and standings*/
 td.D1 {
-  background-color: rgba(205, 173, 0, 0.5);
+  background-color: rgba(212, 175, 55, 0.5);
 }
 td.D2 {
-  background-color: rgba(92, 92, 92, 0.5);
+  background-color: rgba(175, 175, 175, 0.5);
 }
 td.D3 {
-  background-color: rgba(205, 127, 50, 0.5);
+  background-color: rgba(215, 153, 91, 0.5);
 }
 td.D4, td.DInactive {
   background-color: rgba(255, 255, 242, 1.0);
@@ -21,13 +21,13 @@ tr.highlight {
   outline: 1px solid rgb(100, 100, 100);
 }
 tr.highlight td.D1 {
-  background-color: rgba(205, 173, 0, 1.0);
+  background-color: rgba(212, 175, 55, 1.0);
 }
 tr.highlight td.D2 {
-  background-color: rgba(92, 92, 92, 1.0);
+  background-color: rgba(175, 175, 175, 1.0);
 }
 tr.highlight td.D3 {
-  background-color: rgba(205, 127, 50, 1.0);
+  background-color: rgba(215, 153, 91, 1.0);
 }
 tr.highlight td.D4 {
   background-color: rgba(255, 255, 200, 1.0);
