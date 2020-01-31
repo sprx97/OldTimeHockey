@@ -305,6 +305,61 @@ const Homepage = () => {
               style: { display: 'flex', justifyContent: 'center' },
             }}
           />
+          <Header as="h1" textAlign="center">
+            Promotion and Relegation
+          </Header>
+          <Grid>
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Header as="h3" textAlign="center">D1</Header>
+                <ul>
+                  <li>(6) D1 ranks 1-6 (all playoff teams)</li>
+                  <li>(6) D2 ranks 1-2 (all finalists)</li>
+                  <li>(1) PF Champion</li>
+                  <li>(1) Woppa Cup Champion</li>
+                  <li><i>Extra slots filled from highest regular season PF out of D1 and D2 teams</i></li>
+                </ul>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h3" textAlign="center">D2</Header>
+                <ul> 
+                  <li>(6)  D1 ranks 7-12</li>
+                  <li>(12) D2 ranks 3-6</li>
+                  <li>(20) D3 ranks 1-4 (semifinalists)</li>
+                  <li>(3)  D4 top-3 PF teams</li>
+                  <li>(1)  Woppa Cup Runner Up</li>
+                  <li><i>Extra slots filled from highest regular season PF out of D2 and D3 teams</i></li>
+                </ul>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Header as="h3" textAlign="center">D3</Header>
+                <ul>
+                  <li>(2)  D1 ranks 13-14</li>
+                  <li>(24) D2 ranks 7-14</li>
+                  <li>(15) D3 ranks 5-7 (regular season)</li>
+                  <li>(28) D4 ranks 1-4 (semifinalists)</li>
+                  <li><i>Extra spots filled from highest PF out of D3 and D4 teams</i></li>
+                </ul>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h3" textAlign="center">D4</Header>
+                <ul>
+                  <li>All returning D3 teams</li>
+                  <li>All returning D4 teams</li>
+                  <li>Newcomers</li>
+                </ul>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <Header as="h1" textAlign="center">
+            Inactivity Policy and Midseason "Promotion"
+          </Header>
+          Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter where they finish and are bumped to D4.
+          Users who are inactive longer than two weeks in the season are subject to replacement off of the waitlist (D4) or via midseason promotion (D1-D3).
+          If a D1-D3 team goes inactive, the current highest season-long PF team in the division below will be offered the team. This manager is now responsible for BOTH of their teams,
+          and the higher one will be revoked of the lower one goes inactive. For the sake of promotion/relegation next season, they receive the higher slot of the two those teams earn.
         </Segment>
       </Container>
     </div>
