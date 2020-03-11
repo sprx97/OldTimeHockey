@@ -62,11 +62,16 @@ http.createServer(function(request, response) {
 	}
 	else if (path == "/leaders") {
 		if (query.year == "week") {
+			tierfilter = "";
+			if (query.tiers) {
+				tierfilter = " and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
+			}
+
 			sql = "SELECT Leagues.id as leagueID, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
 			       round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA, round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal \
 			       from Teams as t1 inner join Users on t1.ownerID=Users.FFid inner join Leagues on t1.leagueID=Leagues.id left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
 			       INNER JOIN Teams as t2 on t1.CurrOpp=t2.teamID \
-			       where Leagues.year=" + year + " order by t1.currentWeekPF";
+			       where Leagues.year=" + year + tierfilter + " order by t1.currentWeekPF";
 		}
 		else if (query.year == "careerp") {
 			yearfilter = "";

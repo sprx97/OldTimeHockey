@@ -4,7 +4,7 @@ import { Table, Loader } from 'semantic-ui-react';
 import { divisionMapping, highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
-const LiveTable = ({ column, data, isLoaded, direction, handleSort }) => {
+const LiveTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => {
   return (
     <div>
       {!isLoaded ? (

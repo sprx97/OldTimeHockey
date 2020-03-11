@@ -301,7 +301,7 @@ export default class Leaderboard extends Component {
             wrapSelection={false}
             onChange={this.onChange}
           />
-          {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1) ? (
+          {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1 || live.indexOf(this.state.query) > -1) ? (
             <Fragment>
               <Divider hidden />
               <Grid centered>
@@ -403,6 +403,8 @@ export default class Leaderboard extends Component {
             isLoaded={this.state.isLoaded}
             direction={direction}
             handleSort={this.handleSort}
+            tiers={this.currentTiers}
+            hideInactives={this.state.hideInactives}
           />
         ) : (
           ''
