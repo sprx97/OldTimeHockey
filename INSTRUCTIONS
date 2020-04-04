@@ -7,21 +7,26 @@ Things to do at the beginning of a year:
 - Uncoment the /etc/crontab lines for OTH (only do this the day the season starts)
 - Finally, run "UpdateTables.py" to grab all of the teams from each league (once the leagues are filled) -- normally this runs sunday night
 
-To restart Wes:
-- sudo pm2 (re)start DiscordBot.py -- soft --interpreter=python3
+Commands to start/restart things (SPRX only)
 
-To restart website NodeJS:
+Rrestart Wes:
+- sudo pm2 (re)start DiscordBot.py --interpreter=python3
+
+Restart website NodeJS:
 - sudo pm2 (re)start node/db_connection.js
 
-To restart web server (SPRX only):
-- sudo /etc/init.d/apache2 start/stop/restart
+Restart web server:
+- sudo service start/stop/restart
 
 Web config location:
 - /etc/apache2/sites-available/000-default.conf
 
-Rebuild react site
+Restart mysql:
+- sudo service mysql restart
+
+Rebuild react site:
 - sudo npm run-script build (from react folder)
 
-Redeploy react site
+Redeploy react site:
 - sudo serve -s build -l 33353 & (from react folder) -- test site
 - sudo serve -s build -l 42426 & (from react folder) -- main site

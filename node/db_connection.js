@@ -1,5 +1,5 @@
-var http = require('http'), 
-    url = require('url'), 
+var http = require('http'),
+    url = require('url'),
     mysql = require('mysql'),
     mysqlEscapeArray = require('mysql-escape-array'),
     fs = require('fs'),
@@ -53,7 +53,7 @@ http.createServer(function(request, response) {
 		sql = "SELECT Leagues.tier, Leagues.year, Users.FFname from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where isChamp=1";
 		if (!query.skipd4) sql += " and Leagues.tier != 4";
 		if (query.year) sql += " and year=" + mysql.escape(query.year);
-		sql += " order by Leagues.tier ASC"; 
+		sql += " order by Leagues.tier ASC";
 	}
 	else if (path == "/getplayerinfo") {
 		sql = "SELECT L.name as leaguename, L.tier, U.FFname, L.year \

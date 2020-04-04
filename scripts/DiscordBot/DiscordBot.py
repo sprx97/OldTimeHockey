@@ -9,12 +9,13 @@ import urllib.request # url reading
 from lxml import etree
 from lxml import html # xml parsing
 import json
+import os
 
 import ParseFeeds
 import CheckTrades
 import CheckInactives
 
-sys.path.append("../")
+sys.path.append("..")
 import Config
 
 # team name mappings, ALL LOWERCASE
@@ -90,7 +91,7 @@ f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
 client = discord.Client(heartbeat_timeout=120.0)
-soft_reset = False # temporarily set to True to avoid printing stuff once
+soft_reset = True # temporarily set to True to avoid printing stuff once
 
 @asyncio.coroutine
 def check_scores():
@@ -152,7 +153,7 @@ def check_inactives():
 			bot_channel = channel
 
 	# repeat the task every week
-	while not client.is_closed:		
+	while not client.is_closed:
 		updated = CheckInactives.checkAllLeagues(False) # no force
 		unclaimed = CheckInactives.unclaimed
 		inactives = CheckInactives.inactives
