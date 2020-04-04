@@ -9,6 +9,8 @@
 	// You should not need the following unless you are updating RedditPostBot.py
 	"reddit_username": "",
 	"reddit_password": "",
+        "reddit_client_id": "",
+        "reddit_secret": "",
 
 	// You should not need these unless you're running the "check trade emails" part of the discord bot
 	"email_username": "",
