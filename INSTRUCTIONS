@@ -10,20 +10,19 @@ Things to do at the beginning of a year:
 Commands to start/restart things (SPRX only)
 
 Rrestart Wes:
-- sudo pm2 (re)start DiscordBot.py --interpreter=python3
-*** Must be from DiscordBot folder
+- sudo pm2 (re)start DiscordBot.py --interpreter=python3 (from scripts/Discordbot folder)
 
 Restart website NodeJS:
 - sudo pm2 (re)start node/db_connection.js
 
 Restart web server:
-- sudo service start/stop/restart
+- sudo /etc/init.d/apache2 start/stop/restart
 
 Web config location:
 - /etc/apache2/sites-available/000-default.conf
 
 Restart mysql:
-- sudo service mysql restart
+- sudo service mysql start/stop/restart
 
 Rebuild react site:
 - sudo npm run-script build (from react folder)
