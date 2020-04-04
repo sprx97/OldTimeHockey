@@ -11,6 +11,7 @@ Commands to start/restart things (SPRX only)
 
 Rrestart Wes:
 - sudo pm2 (re)start DiscordBot.py --interpreter=python3
+*** Must be from DiscordBot folder
 
 Restart website NodeJS:
 - sudo pm2 (re)start node/db_connection.js
