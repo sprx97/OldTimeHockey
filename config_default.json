@@ -1,6 +1,6 @@
 {
 	"srcroot": "/var/www/roldtimehockey/", // update this to be your local path to the roldtimehockey folder
-	
+
 	"sql_hostname": "localhost",
 	"sql_username": "", // update this to be your local mysql login
 	"sql_password": "", // update this to be your local mysql paassword
@@ -13,7 +13,7 @@
 	// You should not need these unless you're running the "check trade emails" part of the discord bot
 	"email_username": "",
 	"email_password": "",
-	
+
 	// You should not need this unless you're trying to run the discord bot in chat
 	"discord_token": "",
 	"discord_token_beta": ""
