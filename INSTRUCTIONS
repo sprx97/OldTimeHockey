@@ -9,11 +9,12 @@ Things to do at the beginning of a year:
 
 Commands to start/restart things (SPRX only)
 
-Rrestart Wes:
-- sudo pm2 (re)start DiscordBot.py --interpreter=python3 (from scripts/Discordbot folder)
+Restart Wes:
+- cd /var/www/OldTimeHockey/scripts/DiscordBot/DiscordBot.py
+- sudo pm2 (re)start DiscordBot.py --interpreter=python3
 
 Restart website NodeJS:
-- sudo pm2 (re)start node/db_connection.js
+- sudo pm2 (re)start /var/www/OldTimeHockey/node/db_connection.js
 
 Restart web server:
 - sudo /etc/init.d/apache2 start/stop/restart
@@ -25,8 +26,11 @@ Restart mysql:
 - sudo service mysql start/stop/restart
 
 Rebuild react site:
-- sudo npm run-script build (from react folder)
+- cd /var/www/OldTimeHockey/react
+- sudo npm run-script build
 
 Redeploy react site:
-- sudo serve -s build -l 33353 & (from react folder) -- test site
+- sudo pm2 (re)start /var/www/OldTimeHockey/deploySite.sh
+OR
 - sudo serve -s build -l 42426 & (from react folder) -- main site
+- sudo serve -s build -l 33353 & (from react folder) -- test site
