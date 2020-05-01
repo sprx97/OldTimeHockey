@@ -34,3 +34,7 @@ Redeploy react site:
 OR
 - sudo serve -s build -l 42426 & (from react folder) -- main site
 - sudo serve -s build -l 33353 & (from react folder) -- test site
+
+Save current processes for startup (if things change):
+- sudo pm2 save
+- (pm2 startup must be initialized, which it is currently)
