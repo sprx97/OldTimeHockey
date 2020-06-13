@@ -44,7 +44,8 @@ http.createServer(function(request, response) {
 		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + " AND tier=" + mysql.escape(query.tier);
 	}
 	else if(path == "/leagueteams") {
-		sql = "SELECT * from (Teams INNER JOIN Users on ownerID=FFid) where leagueID=" + mysql.escape(query.id) + " ORDER BY gamesBack ASC, pointsFor DESC";
+                sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.isChamp as isChamp, Leagues.tier as tier \
+                       from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on leagueID=id where leagueID=" + mysql.escape(query.id) + " ORDER BY gamesBack ASC, pointsFor DESC";
 	}
 	else if (path == "/currenttier") {
 		sql = "SELECT Leagues.tier, Users.FFname from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" + mysql.escape(query.year) + " and replacement != 1";
@@ -67,7 +68,7 @@ http.createServer(function(request, response) {
 				tierfilter = " and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
 			}
 
-			sql = "SELECT Leagues.id as leagueID, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
+			sql = "SELECT Leagues.id as leagueID, Leagues.tier as tier, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
 			       round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA, round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal \
 			       from Teams as t1 inner join Users on t1.ownerID=Users.FFid inner join Leagues on t1.leagueID=Leagues.id left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
 			       INNER JOIN Teams as t2 on t1.CurrOpp=t2.teamID \

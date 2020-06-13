@@ -198,7 +198,7 @@ export default class Leaderboard extends Component {
     tierFilters: null,
     hideInactives: false,
   };
-  
+
   currentTiers = {};
 
   getData = async () => {

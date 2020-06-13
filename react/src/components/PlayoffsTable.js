@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
-import { divisionMapping, highlightLeague, unhighlightLeague } from './Helpers'
+import { highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
 const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
@@ -86,13 +86,14 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   losses,
                   pointsFor,
                   pointsAgainst,
-                  isChamp
+                  isChamp,
+                  tier
                 },
                 index,
               ) => (
                 <Table.Row className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
                   <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                  <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
+                  <Table.Cell textAlign="center" className={`D${tier}`}>
                     <a
                       href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
                       target="_blank"
@@ -102,7 +103,7 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                     </a>
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                    {isChamp ? (<img src={`/images/trophies/${divisionMapping[leaguename]}Champion.png`} align="center" title={`${divisionMapping[leaguename]}`} alt={`${leaguename} winner`} width="12px" height="24px" />) : ''}
+                    {isChamp ? (<img src={`/images/trophies/D${tier}Champion.png`} align="center" title={`D${tier}`} alt={`${leaguename} winner`} width="12px" height="24px" />) : ''}
                     <a
                       href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
                       target="_blank"

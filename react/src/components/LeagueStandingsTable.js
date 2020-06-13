@@ -2,7 +2,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Container, Segment, Table, Header, Image } from 'semantic-ui-react';
-import { divisionMapping } from './Helpers'
 
 export default class LeagueStandingsTable extends Component {
   constructor(props) {
@@ -82,7 +81,7 @@ export default class LeagueStandingsTable extends Component {
               {_.map(
                 data,
                 (
-                  { teamID, leagueID, name, FFname, wins, losses, isChamp },
+                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier },
                   index,
                 ) => (
                   <Table.Row
@@ -97,7 +96,7 @@ export default class LeagueStandingsTable extends Component {
                   >
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                     <Table.Cell textAlign="center">
-                      {isChamp ? (<img src={`/images/trophies/${divisionMapping[this.props.leagueName]}Champion.png`} align="center" title={`${divisionMapping[this.props.leagueName]}`} width="12px" height="24px" />) : ''}
+                      {isChamp ? (<img src={`/images/trophies/D${tier}Champion.png`} align="center" title={`D${tier}`} width="12px" height="24px" />) : ''}
                       <a
                         href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
                         target="_blank"

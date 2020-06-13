@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
-import { divisionMapping, highlightLeague, unhighlightLeague } from './Helpers'
+import { highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
 const LiveTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => {
@@ -86,12 +86,13 @@ const LiveTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => 
                   regTotal,
                   PA,
                   regPATotal,
+                  tier
                 },
                 index,
               ) => (
                 <Table.Row className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
                   <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                  <Table.Cell textAlign="center" className={divisionMapping[leaguename]}>
+                  <Table.Cell textAlign="center" className={`D${tier}`}>
                     <a
                       href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
                       target="_blank"
