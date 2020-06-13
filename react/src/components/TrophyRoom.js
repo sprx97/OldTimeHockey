@@ -10,7 +10,7 @@ const TrophyRoom = () => {
           Division 1 Champions
         </Header>
         <Grid centered>
-          <Grid.Row columns={6}>
+          <Grid.Row columns={4}>
             <Grid.Column>
               <Image
                 src="/images/banners/D1/2014.png"
@@ -47,6 +47,13 @@ const TrophyRoom = () => {
                 alt="division 1 champion 2019"
               />
             </Grid.Column>
+            <Grid.Column>
+              <Image
+                src="/images/banners/D1/2020.png"
+                alt="division 1 champion 2020"
+              />
+              *Regular Season Champion, Playoffs Cancelled Due To Shortened Season
+            </Grid.Column>
           </Grid.Row>
         </Grid>
 
@@ -54,7 +61,7 @@ const TrophyRoom = () => {
           Points For Champions
         </Header>
         <Grid centered>
-          <Grid.Row columns={6}>
+          <Grid.Row columns={4}>
             <Grid.Column>
               <Image
                 src="/images/banners/PF/2013.png"
@@ -97,6 +104,12 @@ const TrophyRoom = () => {
                 alt="points for champion 2019"
               />
             </Grid.Column>
+            <Grid.Column>
+              <Image
+                src="/images/banners/PF/2020.png"
+                alt="points for champion 2020"
+              />
+            </Grid.Column>
           </Grid.Row>
         </Grid>
 
@@ -104,7 +117,7 @@ const TrophyRoom = () => {
           Woppa Cup Champions
         </Header>
         <Grid centered>
-          <Grid.Row columns={6}>
+          <Grid.Row columns={4}>
             <Grid.Column>
               <Image
                 src="/images/banners/WC/2013.png"
@@ -147,9 +160,15 @@ const TrophyRoom = () => {
                 alt="woppa cup champion 2019"
               />
             </Grid.Column>
+            <Grid.Column>
+              <Image
+                src="/images/banners/WC/2020.png"
+                alt="woppa cup champion 2020"
+              />
+            </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row columns={6}>Last Updated 4/1/19</Grid.Row>
+          <Grid.Row columns={4}>Last Updated 6/13/20</Grid.Row>
         </Grid>
       </Segment>
     </Container>

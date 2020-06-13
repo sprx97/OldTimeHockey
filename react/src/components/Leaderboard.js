@@ -115,12 +115,6 @@ export default class Leaderboard extends Component {
         value: '2019',
       },
       {
-        key: '2019p',
-        text: '2019-2020 Playoffs',
-        value: '2019p',
-        disabled: true,
-      },
-      {
         key: 'career',
         text: 'Career Regular Season',
         value: 'career',
@@ -265,7 +259,7 @@ export default class Leaderboard extends Component {
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
-        data: _.sortBy(data, [clickedColumn]).reverse(),
+        data: _.sortBy(data, [function(datum) { if (typeof datum[clickedColumn] === "string") return datum[clickedColumn].toLowerCase(); else return datum[clickedColumn]; }]).reverse(),
         direction: 'descending',
       });
 
