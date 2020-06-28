@@ -14,29 +14,59 @@ export function generateTrophies(trophies) {
   return <span className="trophies">{output}</span>;
 }
 
+// Map of division name to tiers, used for classname logic
+export const divisionMapping = {
+  "Gretzky":"D1",
+  "Eastern":"D2",
+  "Western":"D2",
+  "Roy":"D2",
+  "Hasek":"D2",
+  "Brodeur":"D2",
+  "Price-Murray":"D2",
+  "Jones-Allen":"D2",
+  "Howe":"D3",
+  "Lemieux":"D3",
+  "Dionne":"D3",
+  "Francis":"D3",
+  "Yzerman":"D3",
+  "Jagr":"D3",
+  "Messier":"D3",
+  "Sakic":"D3",
+  "Esposito":"D4",
+  "Recchi":"D4",
+  "Coffey":"D4",
+  "Bourque":"D4",
+  "Pronger":"D4",
+  "Lidstrom":"D4",
+  "Chelios":"D4",
+  "Orr":"D4",
+  "Leetch":"D4",
+  "Niedermayer":"D4",
+};
+
 // function for highlighting all rows of the same league on hover
 export function highlightLeague(e) {
   var league = "NONE";
   var tr = e.target.closest("tr");
-  
+
   for (var div in divisionMapping) {
     if (tr.classList.contains(div)) {
       league = div;
       break;
     }
   }
-    
+
   for (let row of tr.parentElement.getElementsByClassName(league)) {
     if (!row.className.includes("highlight"))
       row.className += " highlight";
   }
 }
-  
+
 // function for unhighlighting all rows of the same league on unhover
 export function unhighlightLeague(e) {
   var league = "NONE";
   var tr = e.target.closest("tr");
-  
+
   for (var div in divisionMapping) {
     if (tr.classList.contains(div)) {
       league = div;
