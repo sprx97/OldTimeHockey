@@ -11,16 +11,21 @@ const panes = [
         224 teams, 16 leagues, 4 divisions
         <ul>
           <li>
-            <b>Division 1 Champion:</b> TBD
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019">ch1zzle*</a>
+            <br/><i>* regular season winner, no playoffs due to Covid-19</i>
           </li>
           <li>
-            <b>Points For Champion:</b> TBD
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12091/teams/63199?season=2019">tooproforyou</a>
           </li>
           <li>
-            <b>Coaches Rating Champion:</b> TBD
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019">ch1zzle</a>
           </li>
           <li>
-            <b>Woppa Cup Champion:</b> TBD
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12099/teams/63238?season=2019">selcio44</a>
           </li>
           <u>Rule Changes</u>
           <ul>
@@ -49,7 +54,7 @@ const panes = [
             <a href="https://www.fleaflicker.com/nhl/leagues/11371/teams/59124?season=2018">ch1zzle</a>
           </li>
           <li>
-            <b>Points For Champion: </b> 
+            <b>Points For Champion: </b>
             <a href="https://www.fleaflicker.com/nhl/leagues/11372/teams/59258?season=2018">russtyj</a> - 5477.09
           </li>
           <li>
