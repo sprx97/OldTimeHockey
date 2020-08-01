@@ -129,7 +129,7 @@ def check_scores():
 
 				if soft_reset == False:
 					for (key, mystr) in stringsToAnnounce:
-						msg = yield from client.send_message(bot_channel, mystr)
+						msg = yield from bot_channel.send(mystr)
 						if key != None:
 							ParseFeeds.messages[key][2] = msg
 					for msg in stringsToEdit:
@@ -160,7 +160,7 @@ def check_inactives():
 		if not updated:
 			pass
 		elif len(inactives) == 0 and len(unclaimed) == 0:
-			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
+			yield from bot_channel.send("No inactive or unclaimed teams in any league currently!")
 		else:
 			body = ""
 			for league in unclaimed:
@@ -181,7 +181,7 @@ def check_inactives():
 			if count == 0:
 				body += "No inactive teams.\n"
 
-			yield from client.send_message(bot_channel, body)
+			yield from bot_channel.send(body)
 
 		yield from asyncio.sleep(43200)
 
@@ -197,7 +197,7 @@ def check_trades():
 		announcements = CheckTrades.checkFleaflickerTrades()
 		for mystr in announcements:
 			mystr = "<@&235926008266620929>\n" + mystr
-			yield from client.send_message(bot_channel, mystr)
+			yield from bot_channel.send(mystr)
 
 		yield from asyncio.sleep(3600)
 
@@ -210,7 +210,7 @@ def on_ready():
 #	fp = open(Config.config["srcroot"] + "scripts/wes.jpg", "rb")
 #	yield from client.edit_profile(password=None, avatar=fp.read())
 
-	yield from client.change_presence(game=discord.Game(name="NHL '94"))
+#	yield from client.change_presence(game=discord.Game(name="NHL '94"))
 
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trades())
@@ -226,38 +226,38 @@ def on_message(message):
 
 	# Ping response
 	if message.content.startswith("!ping"):
-		yield from client.send_message(message.channel, "pong")
+		yield from message.channel.send("pong")
 
 	# Pong response
 	if message.content.startswith("!pong"):
-		yield from client.send_message(message.channel, "ping")
+		yield from message.channel.send("ping")
 
 	# Help response
 	if message.content.startswith("!help"):
-		yield from client.send_message(message.channel, "I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
-								"\t!help: Displays this list of commands.\n" + \
-								"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
-								"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
-								"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" 
-#								"\t!points <NHL team>: Posts a summary of the goal scorers for a team's game tonight.\n" + \
-#								"\twoppacup <fleaflicker username>: Posts the score of the user's woppa cup matchup this week.\n" + \
-								)
+		yield from message.channel.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
+						"\t!help: Displays this list of commands.\n" + \
+						"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
+						"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
+						"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n"
+#						"\t!points <NHL team>: Posts a summary of the goal scorers for a team's game tonight.\n" + \
+#						"\twoppacup <fleaflicker username>: Posts the score of the user's woppa cup matchup this week.\n" + \
+						)
 
-	if message.author.name.startswith("Minnesnota") and "Wes " in message.content:
-		yield from client.send_message(message.channel, "@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
-								"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
-								"make you funny or clever, just a coward hiding behind a computer")
+	if message.author.name.startswith("Minnesnota") and ("Wes" in message.content or "wes" in message.content):
+		yield from message.channel.send("@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
+						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
+						"make you funny or clever, just a coward hiding behind a computer")
 
 
 	# Embed streamable recaps (test)
 #	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
 #		e = discord.Embed()
 #		e.set_image("http://md-akc.med.nhl.com/mp4/nhl/2018/09/30/7e7f1aee-cd37-499c-91a7-db15cfafb979/1538277700218/asset_1800k.mp4")
-#		yield from client.send_message(message.channel, embed=e)
+#		yield from message.channel.send(embed=e)
 
 	# Reset response
 #	if message.content.startswith("!reset") and (message.channel.name == "mods" or message.channel.name == "oth-tech"):
-#		yield from client.send_message(message.channel, "Rebooting bot")
+#		yield from message.channel.send("Rebooting bot")
 #		print("Bot reset from client by " + message.author)
 #		loop.run_until_complete(client.logout())
 #		client.close()
@@ -272,11 +272,11 @@ def on_message(message):
 
 		announcements = CheckTrades.checkFleaflickerTrades()
 		if len(announcements) == 0:
-			yield from client.send_message(bot_channel, "No pending trades to review.")
+			yield from bot_channel.send("No pending trades to review.")
 		else:
 			for mystr in announcements:
 				mystr = "<@&235926008266620929>\n" + mystr
-				yield from client.send_message(bot_channel, mystr)
+				yield from bot_channel.send(mystr)
 
 	# Inactives response
 	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods"):
@@ -287,7 +287,7 @@ def on_message(message):
 
 		CheckInactives.checkAllLeagues(True) # force
 		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
-			yield from client.send_message(bot_channel, "No inactive or unclaimed teams in any league currently!")
+			yield from bot_channel.send("No inactive or unclaimed teams in any league currently!")
 		else:
 			body = ""
 			for league in CheckInactives.unclaimed:
@@ -308,12 +308,12 @@ def on_message(message):
 			if count == 0:
 				body += "No inactive teams.\n"
 
-			yield from client.send_message(bot_channel, body)
+			yield from bot_channel.send(body)
 
 	# Fantasy matchup check response
 	if message.content.startswith("!matchup"):
 		if len(message.content.split(" ")) == 1:
-			yield from client.send_message(message.channel, "Usage: !matchup <fleaflicker username>")
+			yield from message.channel.send("Usage: !matchup <fleaflicker username>")
 		else:
 			# might be slow if opening too many DB connections
 			db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
@@ -329,9 +329,9 @@ def on_message(message):
 
 			results = cursor.fetchall()
 			if len(results) == 0:
-				yield from client.send_message(message.channel, "User " + team + " not found.");
+				yield from message.channel.send("User " + team + " not found.");
 			else:
-				yield from client.send_message(message.channel, "%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**\n<https://www.fleaflicker.com/nhl/leagues/%d/scores/%d>" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
+				yield from message.channel.send("%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**\n<https://www.fleaflicker.com/nhl/leagues/%d/scores/%d>" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
 
 			cursor.close()
 			db.close()
@@ -343,7 +343,7 @@ def on_message(message):
 #
 	if message.content.startswith("!woppacup"):
 		if len(message.content.split(" ")) == 1:
-			yield from client.send_message(message.channel, "Usage: !woppacup <fleaflicker username>")
+			yield from message.channel.send("Usage: !woppacup <fleaflicker username>")
 		else:
 			myteam = message.content.split(" ")[1]
 
@@ -356,18 +356,18 @@ def on_message(message):
 
 			if root.cssselect("li.active")[0].text_content() == "Final Stage":
 				matches = root.cssselect(".match.-open")
-				yield from client.send_message(message.channel, "%d" % (len(matches)))
+				yield from message.channel.send("%d" % (len(matches)))
 #				for match in matches:
 #					team1 = match.cssselect(".match--player-name")[0].text_content().split(".")[-1]
 #					team2 = match.cssselect(".match--player-name")[1].text_content().split(".")[-1]
-#					yield from client.send_message(message.channel, "%s %s" % (team1, team2))
+#					yield from message.channel.send("%s %s" % (team1, team2))
 #
-			yield from client.send_message(message.channel, "DONE")
+			yield from message.channel.send("DONE")
 
 	# Score check response
 	if message.content.startswith("!score"):
 		if len(message.content.split(" ")) == 1:
-			yield from client.send_message(message.channel, "Usage: !score <team>")
+			yield from message.channel.send("Usage: !score <team>")
 		else:
 			team = (" ".join(message.content.split(" ")[1:])).lower()
 			if team in team_map.keys():
@@ -377,7 +377,7 @@ def on_message(message):
 				try:
 					root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
 				except Exception as e:
-					yield from client.send_message(message.channel, "Failed to find feed")
+					yield from message.channel.send("Failed to find feed")
 					return
 
 				games = root["dates"][0]["games"]
@@ -392,7 +392,7 @@ def on_message(message):
 							opp = away
 
 						if game["status"]["detailedState"] == "Scheduled" or game["status"]["detailedState"] == "Pre-Game":
-							yield from client.send_message(message.channel, emojis[team] + " " + team + "'s game against " + emojis[opp] + " " + opp + " has not started yet.")
+							yield from message.channel.send(emojis[team] + " " + team + "'s game against " + emojis[opp] + " " + opp + " has not started yet.")
 						else:
 							period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
 							awayScore = game["teams"]["away"]["score"]
@@ -400,19 +400,19 @@ def on_message(message):
 							if game["status"]["detailedState"] == "Final":
 								if period == "(3rd)":
 									period = ""
-								yield from client.send_message(message.channel, "Final: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
+								yield from message.channel.send("Final: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
 							else:
 								timeleft = game["linescore"]["currentPeriodTimeRemaining"]
 								period = period[:-1] + " " + timeleft + period[-1]
-								yield from client.send_message(message.channel, "Current score: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
+								yield from message.channel.send("Current score: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
 
 						found = True
 						break
 
 				if not found:
-					yield from client.send_message(message.channel, "I do not think " + emojis[team] + " " + team + " plays tonight.")
+					yield from message.channel.send("I do not think " + emojis[team] + " " + team + " plays tonight.")
 			else:
-				yield from client.send_message(message.channel, "I do not recognize the team '" + team + "'")
+				yield from message.channel.send("I do not recognize the team '" + team + "'")
 
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
