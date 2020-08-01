@@ -103,7 +103,7 @@ def check_scores():
 			bot_channel = channel
 
 	# repeat the task every 10 seconds
-	while not client.is_closed:
+	while not client.is_closed():
 		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
 		try:
 			# A new day has come
@@ -142,7 +142,7 @@ def check_scores():
 
 		yield from asyncio.sleep(10)
 
-	if client.is_closed:
+	if client.is_closed():
 		print("CLIENT CLOSED UNEXPECTEDLY")
 
 @asyncio.coroutine
@@ -153,7 +153,7 @@ def check_inactives():
 			bot_channel = channel
 
 	# repeat the task every week
-	while not client.is_closed:
+	while not client.is_closed():
 		updated = CheckInactives.checkAllLeagues(False) # no force
 		unclaimed = CheckInactives.unclaimed
 		inactives = CheckInactives.inactives
@@ -193,7 +193,7 @@ def check_trades():
 			bot_channel = channel
 
 	# repeat the task every hour
-	while not client.is_closed:
+	while not client.is_closed():
 		announcements = CheckTrades.checkFleaflickerTrades()
 		for mystr in announcements:
 			mystr = "<@&235926008266620929>\n" + mystr
@@ -205,7 +205,7 @@ def check_trades():
 #		print("CLIENT CLOSED UNEXPECTEDLY")
 
 @client.event
-@asyncio.coroutine 
+@asyncio.coroutine
 def on_ready():
 #	fp = open(Config.config["srcroot"] + "scripts/wes.jpg", "rb")
 #	yield from client.edit_profile(password=None, avatar=fp.read())
