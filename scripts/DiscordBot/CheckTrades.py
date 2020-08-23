@@ -41,7 +41,23 @@ def checkFleaflickerTrades():
 			root2 = html.document_fromstring(page2)
 
 			trade = root2.cssselect("div.player-inline")[0]
-			strs.append(trade.text_content() + "\n" + url)
+			team1 = trade.cssselect("div.league-name")[0]
+			team2 = trade.cssselect("div.league-name")[1]
+
+			tradestr = "**" + team1.text_content() + "**\n"
+			for player in trade.cssselect("ul")[0].cssselect("div.player-name"):
+				tradestr += "- " + player.text_content() + "\n"
+
+			tradestr += "\n"
+
+			tradestr += "**" + team2.text_content() + "**\n"
+			for player in trade.cssselect("ul")[1].cssselect("div.player-name"):
+				tradestr += "- " + player.text_content() + "\n"
+			
+			tradestr += "\n"
+			tradestr += url
+
+			strs.append(tradestr)
 
 			with open("posted_trades.txt", "a") as f:
 				f.write(str(tradeID) + "\n")
