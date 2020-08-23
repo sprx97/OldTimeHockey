@@ -91,51 +91,49 @@ f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
 client = discord.Client(heartbeat_timeout=120.0)
-soft_reset = True # temporarily set to True to avoid printing stuff once
 
 @asyncio.coroutine
 def check_scores():
-	global soft_reset
-
 	bot_channel = None
 	for channel in client.get_all_channels():
 		if channel.name == "hockey-general":
 			bot_channel = channel
 
 	# repeat the task every 10 seconds
+	lastdate = None
 	while not client.is_closed():
 		date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
+		if lastdate == None:
+			lastdate = date
+		if lastdate != date: # date has rolled over. Clear picklefile
+			ParseFeeds.ClearPickleFile()
+			lastdate = date
+			
 		try:
-			# A new day has come
-			if date != ParseFeeds.lastDate:
-				ParseFeeds.reported = {}
-				ParseFeeds.started = []
-				ParseFeeds.completed = []
-				ParseFeeds.lastDate = date
-				ParseFeeds.messages = {}
+			ParseFeeds.ReadPickleFile()
 
 			root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
 
 			stringsToAnnounce = []
-			stringsToEdit = {}
 
 			if len(root["dates"]) > 0:
 				games = root["dates"][0]["games"]
 				for game in games:
-					ann, edit = ParseFeeds.parseGame(game)
+					ann = ParseFeeds.parseGame(game)
 					stringsToAnnounce.extend(ann)
-					stringsToEdit.update(edit)
 					yield from asyncio.sleep(.25)
 
-				if soft_reset == False:
-					for (key, mystr) in stringsToAnnounce:
-						msg = yield from bot_channel.send(mystr)
-						if key != None:
-							ParseFeeds.messages[key][2] = msg
-					for msg in stringsToEdit:
-						yield from client.edit_message(msg, stringsToEdit[msg])
-				else:
-					soft_reset = False
+				for key in stringsToAnnounce:
+					embed = discord.Embed(title=ParseFeeds.pickled[key]["msg_text"], url=ParseFeeds.pickled[key]["msg_link"])
+					if pickled[key]["msg_id"] == None:
+						msg = yield from bot_channel.send(embed=embed)
+						ParseFeeds.UpdateMessageId(key, msg.id)
+					else:
+						msg = yield from bot_channel.fetch_message(ParseFeeds.pickled[key]["msg_id"])
+						yield from msg.edit(embed=embed)
+
+			ParseFeeds.WritePickleFile()
+
 		except Exception as e:
 			print("Error: %s" % e)
 			sys.stdout.flush()
@@ -417,10 +415,6 @@ def on_message(message):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "test":
-			soft_reset = True
 			client.run(Config.config["discord_token_beta"])
-		if sys.argv[1] == "soft":
-			soft_reset = True
-			client.run(Config.config["discord_token"])
 	else:
 		client.run(Config.config["discord_token"])

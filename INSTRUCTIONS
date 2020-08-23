@@ -9,6 +9,8 @@ Things to do at the beginning of a year:
 
 Commands to start/restart things (SPRX only)
 
+- pm2 restart commands can use the process ID, found from sudo pm2 list
+
 Restart Wes:
 - cd /var/www/OldTimeHockey/scripts/DiscordBot/DiscordBot.py
 - sudo pm2 (re)start DiscordBot.py --interpreter=python3

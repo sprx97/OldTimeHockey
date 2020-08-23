@@ -3,6 +3,7 @@ import base64
 import datetime
 import json
 import sys
+import pickle
 
 emojis = {}
 emojis["ARI"] = "<:ARI:269315353153110016>"
@@ -39,44 +40,7 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 
-tricode = {}
-tricode[1] = "NJD"
-tricode[2] = "NYI"
-tricode[3] = "NYR"
-tricode[4] = "PHI"
-tricode[5] = "PIT"
-tricode[6] = "BOS"
-tricode[7] = "BUF"
-tricode[8] = "MTL"
-tricode[9] = "OTT"
-tricode[10] = "TOR"
-tricode[12] = "CAR"
-tricode[13] = "FLA"
-tricode[14] = "TBL"
-tricode[15] = "WSH"
-tricode[16] = "CHI"
-tricode[17] = "DET"
-tricode[18] = "NSH"
-tricode[19] = "STL"
-tricode[20] = "CGY"
-tricode[21] = "COL"
-tricode[22] = "EDM"
-tricode[23] = "VAN"
-tricode[24] = "ANA"
-tricode[25] = "DAL"
-tricode[26] = "LAK"
-tricode[28] = "SJS"
-tricode[29] = "CBJ"
-tricode[30] = "MIN"
-tricode[52] = "WPG"
-tricode[53] = "ARI"
-tricode[54] = "VGK"
-
-started = []
-completed = []
-reported = {}
-lastDate = None
-messages = {}
+pickled = {}
 
 # Gets the emoji for a team or returns blank
 def getEmoji(team):
@@ -90,12 +54,20 @@ def getFeed(url):
 	response = urllib.request.urlopen(request)
 	return json.loads(response.read().decode())
 
+def FindMediaLink(key):
+	gameid, eventid = key.split(":")
+	media = getFeed("https://statsapi.web.nhl.com/api/v1/game/" + gameid + "/content")
+	for event in media["media"]["milestones"]["items"]:
+		if event["statsEventId"] == eventid:
+			return event["highlight"]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
+
 def parseGame(game):
-	global started, reported, completed, messages
+	global pickled
 
+	# List of messages to send/update in the channel
 	stringsToAnnounce = []
-	stringsToEdit = {}
 
+	# Get the game from NHL.com
 	playbyplayURL = "https://statsapi.web.nhl.com" + game["link"]
 	try:
 		playbyplay = getFeed(playbyplayURL)
@@ -105,69 +77,74 @@ def parseGame(game):
 
 	away = playbyplay["gameData"]["teams"]["away"]["abbreviation"]
 	home = playbyplay["gameData"]["teams"]["home"]["abbreviation"]
-	key = away + "-" + home
+	key = str(playbyplay["gamePk"])
 
-	isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
+	# Check whether the game start notification needs to be sent
 	isInProgress = playbyplay["gameData"]["status"]["detailedState"] == "In Progress"
+	startkey = key + ":S"
+	if isInProgress and startkey not in pickled:
+		startstring = getEmoji(away) + " " + away + " at " + getEmoji(home) + " " + home + " Starting."
+		stringsToAnnounce.append(startkey)
+		pickled[startkey] = {"msg_id":None, "msg_text":startstring, "msg_link":None}
 
-	if isInProgress and key not in started:
-		stringsToAnnounce.append((None, getEmoji(away) + " " + away + " at " + getEmoji(home) + " " + home + " Starting."))
-		started.append(key)
+###################################################################################
 
-	# check to see if score is different from what we have saved
+	# Get list of scoring plays
 	goals = playbyplay["liveData"]["plays"]["scoringPlays"]
 
-	for goalindex in range(0, len(goals)):
-		goal = goals[goalindex]
-		gamekey = game["gamePk"]
-		if gamekey not in reported:
-			reported[gamekey] = []
+	# TODO
+	# Loop through all of our pickled goals
+	# If one of them doesn't exist in the list of scoring plays anymore
+	# We should cross it out and notify that it was disallowed.
 
-		awayScore = playbyplay["liveData"]["boxscore"]["teams"]["away"]["teamStats"]["teamSkaterStats"]["goals"]
-		homeScore = playbyplay["liveData"]["boxscore"]["teams"]["home"]["teamStats"]["teamSkaterStats"]["goals"]
-		score = "(" + away + " " + str(awayScore) + ", " + home + " " + str(homeScore) + ")"
-
-#		while len(reported[gamekey]) > len(goals):
-#			stringsToAnnounce.append((None, "Last goal in " + getEmoji(away) + " " + away + "-" + getEmoji(home) + " " + home + " disallowed."))
-#			gamegoalkey = str(gamekey) + ":" + str(reported[gamekey].pop())
-#			msg = messages[gamegoalkey]
-#			stringsToEdit[msg[2]] = "~~" + msg[0] + "~~ " + score
-			
-		goalkey = playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]
+	for goal in goals:
 		goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
-		gamegoalkey = str(gamekey) + ":" + str(goalkey)
+		goalkey = key + ":" + str(goal["about"]["eventId"])
 
+		# Find the strength of the goal
 		strength = "(" + goal["result"]["strength"]["code"] + ") "
 		if strength == "(EVEN) ":
 			strength = ""
-		en = ""
 		if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
-			en = "(EN) "
+			strength += "(EN) "
 
-		team = getEmoji(tricode[goal["team"]["id"]]) + " " + tricode[goal["team"]["id"]]
-		period = "(" + goal["about"]["ordinalNum"] + ")"
+		# Find the team that scored the goal
+		teamcode = goal["team"]["triCode"]
+		team = getEmoji(teamcode) + " " + teamcode + " "
+
+		# Find the period and time the goal was scored in
 		time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
-				
-		goalstr = "GOAL " + strength + en + team + " " + time + ": " + goal["result"]["description"]
-		if gamegoalkey not in messages:
-			stringsToAnnounce.append((gamegoalkey, goalstr + " " + score))
-			messages[gamegoalkey] = [goalstr, score, None]
-			reported[gamekey].append(goalkey)
-		elif messages[gamegoalkey][0] != goalstr: # update a previously posted goal
-			stringsToEdit[messages[gamegoalkey][2]] = goalstr + " " + messages[gamegoalkey][1]
-			if messages[gamegoalkey][0][0] == "~":
-				goalstr = "~~" + goalstr + "~~"
-			messages[gamegoalkey][0] = goalstr
 
-	# print final result
-	if isFinal and key not in completed:
+		# Create the full string to post to chat
+		goalstr = "GOAL " + strength + team + time + ": " + goal["result"]["description"]
+		score = "(" + away + " " + str(goal["about"]["goals"]["away"]) + ", " + home + " " + str(goal["about"]["goals"]["home"]) + ")"
+		goalstr += " " + score
+
+		# If the goal has already been reported, but been updated, edit the post
+		if goalkey in pickled and pickled[goalkey]["msg_text"] != goalstr:
+			stringsToAnnounce.append(goalkey)
+			pickled[goalkey]["msg_text"] = goalstr
+		elif goalkey not in pickled: # If the goal has not been reported, post it
+			stringsToAnnounce.append(goalkey)
+			pickled[goalkey] = { "msg_id":None, "msg_text":goalstr, "msg_link":None }
+
+		if pickled[goalkey]["msg_link"] == None:
+			pickled[goalkey]["msg_link"] = FindMediaLink(goalkey)
+
+#########################################################################################
+
+	# Check whether the game finished notification needs to be sent
+	isFinal = playbyplay["gameData"]["status"]["detailedState"] == "Final"
+	endkey = key + ":E"
+	if isFinal and endkey not in pickled:
 		# Some exhibition games don't get play-by-play data. Skip these.
 		if len(playbyplay["liveData"]["plays"]["allPlays"]) == 0:
 			pass
-		elif playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END":
+		elif playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END" or playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_OFFICIAL":
 			awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
-			homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
+			homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]		
 
+			# Sometimes shootout winners take longer to report, so allow this to defer to the next cycle
 			skip = False
 			if awayScore == homeScore: # adjust for shootout winner
 				if playbyplay["liveData"]["linescore"]["shootoutInfo"]["away"]["scores"] > playbyplay["liveData"]["linescore"]["shootoutInfo"]["home"]["scores"]:
@@ -176,28 +153,44 @@ def parseGame(game):
 					homeScore += 1
 				else:
 					skip = True
+
+			# Report the final score, including the OT/SO tag
 			if not skip:
 				period = "(" + playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["ordinalNum"] + ")"
-				if period == "(3rd)":
+				if period == "(3rd)": # No additional tag for a regulation final
 					period = ""
 				finalstring = getEmoji(away) + " " + away + " " + str(awayScore) + ", " + getEmoji(home) + " " + home + " " + str(homeScore) + " Final " + period
-				stringsToAnnounce.append((None, finalstring))
-				completed.append(key)
+				stringsToAnnounce.append(endkey)
+				pickled[endkey] = {"msg_id":None, "msg_text":finalstring, "msg_link":None}
 
-	return stringsToAnnounce, stringsToEdit
+	return stringsToAnnounce
 
+def UpdateMessageId(key, msg_id):
+	pickled[key]["msg_id"] = msg_id
+
+def ReadPickleFile():
+	global pickled
+	with open("picklefile", "rb") as f:
+		try:
+			pickled = pickle.load(f)
+		except EOFError:
+			pickled = {}
+
+def WritePickleFile():
+	global pickled
+	with open("picklefile", "wb") as f:
+		pickle.dump(pickled, f)
+
+def ClearPickleFile():
+	global pickled
+	pickled = {}
+	WritePickleFile()
 
 # parses the NHL scoreboard for a given date
 def parseScoreboard(date): # YYYY-mm-dd format
-	global lastDate
+	global pickled
 
-	# reseet for new day
-	if date != lastDate:
-		reported = {}
-		started = []
-		completed = []
-		lastDate = date
-		messages = {}
+	ReadPickleFile()
 
 	try:
 		root = getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
@@ -206,16 +199,17 @@ def parseScoreboard(date): # YYYY-mm-dd format
 		return [], {}
 
 	stringsToAnnounce = []
-	stringsToEdit = {}
 
 	games = root["dates"][0]["games"]
 	for game in games:
-		ann, edit = parseGame(game)
+		ann = parseGame(game)
 		stringsToAnnounce.extend(ann)
-		stringsToEdit.update(edit)
-	return stringsToAnnounce, stringsToEdit
+
+	WritePickleFile()
+
+	return stringsToAnnounce
 
 if __name__ == "__main__":
 	date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
-	for (k, s) in parseScoreboard(date)[0]:
-		print(k, s)
+	for s in parseScoreboard(date):
+		print(s)
