@@ -92,11 +92,29 @@ def parseGame(game):
 	# Get list of scoring plays
 	goals = playbyplay["liveData"]["plays"]["scoringPlays"]
 
-	# TODO
 	# Loop through all of our pickled goals
 	# If one of them doesn't exist in the list of scoring plays anymore
 	# We should cross it out and notify that it was disallowed.
+	for picklekey in pickled:
+		eventid = picklekey.split(":")[1]
+		if eventid == "S" or eventid == "E" or eventid[-1] == "D":
+			continue
 
+		found = False
+		for goal in goals:
+			if eventid == str(playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]):
+				found = True
+				break
+
+		if not found and pickled[picklekey]["msg_text"][0] != "~":
+			pickled[picklekey]["msg_text"] = "~~" + pickled[goalkey]["msg_text"] + "~~"
+			stringsToAnnounce.append(picklekey)
+
+			disallowkey = picklekey + "D"
+			pickled[disallowkey] = {"msg_id":None, "msg_text":"Last goal disallowed in " + away + "-" + home + ".", "msg_link":None}
+			stringsToAnnounce.append(disallowkey)
+
+	# Check all the goals to report new ones
 	for goal in goals:
 		goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
 		goalkey = key + ":" + str(goal["about"]["eventId"])
