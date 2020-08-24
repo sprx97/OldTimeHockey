@@ -55,11 +55,14 @@ def getFeed(url):
 	return json.loads(response.read().decode())
 
 def FindMediaLink(key):
-	gameid, eventid = key.split(":")
-	media = getFeed("https://statsapi.web.nhl.com/api/v1/game/" + gameid + "/content")
-	for event in media["media"]["milestones"]["items"]:
-		if event["statsEventId"] == eventid:
-			return event["highlight"]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
+	try:
+		gameid, eventid = key.split(":")
+		media = getFeed("https://statsapi.web.nhl.com/api/v1/game/" + gameid + "/content")
+		for event in media["media"]["milestones"]["items"]:
+			if event["statsEventId"] == eventid:
+				return event["highlight"]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
+	except:
+		return None
 
 def parseGame(game):
 	global pickled
@@ -95,9 +98,11 @@ def parseGame(game):
 	# Loop through all of our pickled goals
 	# If one of them doesn't exist in the list of scoring plays anymore
 	# We should cross it out and notify that it was disallowed.
-	for picklekey in pickled:
-		eventid = picklekey.split(":")[1]
-		if eventid == "S" or eventid == "E" or eventid[-1] == "D":
+	for picklekey in list(pickled.keys()): # Use list() to force a copy to be made and avoid "dictionary changed size during iteration" error
+		gameid, eventid = picklekey.split(":")
+
+		# Skip goals from other games, or start, end, and disallow events
+		if gameid != key or eventid == "S" or eventid == "E" or eventid[-1] == "D":
 			continue
 
 		found = False
@@ -106,8 +111,12 @@ def parseGame(game):
 				found = True
 				break
 
-		if not found and pickled[picklekey]["msg_text"][0] != "~":
-			pickled[picklekey]["msg_text"] = "~~" + pickled[goalkey]["msg_text"] + "~~"
+		# This goal is still there, no need to disallow
+		if found:
+			continue
+
+		if pickled[picklekey]["msg_text"][0] != "~":
+			pickled[picklekey]["msg_text"] = "~~" + pickled[picklekey]["msg_text"] + "~~"
 			stringsToAnnounce.append(picklekey)
 
 			disallowkey = picklekey + "D"
@@ -148,6 +157,7 @@ def parseGame(game):
 
 		if pickled[goalkey]["msg_link"] == None:
 			pickled[goalkey]["msg_link"] = FindMediaLink(goalkey)
+			stringsToAnnounce.append(goalkey)
 
 #########################################################################################
 

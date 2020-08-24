@@ -125,7 +125,7 @@ def check_scores():
 
 				for key in stringsToAnnounce:
 					embed = discord.Embed(title=ParseFeeds.pickled[key]["msg_text"], url=ParseFeeds.pickled[key]["msg_link"])
-					if pickled[key]["msg_id"] == None:
+					if ParseFeeds.pickled[key]["msg_id"] == None:
 						msg = yield from bot_channel.send(embed=embed)
 						ParseFeeds.UpdateMessageId(key, msg.id)
 					else:
