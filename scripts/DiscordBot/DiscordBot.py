@@ -246,6 +246,16 @@ def on_message(message):
 						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
 						"make you funny or clever, just a coward hiding behind a computer")
 
+	if message.content.startswith("!fifi"):
+		yield from message.channel.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
+						"pops bottles pops pussies so keep your finger on that lamp light limpdick cause the forecast is goals. Fuck your cookie jar and your water bottles, " + \
+						"you better get quality rubbermaids bud cause she's gonna spend a lot of time hitting the fucking ice if Fifi has anything to say about it. " + \
+						"Blistering Wristers or fat clappers, this fuckin guy can't be stopped. If I had a choice of one attack to use to kill Hitler I would choose a " + \
+						"Kevin Fiala snipe from the top of the circle because you fucking know his evil dome would be bouncing off the end boards after that puck is loosed " + \
+						"like lightning from the blade of God's own CCM. I'd just pick up the phone and call Kevin Fiala at 1-800-TOP-TITS where he can be found earning his " + \
+						"living at the back of the goddamn net. The world record for a recorded sniper kill is 3,540m, but that's only because nobody has asked ya boi Fifi to " + \
+						"rip any wristers at ISIS yet. If i had three wishes, the first would be to live forever, the second would be for Kevin Fiala to live forever, " + \
+						"and the third would be for a trillion dollars so I could pay to watch ol Fifi Score top cheddar magic for all eternity.")
 
 	# Embed streamable recaps (test)
 #	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
