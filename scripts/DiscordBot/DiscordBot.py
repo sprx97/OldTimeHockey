@@ -18,6 +18,8 @@ import CheckInactives
 sys.path.append("..")
 import Config
 
+OTH_SERVER_ID = 207634081700249601
+
 # team name mappings, ALL LOWERCASE
 team_map = {}
 team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]						= "ARI"
@@ -321,13 +323,13 @@ def on_message(message):
 						"The Stanley Cup and whatever fucking cup is in Sweden. Game Over.")
 
 #################### OTH-specific responses #######################################
-	if message.author.name.startswith("Minnesnota") and ("Wes" in message.content or "wes" in message.content) and message.guild.id == 207634081700249601:
+	if message.author.name.startswith("Minnesnota") and ("Wes" in message.content or "wes" in message.content) and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
 						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
 						"make you funny or clever, just a coward hiding behind a computer")
 
 	# Trades response
-	if message.content.startswith("!trades") and (message.channel.name == "oth-tech" or message.channel.name == "tradereview") and message.guild.id == 207634081700249601:
+	if message.content.startswith("!trades") and (message.channel.name == "oth-tech" or message.channel.name == "tradereview") and message.guild.id == OTH_SERVER_ID:
 		bot_channel = None
 		for channel in client.get_all_channels():
 			if channel.name == "tradereview":
@@ -342,7 +344,7 @@ def on_message(message):
 				yield from bot_channel.send(mystr)
 
 	# Inactives response
-	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods"):
+	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods") and message.guild.id == OTH_SERVER_ID:
 		bot_channel = None
 		for channel in client.get_all_channels():
 			if channel.name == "mods":
@@ -374,7 +376,7 @@ def on_message(message):
 			yield from bot_channel.send(body)
 
 	# Fantasy matchup check response
-	if message.content.startswith("!matchup") and message.guild.id == 207634081700249601:
+	if message.content.startswith("!matchup") and message.guild.id == OTH_SERVER_ID:
 		if len(message.content.split(" ")) == 1:
 			yield from message.channel.send("Usage: !matchup <fleaflicker username>")
 		else:
@@ -404,7 +406,7 @@ def on_message(message):
 #	I think this will be a lot easier once the Challonge API v2 is out. That should allow me to just
 #	make calls instead of having to scrape the page.
 #
-#	if message.content.startswith("!woppacup") and message.guild.id == 207634081700249601:
+#	if message.content.startswith("!woppacup") and message.guild.id == OTH_SERVER_ID:
 #		if len(message.content.split(" ")) == 1:
 #			yield from message.channel.send("Usage: !woppacup <fleaflicker username>")
 #		else:
