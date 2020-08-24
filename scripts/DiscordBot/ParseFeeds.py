@@ -5,6 +5,7 @@ import json
 import sys
 import pickle
 
+# Needs to be kept in sync with the dictionary in DiscordBot.py
 emojis = {}
 emojis["ARI"] = "<:ARI:269315353153110016>"
 emojis["ANA"] = "<:ANA:271881573375279104>"
@@ -30,6 +31,7 @@ emojis["NYR"] = "<:NYR:269315518907809792>"
 emojis["OTT"] = "<:OTT:269315534301036544>"
 emojis["PHI"] = "<:PHI:269315418513080331>"
 emojis["PIT"] = "<:PIT:269315504324214786>"
+emojis["SEA"] = "<:SEA:747291968681541682>"
 emojis["STL"] = "<:STL:269315296328679436>"
 emojis["SJS"] = "<:SJS:269315542509289472>"
 emojis["TBL"] = "<:TBL:269315471919022090>"
