@@ -225,8 +225,10 @@ def on_message(message):
 	if message.author == client.user:
 		return
 
+######################## Core Responses ######################################
 	# Ping response
 	if message.content.startswith("!ping"):
+		print(message.guild.id)
 		yield from message.channel.send("pong")
 
 	# Pong response
@@ -239,141 +241,7 @@ def on_message(message):
 						"\t!help: Displays this list of commands.\n" + \
 						"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
 						"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
-						"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n"
-#						"\t!points <NHL team>: Posts a summary of the goal scorers for a team's game tonight.\n" + \
-#						"\twoppacup <fleaflicker username>: Posts the score of the user's woppa cup matchup this week.\n" + \
-						)
-
-	if message.author.name.startswith("Minnesnota") and ("Wes" in message.content or "wes" in message.content):
-		yield from message.channel.send("@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
-						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
-						"make you funny or clever, just a coward hiding behind a computer")
-
-	if message.content.startswith("!fifi"):
-		yield from message.channel.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
-						"pops bottles pops pussies so keep your finger on that lamp light limpdick cause the forecast is goals. Fuck your cookie jar and your water bottles, " + \
-						"you better get quality rubbermaids bud cause she's gonna spend a lot of time hitting the fucking ice if Fifi has anything to say about it. " + \
-						"Blistering Wristers or fat clappers, this fuckin guy can't be stopped. If I had a choice of one attack to use to kill Hitler I would choose a " + \
-						"Kevin Fiala snipe from the top of the circle because you fucking know his evil dome would be bouncing off the end boards after that puck is loosed " + \
-						"like lightning from the blade of God's own CCM. I'd just pick up the phone and call Kevin Fiala at 1-800-TOP-TITS where he can be found earning his " + \
-						"living at the back of the goddamn net. The world record for a recorded sniper kill is 3,540m, but that's only because nobody has asked ya boi Fifi to " + \
-						"rip any wristers at ISIS yet. If i had three wishes, the first would be to live forever, the second would be for Kevin Fiala to live forever, " + \
-						"and the third would be for a trillion dollars so I could pay to watch ol Fifi Score top cheddar magic for all eternity.")
-
-	# Embed streamable recaps (test)
-#	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
-#		e = discord.Embed()
-#		e.set_image("http://md-akc.med.nhl.com/mp4/nhl/2018/09/30/7e7f1aee-cd37-499c-91a7-db15cfafb979/1538277700218/asset_1800k.mp4")
-#		yield from message.channel.send(embed=e)
-
-	# Reset response
-#	if message.content.startswith("!reset") and (message.channel.name == "mods" or message.channel.name == "oth-tech"):
-#		yield from message.channel.send("Rebooting bot")
-#		print("Bot reset from client by " + message.author)
-#		loop.run_until_complete(client.logout())
-#		client.close()
-#		quit()
-
-	# Trades response
-	if message.content.startswith("!trades") and (message.channel.name == "oth-tech" or message.channel.name == "tradereview"):
-		bot_channel = None
-		for channel in client.get_all_channels():
-			if channel.name == "tradereview":
-				bot_channel = channel
-
-		announcements = CheckTrades.checkFleaflickerTrades()
-		if len(announcements) == 0:
-			yield from bot_channel.send("No pending trades to review.")
-		else:
-			for mystr in announcements:
-				mystr = "<@&235926008266620929>\n" + mystr
-				yield from bot_channel.send(mystr)
-
-	# Inactives response
-	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods"):
-		bot_channel = None
-		for channel in client.get_all_channels():
-			if channel.name == "mods":
-				bot_channel = channel
-
-		CheckInactives.checkAllLeagues(True) # force
-		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
-			yield from bot_channel.send("No inactive or unclaimed teams in any league currently!")
-		else:
-			body = ""
-			for league in CheckInactives.unclaimed:
-				body += str(CheckInactives.unclaimed[league]) + " unclaimed team(s) in " + league + "\n"
-
-			if body != "":
-				body += "\n"
-			else:
-				body += "No unclaimed teams.\n\n"
-
-			count = 0
-			for league in CheckInactives.inactives:
-				body += str(len(CheckInactives.inactives[league])) + " inactive(s) in " + league + "\n"
-				count += len(CheckInactives.inactives[league])
-				for user in CheckInactives.inactives[league]:
-					body += "\t" + user + "\n"
-				body += "\n"
-			if count == 0:
-				body += "No inactive teams.\n"
-
-			yield from bot_channel.send(body)
-
-	# Fantasy matchup check response
-	if message.content.startswith("!matchup"):
-		if len(message.content.split(" ")) == 1:
-			yield from message.channel.send("Usage: !matchup <fleaflicker username>")
-		else:
-			# might be slow if opening too many DB connections
-			db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
-			cursor = db.cursor()
-			team = message.content.split(" ")[1].lower()
-			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID, me.wins, me.losses, opp.wins, opp.losses " + \
-				       "FROM Teams AS me " + \
-				       "INNER JOIN Teams AS opp ON me.CurrOpp=opp.teamID " + \
-				       "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
-				       "INNER JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
-				       "INNER JOIN Leagues AS l ON me.leagueID=l.id " + \
-				       "WHERE LOWER(me_u.FFname)='" + team + "' and l.year=%d" % year)
-
-			results = cursor.fetchall()
-			if len(results) == 0:
-				yield from message.channel.send("User " + team + " not found.");
-			else:
-				yield from message.channel.send("%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**\n<https://www.fleaflicker.com/nhl/leagues/%d/scores/%d>" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
-
-			cursor.close()
-			db.close()
-
-	# Woppa cup check response
-#
-#	I think this will be a lot easier once the Challonge API v2 is out. That should allow me to just
-#	make calls instead of having to scrape the page.
-#
-	if message.content.startswith("!woppacup"):
-		if len(message.content.split(" ")) == 1:
-			yield from message.channel.send("Usage: !woppacup <fleaflicker username>")
-		else:
-			myteam = message.content.split(" ")[1]
-
-			# might need selenium or scrapy for delay load
-			url = "http://challonge.com/woppacup%d" % (year+1)
-			req = urllib.request.Request(url, headers={"User-Agent" : "Magic Browser"})
-			response = urllib.request.urlopen(req)
-			page = response.read()
-			root = html.document_fromstring(page)
-
-			if root.cssselect("li.active")[0].text_content() == "Final Stage":
-				matches = root.cssselect(".match.-open")
-				yield from message.channel.send("%d" % (len(matches)))
-#				for match in matches:
-#					team1 = match.cssselect(".match--player-name")[0].text_content().split(".")[-1]
-#					team2 = match.cssselect(".match--player-name")[1].text_content().split(".")[-1]
-#					yield from message.channel.send("%s %s" % (team1, team2))
-#
-			yield from message.channel.send("DONE")
+						"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.")
 
 	# Score check response
 	if message.content.startswith("!score"):
@@ -424,6 +292,165 @@ def on_message(message):
 					yield from message.channel.send("I do not think " + emojis[team] + " " + team + " plays tonight.")
 			else:
 				yield from message.channel.send("I do not recognize the team '" + team + "'")
+
+######################### Meme Responses ####################################
+	if message.content.startswith("!fifi"):
+		yield from message.channel.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
+						"pops bottles pops pussies so keep your finger on that lamp light limpdick cause the forecast is goals. Fuck your cookie jar and your water bottles, " + \
+						"you better get quality rubbermaids bud cause she's gonna spend a lot of time hitting the fucking ice if Fifi has anything to say about it. " + \
+						"Blistering Wristers or fat clappers, this fuckin guy can't be stopped. If I had a choice of one attack to use to kill Hitler I would choose a " + \
+						"Kevin Fiala snipe from the top of the circle because you fucking know his evil dome would be bouncing off the end boards after that puck is loosed " + \
+						"like lightning from the blade of God's own CCM. I'd just pick up the phone and call Kevin Fiala at 1-800-TOP-TITS where he can be found earning his " + \
+						"living at the back of the goddamn net. The world record for a recorded sniper kill is 3,540m, but that's only because nobody has asked ya boi Fifi to " + \
+						"rip any wristers at ISIS yet. If i had three wishes, the first would be to live forever, the second would be for Kevin Fiala to live forever, " + \
+						"and the third would be for a trillion dollars so I could pay to watch ol Fifi Score top cheddar magic for all eternity.")
+
+	if message.content.startswith("!laine"):
+		yield from message.channel.send("Yeah, fuck off buddy we absolutely need more Laine clips. Fuckin every time this kid steps on the ice someone scores. " + \
+						"kids fuckin dirt nasty man. Does fuckin ovi have 14 goals this season I dont fuckin think so bud. I'm fuckin tellin ya Patrik 'golden flow' " + \
+						"Laine is pottin 50 in '17 fuckin callin it right now. Clap bombs, fuck moms, wheel, snipe, and fuckin celly boys fuck")
+
+	if message.content.startswith("!xfactor"):
+		yield from message.channel.send("I have studied tapes of him and I must disagree. While he is highly skilled, he does not have 'it' if you know what I mean. " + \
+						"That 'x-factor'. The ;above and beyond; trait.")
+
+	if message.content.startswith("!petey"):
+		yield from message.channel.send("Kid might look like if Malfoy was a Hufflepuff but he plays like if Potter was a Slytherin the kids absolutely fucking nasty. " + \
+						"If there was a fourth unforgiveable curse it would be called petterssaucious or some shit because this kids dishes are absolutely team killing, " + \
+						"SHL, AHL, NHL it doesn't fucking matter 100 points to Pettersson because he's winning the House Cup, The Calder Cup, " + \
+						"The Stanley Cup and whatever fucking cup is in Sweden. Game Over.")
+
+#################### OTH-specific responses #######################################
+	if message.author.name.startswith("Minnesnota") and ("Wes" in message.content or "wes" in message.content) and message.guild.id == 207634081700249601:
+		yield from message.channel.send("@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
+						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
+						"make you funny or clever, just a coward hiding behind a computer")
+
+	# Trades response
+	if message.content.startswith("!trades") and (message.channel.name == "oth-tech" or message.channel.name == "tradereview") and message.guild.id == 207634081700249601:
+		bot_channel = None
+		for channel in client.get_all_channels():
+			if channel.name == "tradereview":
+				bot_channel = channel
+
+		announcements = CheckTrades.checkFleaflickerTrades()
+		if len(announcements) == 0:
+			yield from bot_channel.send("No pending trades to review.")
+		else:
+			for mystr in announcements:
+				mystr = "<@&235926008266620929>\n" + mystr
+				yield from bot_channel.send(mystr)
+
+	# Inactives response
+	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods"):
+		bot_channel = None
+		for channel in client.get_all_channels():
+			if channel.name == "mods":
+				bot_channel = channel
+
+		CheckInactives.checkAllLeagues(True) # force
+		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
+			yield from bot_channel.send("No inactive or unclaimed teams in any league currently!")
+		else:
+			body = ""
+			for league in CheckInactives.unclaimed:
+				body += str(CheckInactives.unclaimed[league]) + " unclaimed team(s) in " + league + "\n"
+
+			if body != "":
+				body += "\n"
+			else:
+				body += "No unclaimed teams.\n\n"
+
+			count = 0
+			for league in CheckInactives.inactives:
+				body += str(len(CheckInactives.inactives[league])) + " inactive(s) in " + league + "\n"
+				count += len(CheckInactives.inactives[league])
+				for user in CheckInactives.inactives[league]:
+					body += "\t" + user + "\n"
+				body += "\n"
+			if count == 0:
+				body += "No inactive teams.\n"
+
+			yield from bot_channel.send(body)
+
+	# Fantasy matchup check response
+	if message.content.startswith("!matchup") and message.guild.id == 207634081700249601:
+		if len(message.content.split(" ")) == 1:
+			yield from message.channel.send("Usage: !matchup <fleaflicker username>")
+		else:
+			# might be slow if opening too many DB connections
+			db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+			cursor = db.cursor()
+			team = message.content.split(" ")[1].lower()
+			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID, me.wins, me.losses, opp.wins, opp.losses " + \
+				       "FROM Teams AS me " + \
+				       "INNER JOIN Teams AS opp ON me.CurrOpp=opp.teamID " + \
+				       "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
+				       "INNER JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
+				       "INNER JOIN Leagues AS l ON me.leagueID=l.id " + \
+				       "WHERE LOWER(me_u.FFname)='" + team + "' and l.year=%d" % year)
+
+			results = cursor.fetchall()
+			if len(results) == 0:
+				yield from message.channel.send("User " + team + " not found.");
+			else:
+				yield from message.channel.send("%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**\n<https://www.fleaflicker.com/nhl/leagues/%d/scores/%d>" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
+
+			cursor.close()
+			db.close()
+
+	# Woppa cup check response
+#
+#	I think this will be a lot easier once the Challonge API v2 is out. That should allow me to just
+#	make calls instead of having to scrape the page.
+#
+#	if message.content.startswith("!woppacup") and message.guild.id == 207634081700249601:
+#		if len(message.content.split(" ")) == 1:
+#			yield from message.channel.send("Usage: !woppacup <fleaflicker username>")
+#		else:
+#			myteam = message.content.split(" ")[1]
+
+			# might need selenium or scrapy for delay load
+#			url = "http://challonge.com/woppacup%d" % (year+1)
+#			req = urllib.request.Request(url, headers={"User-Agent" : "Magic Browser"})
+#			response = urllib.request.urlopen(req)
+#			page = response.read()
+#			root = html.document_fromstring(page)
+
+#			if root.cssselect("li.active")[0].text_content() == "Final Stage":
+#				matches = root.cssselect(".match.-open")
+#				yield from message.channel.send("%d" % (len(matches)))
+#				for match in matches:
+#					team1 = match.cssselect(".match--player-name")[0].text_content().split(".")[-1]
+#					team2 = match.cssselect(".match--player-name")[1].text_content().split(".")[-1]
+#					yield from message.channel.send("%s %s" % (team1, team2))
+#
+#			yield from message.channel.send("DONE")
+
+################# WIP responses ###########################
+	# OT contest check response
+#	if message.content.startswith("!ot"):
+#		pass
+		# tokenize on spaces
+		# second argument is team
+		# third argument is player number
+		# check that the game for the given team is after the 3rd period, but before OT using nhlapi events
+		# temp store the user and the player they chose, overwriting previous choices if applicable
+		# if an OT goal is scored, award points to players and update standings (sql)
+
+	# Embed streamable recaps (test)
+#	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
+#		e = discord.Embed()
+#		e.set_image("http://md-akc.med.nhl.com/mp4/nhl/2018/09/30/7e7f1aee-cd37-499c-91a7-db15cfafb979/1538277700218/asset_1800k.mp4")
+#		yield from message.channel.send(embed=e)
+
+	# Reset response
+#	if message.content.startswith("!reset") and (message.channel.name == "mods" or message.channel.name == "oth-tech"):
+#		yield from message.channel.send("Rebooting bot")
+#		print("Bot reset from client by " + message.author)
+#		loop.run_until_complete(client.logout())
+#		client.close()
+#		quit()
 
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
