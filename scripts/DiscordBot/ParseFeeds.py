@@ -66,6 +66,16 @@ def FindMediaLink(key):
 	except:
 		return None
 
+def FindRecapLink(key):
+	try:
+		gameid = key.split(":")[0]
+		media = getFeed("https://statsapi.web.nhl.com/api/v1/game/" + gameid + "/content")
+		for item in media["media"]["epg"]:
+			if item["title"] == "Recap":
+				return item["items"][0]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
+	except:
+		return None
+
 def parseGame(game):
 	global pickled
 
@@ -192,6 +202,10 @@ def parseGame(game):
 				finalstring = getEmoji(away) + " " + away + " " + str(awayScore) + ", " + getEmoji(home) + " " + home + " " + str(homeScore) + " Final " + period
 				stringsToAnnounce.append(endkey)
 				pickled[endkey] = {"msg_id":None, "msg_text":finalstring, "msg_link":None}
+
+	if isFinal and pickled[endkey]["msg_link"] == None:
+		pickled[endkey]["msg_link"] = FindRecapLink(endkey)
+		stringsToAnnounce.append(endkey)
 
 	return stringsToAnnounce
 
