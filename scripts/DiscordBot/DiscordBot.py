@@ -100,13 +100,12 @@ client = discord.Client(heartbeat_timeout=120.0)
 
 @asyncio.coroutine
 def check_scores():
-	bot_channel = None
-	bot_channel2 = None
+	bot_channels = []
 	for channel in client.get_all_channels():
-		if channel.name == "hockey-general" and channel.guild.id == OTH_SERVER_ID:
-			bot_channel = channel
+		if channel.name == "oth-tech" and channel.guild.id == OTH_SERVER_ID:
+			bot_channels.append(channel)
 		elif channel.name == "guavas-and-apples" and channel.guild.id == KK_SERVER_ID:
-			bot_channel2 = channel
+			bot_channels.append(channel)
 
 	# repeat the task every 10 seconds
 	lastdate = None
@@ -135,15 +134,18 @@ def check_scores():
 				for key in stringsToAnnounce:
 					embed = discord.Embed(title=ParseFeeds.pickled[key]["msg_text"], url=ParseFeeds.pickled[key]["msg_link"])
 					if ParseFeeds.pickled[key]["msg_id"] == None:
-						msg = yield from bot_channel.send(embed=embed)
-						msg2 = yield from bot_channel2.send(embed=embed)
-						ParseFeeds.UpdateMessageId(key, [msg.id, msg2.id])
+						msgids = []
+						for channel in bot_channels:
+							msg = yield from channel.send(embed=embed)
+							msgids.append(msg.id)
+						ParseFeeds.UpdateMessageId(key, msgids)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
-							try:
-								msg = yield from bot_channel.fetch_message(msgid)
-							except:
-								msg = yield from bot_channel2.fetch_message(msgid)
+							for channel in bot_channels:
+								try:
+									msg = yield from channel.fetch_message(msgid)
+								except:
+									continue
 							yield from msg.edit(embed=embed)
 
 			ParseFeeds.WritePickleFile()
