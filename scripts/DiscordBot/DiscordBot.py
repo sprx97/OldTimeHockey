@@ -141,12 +141,14 @@ def check_scores():
 						ParseFeeds.UpdateMessageId(key, msgids)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
+							msg = None
 							for channel in bot_channels:
 								try:
 									msg = yield from channel.fetch_message(msgid)
 								except:
 									continue
-							yield from msg.edit(embed=embed)
+							if msg != None:
+								yield from msg.edit(embed=embed)
 
 			ParseFeeds.WritePickleFile()
 
@@ -448,28 +450,26 @@ def on_message(message):
 
 ################# WIP responses ###########################
 	# OT contest check response
-#	if message.content.startswith("!ot"):
-#		pass
-		# tokenize on spaces
-		# second argument is team
-		# third argument is player number
+	if message.content.startswith("!ot") and message.guild.id == OTH_SERVER_ID and message.channel.name == "oth-tech":
+		try:
+			tokens = message.content.split(" ")
+			if len(tokens) != 3:
+				raise Exception("Wrong number of arguments: !ot <team> <player_number>")
+			team = tokens[1]
+			if team not in team_map:
+				raise Exception("Team not recognized: !ot <team> <player_number>")
+			try:
+				number = int(tokens[2])
+			except ValueError:
+				raise Exception("Number not a number: !ot <team> <player_number>")
+
+			raise Exception("Work in progress...")
+		except Exception as e:
+			yield from message.channel.send(e)
+
 		# check that the game for the given team is after the 3rd period, but before OT using nhlapi events
 		# temp store the user and the player they chose, overwriting previous choices if applicable
 		# if an OT goal is scored, award points to players and update standings (sql)
-
-	# Embed streamable recaps (test)
-#	if message.content.startswith("!recap") and message.channel.name == "oth-tech":
-#		e = discord.Embed()
-#		e.set_image("http://md-akc.med.nhl.com/mp4/nhl/2018/09/30/7e7f1aee-cd37-499c-91a7-db15cfafb979/1538277700218/asset_1800k.mp4")
-#		yield from message.channel.send(embed=e)
-
-	# Reset response
-#	if message.content.startswith("!reset") and (message.channel.name == "mods" or message.channel.name == "oth-tech"):
-#		yield from message.channel.send("Rebooting bot")
-#		print("Bot reset from client by " + message.author)
-#		loop.run_until_complete(client.logout())
-#		client.close()
-#		quit()
 
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
