@@ -19,6 +19,7 @@ sys.path.append("..")
 import Config
 
 OTH_SERVER_ID = 207634081700249601
+KK_SERVER_ID = 742845693785276576
 
 # team name mappings, ALL LOWERCASE
 team_map = {}
@@ -100,9 +101,12 @@ client = discord.Client(heartbeat_timeout=120.0)
 @asyncio.coroutine
 def check_scores():
 	bot_channel = None
+	bot_channel2 = None
 	for channel in client.get_all_channels():
-		if channel.name == "hockey-general":
+		if channel.name == "hockey-general" and channel.guild.id == OTH_SERVER_ID:
 			bot_channel = channel
+		elif channel.name == "guavas-and-apples" and channel.guild.id == KK_SERVER_ID:
+			bot_channel2 = channel
 
 	# repeat the task every 10 seconds
 	lastdate = None
@@ -113,7 +117,7 @@ def check_scores():
 		if lastdate != date: # date has rolled over. Clear picklefile
 			ParseFeeds.ClearPickleFile()
 			lastdate = date
-			
+
 		try:
 			ParseFeeds.ReadPickleFile()
 
@@ -132,10 +136,15 @@ def check_scores():
 					embed = discord.Embed(title=ParseFeeds.pickled[key]["msg_text"], url=ParseFeeds.pickled[key]["msg_link"])
 					if ParseFeeds.pickled[key]["msg_id"] == None:
 						msg = yield from bot_channel.send(embed=embed)
-						ParseFeeds.UpdateMessageId(key, msg.id)
+						msg2 = yield from bot_channel2.send(embed=embed)
+						ParseFeeds.UpdateMessageId(key, [msg.id, msg2.id])
 					else:
-						msg = yield from bot_channel.fetch_message(ParseFeeds.pickled[key]["msg_id"])
-						yield from msg.edit(embed=embed)
+						for msgid in ParseFeeds.pickled[key]["msg_id"]:
+							try:
+								msg = yield from bot_channel.fetch_message(msgid)
+							except:
+								msg = yield from bot_channel2.fetch_message(msgid)
+							yield from msg.edit(embed=embed)
 
 			ParseFeeds.WritePickleFile()
 
@@ -215,6 +224,8 @@ def on_ready():
 
 #	yield from client.change_presence(game=discord.Game(name="NHL '94"))
 
+#	yield from client.change_nickname(client.user, "Wes McCauley")
+
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trades())
 	client.loop.create_task(check_inactives())
@@ -230,7 +241,6 @@ def on_message(message):
 ######################## Core Responses ######################################
 	# Ping response
 	if message.content.startswith("!ping"):
-		print(message.guild.id)
 		yield from message.channel.send("pong")
 
 	# Pong response
@@ -239,11 +249,16 @@ def on_message(message):
 
 	# Help response
 	if message.content.startswith("!help"):
-		yield from message.channel.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
-						"\t!help: Displays this list of commands.\n" + \
-						"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
-						"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
-						"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.")
+		if message.guild.id == OTH_SERVER_ID:
+			yield from message.channel.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
+							"\t!help: Displays this list of commands.\n" + \
+							"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
+							"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
+							"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.")
+		else:
+			yield from message.channel.send("!help: Displays this list of commands.\n" + \
+							"!ping or !pong: Gets a response to check that the bot is up.\n" + \
+							"!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.")
 
 	# Score check response
 	if message.content.startswith("!score"):
@@ -296,7 +311,7 @@ def on_message(message):
 				yield from message.channel.send("I do not recognize the team '" + team + "'")
 
 ######################### Meme Responses ####################################
-	if message.content.startswith("!fifi"):
+	if message.content.startswith("!fifi") and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
 						"pops bottles pops pussies so keep your finger on that lamp light limpdick cause the forecast is goals. Fuck your cookie jar and your water bottles, " + \
 						"you better get quality rubbermaids bud cause she's gonna spend a lot of time hitting the fucking ice if Fifi has anything to say about it. " + \
@@ -307,16 +322,16 @@ def on_message(message):
 						"rip any wristers at ISIS yet. If i had three wishes, the first would be to live forever, the second would be for Kevin Fiala to live forever, " + \
 						"and the third would be for a trillion dollars so I could pay to watch ol Fifi Score top cheddar magic for all eternity.")
 
-	if message.content.startswith("!laine"):
+	if message.content.startswith("!laine") and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("Yeah, fuck off buddy we absolutely need more Laine clips. Fuckin every time this kid steps on the ice someone scores. " + \
 						"kids fuckin dirt nasty man. Does fuckin ovi have 14 goals this season I dont fuckin think so bud. I'm fuckin tellin ya Patrik 'golden flow' " + \
 						"Laine is pottin 50 in '17 fuckin callin it right now. Clap bombs, fuck moms, wheel, snipe, and fuckin celly boys fuck")
 
-	if message.content.startswith("!xfactor"):
+	if message.content.startswith("!xfactor") and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("I have studied tapes of him and I must disagree. While he is highly skilled, he does not have 'it' if you know what I mean. " + \
 						"That 'x-factor'. The ;above and beyond; trait.")
 
-	if message.content.startswith("!petey"):
+	if message.content.startswith("!petey") and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("Kid might look like if Malfoy was a Hufflepuff but he plays like if Potter was a Slytherin the kids absolutely fucking nasty. " + \
 						"If there was a fourth unforgiveable curse it would be called petterssaucious or some shit because this kids dishes are absolutely team killing, " + \
 						"SHL, AHL, NHL it doesn't fucking matter 100 points to Pettersson because he's winning the House Cup, The Calder Cup, " + \

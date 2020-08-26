@@ -210,6 +210,7 @@ def parseGame(game):
 	return stringsToAnnounce
 
 def UpdateMessageId(key, msg_id):
+	global pickled
 	pickled[key]["msg_id"] = msg_id
 
 def ReadPickleFile():
