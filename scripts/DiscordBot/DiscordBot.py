@@ -102,7 +102,7 @@ client = discord.Client(heartbeat_timeout=120.0)
 def check_scores():
 	bot_channels = []
 	for channel in client.get_all_channels():
-		if channel.name == "oth-tech" and channel.guild.id == OTH_SERVER_ID:
+		if channel.name == "hockey-general" and channel.guild.id == OTH_SERVER_ID:
 			bot_channels.append(channel)
 		elif channel.name == "guavas-and-apples" and channel.guild.id == KK_SERVER_ID:
 			bot_channels.append(channel)
