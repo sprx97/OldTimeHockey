@@ -258,7 +258,9 @@ def on_message(message):
 							"\t!help: Displays this list of commands.\n" + \
 							"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
 							"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
-							"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.")
+							"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations." + \
+							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
+									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game.")
 		else:
 			yield from message.channel.send("!help: Displays this list of commands.\n" + \
 							"!ping or !pong: Gets a response to check that the bot is up.\n" + \
@@ -453,23 +455,29 @@ def on_message(message):
 	if message.content.startswith("!ot") and message.guild.id == OTH_SERVER_ID and message.channel.name == "oth-tech":
 		try:
 			tokens = message.content.split(" ")
+			if tokens[1] == "standings":
+				raise Exception("No standings currently")
 			if len(tokens) != 3:
-				raise Exception("Wrong number of arguments: !ot <team> <player_number>")
+				raise Exception("Wrong number of arguments:\n\t!ot <team> <player_number>\n\t!ot standings")
 			team = tokens[1]
 			if team not in team_map:
-				raise Exception("Team not recognized: !ot <team> <player_number>")
+				raise Exception("Team not recognized:\n\t!ot <team> <player_number>\n\t!ot standings")
 			try:
 				number = int(tokens[2])
 			except ValueError:
-				raise Exception("Number not a number: !ot <team> <player_number>")
+				raise Exception("Number not a number:\n\t!ot <team> <player_number>\n\t!ot standings")
+
+			# Get the feed like in check_scores
+			# validate that the selected team is playing
+			# validate that the selected team is in a tied game
+			# validate that the selected team has a player of the selected number (or don't, idgaf)
+			# validate that the selected team has <5min left in the 3rd and before OT start
+			# store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable (pickle)
+			# if an OT goal is scored, award points to players and update standings (sql)
 
 			raise Exception("Work in progress...")
 		except Exception as e:
 			yield from message.channel.send(e)
-
-		# check that the game for the given team is after the 3rd period, but before OT using nhlapi events
-		# temp store the user and the player they chose, overwriting previous choices if applicable
-		# if an OT goal is scored, award points to players and update standings (sql)
 
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
