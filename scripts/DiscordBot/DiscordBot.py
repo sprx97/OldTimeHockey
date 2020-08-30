@@ -23,75 +23,38 @@ KK_SERVER_ID = 742845693785276576
 
 # team name mappings, ALL LOWERCASE
 team_map = {}
-team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]						= "ARI"
-team_map["ana"] = team_map["anaheim"] = team_map["ducks"]																= "ANA"
-team_map["bos"] = team_map["boston"] = team_map["bruins"]																= "BOS"
-team_map["buf"] = team_map["buffalo"] = team_map["sabres"]																= "BUF"
-team_map["cgy"] = team_map["cal"] = team_map["calgary"] = team_map["flames"]											= "CGY"
-team_map["car"] = team_map["carolina"] = team_map["canes"] = team_map["hurricanes"]										= "CAR"
-team_map["chi"] = team_map["chicago"] = team_map["hawks"] = team_map["blackhawks"]										= "CHI"
-team_map["col"] = team_map["colorado"] = team_map["avs"] = team_map["avalanche"]										= "COL"
-team_map["cbj"] = team_map["columbus"] = team_map["jackets"] = team_map["blue jackets"]									= "CBJ"
-team_map["dal"] = team_map["dallas"] = team_map["stars"]																= "DAL"
-team_map["det"] = team_map["detroit"] = team_map["wings"] = team_map["red wings"]										= "DET"
-team_map["edm"] = team_map["edmonton"] = team_map["oilers"]																= "EDM"
-team_map["fla"] = team_map["flo"] = team_map["florida"] = team_map["panthers"]											= "FLA"
-team_map["lak"] = team_map["la"] = team_map["los angeles"] = team_map["kings"]											= "LAK"
-team_map["min"] = team_map["minnesota"] = team_map["wild"]																= "MIN"
-team_map["mtl"] = team_map["mon"] = team_map["montreal"] = team_map["canadiens"] = team_map["habs"]						= "MTL"
-team_map["nsh"] = team_map["nas"] = team_map["nashville"] = team_map["predators"] = team_map["preds"]					= "NSH"
-team_map["njd"] = team_map["nj"] = team_map["new jersey"] = team_map["jersey"] = team_map["devils"]						= "NJD"
-team_map["nyi"] = team_map["new york islanders"] = team_map["islanders"]												= "NYI"
-team_map["nyr"] = team_map["new york rangers"] = team_map["rangers"]													= "NYR"
-team_map["ott"] = team_map["ottawa"] = team_map["sens"] = team_map["senators"]											= "OTT"
-team_map["phi"] = team_map["philadelphia"] = team_map["philly"] = team_map["flyers"]									= "PHI"
-team_map["pit"] = team_map["pittsburgh"] = team_map["pens"] = team_map["penguins"]										= "PIT"
-team_map["sea"] = team_map["seattle"] = team_map["kraken"]																= "SEA"
-team_map["stl"] = team_map["st. louis"] = team_map["st louis"] = team_map["saint louis"] = team_map["blues"]			= "STL"
-team_map["sjs"] = team_map["sj"] = team_map["san jose"] = team_map["sharks"]											= "SJS"
-team_map["tbl"] = team_map["tb"] = team_map["tampa bay"] = team_map["tampa"] = team_map["bolts"] = team_map["lightning"]= "TBL"
-team_map["tor"] = team_map["toronto"] = team_map["leafs"] = team_map["maple leafs"]										= "TOR"
-team_map["van"] = team_map["vancouver"] = team_map["canucks"] = team_map["nucks"]										= "VAN"
-team_map["vgk"] = team_map["vegas"] = team_map["las vegas"] = team_map["golden knights"] = team_map["knights"]			= "VGK"
-team_map["wsh"] = team_map["was"] = team_map["washington"] = team_map["capitals"] = team_map["caps"]					= "WSH"
-team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]												= "WPJ"
-
-# Needs to be kept in sync with the dictionary in ParseFeeds.py
-emojis = {}
-emojis["ARI"] = "<:ARI:269315353153110016>"
-emojis["ANA"] = "<:ANA:271881573375279104>"
-emojis["BOS"] = "<:BOS:269315305707143168>"
-emojis["BUF"] = "<:BUF:269315526717603840>"
-emojis["CGY"] = "<:CGY:269315410375999509>"
-emojis["CAR"] = "<:CAR:269315433595666432>"
-emojis["CHI"] = "<:CHI:269315278880505857>"
-emojis["COL"] = "<:COL:269315269002919946>"
-emojis["CBJ"] = "<:CBJ:269315288988647425>"
-emojis["DAL"] = "<:DAL:269315550188929024>"
-emojis["DET"] = "<:DET:269315577682722826>"
-emojis["EDM"] = "<:EDM:269315479464706048>"
-emojis["FLA"] = "<:FLO:269315494652280832>"
-emojis["FLO"] = "<:FLO:269315494652280832>"
-emojis["LAK"] = "<:LAK:269315457188626432>"
-emojis["MIN"] = "<:MIN:269315563606507521>"
-emojis["MTL"] = "<:MTL:269315427874635776>"
-emojis["NSH"] = "<:NSH:269315511702126594>"
-emojis["NJD"] = "<:NJD:269315361126481930>"
-emojis["NYI"] = "<:NYI:269315441204264960>"
-emojis["NYR"] = "<:NYR:269315518907809792>"
-emojis["OTT"] = "<:OTT:269315534301036544>"
-emojis["PHI"] = "<:PHI:269315418513080331>"
-emojis["PIT"] = "<:PIT:269315504324214786>"
-emojis["SEA"] = "<:SEA:747291968681541682>"
-emojis["STL"] = "<:STL:269315296328679436>"
-emojis["SJS"] = "<:SJS:269315542509289472>"
-emojis["TBL"] = "<:TBL:269315471919022090>"
-emojis["TOR"] = "<:TOR:645064999659896842>"
-emojis["VAN"] = "<:VAN:269315315194658818>"
-emojis["VGK"] = "<:VGK:363836502859448320>"
-emojis["WSH"] = "<:WSH:269327070977458181>"
-emojis["WPG"] = "<:WPJ:269315448833703946>"
-emojis["WPJ"] = "<:WPJ:269315448833703946>"
+team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]                      = "ARI"
+team_map["ana"] = team_map["anaheim"] = team_map["ducks"]                                                                = "ANA"
+team_map["bos"] = team_map["boston"] = team_map["bruins"]                                                                = "BOS"
+team_map["buf"] = team_map["buffalo"] = team_map["sabres"]                                                               = "BUF"
+team_map["cgy"] = team_map["cal"] = team_map["calgary"] = team_map["flames"]                                             = "CGY"
+team_map["car"] = team_map["carolina"] = team_map["canes"] = team_map["hurricanes"]                                      = "CAR"
+team_map["chi"] = team_map["chicago"] = team_map["hawks"] = team_map["blackhawks"]                                       = "CHI"
+team_map["col"] = team_map["colorado"] = team_map["avs"] = team_map["avalanche"]                                         = "COL"
+team_map["cbj"] = team_map["columbus"] = team_map["jackets"] = team_map["blue jackets"]                                  = "CBJ"
+team_map["dal"] = team_map["dallas"] = team_map["stars"]                                                                 = "DAL"
+team_map["det"] = team_map["detroit"] = team_map["wings"] = team_map["red wings"]                                        = "DET"
+team_map["edm"] = team_map["edmonton"] = team_map["oilers"]                                                              = "EDM"
+team_map["fla"] = team_map["flo"] = team_map["florida"] = team_map["panthers"]                                           = "FLA"
+team_map["lak"] = team_map["la"] = team_map["los angeles"] = team_map["kings"]                                           = "LAK"
+team_map["min"] = team_map["minnesota"] = team_map["wild"]                                                               = "MIN"
+team_map["mtl"] = team_map["mon"] = team_map["montreal"] = team_map["canadiens"] = team_map["habs"]                      = "MTL"
+team_map["nsh"] = team_map["nas"] = team_map["nashville"] = team_map["predators"] = team_map["preds"]                    = "NSH"
+team_map["njd"] = team_map["nj"] = team_map["new jersey"] = team_map["jersey"] = team_map["devils"]                      = "NJD"
+team_map["nyi"] = team_map["new york islanders"] = team_map["islanders"]                                                 = "NYI"
+team_map["nyr"] = team_map["new york rangers"] = team_map["rangers"]                                                     = "NYR"
+team_map["ott"] = team_map["ottawa"] = team_map["sens"] = team_map["senators"]                                           = "OTT"
+team_map["phi"] = team_map["philadelphia"] = team_map["philly"] = team_map["flyers"]                                     = "PHI"
+team_map["pit"] = team_map["pittsburgh"] = team_map["pens"] = team_map["penguins"]                                       = "PIT"
+team_map["sea"] = team_map["seattle"] = team_map["kraken"]                                                               = "SEA"
+team_map["stl"] = team_map["st. louis"] = team_map["st louis"] = team_map["saint louis"] = team_map["blues"]             = "STL"
+team_map["sjs"] = team_map["sj"] = team_map["san jose"] = team_map["sharks"]                                             = "SJS"
+team_map["tbl"] = team_map["tb"] = team_map["tampa bay"] = team_map["tampa"] = team_map["bolts"] = team_map["lightning"] = "TBL"
+team_map["tor"] = team_map["toronto"] = team_map["leafs"] = team_map["maple leafs"]                                      = "TOR"
+team_map["van"] = team_map["vancouver"] = team_map["canucks"] = team_map["nucks"]                                        = "VAN"
+team_map["vgk"] = team_map["vegas"] = team_map["las vegas"] = team_map["golden knights"] = team_map["knights"]           = "VGK"
+team_map["wsh"] = team_map["was"] = team_map["washington"] = team_map["capitals"] = team_map["caps"]                     = "WSH"
+team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]                                              = "WPJ"
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -296,7 +259,7 @@ def on_message(message):
 							opp = away
 
 						if game["status"]["detailedState"] == "Scheduled" or game["status"]["detailedState"] == "Pre-Game":
-							yield from message.channel.send(emojis[team] + " " + team + "'s game against " + emojis[opp] + " " + opp + " has not started yet.")
+							yield from message.channel.send(ParseFeeds.emojis[team] + " " + team + "'s game against " + ParseFeeds.emojis[opp] + " " + opp + " has not started yet.")
 						else:
 							period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
 							awayScore = game["teams"]["away"]["score"]
@@ -304,17 +267,17 @@ def on_message(message):
 							if game["status"]["detailedState"] == "Final":
 								if period == "(3rd)":
 									period = ""
-								yield from message.channel.send("Final: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
+								yield from message.channel.send("Final: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
 							else:
 								timeleft = game["linescore"]["currentPeriodTimeRemaining"]
 								period = period[:-1] + " " + timeleft + period[-1]
-								yield from message.channel.send("Current score: %s %s %s, %s %s %s %s" % (emojis[away], away, awayScore, emojis[home], home, homeScore, period))
+								yield from message.channel.send("Current score: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
 
 						found = True
 						break
 
 				if not found:
-					yield from message.channel.send("I do not think " + emojis[team] + " " + team + " plays tonight.")
+					yield from message.channel.send("I do not think " + ParseFeeds.emojis[team] + " " + team + " plays tonight.")
 			else:
 				yield from message.channel.send("I do not recognize the team '" + team + "'")
 

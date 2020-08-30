@@ -5,7 +5,6 @@ import json
 import sys
 import pickle
 
-# Needs to be kept in sync with the dictionary in DiscordBot.py
 emojis = {}
 emojis["ARI"] = "<:ARI:269315353153110016>"
 emojis["ANA"] = "<:ANA:271881573375279104>"
