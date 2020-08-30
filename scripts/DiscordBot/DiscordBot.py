@@ -457,11 +457,13 @@ def on_message(message):
 	if message.content.startswith("!ot") and message.guild.id == OTH_SERVER_ID and message.channel.name == "oth-tech":
 		try:
 			tokens = message.content.split(" ")
+			if len(tokens) == 1:
+				raise Exception("Wrong number of arguments:\n\t!ot <team> <player_number>\n\t!ot standings")
 			if tokens[1] == "standings":
 				raise Exception("No standings currently")
 			if len(tokens) != 3:
 				raise Exception("Wrong number of arguments:\n\t!ot <team> <player_number>\n\t!ot standings")
-			team = tokens[1]
+			team = tokens[1].lower()
 			if team not in team_map:
 				raise Exception("Team not recognized:\n\t!ot <team> <player_number>\n\t!ot standings")
 			try:
