@@ -163,13 +163,17 @@ def parseGame(game):
 		if goalkey in pickled and pickled[goalkey]["msg_text"] != goalstr:
 			stringsToAnnounce.append(goalkey)
 			pickled[goalkey]["msg_text"] = goalstr
+			print(pickled[goalkey]["msg_text"], len(pickled[goalkey]["msg_text"]))
+			print(goalstr, len(goalstr))
 		elif goalkey not in pickled: # If the goal has not been reported, post it
 			stringsToAnnounce.append(goalkey)
 			pickled[goalkey] = { "msg_id":None, "msg_text":goalstr, "msg_link":None }
 
 		if pickled[goalkey]["msg_link"] == None:
 			pickled[goalkey]["msg_link"] = FindMediaLink(goalkey)
-			stringsToAnnounce.append(goalkey)
+			if pickled[goalkey]["msg_link"] != None:
+				print("Link found:", pickled[goalkey]["msg_link"])
+				stringsToAnnounce.append(goalkey)
 
 #########################################################################################
 
@@ -182,7 +186,7 @@ def parseGame(game):
 			pass
 		elif playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_END" or playbyplay["liveData"]["plays"]["allPlays"][-1]["result"]["eventTypeId"] == "GAME_OFFICIAL":
 			awayScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["away"]
-			homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]		
+			homeScore = playbyplay["liveData"]["plays"]["allPlays"][-1]["about"]["goals"]["home"]
 
 			# Sometimes shootout winners take longer to report, so allow this to defer to the next cycle
 			skip = False
@@ -205,7 +209,8 @@ def parseGame(game):
 
 	if isFinal and pickled[endkey]["msg_link"] == None:
 		pickled[endkey]["msg_link"] = FindRecapLink(endkey)
-		stringsToAnnounce.append(endkey)
+		if pickled[endkey]["msg_link"] != None:
+			stringsToAnnounce.append(endkey)
 
 	return stringsToAnnounce
 

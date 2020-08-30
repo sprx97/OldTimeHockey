@@ -138,6 +138,7 @@ def check_scores():
 						for channel in bot_channels:
 							msg = yield from channel.send(embed=embed)
 							msgids.append(msg.id)
+						print("Post:", msg.id)
 						ParseFeeds.UpdateMessageId(key, msgids)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
@@ -147,6 +148,7 @@ def check_scores():
 									msg = yield from channel.fetch_message(msgid)
 								except:
 									continue
+							print("Edit:", msg.id)
 							if msg != None:
 								yield from msg.edit(embed=embed)
 
