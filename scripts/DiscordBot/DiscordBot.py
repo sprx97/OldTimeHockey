@@ -257,12 +257,12 @@ def on_message(message):
 	if message.content.startswith("!help"):
 		if message.guild.id == OTH_SERVER_ID:
 			yield from message.channel.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
-							"\t!help: Displays this list of commands.\n" + \
-							"\t!ping or !pong: Gets a response to check that bot is up.\n" + \
-							"\t!matchup <fleaflicker username>: Posts the score of the user's fantasy matchup this week.\n" + \
-							"\t!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations." + \
-							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
-									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game.")
+							"**!help**\n\tDisplays this list of commands.\n" + \
+							"**!ping or !pong**\n\tGets a response to check that bot is up.\n" + \
+							"**!matchup <fleaflicker username>**\n\tPosts the score of the user's fantasy matchup this week.\n" + \
+							"**!score <NHL team>**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.") # + \
+#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
+#									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game.")
 		else:
 			yield from message.channel.send("!help: Displays this list of commands.\n" + \
 							"!ping or !pong: Gets a response to check that the bot is up.\n" + \
