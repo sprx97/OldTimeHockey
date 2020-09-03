@@ -40,6 +40,7 @@ emojis["VGK"] = "<:VGK:363836502859448320>"
 emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
+emojis["goal"] = "<a:goalsiren:750190349963624510>"
 
 pickled = {}
 
@@ -154,7 +155,7 @@ def parseGame(game):
 		time = goal["about"]["periodTime"] + " " + goal["about"]["ordinalNum"]
 
 		# Create the full string to post to chat
-		goalstr = "GOAL " + strength + team + time + ": " + goal["result"]["description"]
+		goalstr = getEmoji("goal") + " GOAL " + strength + team + time + ": " + goal["result"]["description"]
 		score = "(" + away + " " + str(goal["about"]["goals"]["away"]) + ", " + home + " " + str(goal["about"]["goals"]["home"]) + ")"
 		goalstr += " " + score
 
@@ -170,7 +171,7 @@ def parseGame(game):
 
 		if pickled[goalkey]["msg_link"] == None:
 			pickled[goalkey]["msg_link"] = FindMediaLink(goalkey)
-			if pickled[goalkey]["msg_link"] != None:
+			if pickled[goalkey]["msg_link"] != None and goalkey not in stringsToAnnounce:
 				print("Link found:", pickled[goalkey]["msg_link"])
 				stringsToAnnounce.append(goalkey)
 
