@@ -434,11 +434,50 @@ def on_message(message):
 			except ValueError:
 				raise Exception("Number not a number:\n\t!ot <team> <player_number>\n\t!ot standings")
 
-			# Get the feed like in check_scores
+			guess_team = tokens[1]
+			guess_number = tokens[2]
+
+			date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
+			root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
+			if len(root["dates"]) <= 0:
+				raise Exception("No games found for today.")
+
 			# validate that the selected team is playing
-			# validate that the selected team is in a tied game
-			# validate that the selected team has a player of the selected number (or don't, idgaf)
-			# validate that the selected team has <5min left in the 3rd and before OT start
+			games = root["dates"][0]["games"]
+			teamFound = False
+			for game in games:
+				game = ParseFeeds.getFeed("https://statsapi.web.nhl.com" + game["link"])
+				if game["gameData"]["teams"]["away"]["triCode"] == guess_team or game["gameData"]["teams"]["home"]["triCode"] == guess_team:
+					teamFound = True
+					break
+
+			if not teamFound:
+				raise Exception("Team " + guess_team + " not found in today's games.")
+
+			# validate that the selected team is in an in-progress game
+			if game["gameData"]["status"]["detailedState"] != "In Progress":
+				raise Exception(guess_team + " game is not currently in progress.")
+
+			# validate that the game <5min left in the 3rd and is tied
+			if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["lineScore"]["teams"]["away"]["goals"]:
+				raise Exception(guess_team + " game is not in the final 5 minutes of a tied game.")
+
+			mins_remaining = int(game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0])
+			if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 5:
+				raise Exception(guess_team + " game is not in the final 5 minutes of a tied game.")
+
+			# validate that the selected team has a player of the selected number
+			playerFound = False
+			for pid, player in game["gameData"]["players"]:
+				if player["primaryNumber"] == guess_number and player["currentTeam"]["triCode"] == guess_team:
+					playerFound = True
+					break
+
+			if not playerFound:
+				raise Exception(guess_team + " does not have a player in this game with number " + guess_number + ".")
+				
+			yield from message.channel.send(message.author.nick + " selects " + player["fullName"] + " for the OT GWG.")
+
 			# store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable (pickle)
 			# if an OT goal is scored, award points to players and update standings (sql)
 
