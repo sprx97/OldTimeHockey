@@ -162,9 +162,10 @@ def parseGame(game):
 		# If the goal has already been reported, but been updated, edit the post
 		if goalkey in pickled and pickled[goalkey]["msg_text"] != goalstr:
 			stringsToAnnounce.append(goalkey)
+			print("Edit found:", pickled[goalkey]["msg_text"], len(pickled[goalkey]["msg_text"]))
+			print("Original:  ", goalstr, len(goalstr))
+			print(goalstr == pickled[goalkey]["msg_text"])
 			pickled[goalkey]["msg_text"] = goalstr
-			print(pickled[goalkey]["msg_text"], len(pickled[goalkey]["msg_text"]))
-			print(goalstr, len(goalstr))
 		elif goalkey not in pickled: # If the goal has not been reported, post it
 			stringsToAnnounce.append(goalkey)
 			pickled[goalkey] = { "msg_id":None, "msg_text":goalstr, "msg_link":None }

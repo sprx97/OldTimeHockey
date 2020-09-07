@@ -102,7 +102,7 @@ def check_scores():
 							msg = yield from channel.send(embed=embed)
 							msgids.append(msg.id)
 						print("Post:", msg.id)
-						ParseFeeds.UpdateMessageId(key, msgids)
+						ParseFeeds.UpdateMessageId(key, msgids, embed.title)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
 							msg = None
@@ -111,8 +111,8 @@ def check_scores():
 									msg = yield from channel.fetch_message(msgid)
 								except:
 									continue
-							print("Edit:", msg.id)
 							if msg != None:
+								print("Edit:", msg.id, embed.title)
 								yield from msg.edit(embed=embed)
 
 			ParseFeeds.WritePickleFile()
@@ -225,11 +225,15 @@ def on_message(message):
 							"**!matchup <fleaflicker username>**\n\tPosts the score of the user's fantasy matchup this week.\n" + \
 							"**!score <NHL team>**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.") # + \
 #							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
-#									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game.")
+#									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
+#							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
 		else:
 			yield from message.channel.send("!help: Displays this list of commands.\n" + \
 							"!ping or !pong: Gets a response to check that the bot is up.\n" + \
-							"!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.")
+							"!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.") # + \
+#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
+#									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
+#							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
 
 	# Score check response
 	if message.content.startswith("!score"):
@@ -459,12 +463,12 @@ def on_message(message):
 				raise Exception(guess_team + " game is not currently in progress.")
 
 			# validate that the game <5min left in the 3rd and is tied
-			if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["lineScore"]["teams"]["away"]["goals"]:
-				raise Exception(guess_team + " game is not in the final 5 minutes of a tied game.")
+			if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
+				raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
 
 			mins_remaining = int(game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0])
 			if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 5:
-				raise Exception(guess_team + " game is not in the final 5 minutes of a tied game.")
+				raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
 
 			# validate that the selected team has a player of the selected number
 			playerFound = False
