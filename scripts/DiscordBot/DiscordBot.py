@@ -69,6 +69,8 @@ def check_scores():
 			bot_channels.append(channel)
 		elif channel.name == "guavas-and-apples" and channel.guild.id == KK_SERVER_ID:
 			bot_channels.append(channel)
+#		if channel.name == "oth-tech" and channel.guild.id == OTH_SERVER_ID:
+#			bot_channels.append(channel)
 
 	# repeat the task every 10 seconds
 	lastdate = None
@@ -101,8 +103,8 @@ def check_scores():
 						for channel in bot_channels:
 							msg = yield from channel.send(embed=embed)
 							msgids.append(msg.id)
-						print("Post:", msg.id)
-						ParseFeeds.UpdateMessageId(key, msgids, embed.title)
+						print("Post:", msg.id, embed.title)
+						ParseFeeds.UpdateMessageId(key, msgids)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
 							msg = None
