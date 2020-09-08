@@ -221,7 +221,7 @@ def UpdateMessageId(key, msg_id):
 
 def ReadPickleFile():
 	global pickled
-	with open("picklefile", "rb") as f:
+	with open("messages.pickle", "rb") as f:
 		try:
 			pickled = pickle.load(f)
 		except EOFError:
@@ -229,13 +229,15 @@ def ReadPickleFile():
 
 def WritePickleFile():
 	global pickled
-	with open("picklefile", "wb") as f:
+	with open("messages.pickle", "wb") as f:
 		pickle.dump(pickled, f)
 
 def ClearPickleFile():
 	global pickled
 	pickled = {}
 	WritePickleFile()
+
+#################### LOCAL TESTING ONLY #####################################################
 
 # parses the NHL scoreboard for a given date
 def parseScoreboard(date): # YYYY-mm-dd format

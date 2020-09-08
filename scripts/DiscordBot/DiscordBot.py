@@ -121,6 +121,7 @@ def check_scores():
 
 		except Exception as e:
 			print("Error: %s" % e)
+			ParseFeeds.WritePickleFile() # Write whatever we've sent so far to hopefully prevent spamming.
 			sys.stdout.flush()
 
 		yield from asyncio.sleep(10)
