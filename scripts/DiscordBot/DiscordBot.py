@@ -219,6 +219,13 @@ def on_message(message):
 	if message.content.startswith("!pong"):
 		yield from message.channel.send("ping")
 
+	# Killswitch
+	if message.content.startswith("!kill") and message.channel.name == "oth-tech" and message.guild.id == OTH_SERVER_ID:
+		yield from client.close()
+		print("Bot shutdown via command.")
+		while True:
+			continue # Freeze the bot until I manually restart it
+
 	# Help response
 	if message.content.startswith("!help"):
 		if message.guild.id == OTH_SERVER_ID:
