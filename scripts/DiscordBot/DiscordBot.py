@@ -435,20 +435,15 @@ def on_message(message):
 		try:
 			tokens = message.content.split(" ")
 			if len(tokens) == 1:
-				raise Exception("Wrong number of arguments:\n\t!ot <team> <player_number>\n\t!ot standings")
+				raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
 			if tokens[1] == "standings":
 				raise Exception("No standings currently")
 			if len(tokens) != 3:
-				raise Exception("Wrong number of arguments:\n\t!ot <team> <player_number>\n\t!ot standings")
-			team = tokens[1].lower()
-			if team not in team_map:
-				raise Exception("Team not recognized:\n\t!ot <team> <player_number>\n\t!ot standings")
-			try:
-				number = int(tokens[2])
-			except ValueError:
-				raise Exception("Number not a number:\n\t!ot <team> <player_number>\n\t!ot standings")
-
+				raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
 			guess_team = tokens[1].upper()
+			if guess_team.lower() not in team_map:
+				raise Exception("Team not recognized:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
+
 			guess_player = tokens[2]
 
 			date = (datetime.datetime.now()-datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
@@ -487,7 +482,7 @@ def on_message(message):
 			playerFound = False
 			for pid in game["gameData"]["players"].keys():
 				player = game["gameData"]["players"][pid]
-				if (player["primaryNumber"] == guess_player or player["lastName"].lower() == guess_player.lower()) and player["currentTeam"]["triCode"] == guess_team:
+				if (player["lastName"].lower() == guess_player.lower() or str(player["primaryNumber"]) == guess_player) and player["currentTeam"]["triCode"] == guess_team:
 					playerFound = True
 					break
 
