@@ -10,6 +10,7 @@ from lxml import etree
 from lxml import html # xml parsing
 import json
 import os
+import pickle
 
 import ParseFeeds
 import CheckTrades
@@ -103,7 +104,7 @@ def check_scores():
 						for channel in bot_channels:
 							msg = yield from channel.send(embed=embed)
 							msgids.append(msg.id)
-							print("Post:", msg.id, embed.title)
+#							print("Post:", msg.id, embed.title)
 						ParseFeeds.UpdateMessageId(key, msgids)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
@@ -114,7 +115,7 @@ def check_scores():
 								except:
 									continue
 							if msg != None:
-								print("Edit:", msg.id, embed.title)
+#								print("Edit:", msg.id, embed.title)
 								yield from msg.edit(embed=embed)
 
 			ParseFeeds.WritePickleFile()
@@ -234,14 +235,14 @@ def on_message(message):
 							"**!ping or !pong**\n\tGets a response to check that bot is up.\n" + \
 							"**!matchup <fleaflicker username>**\n\tPosts the score of the user's fantasy matchup this week.\n" + \
 							"**!score <NHL team>**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.") # + \
-#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
+#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 2 minutes left" + \
 #									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
 #							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
 		else:
 			yield from message.channel.send("!help: Displays this list of commands.\n" + \
 							"!ping or !pong: Gets a response to check that the bot is up.\n" + \
 							"!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.") # + \
-#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
+#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 2 minutes left" + \
 #									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
 #							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
 
@@ -467,16 +468,16 @@ def on_message(message):
 			if "In Progress" not in game["gameData"]["status"]["detailedState"]:
 				raise Exception(guess_team + " game is not currently in progress.")
 
-			# validate that the game <5min left in the 3rd and is tied
-			if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
-				raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
+			# validate that the game <2min left in the 3rd and is tied
+#			if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
+#				raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
 
-			mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
-			if mins_remaining == "END":
-				mins_remaining = 0
-			mins_remaining = int(mins_remaining)
-			if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 5:
-				raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
+#			mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
+#			if mins_remaining == "END":
+#				mins_remaining = 0
+#			mins_remaining = int(mins_remaining)
+#			if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 2:
+#				raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
 
 			# validate that the selected team has a player of the selected number
 			playerFound = False
@@ -489,12 +490,32 @@ def on_message(message):
 			if not playerFound:
 				raise Exception(guess_team + " does not have player " + guess_player + ".")
 
+			# store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable
+			try:
+				with open("ot.pickle", "wb+") as f:
+					try:
+						pickled = pickle.load(f)
+					except EOFError:
+						pickled = {}
 
-			print(message.author.id)
-			yield from message.channel.send(message.author.name + " selects " + player["fullName"] + " for the OT GWG.")
+					guild = message.guild.id
+					author = message.author.id
 
-			# store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable (pickle)
-			# if an OT goal is scored, award points to players and update standings (sql)
+					if guild not in pickled:
+						pickled[guild] = {}
+
+					if author not in pickled[guild]:
+						pickled[guild][author] = {}
+
+					pickled[guild][author][guess_team] = player["fullName"]
+
+					pickle.dump(pickled, f)
+			except Exception as e:
+				raise Exception("Issue storing guess in local file." + str(e))
+
+			print(message.author.name + " selects " + player["fullName"] + " for the OT GWG.")
+
+			# When a game ends, update the standings and clear the stored file
 
 			raise Exception("Work in progress...")
 		except Exception as e:

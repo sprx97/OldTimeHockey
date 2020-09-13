@@ -162,9 +162,9 @@ def parseGame(game):
 		# If the goal has already been reported, but been updated, edit the post
 		if goalkey in pickled and pickled[goalkey]["msg_text"] != goalstr:
 			stringsToAnnounce.append(goalkey)
-			print("Edit found:", pickled[goalkey]["msg_text"], len(pickled[goalkey]["msg_text"]))
-			print("Original:  ", goalstr, len(goalstr))
-			print(goalstr == pickled[goalkey]["msg_text"])
+#			print("Edit found:", pickled[goalkey]["msg_text"], len(pickled[goalkey]["msg_text"]))
+#			print("Original:  ", goalstr, len(goalstr))
+#			print(goalstr == pickled[goalkey]["msg_text"])
 			pickled[goalkey]["msg_text"] = goalstr
 		elif goalkey not in pickled: # If the goal has not been reported, post it
 			stringsToAnnounce.append(goalkey)
@@ -173,7 +173,7 @@ def parseGame(game):
 		if pickled[goalkey]["msg_link"] == None:
 			pickled[goalkey]["msg_link"] = FindMediaLink(goalkey)
 			if pickled[goalkey]["msg_link"] != None and goalkey not in stringsToAnnounce:
-				print("Link found:", pickled[goalkey]["msg_link"])
+#				print("Link found:", pickled[goalkey]["msg_link"])
 				stringsToAnnounce.append(goalkey)
 
 #########################################################################################
