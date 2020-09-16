@@ -62,6 +62,34 @@ year = int(f.readline().strip())
 
 client = discord.Client(heartbeat_timeout=120.0)
 
+def ProcessOTGuesses():
+	try:
+		with open("ot.pickle", "rb+") as f:
+			try:
+				pickled = pickle.load(f)
+			except EOFError:
+				pickled = {}
+
+			for guess in pickled:
+				game = guess[0]
+				guild = guess[1]
+				author = guess[2]
+				team = pickled[guess][0]
+				player = pickled[guess][1]
+
+				print(guess, pickled[guess])
+
+				# Load boxscore from NHL.com and pull the scorer of the last goal in this game.
+				# Update standings or print congrats if correct
+
+			# Reset file for tomorrow
+			pickled = {}
+			f.seek(0)
+			f.truncate()
+			pickle.dump(pickled, f)
+	except Exception as e:
+		print(e)
+
 @asyncio.coroutine
 def check_scores():
 	bot_channels = []
@@ -80,7 +108,9 @@ def check_scores():
 		if lastdate == None:
 			lastdate = date
 		if lastdate != date: # date has rolled over. Clear picklefile
+			print("============ DATE ROLLOVER", date, "============")
 			ParseFeeds.ClearPickleFile()
+			ProcessOTGuesses()
 			lastdate = date
 
 		try:
@@ -104,7 +134,7 @@ def check_scores():
 						for channel in bot_channels:
 							msg = yield from channel.send(embed=embed)
 							msgids.append(msg.id)
-#							print("Post:", msg.id, embed.title)
+							print("Post:", msg.id, embed.title)
 						ParseFeeds.UpdateMessageId(key, msgids)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
@@ -115,7 +145,7 @@ def check_scores():
 								except:
 									continue
 							if msg != None:
-#								print("Edit:", msg.id, embed.title)
+								print("Edit:", msg.id, embed.title)
 								yield from msg.edit(embed=embed)
 
 			ParseFeeds.WritePickleFile()
@@ -192,11 +222,10 @@ def check_trades():
 @client.event
 @asyncio.coroutine
 def on_ready():
+	# Uncomment these to change some basic things about the bot account (avatar, status, nickname)
 #	fp = open(Config.config["srcroot"] + "scripts/wes.jpg", "rb")
 #	yield from client.edit_profile(password=None, avatar=fp.read())
-
-#	yield from client.change_presence(game=discord.Game(name="NHL '94"))
-
+#	yield from client.change_presence(activity=discord.Game(name="NHL '94"))
 #	yield from client.change_nickname(client.user, "Wes McCauley")
 
 	client.loop.create_task(check_scores())
@@ -469,15 +498,15 @@ def on_message(message):
 				raise Exception(guess_team + " game is not currently in progress.")
 
 			# validate that the game <2min left in the 3rd and is tied
-#			if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
-#				raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
+			if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
+				raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
 
-#			mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
-#			if mins_remaining == "END":
-#				mins_remaining = 0
-#			mins_remaining = int(mins_remaining)
-#			if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 2:
-#				raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
+			mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
+			if mins_remaining == "END":
+				mins_remaining = 0
+			mins_remaining = int(mins_remaining)
+			if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 2:
+				raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
 
 			# validate that the selected team has a player of the selected number
 			playerFound = False
@@ -492,32 +521,28 @@ def on_message(message):
 
 			# store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable
 			try:
-				with open("ot.pickle", "wb+") as f:
+				with open("ot.pickle", "rb+") as f:
 					try:
 						pickled = pickle.load(f)
 					except EOFError:
 						pickled = {}
 
+					gameid = game["gamePk"]
 					guild = message.guild.id
 					author = message.author.id
 
-					if guild not in pickled:
-						pickled[guild] = {}
+					pickled[(gameid, guild, author)] = (guess_team, player["fullName"])
 
-					if author not in pickled[guild]:
-						pickled[guild][author] = {}
-
-					pickled[guild][author][guess_team] = player["fullName"]
-
+					f.seek(0)
+					f.truncate()
 					pickle.dump(pickled, f)
 			except Exception as e:
 				raise Exception("Issue storing guess in local file." + str(e))
 
-			print(message.author.name + " selects " + player["fullName"] + " for the OT GWG.")
+			confirmation = message.author.name + " selects " + player["fullName"] + " for the OT GWG."
+			print(confirmation)
+			raise Exception(confirmation)
 
-			# When a game ends, update the standings and clear the stored file
-
-			raise Exception("Work in progress...")
 		except Exception as e:
 			yield from message.channel.send(e)
 
