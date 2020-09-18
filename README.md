@@ -5,7 +5,7 @@ OldTimeHockey is a fantasy hockey superleague that was started via Reddit in 201
 **OldTimeHockey/react/&ast;:** Frontend code and markup for the website www.roldtimehockey.com  
 **OldTimeHockey/node/&ast;:** Backend code to access the OldTimeHockey SQL database  
 **OldTimeHockey/scripts/DiscordBot/&ast;:** Code for our Discord bot, Wes McCauley  
-**OldTimeHockey/scripts/&ask;:** Code that scrapes the leagues on [Fleaflicker](www.fleaflicker.com/nhl) and updates the SQL database and posts weekly recaps to Reddit  
+**OldTimeHockey/scripts/&ast;:** Code that scrapes the leagues on [Fleaflicker](www.fleaflicker.com/nhl) and updates the SQL database and posts weekly recaps to Reddit  
 **OldTimeHockey/oth.sql:** A periodic dump of the full database  
 **OldTimeHockey/crontab:** A periodic dump of the cron jobs that keep these scripts continually running  
 **OldTimeHockey/*:** Instructions and scripts for setup and running parts of the project  
