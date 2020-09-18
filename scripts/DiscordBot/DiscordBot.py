@@ -457,7 +457,7 @@ def on_message(message):
 						"make you funny or clever, just a coward hiding behind a computer")
 
 	# Trades response
-	if message.content.startswith("!trades") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == TRADEREVIEW_CHANNEL_ID) and message.guild.id == OTH_SERVER_ID:
+	if message.content.startswith("!trades") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == TRADEREVIEW_CHANNEL_ID):
 		bot_channel = None
 		for channel in client.get_all_channels():
 			if channel.id == TRADEREVIEW_CHANNEL_ID:
@@ -472,7 +472,7 @@ def on_message(message):
 				yield from bot_channel.send(mystr)
 
 	# Inactives response
-	if message.content.startswith("!inactives") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == MODS_CHANNEL_ID) and message.guild.id == OTH_SERVER_ID:
+	if message.content.startswith("!inactives") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == MODS_CHANNEL_ID):
 		bot_channel = None
 		for channel in client.get_all_channels():
 			if channel.id == MODS_CHANNEL_ID:
@@ -557,13 +557,13 @@ def on_message(message):
 #
 #			yield from message.channel.send("DONE")
 
-################# WIP responses ###########################
+################# Minigame responses ###########################
 	# For debugging purposes
-	if message.content.startswith("!processot") and message.guild.id == OTH_SERVER_ID and message.channel.id == OTH_TECH_CHANNEL_ID:
-		yield from ProcessOTGuesses()
+#	if message.content.startswith("!processot") and message.channel.id == OTH_TECH_CHANNEL_ID:
+#		yield from ProcessOTGuesses()
 
 	# OT contest check response
-	if message.content.startswith("!ot") and message.guild.id == OTH_SERVER_ID and message.channel.id == OTH_TECH_CHANNEL_ID:
+	if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID]: # Add KK channel
 		try:
 			tokens = message.content.split(" ")
 			if len(tokens) == 1:
