@@ -69,13 +69,55 @@ year = int(f.readline().strip())
 
 client = discord.Client(heartbeat_timeout=120.0)
 
+@asyncio.coroutine
+def PrintOTStandings(guild, channel):
+	with open("otstandings.pickle", "rb") as f:
+		try:
+			pickled = pickle.load(f)
+		except EOFError:
+			yield from channel.send("Unable to read standings.")
+			return
+
+		if guild not in pickled:
+			yield from channel.send("No standings for this server.")
+			return
+
+		standings = pickled[guild]
+		msg =  "``"
+		msg += "User          | Wins | Guesses\n"
+		msg += "--------------|------|--------\n"
+		for author in standings:
+			author_name = client.get_guild(guild).get_member(author).name + "              "
+			wins = str(standings[author][0]) + "      "
+			guesses = str(standings[author][1]) + "        "
+
+			author_name = author_name[:14]
+			wins = wins[:6]
+			guesses = guesses[:8]
+			
+			msg += author_name + "|" + wins + "|" + guesses + "\n"
+
+		msg += "``"
+		yield from channel.send(msg)
+
+@asyncio.coroutine
 def ProcessOTGuesses():
+	standings_file = open("otstandings.pickle", "rb")
+	try:
+		standings = pickle.load(standings_file)
+	except:
+		print("Failed to load OT standings. ABORTING.")
+		return
+
 	with open("ot.pickle", "rb+") as f:
 		try:
 			pickled = pickle.load(f)
 		except EOFError:
 			pickled = {}
 
+#		pickled[(2019030316, 207634081700249601, 228258453599027200)] = ('TBL', 8478010)
+#		pickled[(2019030316, 207634081700249601, 222830283399888897)] = ('TBL', 8476883)
+#		pickled[(2019030316, 207634081700249601, 132963280351264768)] = ('TBL', 8475167)
 		# This may be a bit slow, since I'm re-loading the game for each
 		# guess, instead of processing all guesses for a game, but it shouldn't matter.
 		for guess in pickled:
@@ -86,8 +128,6 @@ def ProcessOTGuesses():
 			team = pickled[guess][0]
 			player = pickled[guess][1]
 
-			print(guess, pickled[guess])
-
 			# Load boxscore from NHL.com and pull the scorer of the last goal in this game.
 			try:
 				playbyplay = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/game/" + str(game) + "/feed/live")
@@ -95,6 +135,7 @@ def ProcessOTGuesses():
 				print("Failed to find game feed. " + str(e))
 				continue
 
+			# Check that the GWG play exists -- may trigger in a 0-0 shootout game
 			try:
 				goal = playbyplay["liveData"]["plays"]["scoringPlays"][-1]
 				goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
@@ -102,22 +143,46 @@ def ProcessOTGuesses():
 				print("Failed to find GWG play. " + str(e))
 				continue
 
+			# Check that game didn't end late in the 3rd or in a shootout
 			if goal["about"]["periodType"] != "OVERTIME":
 				print(team + " game did not end in OT.")
 				continue
 
+			# See if the player was guessed correctly
+			correct = 0
 			scorer_name = goal["players"][0]["player"]["fullName"]
 			if goal["team"]["triCode"] == team and goal["players"][0]["player"]["id"] == player:
 				print(author_name + " CORRECT for " + team + " " + scorer_name)
-				# Update standings if correct
+				correct = 1
 			else:
 				print(author_name + " INCORRECT for " + team + " " + scorer_name)
+
+			# Update the standings for this user
+			if guild not in standings:
+				standings[guild] = {}
+			
+			if author not in standings[guild]:
+				standings[guild][author] = [0, 0]
+
+			standings[guild][author][0] += correct
+			standings[guild][author][1] += 1
+
+		with open("otstandings.pickle", "wb") as f2:
+			for g in standings:
+				standings[g] = {k  : v for k, v in sorted(standings[g].items(), key=lambda item: item[1][0], reverse=True)}
+			pickle.dump(standings, f2)
 
 		# Reset file for tomorrow
 		pickled = {}
 		f.seek(0)
 		f.truncate()
 		pickle.dump(pickled, f)
+
+		for channel in client.get_all_channels():
+			if channel.id == OTH_TECH_CHANNEL_ID: # change to hockey-general soonish
+				yield from PrintOTStandings(OTH_SERVER_ID, channel)
+#			elif channel.id == GUAVAS_AND_APPLES_CHANNEL_ID:
+#				yield from PrintOTStandings(KK_SERVER_ID, channel)
 
 @asyncio.coroutine
 def check_scores():
@@ -139,7 +204,7 @@ def check_scores():
 		if lastdate != date: # date has rolled over. Clear picklefile
 			print("============ DATE ROLLOVER", date, "============")
 			ParseFeeds.ClearPickleFile()
-			ProcessOTGuesses()
+			yield from ProcessOTGuesses()
 			lastdate = date
 
 		try:
@@ -292,17 +357,17 @@ def on_message(message):
 							"**!help**\n\tDisplays this list of commands.\n" + \
 							"**!ping or !pong**\n\tGets a response to check that bot is up.\n" + \
 							"**!matchup <fleaflicker username>**\n\tPosts the score of the user's fantasy matchup this week.\n" + \
-							"**!score <NHL team>**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.") # + \
-#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 2 minutes left" + \
-#									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
-#							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
+							"**!score <NHL team>**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations." + \
+							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 2 minutes left" + \
+							"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
+							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
 		else:
 			yield from message.channel.send("!help: Displays this list of commands.\n" + \
 							"!ping or !pong: Gets a response to check that the bot is up.\n" + \
-							"!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.") # + \
-#							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 2 minutes left" + \
-#									"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
-#							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
+							"!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations." + \
+							"\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 2 minutes left" + \
+							"in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
+							"\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
 
 	# Score check response
 	if message.content.startswith("!score"):
@@ -495,7 +560,7 @@ def on_message(message):
 ################# WIP responses ###########################
 	# For debugging purposes
 	if message.content.startswith("!processot") and message.guild.id == OTH_SERVER_ID and message.channel.id == OTH_TECH_CHANNEL_ID:
-		ProcessOTGuesses()
+		yield from ProcessOTGuesses()
 
 	# OT contest check response
 	if message.content.startswith("!ot") and message.guild.id == OTH_SERVER_ID and message.channel.id == OTH_TECH_CHANNEL_ID:
@@ -504,7 +569,8 @@ def on_message(message):
 			if len(tokens) == 1:
 				raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
 			if tokens[1] == "standings":
-				raise Exception("No standings currently")
+				yield from PrintOTStandings(message.guild.id, message.channel)
+				return
 			if len(tokens) != 3:
 				raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
 			guess_team = tokens[1].upper()
