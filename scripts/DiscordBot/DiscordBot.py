@@ -344,7 +344,7 @@ def on_message(message):
 		yield from message.channel.send("ping")
 
 	# Killswitch
-	if message.content.startswith("!kill") and message.channel.id == OTH_TECH_CHANNEL_ID and message.guild.id == OTH_SERVER_ID:
+	if message.content.startswith("!kill") and message.channel.id == OTH_TECH_CHANNEL_ID:
 		yield from client.close()
 		print("Bot shutdown via command.")
 		while True:
@@ -451,13 +451,13 @@ def on_message(message):
 						"The Stanley Cup and whatever fucking cup is in Sweden. Game Over.")
 
 #################### OTH-specific responses #######################################
-	if message.author.name.startswith("Minnesnota") and ("Wes" in message.content or "wes" in message.content) and message.guild.id == OTH_SERVER_ID:
+	if message.author.id == 144483356531228672 and ("Wes" in message.content or "wes" in message.content) and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
 						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
 						"make you funny or clever, just a coward hiding behind a computer")
 
 	# Trades response
-	if message.content.startswith("!trades") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == TRADEREVIEW_CHANNEL_ID):
+	if message.content.startswith("!trades") and message.channel.id in [OTH_TECH_CHANNEL_ID, TRADEREVIEW_CHANNEL_ID]:
 		bot_channel = None
 		for channel in client.get_all_channels():
 			if channel.id == TRADEREVIEW_CHANNEL_ID:
@@ -472,7 +472,7 @@ def on_message(message):
 				yield from bot_channel.send(mystr)
 
 	# Inactives response
-	if message.content.startswith("!inactives") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == MODS_CHANNEL_ID):
+	if message.content.startswith("!inactives") and message.channel.id in [OTH_TECH_CHANNEL_ID, MODS_CHANNEL_ID]:
 		bot_channel = None
 		for channel in client.get_all_channels():
 			if channel.id == MODS_CHANNEL_ID:
