@@ -169,7 +169,8 @@ def ProcessOTGuesses():
 
 		with open("otstandings.pickle", "wb") as f2:
 			for g in standings:
-				standings[g] = {k  : v for k, v in sorted(standings[g].items(), key=lambda item: item[1][0], reverse=True)}
+				standings[g] = {k  : v for k, v in sorted(standings[g].items(), key=lambda item: item[1][1])} # first sort by ascending number of guesses, which is used as a tiebreaker
+				standings[g] = {k  : v for k, v in sorted(standings[g].items(), key=lambda item: item[1][0], reverse=True)} # then sort by number of correct answers
 			pickle.dump(standings, f2)
 
 		# Reset file for tomorrow
@@ -451,8 +452,9 @@ def on_message(message):
 						"The Stanley Cup and whatever fucking cup is in Sweden. Game Over.")
 
 #################### OTH-specific responses #######################################
-	if message.author.id == 144483356531228672 and ("Wes" in message.content or "wes" in message.content) and message.guild.id == OTH_SERVER_ID:
-		yield from message.channel.send("@Minnesnota watch your mouth. Just cuz you tell me to do something doesn't " + \
+	MINNE_USER_ID = 144483356531228672
+	if message.author.id == MINNE_USER_ID and ("Wes" in message.content or "wes" in message.content) and message.guild.id == OTH_SERVER_ID:
+		yield from message.channel.send("<@" + str(MINNE_USER_ID) + "> watch your mouth. Just cuz you tell me to do something doesn't " + \
 						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
 						"make you funny or clever, just a coward hiding behind a computer")
 
