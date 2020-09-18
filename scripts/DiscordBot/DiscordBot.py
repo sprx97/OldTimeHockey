@@ -22,6 +22,13 @@ import Config
 OTH_SERVER_ID = 207634081700249601
 KK_SERVER_ID = 742845693785276576
 
+OTH_TECH_CHANNEL_ID = 489882482838077451
+HOCKEY_GENERAL_CHANNEL_ID = 507616755510673409
+TRADEREVIEW_CHANNEL_ID = 235926223757377537
+MODS_CHANNEL_ID = 220663309786021888
+GUAVAS_AND_APPLES_CHANNEL_ID = 747906611959562280
+
+
 # team name mappings, ALL LOWERCASE
 team_map = {}
 team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]                      = "ARI"
@@ -63,42 +70,64 @@ year = int(f.readline().strip())
 client = discord.Client(heartbeat_timeout=120.0)
 
 def ProcessOTGuesses():
-	try:
-		with open("ot.pickle", "rb+") as f:
-			try:
-				pickled = pickle.load(f)
-			except EOFError:
-				pickled = {}
-
-			for guess in pickled:
-				game = guess[0]
-				guild = guess[1]
-				author = guess[2]
-				team = pickled[guess][0]
-				player = pickled[guess][1]
-
-				print(guess, pickled[guess])
-
-				# Load boxscore from NHL.com and pull the scorer of the last goal in this game.
-				# Update standings or print congrats if correct
-
-			# Reset file for tomorrow
+	with open("ot.pickle", "rb+") as f:
+		try:
+			pickled = pickle.load(f)
+		except EOFError:
 			pickled = {}
-			f.seek(0)
-			f.truncate()
-			pickle.dump(pickled, f)
-	except Exception as e:
-		print(e)
+
+		# This may be a bit slow, since I'm re-loading the game for each
+		# guess, instead of processing all guesses for a game, but it shouldn't matter.
+		for guess in pickled:
+			game = guess[0]
+			guild = guess[1]
+			author = guess[2]
+			author_name = client.get_guild(guild).get_member(author).name
+			team = pickled[guess][0]
+			player = pickled[guess][1]
+
+			print(guess, pickled[guess])
+
+			# Load boxscore from NHL.com and pull the scorer of the last goal in this game.
+			try:
+				playbyplay = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/game/" + str(game) + "/feed/live")
+			except Exception as e:
+				print("Failed to find game feed. " + str(e))
+				continue
+
+			try:
+				goal = playbyplay["liveData"]["plays"]["scoringPlays"][-1]
+				goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
+			except:
+				print("Failed to find GWG play. " + str(e))
+				continue
+
+			if goal["about"]["periodType"] != "OVERTIME":
+				print(team + " game did not end in OT.")
+				continue
+
+			scorer_name = goal["players"][0]["player"]["fullName"]
+			if goal["team"]["triCode"] == team and goal["players"][0]["player"]["id"] == player:
+				print(author_name + " CORRECT for " + team + " " + scorer_name)
+				# Update standings if correct
+			else:
+				print(author_name + " INCORRECT for " + team + " " + scorer_name)
+
+		# Reset file for tomorrow
+		pickled = {}
+		f.seek(0)
+		f.truncate()
+		pickle.dump(pickled, f)
 
 @asyncio.coroutine
 def check_scores():
 	bot_channels = []
 	for channel in client.get_all_channels():
-		if channel.name == "hockey-general" and channel.guild.id == OTH_SERVER_ID:
+		if channel.id == HOCKEY_GENERAL_CHANNEL_ID and channel.guild.id == OTH_SERVER_ID:
 			bot_channels.append(channel)
-		elif channel.name == "guavas-and-apples" and channel.guild.id == KK_SERVER_ID:
+		elif channel.id == GUAVAS_AND_APPLES_CHANNEL_ID and channel.guild.id == KK_SERVER_ID:
 			bot_channels.append(channel)
-#		if channel.name == "oth-tech" and channel.guild.id == OTH_SERVER_ID:
+#		if channel.id == OTH_TECH_CHANNEL_ID and channel.guild.id == OTH_SERVER_ID:
 #			bot_channels.append(channel)
 
 	# repeat the task every 10 seconds
@@ -164,7 +193,7 @@ def check_scores():
 def check_inactives():
 	bot_channel = None
 	for channel in client.get_all_channels():
-		if channel.name == "mods":
+		if channel.id == MODS_CHANNEL_ID:
 			bot_channel = channel
 
 	# repeat the task every week
@@ -204,7 +233,7 @@ def check_inactives():
 def check_trades():
 	bot_channel = None
 	for channel in client.get_all_channels():
-		if channel.name == "tradereview":
+		if channel.id == TRADEREVIEW_CHANNEL_ID:
 			bot_channel = channel
 
 	# repeat the task every hour
@@ -250,7 +279,7 @@ def on_message(message):
 		yield from message.channel.send("ping")
 
 	# Killswitch
-	if message.content.startswith("!kill") and message.channel.name == "oth-tech" and message.guild.id == OTH_SERVER_ID:
+	if message.content.startswith("!kill") and message.channel.id == OTH_TECH_CHANNEL_ID and message.guild.id == OTH_SERVER_ID:
 		yield from client.close()
 		print("Bot shutdown via command.")
 		while True:
@@ -289,6 +318,10 @@ def on_message(message):
 					root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
 				except Exception as e:
 					yield from message.channel.send("Failed to find feed")
+					return
+
+				if len(root["dates"]) == 0:
+					yield from message.channel.send("No games today " + ParseFeeds.emojis["parros"])
 					return
 
 				games = root["dates"][0]["games"]
@@ -359,10 +392,10 @@ def on_message(message):
 						"make you funny or clever, just a coward hiding behind a computer")
 
 	# Trades response
-	if message.content.startswith("!trades") and (message.channel.name == "oth-tech" or message.channel.name == "tradereview") and message.guild.id == OTH_SERVER_ID:
+	if message.content.startswith("!trades") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == TRADEREVIEW_CHANNEL_ID) and message.guild.id == OTH_SERVER_ID:
 		bot_channel = None
 		for channel in client.get_all_channels():
-			if channel.name == "tradereview":
+			if channel.id == TRADEREVIEW_CHANNEL_ID:
 				bot_channel = channel
 
 		announcements = CheckTrades.checkFleaflickerTrades()
@@ -374,10 +407,10 @@ def on_message(message):
 				yield from bot_channel.send(mystr)
 
 	# Inactives response
-	if message.content.startswith("!inactives") and (message.channel.name == "oth-tech" or message.channel.name == "mods") and message.guild.id == OTH_SERVER_ID:
+	if message.content.startswith("!inactives") and (message.channel.id == OTH_TECH_CHANNEL_ID or message.channel.id == MODS_CHANNEL_ID) and message.guild.id == OTH_SERVER_ID:
 		bot_channel = None
 		for channel in client.get_all_channels():
-			if channel.name == "mods":
+			if channel.id == MODS_CHANNEL_ID:
 				bot_channel = channel
 
 		CheckInactives.checkAllLeagues(True) # force
@@ -460,8 +493,12 @@ def on_message(message):
 #			yield from message.channel.send("DONE")
 
 ################# WIP responses ###########################
+	# For debugging purposes
+	if message.content.startswith("!processot") and message.guild.id == OTH_SERVER_ID and message.channel.id == OTH_TECH_CHANNEL_ID:
+		ProcessOTGuesses()
+
 	# OT contest check response
-	if message.content.startswith("!ot") and message.guild.id == OTH_SERVER_ID and message.channel.name == "oth-tech":
+	if message.content.startswith("!ot") and message.guild.id == OTH_SERVER_ID and message.channel.id == OTH_TECH_CHANNEL_ID:
 		try:
 			tokens = message.content.split(" ")
 			if len(tokens) == 1:
@@ -531,13 +568,13 @@ def on_message(message):
 					guild = message.guild.id
 					author = message.author.id
 
-					pickled[(gameid, guild, author)] = (guess_team, player["fullName"])
+					pickled[(gameid, guild, author)] = (guess_team, player["id"])
 
 					f.seek(0)
 					f.truncate()
 					pickle.dump(pickled, f)
 			except Exception as e:
-				raise Exception("Issue storing guess in local file." + str(e))
+				raise Exception("Issue storing guess in local file. " + str(e))
 
 			confirmation = message.author.name + " selects " + player["fullName"] + " for the OT GWG."
 			print(confirmation)

@@ -41,6 +41,7 @@ emojis["WSH"] = "<:WSH:269327070977458181>"
 emojis["WPG"] = "<:WPJ:269315448833703946>"
 emojis["WPJ"] = "<:WPJ:269315448833703946>"
 emojis["goal"] = "<a:goalsiren:750190349963624510>"
+emojis["parros"] = "<:parros:372533524286275597>"
 
 pickled = {}
 
