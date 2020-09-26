@@ -230,6 +230,7 @@ def check_scores():
 							msg = yield from channel.send(embed=embed)
 							msgids.append(msg.id)
 							print("Post:", key, msg.id, embed.title)
+						print("") # newline for easier log reading
 						ParseFeeds.UpdateMessageId(key, msgids)
 					else:
 						for msgid in ParseFeeds.pickled[key]["msg_id"]:
