@@ -179,9 +179,9 @@ def ProcessOTGuesses():
 		f.truncate()
 		pickle.dump(pickled, f)
 
-		for channel in client.get_all_channels():
-			if channel.id == OTH_TECH_CHANNEL_ID: # change to hockey-general soonish
-				yield from PrintOTStandings(OTH_SERVER_ID, channel)
+#		for channel in client.get_all_channels():
+#			if channel.id == HOCKEY_GENERAL_CHANNEL_ID:
+#				yield from PrintOTStandings(OTH_SERVER_ID, channel)
 #			elif channel.id == GUAVAS_AND_APPLES_CHANNEL_ID:
 #				yield from PrintOTStandings(KK_SERVER_ID, channel)
 
