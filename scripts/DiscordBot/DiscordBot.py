@@ -94,7 +94,7 @@ def PrintOTStandings(guild, channel):
 			author_name = author_name[:14]
 			wins = wins[:6]
 			guesses = guesses[:8]
-			
+
 			msg += author_name + "|" + wins + "|" + guesses + "\n"
 
 		msg += "``"
@@ -160,7 +160,7 @@ def ProcessOTGuesses():
 			# Update the standings for this user
 			if guild not in standings:
 				standings[guild] = {}
-			
+
 			if author not in standings[guild]:
 				standings[guild][author] = [0, 0]
 
@@ -454,7 +454,7 @@ def on_message(message):
 
 #################### OTH-specific responses #######################################
 	MINNE_USER_ID = 144483356531228672
-	if message.author.id == MINNE_USER_ID and ("Wes" in message.content or "wes" in message.content) and message.guild.id == OTH_SERVER_ID:
+	if message.author.id == MINNE_USER_ID and (" wes " in message.content.lower().replace(".", " ")) and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("<@" + str(MINNE_USER_ID) + "> watch your mouth. Just cuz you tell me to do something doesn't " + \
 						"mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
 						"make you funny or clever, just a coward hiding behind a computer")
