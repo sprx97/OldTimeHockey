@@ -28,7 +28,6 @@ TRADEREVIEW_CHANNEL_ID = 235926223757377537
 MODS_CHANNEL_ID = 220663309786021888
 GUAVAS_AND_APPLES_CHANNEL_ID = 747906611959562280
 
-
 # team name mappings, ALL LOWERCASE
 team_map = {}
 team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]                      = "ARI"
@@ -67,7 +66,10 @@ team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]     
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
-client = discord.Client(heartbeat_timeout=120.0)
+print(discord.version_info)
+intents = discord.Intents.default()
+intents.members = True
+client = discord.Client(heartbeat_timeout=120.0, intents=intents)
 
 @asyncio.coroutine
 def PrintOTStandings(guild, channel):
@@ -207,7 +209,7 @@ def check_scores():
 			ParseFeeds.ClearPickleFile()
 			yield from ProcessOTGuesses()
 			lastdate = date
-
+			print("=========== ROLLOVER COMPLETE ==================")
 		try:
 			ParseFeeds.ReadPickleFile()
 
@@ -315,6 +317,41 @@ def check_trades():
 #	if client.is_closed:
 #		print("CLIENT CLOSED UNEXPECTEDLY")
 
+#KK_PATRON_ROLE_ID = 747514745891979324
+#KK_EXCEPTION_ROLE_ID = 784239280591601694
+#KK_NONPATRON_ROLE_ID = 784163965185818644
+#KK_OWNER_ROLE_ID = 742859431624048761
+
+#@asyncio.coroutine
+#def check_patrons():
+#	KK_PATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID)
+#	KK_NONPATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_NONPATRON_ROLE_ID)
+#	KK_EXCEPTION_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_EXCEPTION_ROLE_ID)
+#	KK_OWNER_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_OWNER_ROLE_ID)
+
+#	# check once a day
+#	while not client.is_closed():
+#		for member in client.get_guild(KK_SERVER_ID).members:
+#			if member.bot or KK_PATRON_ROLE in member.roles or KK_EXCEPTION_ROLE in member.roles or KK_OWNER_ROLE in member.roles:
+#				continue
+
+#			if member.name == "JeremyV_Test":
+#				yield from member.add_roles(KK_NONPATRON_ROLE)
+#		yield from asyncio.sleep(86400)
+
+#@client.event
+#@asyncio.coroutine
+#def on_member_update(before, after):
+#	KK_PATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID)
+#	KK_NONPATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_NONPATRON_ROLE_ID)
+#	KK_EXCEPTION_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_EXCEPTION_ROLE_ID)
+#	KK_OWNER_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_OWNER_ROLE_ID)
+
+#	if after.guild.id == KK_SERVER_ID:
+#		if KK_PATRON_ROLE in after.roles or KK_EXCEPTION_ROLE in after.roles or KK_OWNER_ROLE in after.roles:
+#			if after.name == "JeremyV_Test":
+#				yield from after.remove_roles(KK_NONPATRON_ROLE)
+
 @client.event
 @asyncio.coroutine
 def on_ready():
@@ -324,6 +361,7 @@ def on_ready():
 #	yield from client.change_presence(activity=discord.Game(name="NHL '94"))
 #	yield from client.change_nickname(client.user, "Wes McCauley")
 
+#	client.loop.create_task(check_patrons())
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trades())
 	client.loop.create_task(check_inactives())
