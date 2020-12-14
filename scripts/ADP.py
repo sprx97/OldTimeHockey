@@ -52,7 +52,10 @@ def pull_league(league_id):
             id = player["id"]
             if id not in players:
                 name = player["nameFull"]
-                pos = player["position"]
+                if "position" in player:
+                        pos = player["position"]
+                else:
+                        pos = ""
                 team = player["proTeamAbbreviation"]
                 players[id] = {"name":name, "position":pos, "team":team, "picks":[]}
             players[id]["picks"].append(pick)
