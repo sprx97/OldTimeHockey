@@ -60,7 +60,7 @@ const ADPTable = ({data, isLoaded, numLeagues}) => {
                     <Table.Row className={position.replace("/", "")}>
                         <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                         <Table.Cell textAlign="center">{name}</Table.Cell>
-                        <Table.Cell textAlign="center">{(picks.reduce((a, b) => a+b) + MAX_PICK*(numLeagues-picks.length)) / numLeagues}</Table.Cell>
+                        <Table.Cell textAlign="center">{+((picks.reduce((a, b) => a+b) + MAX_PICK*(numLeagues-picks.length)) / numLeagues).toFixed(2)}</Table.Cell>
                         <Table.Cell textAlign="center">{Math.min.apply(null, picks)}</Table.Cell>
                         <Table.Cell textAlign="center">{(picks.length === numLeagues) ? Math.max.apply(null, picks) : "--"}</Table.Cell>
                         <Table.Cell textAlign="center">{100*picks.length/numLeagues}</Table.Cell>
