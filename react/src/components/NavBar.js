@@ -40,6 +40,11 @@ export default class NavBar extends Component {
             Leaderboard
           </Menu.Item>
         </Link>
+        <Link to="/adp" onClick={() => this.handleItemClick('/adp')}>
+          <Menu.Item name="ADP" active={activeItem === '/adp'} link={false}>
+            ADP
+          </Menu.Item>
+        </Link>
         <Link
           to="/trophyroom"
           onClick={() => this.handleItemClick('/trophyroom')}

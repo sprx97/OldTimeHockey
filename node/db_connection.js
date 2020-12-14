@@ -1,10 +1,11 @@
-var http = require('http'),
-    url = require('url'),
-    mysql = require('mysql'),
-    mysqlEscapeArray = require('mysql-escape-array'),
-    fs = require('fs'),
-    config = require("../config.json")
-
+var http = require("http"),
+    url = require("url"),
+    mysql = require("mysql"),
+    mysqlEscapeArray = require("mysql-escape-array"),
+    fs = require("fs"),
+	config = require("../config.json"),
+	PythonShell = require("python-shell")
+	
 var conn = mysql.createConnection({
 	host: config.sql_hostname,
 	user: config.sql_username,
@@ -156,6 +157,23 @@ http.createServer(function(request, response) {
 	else if (path == "/seasoncoachratingrecord") {
 		sql = "SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID \
 		       where replacement != 1 and pointsFor > 0 and tier != 4 and (year != " + year + " or " + (week > 23 ? "true" : "false") + ") order by coachRating DESC";
+	}
+	else if (path == "/adp") {
+		args = []
+		args.push(query.year)
+		if (query.tiers)
+			args.push(query.tiers)
+		
+		PythonShell.PythonShell.run(config.srcroot + "scripts/ADP.py", {args: args}, function(err, results) {
+			if (err)
+				throw err;
+
+			response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
+			response.write(results[0]);
+			response.end();
+		});
+
+		return;	
 	}
 
 	limit = "";
