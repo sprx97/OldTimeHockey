@@ -258,6 +258,92 @@ def check_scores():
 	if client.is_closed():
 		print("CLIENT CLOSED UNEXPECTEDLY")
 
+D1_ROLE_ID = 340870807137812480
+GRETZKY_ROLE_ID = 479121618224807947
+
+D2_ROLE_ID = 340871193039208452
+BRODEUR_ROLE_ID = 479133674282024960
+ROY_ROLE_ID = 479133440902561803
+HASEK_ROLE_ID = 479133581822918667
+
+D3_ROLE_ID = 340871418453426177
+YZERMAN_ROLE_ID = 479133873658396683
+JAGR_ROLE_ID = 479133917325033472
+LEMIEUX_ROLE_ID = 479133957288493056
+DIONNE_ROLE_ID = 479133989559599135
+HOWE_ROLE_ID = 479134018546302977
+
+D4_ROLE_ID = 340871648313868291
+BOURQUE_ROLE_ID = 496384675141648385
+ORR_ROLE_ID = 496384733228564530
+LIDSTROM_ROLE_ID = 496384804359766036
+NIEDERMAYER_ROLE_ID = 496384857648267266
+CHELIOS_ROLE_ID = 496385004574605323
+PRONGER_ROLE_ID = 496385073507991552
+LEETCH_ROLE_ID = 496384959720718348
+
+@asyncio.coroutine
+def set_flairs():
+	OTH_GUILD = client.get_guild(OTH_SERVER_ID)
+
+	all_division_roles = {"D1": OTH_GUILD.get_role(D1_ROLE_ID),
+						  "Gretzky": OTH_GUILD.get_role(GRETZKY_ROLE_ID),
+						  "D2": OTH_GUILD.get_role(D2_ROLE_ID),
+						  "Brodeur": OTH_GUILD.get_role(BRODEUR_ROLE_ID),
+						  "Roy": OTH_GUILD.get_role(ROY_ROLE_ID),
+						  "Hasek": OTH_GUILD.get_role(HASEK_ROLE_ID),
+						  "D3": OTH_GUILD.get_role(D3_ROLE_ID),
+						  "Yzerman": OTH_GUILD.get_role(YZERMAN_ROLE_ID),
+						  "Jagr": OTH_GUILD.get_role(JAGR_ROLE_ID),
+						  "Lemieux": OTH_GUILD.get_role(LEMIEUX_ROLE_ID),
+						  "Dionne": OTH_GUILD.get_role(DIONNE_ROLE_ID),
+						  "Howe": OTH_GUILD.get_role(HOWE_ROLE_ID),
+						  "D4": OTH_GUILD.get_role(D4_ROLE_ID),
+						  "Bourque": OTH_GUILD.get_role(BOURQUE_ROLE_ID),
+						  "Orr": OTH_GUILD.get_role(ORR_ROLE_ID),
+						  "Lidstrom": OTH_GUILD.get_role(LIDSTROM_ROLE_ID),
+						  "Niedermayer": OTH_GUILD.get_role(NIEDERMAYER_ROLE_ID),
+						  "Chelios": OTH_GUILD.get_role(CHELIOS_ROLE_ID),
+						  "Pronger": OTH_GUILD.get_role(PRONGER_ROLE_ID),
+						  "Leetch": OTH_GUILD.get_role(LEETCH_ROLE_ID)}
+
+	current_roles = []
+	f = open(Config.config["srcroot"] + "scripts/DiscordBot/Flairs.txt", "r")
+	for line in f.readlines():
+		# blank spacer line
+		if line == "\n":
+			continue
+
+		if line.startswith("Roles:"):
+			current_roles = []
+			for role in line.split(":")[1].strip().split(","):
+				current_roles.append(all_division_roles[role.strip()])
+			continue
+
+		# Find the member by name
+		name = line.strip().split("#")[0].lower()
+		member = None
+		for m in OTH_GUILD.members:
+			if m.name.lower() == name or (m.nick and m.nick.lower() == name):
+				member = m
+				break
+
+		if member == None:
+			print("Could not find:", name)
+			continue
+
+		# Remove all division roles
+		for role in all_division_roles.values():
+			if role in member.roles:
+				yield from member.remove_roles(role)
+
+		# Add roles for the correct division
+		for role in current_roles:
+			if role not in member.roles:
+				yield from member.add_roles(role)
+
+	print("Finished with Flairing!")
+
 @asyncio.coroutine
 def check_inactives():
 	bot_channel = None
@@ -362,6 +448,7 @@ def on_ready():
 #	yield from client.change_nickname(client.user, "Wes McCauley")
 
 #	client.loop.create_task(check_patrons())
+#	client.loop.create_task(set_flairs())
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trades())
 	client.loop.create_task(check_inactives())
