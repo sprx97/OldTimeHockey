@@ -645,8 +645,8 @@ def on_message(message):
 				       "INNER JOIN Teams AS opp ON me.CurrOpp=opp.teamID " + \
 				       "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
 				       "INNER JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
-				       "INNER JOIN Leagues AS l ON me.leagueID=l.id " + \
-				       "WHERE LOWER(me_u.FFname)='" + team + "' and l.year=%d" % year)
+				       "INNER JOIN Leagues AS l ON (me.leagueID=l.id AND me.year=l.year) " + \
+				       "WHERE me.replacement != 1 AND LOWER(me_u.FFname)='" + team + "' AND l.year=%d" % year)
 
 			results = cursor.fetchall()
 			if len(results) == 0:
