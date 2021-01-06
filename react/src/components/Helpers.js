@@ -1,13 +1,25 @@
 import React from 'react';
 
+// Returns the appropriate trophy image file for a given tier and year
+export function GetTrophy(tier, year) {
+  var str = "images/trophies/D" + tier;
+
+  if (year == 2019) str += "Covid";
+  else str += "Champion";
+
+  str += ".png";
+
+  return str;
+}
+
 // function to generate trophie images from the integer returned
 export function generateTrophies(trophies) {
-  var primes = {7: "D1", 5: "D2", 3: "D3", 2: "D4"};
+  var primes = {19: "D1Covid", 17: "D2Covid", 13: "D3Covid", 11: "D4Covid", 7: "D1Champion", 5: "D2Champion", 3: "D3Champion", 2: "D4Champion"};
   var output = [];
   Object.keys(primes).forEach(key => {
     while (trophies % key === 0) {
       var value = primes[key];
-      output.unshift(<img src={`/images/trophies/${value}Champion.png`} align="center" title={`${value}`} alt={`${value} winner`} width="12px" height="24px" />);
+      output.unshift(<img src={`/images/trophies/${value}.png`} align="center" title={`${value}`} alt={`${value} winner`} width="12px" height="24px" />);
       trophies /= key;
     }
   });

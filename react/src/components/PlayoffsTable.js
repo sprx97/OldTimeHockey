@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
-import { highlightLeague, unhighlightLeague } from './Helpers'
+import { GetTrophy, highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
 const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
@@ -87,7 +87,9 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   pointsFor,
                   pointsAgainst,
                   isChamp,
-                  tier
+                  tier,
+                  FFid,
+                  year
                 },
                 index,
               ) => (
@@ -103,7 +105,7 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                     </a>
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                    {isChamp ? (<img src={`/images/trophies/D${tier}Champion.png`} align="center" title={`D${tier}`} alt={`${leaguename} winner`} width="12px" height="24px" />) : ''}
+                    {isChamp ? (<img src={GetTrophy(tier, year)} align="center" title={`D${tier}`} alt={`${leaguename} winner`} width="12px" height="24px" />) : ''}
                     <a
                       href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
                       target="_blank"
