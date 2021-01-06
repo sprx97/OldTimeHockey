@@ -39,27 +39,27 @@ http.createServer(function(request, response) {
 	}
 	else if(path == "/leagueranks") {
 		sql = "SELECT * from (SELECT Leagues.id, Leagues.name, round(sum(pointsFor), 2) as PF, round(sum(pointsFor)/(count(*)), 2) as avgPF from Leagues \
-		       inner join Teams on id=leagueID where year=" + mysql.escape(query.year) + " group by Leagues.name) as t order by PF desc";
+		       inner join Teams on (id=leagueID and Teams.year=Leagues.year) where Teams.year=" + mysql.escape(query.year) + " group by Leagues.name) as t order by PF desc";
 	}
 	else if(path == "/divisionleagues") {
 		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + " AND tier=" + mysql.escape(query.tier);
 	}
 	else if(path == "/leagueteams") {
                 sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.isChamp as isChamp, Leagues.tier as tier \
-                       from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on leagueID=id where leagueID=" + mysql.escape(query.id) + " ORDER BY gamesBack ASC, pointsFor DESC";
+                       from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on (leagueID=id and Teams.year=Leagues.year) where leagueID=" + mysql.escape(query.id) + " ORDER BY gamesBack ASC, pointsFor DESC";
 	}
 	else if (path == "/currenttier") {
-		sql = "SELECT Leagues.tier, Users.FFname from Teams inner join Leagues on leagueID=id inner join Users on ownerID=FFid where year=" + mysql.escape(query.year) + " and replacement != 1";
+		sql = "SELECT Leagues.tier, Users.FFname from Teams inner join Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) inner join Users on ownerID=FFid where Teams.year=" + mysql.escape(query.year) + " and replacement != 1";
 	}
 	else if (path == "/gettrophies") {
-		sql = "SELECT Leagues.tier, Leagues.year, Users.FFname from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where isChamp=1";
+		sql = "SELECT Leagues.tier, Leagues.year, Users.FFname from Teams INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) INNER JOIN Users on ownerID=FFid where isChamp=1";
 		if (!query.skipd4) sql += " and Leagues.tier != 4";
-		if (query.year) sql += " and year=" + mysql.escape(query.year);
+		if (query.year) sql += " and Team.year=" + mysql.escape(query.year);
 		sql += " order by Leagues.tier ASC";
 	}
 	else if (path == "/getplayerinfo") {
 		sql = "SELECT L.name as leaguename, L.tier, U.FFname, L.year \
-		       from Teams T INNER JOIN Leagues L on T.leagueID=L.id LEFT OUTER JOIN Teams_post TP on T.teamID=TP.teamID INNER JOIN Users U on T.ownerID=U.FFid \
+		       from Teams T INNER JOIN Leagues L on (T.leagueID=L.id and T.year=L.year) LEFT OUTER JOIN Teams_post TP on T.teamID=TP.teamID INNER JOIN Users U on T.ownerID=U.FFid \
 		       where T.ownerID=" + mysql.escape(query.ffid);
 	}
 	else if (path == "/leaders") {
@@ -71,14 +71,14 @@ http.createServer(function(request, response) {
 
 			sql = "SELECT Leagues.id as leagueID, Leagues.tier as tier, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
 			       round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA, round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal \
-			       from Teams as t1 inner join Users on t1.ownerID=Users.FFid inner join Leagues on t1.leagueID=Leagues.id left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
+			       from Teams as t1 inner join Users on t1.ownerID=Users.FFid inner join Leagues on (t1.leagueID=Leagues.id AND t1.year=Leagues.year) left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
 			       INNER JOIN Teams as t2 on t1.CurrOpp=t2.teamID \
 			       where Leagues.year=" + year + tierfilter + " order by t1.currentWeekPF";
 		}
 		else if (query.year == "careerp") {
 			yearfilter = "";
 			if (query.seasons) {
-				yearfilter = "and year in " + mysqlEscapeArray(query.seasons.split(",")).toString() + " ";
+				yearfilter = "and Leagues.year in " + mysqlEscapeArray(query.seasons.split(",")).toString() + " ";
 			}
 
 			tierfilter = "";
@@ -96,7 +96,7 @@ http.createServer(function(request, response) {
 		else if (query.year == "career") {
 			yearfilter = "";
 			if (query.seasons) {
-				yearfilter = "and year in " + mysqlEscapeArray(query.seasons.split(",")).toString() + " ";
+				yearfilter = "and Leagues.year in " + mysqlEscapeArray(query.seasons.split(",")).toString() + " ";
 			}
 
 			tierfilter = "";
@@ -109,19 +109,19 @@ http.createServer(function(request, response) {
                                sum(wins) as wins, sum(losses) as losses, sum(pointsFor) as PF, sum(pointsAgainst) as PA, \
                                round(exp(sum(log(CASE WHEN isChamp = 0 THEN 1 WHEN tier = 1 THEN isChamp*7 WHEN tier = 2 THEN isChamp*5 WHEN tier = 3 THEN isChamp*3 WHEN tier = 4 THEN isChamp*2 END)))) as trophies, \
                                round(100*sum(pointsFor)/sum(100.0*pointsFor/coachRating), 2) as careerCR, FFid \
-			       from Teams inner join Users on ownerID=FFid inner join Leagues on leagueID=Leagues.id where replacement != 1 and pointsFor >=0 " + yearfilter + tierfilter + "group by FFid) as T1 order by PF DESC";
+			       from Teams inner join Users on ownerID=FFid inner join Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) where replacement != 1 and pointsFor >=0 " + yearfilter + tierfilter + "group by FFid) as T1 order by PF DESC";
 		}
 		else if (query.year[query.year.length-1] == "p") {
 			year = mysql.escape(query.year.slice(0, -1));
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
 			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid \
-			       from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on Teams.leagueID=Leagues.id INNER JOIN Users on Teams.ownerID=Users.FFid \
+			       from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) INNER JOIN Users on Teams.ownerID=Users.FFid \
 			       where Leagues.year=" + year + " order by Teams_post.pointsFor DESC";
 		}
 		else { // just a single-year
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, \
 			      isChamp, Leagues.tier, Users.FFid \
-			      from Teams INNER JOIN Leagues on leagueID=id INNER JOIN Users on ownerID=FFid where year=" + mysql.escape(query.year) + " order by pointsFor DESC";
+			      from Teams INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) INNER JOIN Users on ownerID=FFid where Leagues.year=" + mysql.escape(query.year) + " order by pointsFor DESC";
 		}
 	}
 	else if (path == "/winsrecord") {
@@ -144,19 +144,19 @@ http.createServer(function(request, response) {
 				from Users INNER JOIN Teams on FFid=ownerID where replacement != 1 and pointsFor > 0 group by ownerID) as T1 where total > 40 order by careerCR DESC";
 	}
 	else if (path == "/seasonwinpctrecord") {
-		sql = "SELECT FFname, round(wins/(wins+losses), 3) as wpct, wins, losses, Leagues.name, year \
-                       from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID \
-                       where replacement != 1 and wins > 0 and tier != 4 and year != 2012 and year != " + year + " order by wpct DESC, wins DESC";
+		sql = "SELECT FFname, round(wins/(wins+losses), 3) as wpct, wins, losses, Leagues.name, Leagues.year \
+                       from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) \
+                       where replacement != 1 and wins > 0 and tier != 4 and Leagues.year != 2012 and Leagues.year != " + year + " order by wpct DESC, wins DESC";
 	}
 	else if (path == "/seasonwinsrecord") {
-		sql = "SELECT FFname, wins, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by wins DESC";
+		sql = "SELECT FFname, wins, Leagues.name, Leagues.year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) where replacement != 1 and tier != 4 order by wins DESC";
 	}
 	else if (path == "/seasonpfrecord") {
-		sql = "SELECT FFname, pointsFor, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID where replacement != 1 and tier != 4 order by pointsFor DESC";
+		sql = "SELECT FFname, pointsFor, Leagues.name, Leagues.year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) where replacement != 1 and tier != 4 order by pointsFor DESC";
 	}
 	else if (path == "/seasoncoachratingrecord") {
-		sql = "SELECT FFname, coachRating, Leagues.name, year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on id=LeagueID \
-		       where replacement != 1 and pointsFor > 0 and tier != 4 and (year != " + year + " or " + (week > 23 ? "true" : "false") + ") order by coachRating DESC";
+		sql = "SELECT FFname, coachRating, Leagues.name, Leagues.year from Users INNER JOIN Teams on FFid=ownerID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) \
+		       where replacement != 1 and pointsFor > 0 and tier != 4 and (Leagues.year != " + year + " or " + (week > 23 ? "true" : "false") + ") order by coachRating DESC";
 	}
 	else if (path == "/adp") {
 		args = []

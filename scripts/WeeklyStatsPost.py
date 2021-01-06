@@ -6,6 +6,7 @@ import Config
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
+
 f.close()
 if os.path.isfile(Config.config["srcroot"] + "scripts/weeks/" + str(year) + "_Week_" + str(week) + ".txt"):
         raise Exception("Stats file for " + str(year) + " week " + str(week) + " already exists.")
@@ -19,7 +20,7 @@ s = "###OVERALL POINTS LEADERS - Who has scored the most points this season?\n"
 s += "**League**|**Team**|**User**|**PF**\n"
 s += ":-:|:-:|:-:|:--\n"
 
-cursor.execute("SELECT L.name, T.name, T.pointsFor, U.FFname FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID " + \
+cursor.execute("SELECT L.name, T.name, T.pointsFor, U.FFname FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID AND L.year = T.year) " + \
                "INNER JOIN Users U on T.ownerID = U.FFid WHERE L.year=" + str(year) + " ORDER BY T.pointsFor DESC LIMIT 10")
 teams = cursor.fetchall()
 for team in teams:
@@ -30,13 +31,13 @@ s += "###LEAGUE LEADERS - Who's in first place?\n"
 s += "**League**|**Team**|**User**|**Record**|**Games Ahead**\n"
 s += ":-:|:-:|:-:|:-:|:-:\n"
 
-cursor.execute("SELECT L.id, L.name, T.name, U.FFname, T.wins FROM Leagues L INNER JOIN (SELECT leagueID, MAX(wins) wins FROM Teams GROUP BY leagueID) tmp ON L.id = tmp.leagueID " + \
-               "INNER JOIN Teams T ON tmp.wins = T.wins AND tmp.leagueID = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
+cursor.execute("SELECT L.id, L.name, T.name, U.FFname, T.wins FROM Leagues L INNER JOIN (SELECT leagueID, MAX(wins) wins, year FROM Teams GROUP BY leagueID) tmp ON (L.id = tmp.leagueID AND L.year = tmp.year) " + \
+               "INNER JOIN Teams T ON tmp.wins = T.wins AND (tmp.leagueID = T.leagueID AND tmp.year = T.year) INNER JOIN Users U ON T.ownerID = U.FFid " + \
                "WHERE L.year=" + str(year) + " ORDER BY T.wins DESC, L.name DESC")
 
 teams = cursor.fetchall()
 for team in teams:
-        cursor.execute("SELECT T.wins FROM Teams T WHERE T.leagueID = " + str(team[0]) + " ORDER BY T.wins DESC LIMIT 1 OFFSET 1")
+        cursor.execute("SELECT T.wins FROM Teams T WHERE T.leagueID = " + str(team[0]) + " AND T.year = " + str(year) + " ORDER BY T.wins DESC LIMIT 1 OFFSET 1")
         second = cursor.fetchall()[0][0]
         s += team[1] + "|" + team[2] + "|" + team[3] + "|" + str(team[4]) + "|" + str(team[4]-second) + "\n"
 s += "-----\n"
@@ -45,7 +46,7 @@ s += "###LONGEST WIN/LOSS STREAKS (regular season) - Who's hot and who's not?\n"
 s += "**League**|**Owner**|**Streak**|**Record**\n"
 s += ":-:|:-:|:-:|:-:\n"
 
-cursor.execute("SELECT T.ownerID, L.name, U.FFname, T.streak, T.wins, T.losses FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
+cursor.execute("SELECT T.ownerID, L.name, U.FFname, T.streak, T.wins, T.losses FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID and L.year = T.year) INNER JOIN Users U ON T.ownerID = U.FFid " + \
                "WHERE (L.year=" + str(year) + " AND T.replacement = 0) ORDER BY T.streak DESC")
 
 teams = cursor.fetchall()
@@ -56,7 +57,7 @@ for team in teams:
         if team[4] == 0 or team[5] == 0: # streak extends to previous years
                 tmpyear = year-1
                 while 1:
-                        cursor.execute("SELECT T.streak, T.wins, T.losses FROM Teams T INNER JOIN Leagues L ON T.leagueID=L.id WHERE T.ownerID = " + str(team[0]) + " AND T.replacement != 1 AND L.year = " + str(tmpyear))
+                        cursor.execute("SELECT T.streak, T.wins, T.losses FROM Teams T INNER JOIN Leagues L ON (T.leagueID=L.id AND T.year=L.year) WHERE T.ownerID = " + str(team[0]) + " AND T.replacement != 1 AND L.year = " + str(tmpyear))
                         prev = cursor.fetchall()
                         if len(prev) == 0 or len(prev) > 1:
                                 break
@@ -98,7 +99,7 @@ s += "###WEEKLY LEAGUE LEADERS - Who scored the most points this week?\n"
 s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
 s += ":-:|:-:|:-:|:-:|:-:\n"
 
-cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
+cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID AND L.year = T.year) INNER JOIN Users U ON T.ownerID = U.FFid " + \
                "WHERE L.year=" + str(year) + " ORDER BY T.currentWeekPF DESC LIMIT 10")
 
 teams = cursor.fetchall()
@@ -112,13 +113,13 @@ s += "###DIVISION WEEKLY POINT LEADERS - Who scored  the most points in each div
 s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
 s += ":-:|:-:|:-:|:-:|:-:\n"
 
-cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
+cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID AND L.year=T.year) INNER JOIN Users U ON T.ownerID = U.FFid " + \
                "INNER JOIN (SELECT leagueID, MAX(currentWeekPF) AS leader FROM Teams GROUP BY leagueID) maxpf ON T.currentWeekPF = maxpf.leader " + \
                "WHERE L.year=" + str(year) + " and maxpf.leader != 0.0 ORDER BY T.currentWeekPF DESC")
 
 teams = cursor.fetchall()
 for team in teams:
-        cursor.execute("SELECT COUNT(*) FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID WHERE L.year=" + str(year) + " AND T.currentWeekPF > " + str(team[3]-.001))
+        cursor.execute("SELECT COUNT(*) FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID and L.year = T.year) WHERE L.year=" + str(year) + " AND T.currentWeekPF > " + str(team[3]-.001))
         rank = cursor.fetchall()[0][0]
         s += team[0] + "|" + team[1] + "|" + team[2] + "|" + str(team[3]) + "|" + str(rank) + "\n"
 s += "-----\n"
@@ -127,7 +128,7 @@ s += "###WEEKLY WALL-OF-SHAME - Who scored the fewest points this week?\n"
 s += "**League**|**Team**|**Owner**|**Weekly Points**\n"
 s += ":-:|:-:|:-:|:-:\n"
 
-cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID INNER JOIN Users U ON T.ownerID = U.FFid " + \
+cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID and L.year = T.year) INNER JOIN Users U ON T.ownerID = U.FFid " + \
                "WHERE L.year=" + str(year) + " ORDER BY T.currentWeekPF ASC")
 
 teams = cursor.fetchall()
@@ -145,7 +146,7 @@ s += "###WEEKLY LEAGUE AVERAGES - What did each league average this week?\n"
 s += "**LEAGUE**|**WEEKLY AVERAGE**\n"
 s += ":-:|:-:\n"
 
-cursor.execute("SELECT L.name, ROUND(AVG(T.currentWeekPF), 2) AS leagueavg FROM Leagues L INNER JOIN Teams T ON L.id = T.leagueID " + \
+cursor.execute("SELECT L.name, ROUND(AVG(T.currentWeekPF), 2) AS leagueavg FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID and L.year = T.year) " + \
                "WHERE L.year=" + str(year) + " GROUP BY L.id ORDER BY leagueavg DESC")
 leagues = cursor.fetchall()
 for league in leagues:
@@ -155,7 +156,7 @@ s += "-----\n"
 s += "###BIGGEST BLOWOUT - Who forgot to bring their 'A' game?\n"
 
 cursor.execute("SELECT L.name, T1.name, T2.name, T1.currentWeekPF, T2.currentWeekPF, ROUND(T1.currentWeekPF-T2.currentWeekPF, 2) AS diff FROM Leagues L " + \
-               "INNER JOIN Teams T1 ON L.id = T1.leagueID INNER JOIN Teams T2 ON T1.currOpp = T2.teamID " + \
+               "INNER JOIN Teams T1 ON (L.id = T1.leagueID and L.year = T1.year) INNER JOIN Teams T2 ON T1.currOpp = T2.teamID " + \
                "WHERE L.year=" + str(year) + " AND (T1.currentWeekPF > T2.currentWeekPF) ORDER BY diff DESC")
 
 teams = cursor.fetchall()
