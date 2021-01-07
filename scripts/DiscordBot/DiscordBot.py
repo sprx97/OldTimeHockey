@@ -400,43 +400,23 @@ def check_trades():
 
 		yield from asyncio.sleep(3600)
 
-#	if client.is_closed:
-#		print("CLIENT CLOSED UNEXPECTEDLY")
+KK_ASK_KEEPING_KARLSSON_CATEGORY_ID = 744981120311099422
+KK_PATRON_ROLE_ID = 747514745891979324
 
-#KK_PATRON_ROLE_ID = 747514745891979324
-#KK_EXCEPTION_ROLE_ID = 784239280591601694
-#KK_NONPATRON_ROLE_ID = 784163965185818644
-#KK_OWNER_ROLE_ID = 742859431624048761
+@asyncio.coroutine
+def check_threads():
+	while not client.is_closed():
+		for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[1:]:
+			last_message = (yield from channel.history(limit=1).flatten())[0]
+			if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1):
+				print(channel.name, "is stale")
+				if last_message.author != client.user: # No activty. Lock thread.
+					yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID), send_messages=False)
+					yield from channel.send("No activity in last 24h. Thread will be locked and deleted in 24h. Tag zebras to get this reopened.")
+				else: # ready for deletion
+					yield from channel.delete()
 
-#@asyncio.coroutine
-#def check_patrons():
-#	KK_PATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID)
-#	KK_NONPATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_NONPATRON_ROLE_ID)
-#	KK_EXCEPTION_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_EXCEPTION_ROLE_ID)
-#	KK_OWNER_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_OWNER_ROLE_ID)
-
-#	# check once a day
-#	while not client.is_closed():
-#		for member in client.get_guild(KK_SERVER_ID).members:
-#			if member.bot or KK_PATRON_ROLE in member.roles or KK_EXCEPTION_ROLE in member.roles or KK_OWNER_ROLE in member.roles:
-#				continue
-
-#			if member.name == "JeremyV_Test":
-#				yield from member.add_roles(KK_NONPATRON_ROLE)
-#		yield from asyncio.sleep(86400)
-
-#@client.event
-#@asyncio.coroutine
-#def on_member_update(before, after):
-#	KK_PATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID)
-#	KK_NONPATRON_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_NONPATRON_ROLE_ID)
-#	KK_EXCEPTION_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_EXCEPTION_ROLE_ID)
-#	KK_OWNER_ROLE = client.get_guild(KK_SERVER_ID).get_role(KK_OWNER_ROLE_ID)
-
-#	if after.guild.id == KK_SERVER_ID:
-#		if KK_PATRON_ROLE in after.roles or KK_EXCEPTION_ROLE in after.roles or KK_OWNER_ROLE in after.roles:
-#			if after.name == "JeremyV_Test":
-#				yield from after.remove_roles(KK_NONPATRON_ROLE)
+		yield from asyncio.sleep(43200) # every 12 hours
 
 @client.event
 @asyncio.coroutine
@@ -447,11 +427,11 @@ def on_ready():
 #	yield from client.change_presence(activity=discord.Game(name="NHL '94"))
 #	yield from client.change_nickname(client.user, "Wes McCauley")
 
-#	client.loop.create_task(check_patrons())
 #	client.loop.create_task(set_flairs())
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trades())
 	client.loop.create_task(check_inactives())
+	client.loop.create_task(check_threads())
 	return
 
 @client.event
