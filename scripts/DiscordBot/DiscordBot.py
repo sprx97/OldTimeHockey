@@ -181,22 +181,13 @@ def ProcessOTGuesses():
 		f.truncate()
 		pickle.dump(pickled, f)
 
-#		for channel in client.get_all_channels():
-#			if channel.id == HOCKEY_GENERAL_CHANNEL_ID:
-#				yield from PrintOTStandings(OTH_SERVER_ID, channel)
-#			elif channel.id == GUAVAS_AND_APPLES_CHANNEL_ID:
-#				yield from PrintOTStandings(KK_SERVER_ID, channel)
+#		yield from PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
+#		yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID))
 
 @asyncio.coroutine
 def check_scores():
-	bot_channels = []
-	for channel in client.get_all_channels():
-		if channel.id == HOCKEY_GENERAL_CHANNEL_ID and channel.guild.id == OTH_SERVER_ID:
-			bot_channels.append(channel)
-		elif channel.id == GUAVAS_AND_APPLES_CHANNEL_ID and channel.guild.id == KK_SERVER_ID:
-			bot_channels.append(channel)
-#		if channel.id == OTH_TECH_CHANNEL_ID and channel.guild.id == OTH_SERVER_ID:
-#			bot_channels.append(channel)
+	bot_channels = [client.get_channel(HOCKEY_GENERAL_CHANNEL_ID), client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID)]
+#	bot_channels.append(client.get_channel(OTH_TECH_CHANNEL_ID))
 
 	# repeat the task every 10 seconds
 	lastdate = None
@@ -346,10 +337,7 @@ def set_flairs():
 
 @asyncio.coroutine
 def check_inactives():
-	bot_channel = None
-	for channel in client.get_all_channels():
-		if channel.id == MODS_CHANNEL_ID:
-			bot_channel = channel
+	bot_channel = client.get_channel(MODS_CHANNEL_ID)
 
 	# repeat the task every week
 	while not client.is_closed():
@@ -386,10 +374,7 @@ def check_inactives():
 
 @asyncio.coroutine
 def check_trades():
-	bot_channel = None
-	for channel in client.get_all_channels():
-		if channel.id == TRADEREVIEW_CHANNEL_ID:
-			bot_channel = channel
+	bot_channel = client.get_channel(TRADEREVIEW_CHANNEL_ID)
 
 	# repeat the task every hour
 	while not client.is_closed():
@@ -566,10 +551,7 @@ def on_message(message):
 
 	# Trades response
 	if message.content.startswith("!trades") and message.channel.id in [OTH_TECH_CHANNEL_ID, TRADEREVIEW_CHANNEL_ID]:
-		bot_channel = None
-		for channel in client.get_all_channels():
-			if channel.id == TRADEREVIEW_CHANNEL_ID:
-				bot_channel = channel
+		bot_channel = client.get_channel(TRADEREVIEW_CHANNEL_ID)
 
 		announcements = CheckTrades.checkFleaflickerTrades()
 		if len(announcements) == 0:
@@ -581,10 +563,7 @@ def on_message(message):
 
 	# Inactives response
 	if message.content.startswith("!inactives") and message.channel.id in [OTH_TECH_CHANNEL_ID, MODS_CHANNEL_ID]:
-		bot_channel = None
-		for channel in client.get_all_channels():
-			if channel.id == MODS_CHANNEL_ID:
-				bot_channel = channel
+		bot_channel = client.get_channel(MODS_CHANNEL_ID)
 
 		CheckInactives.checkAllLeagues(True) # force
 		if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
