@@ -42,9 +42,9 @@ def updateCurrentPF(league, year):
 
                 # projections don't count!
                 if isProjected:
-                        cursor.execute("UPDATE Teams set currentWeekPF=0.0 where teamID=" + str(teamID))
+                        cursor.execute("UPDATE Teams set currentWeekPF=0.0 where teamID=" + str(teamID) + " AND year=" + str(year))
                 else:
-                        cursor.execute("UPDATE Teams set currentWeekPF=" + str(score) + " where teamID=" + str(teamID))
+                        cursor.execute("UPDATE Teams set currentWeekPF=" + str(score) + " where teamID=" + str(teamID) + " AND year=" + str(year))
 
         # This only needs to run once per week, but not worth the time to optimize right now
         matchups = root.cssselect(".scoreboard")
@@ -53,8 +53,8 @@ def updateCurrentPF(league, year):
                 teamID1 = matchups[n].cssselect("a")[0].get("href").split("/")[-1]
                 teamID2 = matchups[n+1].cssselect("a")[0].get("href").split("/")[-1]
                 matchupID = matchupLinks[n/2].cssselect("a")[0].get("href").split("/")[-1]
-                cursor.execute("UPDATE Teams SET CurrOpp=" + teamID1 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID2)
-                cursor.execute("UPDATE Teams SET CurrOpp=" + teamID2 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID1)
+                cursor.execute("UPDATE Teams SET CurrOpp=" + teamID1 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID2 + " AND year=" + str(year))
+                cursor.execute("UPDATE Teams SET CurrOpp=" + teamID2 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID1 + " AND year=" + str(year))
 
 db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()

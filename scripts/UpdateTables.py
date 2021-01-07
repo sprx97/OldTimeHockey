@@ -228,24 +228,24 @@ if __name__ == "__main__":
                                 if str(next[2]) == "591742":
                                         next[2] = 157129 # override for rellek...
 
-                                cursor.execute("SELECT * from Teams where teamID = " + next[0])
+                                cursor.execute("SELECT * from Teams where teamID = " + next[0] + " AND year=" + str(year))
                                 data = cursor.fetchall()
                                 if len(data) == 0: # insert new team into table (should only happen once)
 #                                       print(next[1])
                                         cursor.execute("INSERT into Teams values (" + str(next[0]) + ", " + str(league[0]) + ", " + str(next[2]) + ", '" + \
                                         next[1] + "', " + str(next[5]) + ", " + str(next[6]) + ", " + str(next[7]) + ", " + str(next[8]) + ", " + \
-                                        str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ")")
+                                        str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ")")
 
                                 elif len(data) == 1:
                                         if intP(data[0][2]) != intP(next[2]):
-                                                cursor.execute("UPDATE Teams set ownerID=" + str(next[2]) + ", replacement=1 where teamID=" + str(next[0]))
+                                                cursor.execute("UPDATE Teams set ownerID=" + str(next[2]) + ", replacement=1 where teamID=" + str(next[0]) + " AND year=" + str(year))
                                                 with open(Config.config["srcroot"] + "scripts/replacement_teams.txt", "a") as myfile:
                                                         myfile.write(str(next[0]) + "\n")
 
                                         cursor.execute("UPDATE Teams set  name='" + next[1] + \
                                         "', wins=" + str(next[5]) + ", losses=" + str(next[6]) + ", gamesBack=" + str(next[7]) + \
                                         ", streak=" + str(next[8]) + ", pointsFor=" + str(next[9]) + ", pointsAgainst=" + str(next[10]) + \
-                                        ", coachRating=" + str(next[11]) + ", isChamp=" + str(next[12]) +  " where teamID=" + str(next[0]))
+                                        ", coachRating=" + str(next[11]) + ", isChamp=" + str(next[12]) +  " where teamID=" + str(next[0]) + " AND year=" + str(year))
                                 else:
                                         raise Exception("Error: more than one team matches teamID: " + str(next[0]))
 
@@ -268,14 +268,14 @@ if __name__ == "__main__":
                 for league in leagues:
                         teams_post = getPlayoffs(league[0], league[1])
                         for next in teams_post:
-                                cursor.execute("SELECT * from Teams_post where teamID = " + next)
+                                cursor.execute("SELECT * from Teams_post where teamID = " + next + " AND year=" + str(year))
                                 data = cursor.fetchall()
                                 if len(data) == 0: # new team
                                         cursor.execute("INSERT into Teams_post values (" + next + ", " + str(teams_post[next][0]) + ", " + str(teams_post[next][1]) + \
-                                        ", " + str(teams_post[next][2]) + ", " + str(teams_post[next][3]) + ", " + str(teams_post[next][4])  +  ")")
+                                        ", " + str(teams_post[next][2]) + ", " + str(teams_post[next][3]) + ", " + str(teams_post[next][4]) + ", " + str(year) +  ")")
                                 elif len(data) == 1:
                                         cursor.execute("UPDATE Teams_post set wins=" + str(teams_post[next][0]) + ", losses=" + str(teams_post[next][1]) + \
-                                        ", pointsFor=" + str(teams_post[next][2]) + ", pointsAgainst=" + str(teams_post[next][3]) + ", seed=" + str(teams_post[next][4]) + " where teamID=" + next)
+                                        ", pointsFor=" + str(teams_post[next][2]) + ", pointsAgainst=" + str(teams_post[next][3]) + ", seed=" + str(teams_post[next][4]) + " where teamID=" + next + " AND year=" + str(year))
                                 else:
                                         raise Exception("Error: more than one team matches teamID: " + next)
 
