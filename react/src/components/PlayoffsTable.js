@@ -97,7 +97,7 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                   <Table.Cell textAlign="center" className={`D${tier}`}>
                     <a
-                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
+                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}?season=${year}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -107,7 +107,7 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   <Table.Cell textAlign="center">
                     {isChamp ? (<img src={GetTrophy(tier, year)} align="center" title={`D${tier}`} alt={`${leaguename} winner`} width="12px" height="24px" />) : ''}
                     <a
-                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
+                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}?season=${year}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

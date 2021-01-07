@@ -106,7 +106,7 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
                   <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                   <Table.Cell textAlign="center" className={`D${tier}`}>
                     <a
-                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
+                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}?season=${year}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -116,7 +116,7 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
                   <Table.Cell textAlign="center">
                     {isChamp ? (<img src={GetTrophy(tier, year)} alt={`${leaguename} winner`} align="center" title={`D${tier}`} width="12px" height="24px" />) : ''}
                     <a
-                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
+                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}?season=${year}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

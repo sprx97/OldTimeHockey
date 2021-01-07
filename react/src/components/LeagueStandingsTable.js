@@ -45,7 +45,7 @@ export default class LeagueStandingsTable extends Component {
           <Header as="h2" textAlign="center">
             <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />{' '}
             <a
-              href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year-1}`}
+              href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year}`}
               target="_blank"
             >
               {this.props.leagueName}
@@ -99,7 +99,7 @@ export default class LeagueStandingsTable extends Component {
                     <Table.Cell textAlign="center">
                       {isChamp ? (<img src={GetTrophy(tier, this.props.year)} align="center" title={`D${tier}`} width="12px" height="24px" />) : ''}
                       <a
-                        href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
+                        href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}?season=${this.props.year}`}
                         target="_blank"
                       >
                         {name}
