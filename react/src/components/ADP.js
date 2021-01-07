@@ -96,7 +96,7 @@ export default class ADP extends Component {
 
     onChange = (event, result) => {
         const { value } = result || event.target;
-        this.setState({ query: value, isLoaded: false, tierFilters: null }, () => this.getData());
+        this.setState({ query: value, isLoaded: false }, () => this.getData());
     };
 
     handleTierFilterChange = (event, value) => {

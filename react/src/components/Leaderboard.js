@@ -240,7 +240,7 @@ export default class Leaderboard extends Component {
     this.setState({
       data: _.sortBy(leaders, defaultSort).reverse(),
       isLoaded: true,
-      column: null,
+      column: leaders.length > 0 ? defaultSort : null,
     });
   };
 
@@ -254,6 +254,8 @@ export default class Leaderboard extends Component {
   };
 
   handleSort = clickedColumn => () => {
+    alert("SORTING");
+
     const { column, data, direction } = this.state;
 
     if (column !== clickedColumn) {
