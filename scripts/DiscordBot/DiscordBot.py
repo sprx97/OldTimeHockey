@@ -397,7 +397,7 @@ def check_threads():
 				print(channel.name, "is stale")
 				if last_message.author != client.user: # No activty. Lock thread.
 					yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID), send_messages=False)
-					yield from channel.send("No activity in last 24h. Thread will be locked and deleted in 24h. Tag zebras to get this reopened.")
+					yield from channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 24 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
 				else: # ready for deletion
 					yield from channel.delete()
 
