@@ -1,14 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { useFetch } from '../hooks/useFetch';
-import {
-  Container,
-  Grid,
-  Header,
-  Segment,
-  List,
-  Placeholder,
-} from 'semantic-ui-react';
+import { Container, Grid, Header, Segment, List, Placeholder } from 'semantic-ui-react';
 
 const HallOfFame = () => {
   const [winsRecord, winsRecordLoading] = useFetch(

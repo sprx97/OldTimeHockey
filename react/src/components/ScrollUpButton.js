@@ -1,5 +1,5 @@
 import React from 'react';
-import ScrollUpButton from 'react-scroll-up-button'; //Add this line Here
+import ScrollUpButton from 'react-scroll-up-button';
 
 export default class Index extends React.Component {
   render() {

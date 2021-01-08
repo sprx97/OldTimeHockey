@@ -1,7 +1,7 @@
 /* eslint-disable */
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Container, Segment, Table, Loader } from 'semantic-ui-react';
+import { Table, Loader } from 'semantic-ui-react';
 
 export default class LeagueRanksTable extends Component {
   constructor(props) {

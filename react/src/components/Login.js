@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Input, Segment } from 'semantic-ui-react';
+import { Button, Header, Input, Segment } from 'semantic-ui-react';
 
 const Login = () => {
   return (
@@ -12,6 +12,7 @@ const Login = () => {
         <Link to="/createAccount">
             <Button secondary>New Account</Button>
         </Link>
+        <Header as="h3" color="red">This feature is not finished yet. Don't expect these buttons to do anything.</Header>
     </Segment>
   );
 };
