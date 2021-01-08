@@ -58,7 +58,7 @@ export default class Standings extends Component {
     var newleagues = {};
 
     for (let i = 1; i <= 4; i++) {
-      const res = await fetch("http://www.roldtimehockey.com/node/divisionleagues?year=" + this.state.query + "&tier=" + i.toString());
+      const res = await fetch("http://www.roldtimehockey.com/node/divisionleagues?year=" + this.state.query + "&tiers=" + i.toString());
       const leagueids = await res.json();
       if (!_.isEmpty(leagueids)) {
         newleagues[i] = leagueids;

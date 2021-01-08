@@ -1,13 +1,18 @@
 /* eslint-disable */
 import React, { Component } from 'react';
-import { Container, Segment, Dropdown, Divider } from 'semantic-ui-react';
+import { Container, Segment, Dropdown, Divider, Header } from 'semantic-ui-react';
 import ADPTable from "./ADPTable"
 
 export default class ADP extends Component {
     state = {
         data: null,
-        query: "2019",
+        query: "2020",
         dropdownOptions: [
+            {
+                key: "2020",
+                text: "2020-2021",
+                value: "2020",
+            },
             {
                 key: "2019",
                 text: "2019-2020",
@@ -80,13 +85,20 @@ export default class ADP extends Component {
             filters += "&tiers=" + this.state.tierFilters;
         }
 
-        const res = await fetch("http://www.roldtimehockey.com/node/adp?year=" + this.state.query + filters);
-        const adp = await res.json();
+        const res1 = await fetch("http://www.roldtimehockey.com/node/divisionleagues?year=" + this.state.query + filters);
+        const leagueids = await res1.json();
+
+        this.setState({
+            totalLeagues: leagueids.length
+        });
+
+        const res2 = await fetch("http://www.roldtimehockey.com/node/adp?year=" + this.state.query + filters);
+        const adp = await res2.json();
 
         this.setState({
             data: adp,
             isLoaded: true,
-            numLeagues: adp[0]["picks"].length, // highest ADP player should tell us the total number of leauges that have drafted
+            numLeagues: (typeof(adp[0]) === "undefined") ? 0 : adp[0]["picks"].length, // highest ADP player should tell us the total number of leauges that have drafted
         });
     }
 
@@ -100,7 +112,7 @@ export default class ADP extends Component {
     };
 
     handleTierFilterChange = (event, value) => {
-        this.setState({tierFilters: value.value}, () => {this.getData();})
+        this.setState({tierFilters: value.value, isLoaded: false }, () => {this.getData();})
     }
 
     render() {
@@ -130,6 +142,7 @@ export default class ADP extends Component {
                         onChange={this.handleTierFilterChange}
                     />
                 </Segment>
+                {(this.state.isLoaded) ? (<Header as="h4">{this.state.numLeagues}/{this.state.totalLeagues} Completed</Header>) : ("")}
                 <ADPTable
                     data={data}
                     isLoaded={this.state.isLoaded}

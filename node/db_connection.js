@@ -42,7 +42,12 @@ http.createServer(function(request, response) {
 		       inner join Teams on (id=leagueID and Teams.year=Leagues.year) where Teams.year=" + mysql.escape(query.year) + " group by Leagues.name) as t order by PF desc";
 	}
 	else if(path == "/divisionleagues") {
-		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + " AND tier=" + mysql.escape(query.tier);
+		tierfilter = "";
+		if (query.tiers) {
+			tierfilter = "and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
+		}
+
+		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + tierfilter;
 	}
 	else if(path == "/leagueteams") {
                 sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.isChamp as isChamp, Leagues.tier as tier \
@@ -178,8 +183,16 @@ http.createServer(function(request, response) {
 				throw err;
 
 			response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
-			response.write(results[0]);
-			response.end();
+			if (results[0] === ']') // empty response
+			{
+				response.write("{}");
+				response.end();
+			}
+			else
+			{
+				response.write(results[0]);
+				response.end();
+			}
 		});
 
 		return;	
