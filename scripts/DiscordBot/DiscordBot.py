@@ -393,7 +393,7 @@ def check_threads():
 	while not client.is_closed():
 		for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[1:]:
 			last_message = (yield from channel.history(limit=1).flatten())[0]
-			if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1):
+			if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "flagkeep" not in channel.name:
 				print(channel.name, "is stale")
 				if last_message.author != client.user: # No activty. Lock thread.
 					yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID), send_messages=False)
