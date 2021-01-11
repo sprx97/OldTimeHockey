@@ -1,8 +1,8 @@
 Things to do at the beginning of a year:
 - Update scripts/WeekVars.txt
-- Update index.html to include the previous years champions and new rule info
-- Add the new year as a dropdown option in standings.html and make it the default
-- Add the new year (and previous playoffs) as options in leaders.html
+- Update homepage.js to include the previous years champions and new rule info
+- Add the new year as a dropdown option in standings.js and make it the default
+- Add the new year (and previous playoffs) as options in leaders.js
 - Add rows to the "Leagues" table for each of the new leagues
 - Uncoment the /etc/crontab lines for OTH (only do this the day the season starts)
 - Finally, run "UpdateTables.py" to grab all of the teams from each league (once the leagues are filled) -- normally this runs sunday night
