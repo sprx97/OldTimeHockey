@@ -5,6 +5,37 @@ import Banner from './Banner';
 
 const panes = [
   {
+    menuItem: '2020-2021',
+    render: () => (
+      <Tab.Pane>
+        224 teams, 16 leagues, 4 divisions
+        <ul>
+          <li>
+            <b>Division 1 Champion: </b>
+            <a href=""></a>
+            <br/>
+          </li>
+          <li>
+            <b>Points For Champion: </b>
+            <a href=""></a>
+          </li>
+          <li>
+            <b>Coaches Rating Champion: </b>
+            <a href=""></a>
+          </li>
+          <li>
+            <b>Woppa Cup Champion: </b>
+            <a href=""></a>
+          </li>
+          <u>Rule Changes</u>
+          <ul>
+            <li>Added 3rd IR+ slot for this season only.</li>
+          </ul>
+        </ul>
+      </Tab.Pane>
+    ),
+  },
+  {
     menuItem: '2019-2020',
     render: () => (
       <Tab.Pane>
