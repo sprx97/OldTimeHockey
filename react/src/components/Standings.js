@@ -114,8 +114,6 @@ export default class Standings extends Component {
       <Container fluid>
         <Segment basic textAlign="center">
           <Dropdown
-            compact
-            search
             selection
             options={dropdownOptions}
             defaultValue={query}

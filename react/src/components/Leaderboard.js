@@ -297,8 +297,6 @@ export default class Leaderboard extends Component {
       <Container>
         <Segment basic textAlign="center">
           <Dropdown
-            compact
-            search
             selection
             options={this.state.dropdownOptions}
             defaultValue={this.state.query}
@@ -335,6 +333,7 @@ export default class Leaderboard extends Component {
                     />
                   </Grid.Column>
                 </Grid.Row>
+                {( live.indexOf(this.state.query) == -1) ? (
                 <Grid.Row>
                   <Grid.Column>
                     <Checkbox
@@ -346,6 +345,7 @@ export default class Leaderboard extends Component {
                     </Checkbox>
                   </Grid.Column>
                 </Grid.Row>
+                ) : ('')}
               </Grid>
             </Fragment> 
           ) : (
