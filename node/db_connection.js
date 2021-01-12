@@ -76,9 +76,9 @@ http.createServer(function(request, response) {
 
 			sql = "SELECT Leagues.id as leagueID, Leagues.tier as tier, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
 			       round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA, round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal \
-			       from Teams as t1 inner join Users on t1.ownerID=Users.FFid inner join Leagues on (t1.leagueID=Leagues.id AND t1.year=Leagues.year) left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
-			       INNER JOIN Teams as t2 on t1.CurrOpp=t2.teamID \
-			       where Leagues.year=" + year + tierfilter + " order by t1.currentWeekPF";
+			       from Teams as t1 inner join Leagues on (t1.leagueID=Leagues.id AND t1.year=Leagues.year) inner join Users on t1.ownerID=Users.FFid left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
+			       INNER JOIN Teams as t2 on (t1.CurrOpp=t2.teamID AND t1.year=t2.year) \
+			       where Leagues.year=" + mysql.escape(year) + tierfilter + " order by t1.currentWeekPF";
 		}
 		else if (query.year == "careerp") {
 			yearfilter = "";
@@ -95,7 +95,7 @@ http.createServer(function(request, response) {
 			       round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins) as wins, sum(Teams_post.losses) as losses, \
 			       sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, \
                                round(exp(sum(log(CASE WHEN isChamp = 0 THEN 1 WHEN tier = 1 THEN isChamp*7 WHEN tier = 2 THEN isChamp*5 WHEN tier = 3 THEN isChamp*3 WHEN tier = 4 THEN isChamp*2 END)))) as trophies, FFid \
-			       from Teams_post inner join Teams on Teams_post.teamID=Teams.teamID inner join Users on ownerID=FFid inner join Leagues on leagueID=Leagues.id \
+			       from Teams_post inner join Teams on Teams_post.teamID=Teams.teamID inner join Users on ownerID=FFid inner join Leagues on (Teams.leagueID=Leagues.id AND Teams.year = Leagues.year) \
 			       where replacement != 1 " + yearfilter + tierfilter + "group by FFid) as T1 order by PF DESC";
 		}
 		else if (query.year == "career") {
@@ -130,7 +130,7 @@ http.createServer(function(request, response) {
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
 			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid, Leagues.year \
 			       from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) INNER JOIN Users on Teams.ownerID=Users.FFid \
-			       where Leagues.year=" + year + " order by Teams_post.pointsFor DESC";
+			       where Leagues.year=" + mysql.escape(query.year) + " order by Teams_post.pointsFor DESC";
 		}
 		else { // just a single-year
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, \

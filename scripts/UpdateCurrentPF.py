@@ -52,7 +52,7 @@ def updateCurrentPF(league, year):
         for n in range(0, len(matchups), 2):
                 teamID1 = matchups[n].cssselect("a")[0].get("href").split("/")[-1]
                 teamID2 = matchups[n+1].cssselect("a")[0].get("href").split("/")[-1]
-                matchupID = matchupLinks[n/2].cssselect("a")[0].get("href").split("/")[-1]
+                matchupID = matchupLinks[int(n/2)].cssselect("a")[0].get("href").split("/")[-1]
                 cursor.execute("UPDATE Teams SET CurrOpp=" + teamID1 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID2 + " AND year=" + str(year))
                 cursor.execute("UPDATE Teams SET CurrOpp=" + teamID2 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID1 + " AND year=" + str(year))
 

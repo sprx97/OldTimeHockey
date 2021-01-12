@@ -17,6 +17,7 @@ const regularSeason = [
   '2017',
   '2018',
   '2019',
+  '2020',
 ];
 const playoffs = [
   '2012p',
@@ -26,7 +27,6 @@ const playoffs = [
   '2016p',
   '2017p',
   '2018p',
-  '2019p',
 ];
 const careerRegularSeason = ['career'];
 const careerPlayoffs = ['careerp'];
@@ -115,6 +115,11 @@ export default class Leaderboard extends Component {
         value: '2019',
       },
       {
+        key: '2020',
+        text: '2020-2021 Regular Season',
+        value: '2020',
+      },
+      {
         key: 'career',
         text: 'Career Regular Season',
         value: 'career',
@@ -170,6 +175,11 @@ export default class Leaderboard extends Component {
         key: '2019',
         text: '2019-2020',
         value: '2019',
+      },
+      {
+        key: '2020',
+        text: '2020-2021',
+        value: '2020',
       },
     ],
     tierOptions: [
@@ -254,8 +264,6 @@ export default class Leaderboard extends Component {
   };
 
   handleSort = clickedColumn => () => {
-    alert("SORTING");
-
     const { column, data, direction } = this.state;
 
     if (column !== clickedColumn) {
