@@ -26,7 +26,7 @@ export default class LeagueStandingsTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.leagueID != this.props.leagueID)
+    if (prevProps.leagueID != this.props.leagueID || prevProps.year != this.props.year)
       this.getData();
   }
 

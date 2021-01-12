@@ -135,7 +135,7 @@ export default class Standings extends Component {
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 1</Header>
               <Grid centered stackable>
-                {this.layoutGrid(leagues[1], true)}
+                {this.layoutGrid(this.state.leagues[1], true)}
               </Grid>
             </React.Fragment>)
           : ''}
@@ -144,7 +144,7 @@ export default class Standings extends Component {
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 2</Header>
               <Grid centered stackable>
-                {this.layoutGrid(leagues[2], false)}
+                {this.layoutGrid(this.state.leagues[2], false)}
               </Grid>
             </React.Fragment>)
           : ''}
@@ -153,7 +153,7 @@ export default class Standings extends Component {
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 3</Header>
               <Grid centered stackable>
-                {this.layoutGrid(leagues[3], false)}
+                {this.layoutGrid(this.state.leagues[3], false)}
               </Grid>
             </React.Fragment>)
           : ''}
@@ -162,7 +162,7 @@ export default class Standings extends Component {
               <Divider hidden />
               <Header as="h1" textAlign="center" block>Division 4</Header>
               <Grid centered stackable>
-                {this.layoutGrid(leagues[4], false)}
+                {this.layoutGrid(this.state.leagues[4], false)}
               </Grid>
             </React.Fragment>)
           : ''}
