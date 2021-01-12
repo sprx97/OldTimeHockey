@@ -44,14 +44,14 @@ http.createServer(function(request, response) {
 	else if(path == "/divisionleagues") {
 		tierfilter = "";
 		if (query.tiers) {
-			tierfilter = "and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
+			tierfilter = " and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
 		}
 
 		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + tierfilter;
 	}
 	else if(path == "/leagueteams") {
                 sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.isChamp as isChamp, Leagues.tier as tier \
-                       from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on (leagueID=id and Teams.year=Leagues.year) where leagueID=" + mysql.escape(query.id) + " ORDER BY gamesBack ASC, pointsFor DESC";
+                       from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on (leagueID=id and Teams.year=Leagues.year) where leagueid=" + mysql.escape(query.id) + " and Teams.year=" + mysql.escape(query.year) + " ORDER BY gamesBack ASC, pointsFor DESC";
 	}
 	else if (path == "/currenttier") {
 		sql = "SELECT Leagues.tier, Users.FFname from Teams inner join Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) inner join Users on ownerID=FFid where Teams.year=" + mysql.escape(query.year) + " and replacement != 1";
@@ -209,10 +209,10 @@ http.createServer(function(request, response) {
 	}
 
 	sql += limit; // Can add limit to any query, even though it really only makes sense for certain ones.
-	console.log(sql);
+	console.log(path + " " + sql)
 
 	conn.query(sql, function(err, result, fields) {
-//		console.log(JSON.stringify(result));
+//		console.log(result)
 		response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
 		response.write("" + JSON.stringify(result));
 		response.end();

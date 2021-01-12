@@ -14,10 +14,7 @@ export default class LeagueStandingsTable extends Component {
   };
 
   getData = async () => {
-    const res = await fetch(
-      'http://www.roldtimehockey.com/node/leagueteams?id=' +
-        this.props.leagueID,
-    );
+    const res = await fetch('http://www.roldtimehockey.com/node/leagueteams?id=' + this.props.leagueID + "&year=" + this.props.year);
     const leaders = await res.json();
     this.setState({
       data: leaders,

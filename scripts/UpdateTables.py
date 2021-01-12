@@ -4,6 +4,7 @@ from lxml import html # xml parsing
 import MySQLdb # sql queries
 import sys
 import Config
+import re
 
 years_to_update = [] # can manually seed if necessary
 playoffs_to_update = []
@@ -204,6 +205,15 @@ def getPlayoffs(leagueID, year):
 
         return teams
 
+def demojify(text):
+        regex_pattern = re.compile(pattern="["
+                u"\U0001F600-\U0001F64F" # emoticons
+                u"\U0001F300-\U0001F5FF" # symbols & pictographs
+                u"\U0001F680-\U0001F6FF" # transport & map symbols
+                u"\U0001F1E0-\U0001F1FF" # flags (iOS)
+                "]+", flags = re.UNICODE)
+        return regex_pattern.sub(r'', text)
+
 if __name__ == "__main__":
         db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
         cursor = db.cursor()
@@ -217,6 +227,7 @@ if __name__ == "__main__":
                                 next[1] = next[1].replace(";", "") # prevent sql injection
                                 next[1] = next[1].replace("'", "''") # correct quote escaping
                                 next[1] = next[1].replace(u"\u2019", "''") # another type of quote?
+                                next[1] = demojify(next[1])
                                 next[3] = next[3].replace(";", "") # prevent sql injection
                                 next[3] = next[3].replace("'", "''") # correct quote escaping
                                 try:
@@ -226,7 +237,7 @@ if __name__ == "__main__":
                                         pass                            
 
                                 if str(next[2]) == "591742":
-                                        next[2] = 157129 # override for rellek...
+                                        next[2] = 157129 # override for rellek multi accounts...
 
                                 cursor.execute("SELECT * from Teams where teamID = " + next[0] + " AND year=" + str(year))
                                 data = cursor.fetchall()
