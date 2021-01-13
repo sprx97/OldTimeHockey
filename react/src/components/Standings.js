@@ -113,13 +113,16 @@ export default class Standings extends Component {
     return (
       <Container fluid>
         <Segment basic textAlign="center">
-          <Dropdown
-            selection
-            options={dropdownOptions}
-            defaultValue={query}
-            wrapSelection={false}
-            onChange={this.onChange}
-          />
+          <div style={{width: "120px", margin: "0 auto"}}>
+            <Dropdown
+              fluid
+              selection
+              options={dropdownOptions}
+              defaultValue={query}
+              wrapSelection={false}
+              onChange={this.onChange}
+            />
+          </div>
           <Header as="h1" textAlign="center" block>League Ranks</Header>
           <Grid centered stackable>
             <Grid.Row>

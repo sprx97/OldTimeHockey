@@ -296,13 +296,16 @@ export default class Leaderboard extends Component {
     return (
       <Container>
         <Segment basic textAlign="center">
+        <div style={{width: "210px", margin: "0 auto"}}>
           <Dropdown
+            fluid
             selection
             options={this.state.dropdownOptions}
             defaultValue={this.state.query}
             wrapSelection={false}
             onChange={this.onChange}
           />
+          </div>
           {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1 || live.indexOf(this.state.query) > -1) ? (
             <Fragment>
               <Divider hidden />
