@@ -386,22 +386,22 @@ def check_trades():
 		yield from asyncio.sleep(3600)
 
 KK_ASK_KEEPING_KARLSSON_CATEGORY_ID = 744981120311099422
-KK_PATRON_ROLE_ID = 747514745891979324
+KK_BASIC_ROLE_ID = 782759776773603328
 
 @asyncio.coroutine
 def check_threads():
 	while not client.is_closed():
 		for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[1:]:
 			last_message = (yield from channel.history(limit=1).flatten())[0]
-			if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "flagkeep" not in channel.name:
+			if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "tkeep" not in channel.name and last_message.author != client.user:
 				print(channel.name, "is stale")
-				if last_message.author != client.user: # No activty. Lock thread.
-					yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_PATRON_ROLE_ID), send_messages=False)
-					yield from channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 24 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
-				else: # ready for deletion
-					yield from channel.delete()
+				yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_BASIC_ROLE_ID), send_messages=False)
+				yield from channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 24 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
+			elif (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(hours=12) and "tkeep" not in channel.name and last_message.author == client.user: # last comment was locking the thread
+				print(channel.name, "is deleted")
+				yield from channel.delete()
 
-		yield from asyncio.sleep(43200) # every 12 hours
+		yield from asyncio.sleep(3600) # every hour
 
 @client.event
 @asyncio.coroutine
