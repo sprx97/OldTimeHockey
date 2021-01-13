@@ -296,7 +296,7 @@ export default class Leaderboard extends Component {
     return (
       <Container>
         <Segment basic textAlign="center">
-        <div style={{width: "210px", margin: "0 auto"}}>
+        <div style={{width: "220px", margin: "0 auto"}}>
           <Dropdown
             fluid
             selection
