@@ -599,17 +599,17 @@ def on_message(message):
 			db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 			cursor = db.cursor()
 			team = message.content.split(" ")[1].lower()
-			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID, me.wins, me.losses, opp.wins, opp.losses " + \
+			cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID, me.wins, me.losses, opp.wins, opp.losses, me.year " + \
 				       "FROM Teams AS me " + \
-				       "INNER JOIN Teams AS opp ON me.CurrOpp=opp.teamID " + \
+				       "INNER JOIN Teams AS opp ON (me.CurrOpp=opp.teamID AND me.year=opp.year) " + \
 				       "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
 				       "INNER JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
 				       "INNER JOIN Leagues AS l ON (me.leagueID=l.id AND me.year=l.year) " + \
-				       "WHERE me.replacement != 1 AND LOWER(me_u.FFname)='" + team + "' AND l.year=%d" % year)
+				       "WHERE me.replacement != 1 AND LOWER(me_u.FFname)='" + team + "' AND l.year=" + str(year))
 
 			results = cursor.fetchall()
 			if len(results) == 0:
-				yield from message.channel.send("User " + team + " not found.");
+				yield from message.channel.send("User " + team + " not found.")
 			else:
 				yield from message.channel.send("%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**\n<https://www.fleaflicker.com/nhl/leagues/%d/scores/%d>" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
 
