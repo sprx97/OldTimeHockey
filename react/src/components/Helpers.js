@@ -36,6 +36,7 @@ export const divisionMapping = {
   "Brodeur":"D2",
   "Price-Murray":"D2",
   "Jones-Allen":"D2",
+  "Freddie-Hutton":"D2",
   "Howe":"D3",
   "Lemieux":"D3",
   "Dionne":"D3",
