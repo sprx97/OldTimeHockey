@@ -84,16 +84,25 @@ export default class ADP extends Component {
         if (this.state.tierFilters != null && this.state.tierFilters != "") {
             filters += "&tiers=" + this.state.tierFilters;
         }
+        var query = this.state.query;
 
-        const res1 = await fetch("http://www.roldtimehockey.com/node/divisionleagues?year=" + this.state.query + filters);
+        const res1 = await fetch("http://www.roldtimehockey.com/node/divisionleagues?year=" + query + filters);
         const leagueids = await res1.json();
 
         this.setState({
             totalLeagues: leagueids.length
         });
 
-        const res2 = await fetch("http://www.roldtimehockey.com/node/adp?year=" + this.state.query + filters);
+        const res2 = await fetch("http://www.roldtimehockey.com/node/adp?year=" + query + filters);
         const adp = await res2.json();
+
+        // return early if our state has changed since the fetch requests were made
+        var newfilters = ""
+        if (this.state.tierFilters != null && this.state.tierFilters != "") {
+            newfilters += "&tiers=" + this.state.tierFilters;
+        }
+        if (query != this.state.query || filters != newfilters)
+            return;
 
         this.setState({
             data: adp,
