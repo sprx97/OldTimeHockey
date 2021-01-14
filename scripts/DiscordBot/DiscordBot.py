@@ -186,16 +186,15 @@ def ProcessOTGuesses():
 #		yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID))
 
 KK_PICKEM_CHANNEL_ID = 799100000972963891
-pickems_picklefile = open("pickems.pickle", "rb+")
-try:
-	pickled = pickle.load(pickems_picklefile)
-	pickems = pickled["games"]
-	picks = pickled["picks"]
-except:
-	pickems = {}
-	picks = {}
-print(picks)
-pickems_picklefile.close()
+with open("pickems.pickle", "rb+") as pickems_picklefile:
+	try:
+		pickled = pickle.load(pickems_picklefile)
+		pickems = pickled["games"]
+		picks = pickled["picks"]
+	except:
+		pickems = {}
+		picks = {}
+	pickems_picklefile.close()
 
 def SavePickems():
 	global pickems, picks
@@ -203,8 +202,6 @@ def SavePickems():
 	pickems_picklefile = open("pickems.pickle", "rb+")
 	pickems_picklefile.seek(0)
 	pickems_picklefile.truncate()
-
-	print(picks)
 
 	pickled = {"games": pickems, "picks": picks}
 	pickle.dump(pickled, pickems_picklefile)
