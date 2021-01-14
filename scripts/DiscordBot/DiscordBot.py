@@ -87,6 +87,7 @@ def PrintOTStandings(guild, channel):
 
 		standings = pickled[guild]
 		msg =  "``"
+		msg += "**OT Challenge Standings**\n"
 		msg += "User          | Wins | Guesses\n"
 		msg += "--------------|------|--------\n"
 		for author in standings:
@@ -511,7 +512,7 @@ KK_BASIC_ROLE_ID = 782759776773603328
 @asyncio.coroutine
 def check_threads():
 	while not client.is_closed():
-		for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[1:]:
+		for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[2:]: # skip #make-a-thread and #sit-start-polls
 			last_message = (yield from channel.history(limit=1).flatten())[0]
 			if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "tkeep" not in channel.name and last_message.author != client.user:
 				print(channel.name, "is stale")
@@ -654,7 +655,7 @@ def on_message(message):
 
 	if message.content.startswith("!xfactor") and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("I have studied tapes of him and I must disagree. While he is highly skilled, he does not have 'it' if you know what I mean. " + \
-						"That 'x-factor'. The ;above and beyond; trait.")
+						"That 'x-factor'. The 'above and beyond' trait.")
 
 	if message.content.startswith("!petey") and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("Kid might look like if Malfoy was a Hufflepuff but he plays like if Potter was a Slytherin the kids absolutely fucking nasty. " + \
