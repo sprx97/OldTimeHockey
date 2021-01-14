@@ -30,38 +30,38 @@ GUAVAS_AND_APPLES_CHANNEL_ID = 747906611959562280
 
 # team name mappings, ALL LOWERCASE
 team_map = {}
-team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]                      = "ARI"
-team_map["ana"] = team_map["anaheim"] = team_map["ducks"]                                                                = "ANA"
-team_map["bos"] = team_map["boston"] = team_map["bruins"]                                                                = "BOS"
-team_map["buf"] = team_map["buffalo"] = team_map["sabres"]                                                               = "BUF"
-team_map["cgy"] = team_map["cal"] = team_map["calgary"] = team_map["flames"]                                             = "CGY"
-team_map["car"] = team_map["carolina"] = team_map["canes"] = team_map["hurricanes"]                                      = "CAR"
-team_map["chi"] = team_map["chicago"] = team_map["hawks"] = team_map["blackhawks"]                                       = "CHI"
-team_map["col"] = team_map["colorado"] = team_map["avs"] = team_map["avalanche"]                                         = "COL"
-team_map["cbj"] = team_map["columbus"] = team_map["jackets"] = team_map["blue jackets"]                                  = "CBJ"
-team_map["dal"] = team_map["dallas"] = team_map["stars"]                                                                 = "DAL"
-team_map["det"] = team_map["detroit"] = team_map["wings"] = team_map["red wings"]                                        = "DET"
-team_map["edm"] = team_map["edmonton"] = team_map["oilers"]                                                              = "EDM"
-team_map["fla"] = team_map["flo"] = team_map["florida"] = team_map["panthers"]                                           = "FLA"
-team_map["lak"] = team_map["la"] = team_map["los angeles"] = team_map["kings"]                                           = "LAK"
-team_map["min"] = team_map["minnesota"] = team_map["wild"]                                                               = "MIN"
-team_map["mtl"] = team_map["mon"] = team_map["montreal"] = team_map["canadiens"] = team_map["habs"]                      = "MTL"
-team_map["nsh"] = team_map["nas"] = team_map["nashville"] = team_map["predators"] = team_map["preds"]                    = "NSH"
-team_map["njd"] = team_map["nj"] = team_map["new jersey"] = team_map["jersey"] = team_map["devils"]                      = "NJD"
-team_map["nyi"] = team_map["new york islanders"] = team_map["islanders"]                                                 = "NYI"
-team_map["nyr"] = team_map["new york rangers"] = team_map["rangers"]                                                     = "NYR"
-team_map["ott"] = team_map["ottawa"] = team_map["sens"] = team_map["senators"]                                           = "OTT"
-team_map["phi"] = team_map["philadelphia"] = team_map["philly"] = team_map["flyers"]                                     = "PHI"
-team_map["pit"] = team_map["pittsburgh"] = team_map["pens"] = team_map["penguins"]                                       = "PIT"
-team_map["sea"] = team_map["seattle"] = team_map["kraken"]                                                               = "SEA"
-team_map["stl"] = team_map["st. louis"] = team_map["st louis"] = team_map["saint louis"] = team_map["blues"]             = "STL"
-team_map["sjs"] = team_map["sj"] = team_map["san jose"] = team_map["sharks"]                                             = "SJS"
-team_map["tbl"] = team_map["tb"] = team_map["tampa bay"] = team_map["tampa"] = team_map["bolts"] = team_map["lightning"] = "TBL"
-team_map["tor"] = team_map["toronto"] = team_map["leafs"] = team_map["maple leafs"]                                      = "TOR"
-team_map["van"] = team_map["vancouver"] = team_map["canucks"] = team_map["nucks"]                                        = "VAN"
-team_map["vgk"] = team_map["vegas"] = team_map["las vegas"] = team_map["golden knights"] = team_map["knights"]           = "VGK"
-team_map["wsh"] = team_map["was"] = team_map["washington"] = team_map["capitals"] = team_map["caps"]                     = "WSH"
-team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]                                              = "WPJ"
+team_map["ari"] = team_map["arizona"] = team_map["phx"] = team_map["phoenix"] = team_map["coyotes"]                         = "ARI"
+team_map["ana"] = team_map["anaheim"] = team_map["ducks"]                                                                   = "ANA"
+team_map["bos"] = team_map["boston"] = team_map["bruins"]                                                                   = "BOS"
+team_map["buf"] = team_map["buffalo"] = team_map["sabres"]                                                                  = "BUF"
+team_map["cgy"] = team_map["cal"] = team_map["calgary"] = team_map["flames"]                                                = "CGY"
+team_map["car"] = team_map["carolina"] = team_map["canes"] = team_map["hurricanes"]                                         = "CAR"
+team_map["chi"] = team_map["chicago"] = team_map["hawks"] = team_map["blackhawks"]                                          = "CHI"
+team_map["col"] = team_map["colorado"] = team_map["avs"] = team_map["avalanche"]                                            = "COL"
+team_map["cbj"] = team_map["columbus"] = team_map["jackets"] = team_map["blue jackets"]                                     = "CBJ"
+team_map["dal"] = team_map["dallas"] = team_map["stars"]                                                                    = "DAL"
+team_map["det"] = team_map["detroit"] = team_map["wings"] = team_map["red wings"]                                           = "DET"
+team_map["edm"] = team_map["edmonton"] = team_map["oilers"]                                                                 = "EDM"
+team_map["fla"] = team_map["flo"] = team_map["florida"] = team_map["panthers"]                                              = "FLA"
+team_map["lak"] = team_map["la"] = team_map["los angeles"] = team_map["kings"]                                              = "LAK"
+team_map["min"] = team_map["minnesota"] = team_map["wild"]                                                                  = "MIN"
+team_map["mtl"] = team_map["mon"] = team_map["montreal"] = team_map["montréal"] = team_map["canadiens"] = team_map["habs"]  = "MTL"
+team_map["nsh"] = team_map["nas"] = team_map["nashville"] = team_map["predators"] = team_map["preds"]                       = "NSH"
+team_map["njd"] = team_map["nj"] = team_map["new jersey"] = team_map["jersey"] = team_map["devils"]                         = "NJD"
+team_map["nyi"] = team_map["new york islanders"] = team_map["islanders"]                                                    = "NYI"
+team_map["nyr"] = team_map["new york rangers"] = team_map["rangers"]                                                        = "NYR"
+team_map["ott"] = team_map["ottawa"] = team_map["sens"] = team_map["senators"]                                              = "OTT"
+team_map["phi"] = team_map["philadelphia"] = team_map["philly"] = team_map["flyers"]                                        = "PHI"
+team_map["pit"] = team_map["pittsburgh"] = team_map["pens"] = team_map["penguins"]                                          = "PIT"
+team_map["sea"] = team_map["seattle"] = team_map["kraken"]                                                                  = "SEA"
+team_map["stl"] = team_map["st. louis"] = team_map["st louis"] = team_map["saint louis"] = team_map["blues"]                = "STL"
+team_map["sjs"] = team_map["sj"] = team_map["san jose"] = team_map["sharks"]                                                = "SJS"
+team_map["tbl"] = team_map["tb"] = team_map["tampa bay"] = team_map["tampa"] = team_map["bolts"] = team_map["lightning"]    = "TBL"
+team_map["tor"] = team_map["toronto"] = team_map["leafs"] = team_map["maple leafs"]                                         = "TOR"
+team_map["van"] = team_map["vancouver"] = team_map["canucks"] = team_map["nucks"]                                           = "VAN"
+team_map["vgk"] = team_map["vegas"] = team_map["las vegas"] = team_map["golden knights"] = team_map["knights"]              = "VGK"
+team_map["wsh"] = team_map["was"] = team_map["washington"] = team_map["capitals"] = team_map["caps"]                        = "WSH"
+team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]                                                 = "WPJ"
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -184,6 +184,43 @@ def ProcessOTGuesses():
 #		yield from PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
 #		yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID))
 
+KK_PICKEM_CHANNEL_ID = 799100000972963891
+
+@asyncio.coroutine
+def PostPickems():
+	date = datetime.datetime.now().strftime("%Y-%m-%d")
+	root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?date=" + date + "&endDate=" + date)
+
+	# Header message
+	msgs = []
+	reacts = []
+	msgs.append("Welcome to pickems for " + date + ". You will receive one point for each game correctly picked.\n")
+	msgs[0] += "*Selecting both teams nullifies your vote.\n"
+	msgs[0] += "*Matchups will disappear at their scheduled start time."
+	reacts.append(())
+
+	# Gather all games
+	if len(root["dates"]) > 0:
+		games = root["dates"][0]["games"]
+		for game in games:
+			away = game["teams"]["away"]["team"]["name"]
+			home = game["teams"]["home"]["team"]["name"]
+			away_emoji = ParseFeeds.emojis[team_map[away.lower().split(" ")[-1]]]
+			home_emoji = ParseFeeds.emojis[team_map[home.lower().split(" ")[-1]]]
+
+			msgs.append(away_emoji + " **" + away + "** @ " + home_emoji + " **" + home + "**")
+			reacts.append((away_emoji, home_emoji))
+
+			yield from asyncio.sleep(.25)
+
+	# Post to appropriate channels
+	bot_channels = [client.get_channel(KK_PICKEM_CHANNEL_ID)]
+	for channel in bot_channels:
+		for i in range(len(msgs)):
+			msg = yield from channel.send(msgs[i])
+			for emoji in reacts[i]:
+				yield from msg.add_reaction(emoji)
+
 @asyncio.coroutine
 def check_scores():
 	bot_channels = [client.get_channel(HOCKEY_GENERAL_CHANNEL_ID), client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID)]
@@ -199,6 +236,7 @@ def check_scores():
 			print("============ DATE ROLLOVER", date, "============")
 			ParseFeeds.ClearPickleFile()
 			yield from ProcessOTGuesses()
+			yield from PostPickems()
 			lastdate = date
 			print("=========== ROLLOVER COMPLETE ==================")
 		try:
@@ -396,7 +434,7 @@ def check_threads():
 			if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "tkeep" not in channel.name and last_message.author != client.user:
 				print(channel.name, "is stale")
 				yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_BASIC_ROLE_ID), send_messages=False)
-				yield from channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 24 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
+				yield from channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 12 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
 			elif (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(hours=12) and "tkeep" not in channel.name and last_message.author == client.user: # last comment was locking the thread
 				print(channel.name, "is deleted")
 				yield from channel.delete()
@@ -648,6 +686,10 @@ def on_message(message):
 	# For debugging purposes
 #	if message.content.startswith("!processot") and message.channel.id == OTH_TECH_CHANNEL_ID:
 #		yield from ProcessOTGuesses()
+
+	# For debugging purposes
+	if message.content.startswith("!postpickems") and message.channel.id in [KK_PICKEM_CHANNEL_ID]:
+		yield from PostPickems()
 
 	# OT contest check response
 	if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID]: # Add KK channel
