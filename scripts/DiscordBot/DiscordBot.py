@@ -119,9 +119,9 @@ def ProcessOTGuesses():
 		except EOFError:
 			pickled = {}
 
-#		pickled[(2019030316, 207634081700249601, 228258453599027200)] = ('TBL', 8478010)
-#		pickled[(2019030316, 207634081700249601, 222830283399888897)] = ('TBL', 8476883)
-#		pickled[(2019030316, 207634081700249601, 132963280351264768)] = ('TBL', 8475167)
+	# pickled[(2019030316, 207634081700249601, 228258453599027200)] = ('TBL', 8478010)
+	# pickled[(2019030316, 207634081700249601, 222830283399888897)] = ('TBL', 8476883)
+	# pickled[(2019030316, 207634081700249601, 132963280351264768)] = ('TBL', 8475167)
 		# This may be a bit slow, since I'm re-loading the game for each
 		# guess, instead of processing all guesses for a game, but it shouldn't matter.
 		for guess in pickled:
@@ -183,8 +183,8 @@ def ProcessOTGuesses():
 		f.truncate()
 		pickle.dump(pickled, f)
 
-#		yield from PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
-#		yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID))
+	# yield from PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
+	# yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID))
 
 KK_PICKEM_CHANNEL_ID = 799100000972963891
 with open("pickems.pickle", "rb+") as pickems_picklefile:
@@ -239,7 +239,7 @@ async def on_raw_reaction_add(payload):
 
 	if pickems[payload.message_id]["time"] < datetime.datetime.utcnow():
 		print("Ignored reaction because game started")
-#		client.get_user(client.user.id).fetch_message(payload.message_id).remove_reaction(payload.emoji, client.fetch_user(payload.user_id))
+		# client.get_user(client.user.id).fetch_message(payload.message_id).remove_reaction(payload.emoji, client.fetch_user(payload.user_id))
 		return
 
 	gameid = pickems[payload.message_id]["gameId"]
@@ -250,7 +250,7 @@ async def on_raw_reaction_add(payload):
 	for otherreact in pickems[payload.message_id]["reacts"]:
 		if int(otherreact[6:24]) != payload.emoji.id and userid in picks[gameid][int(otherreact[6:24])]:
 			picks[gameid][int(otherreact[6:24])].remove(userid)
-#			await client.get_user(client.user.id).fetch_message(payload.message_id).remove_reaction(otherreact, user)
+			# await client.get_user(client.user.id).fetch_message(payload.message_id).remove_reaction(otherreact, user)
 
 	SavePickems()
 
@@ -307,7 +307,7 @@ def PostPickems():
 @asyncio.coroutine
 def check_scores():
 	bot_channels = [client.get_channel(HOCKEY_GENERAL_CHANNEL_ID), client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID)]
-#	bot_channels.append(client.get_channel(OTH_TECH_CHANNEL_ID))
+	# bot_channels.append(client.get_channel(OTH_TECH_CHANNEL_ID))
 
 	# repeat the task every 10 seconds
 	lastdate = None
@@ -355,7 +355,7 @@ def check_scores():
 								except:
 									continue
 							if msg != None:
-#								print("Edit:", key, msg.id, embed.title)
+								# print("Edit:", key, msg.id, embed.title)
 								yield from msg.edit(embed=embed)
 
 			ParseFeeds.WritePickleFile()
@@ -528,12 +528,12 @@ def check_threads():
 @asyncio.coroutine
 def on_ready():
 	# Uncomment these to change some basic things about the bot account (avatar, status, nickname)
-#	fp = open(Config.config["srcroot"] + "scripts/wes.jpg", "rb")
-#	yield from client.edit_profile(password=None, avatar=fp.read())
-#	yield from client.change_presence(activity=discord.Game(name="NHL '94"))
-#	yield from client.change_nickname(client.user, "Wes McCauley")
+	# fp = open(Config.config["srcroot"] + "scripts/wes.jpg", "rb")
+	# yield from client.edit_profile(password=None, avatar=fp.read())
+	# yield from client.change_presence(activity=discord.Game(name="NHL '94"))
+	# yield from client.change_nickname(client.user, "Wes McCauley")
 
-#	client.loop.create_task(set_flairs())
+	# client.loop.create_task(set_flairs())
 	client.loop.create_task(check_scores())
 	client.loop.create_task(check_trades())
 	client.loop.create_task(check_inactives())
@@ -547,7 +547,7 @@ def on_message(message):
 	if message.author == client.user:
 		return
 
-######################## Core Responses ######################################
+	######################## Core Responses ######################################
 	# Ping response
 	if message.content.startswith("!ping"):
 		yield from message.channel.send("pong")
