@@ -86,8 +86,8 @@ def PrintOTStandings(guild, channel):
 			return
 
 		standings = pickled[guild]
-		msg =  "``"
-		msg += "**OT Challenge Standings**\n"
+		msg = "**OT Challenge Standings**\n"
+		msg +=  "``"
 		msg += "User          | Wins | Guesses\n"
 		msg += "--------------|------|--------\n"
 		for author in standings:
