@@ -133,8 +133,9 @@ def parseGame(game):
 			stringsToAnnounce.append(picklekey)
 
 			disallowkey = picklekey + "D"
-			pickled[disallowkey] = {"msg_id":None, "msg_text":"Last goal disallowed in " + away + "-" + home + ".", "msg_link":None}
-			stringsToAnnounce.append(disallowkey)
+			if disallowkey not in pickled:
+				pickled[disallowkey] = {"msg_id":None, "msg_text":"Last goal disallowed in " + away + "-" + home + ".", "msg_link":None}
+				stringsToAnnounce.append(disallowkey)
 
 	# Check all the goals to report new ones
 	for goal in goals:
