@@ -866,6 +866,6 @@ def on_message(message):
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "test":
-			client.run(Config.config["discord_token_beta"])
+			client.run(Config.config["beta_discord_token"])
 	else:
 		client.run(Config.config["discord_token"])
