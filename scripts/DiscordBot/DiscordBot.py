@@ -69,6 +69,7 @@ year = int(f.readline().strip())
 print(discord.version_info)
 intents = discord.Intents.default()
 intents.members = True
+intents.reactions = True
 client = discord.Client(heartbeat_timeout=120.0, intents=intents)
 
 @asyncio.coroutine
@@ -185,21 +186,95 @@ def ProcessOTGuesses():
 #		yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID))
 
 KK_PICKEM_CHANNEL_ID = 799100000972963891
+pickems_picklefile = open("pickems.pickle", "rb+")
+try:
+	pickled = pickle.load(pickems_picklefile)
+	pickems = pickled["games"]
+	picks = pickled["picks"]
+except:
+	pickems = {}
+	picks = {}
+print(picks)
+pickems_picklefile.close()
+
+def SavePickems():
+	global pickems, picks
+
+	pickems_picklefile = open("pickems.pickle", "rb+")
+	pickems_picklefile.seek(0)
+	pickems_picklefile.truncate()
+
+	print(picks)
+
+	pickled = {"games": pickems, "picks": picks}
+	pickle.dump(pickled, pickems_picklefile)
+
+	pickems_picklefile.close()
+
+@client.event
+async def on_raw_reaction_remove(payload):
+	global pickems, picks
+
+	if payload.message_id not in pickems:
+		return
+
+	if pickems[payload.message_id]["time"] < datetime.datetime.utcnow():
+		print("Ignored reaction removal because game started")
+		return
+
+	gameid = pickems[payload.message_id]["gameId"]
+	userid = (payload.user_id, payload.guild_id)
+	if userid in picks[gameid][payload.emoji.id]:
+		picks[gameid][payload.emoji.id].remove(userid)
+
+	SavePickems()
+
+@client.event
+async def on_raw_reaction_add(payload):
+	global pickems, picks
+
+	if payload.user_id == client.user.id:
+		return
+
+	if payload.message_id not in pickems:
+		return
+
+	if pickems[payload.message_id]["time"] < datetime.datetime.utcnow():
+		print("Ignored reaction because game started")
+#		client.get_user(client.user.id).fetch_message(payload.message_id).remove_reaction(payload.emoji, client.fetch_user(payload.user_id))
+		return
+
+	gameid = pickems[payload.message_id]["gameId"]
+	userid = (payload.user_id, payload.guild_id)
+	picks[gameid][payload.emoji.id].append(userid)
+
+	# Remove user's reaction to the other team if necessary
+	for otherreact in pickems[payload.message_id]["reacts"]:
+		if int(otherreact[6:24]) != payload.emoji.id and userid in picks[gameid][int(otherreact[6:24])]:
+			picks[gameid][int(otherreact[6:24])].remove(userid)
+#			await client.get_user(client.user.id).fetch_message(payload.message_id).remove_reaction(otherreact, user)
+
+	SavePickems()
 
 @asyncio.coroutine
 def PostPickems():
+	global pickems, picks
+
+	# Award points from previous night
+
+	pickems = {}
+	picks = {}
+
 	date = datetime.datetime.now().strftime("%Y-%m-%d")
-	root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?date=" + date + "&endDate=" + date)
+	root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?date=" + date)
 
 	# Header message
-	msgs = []
-	reacts = []
-	msgs.append("Welcome to pickems for " + date + ". You will receive one point for each game correctly picked.\n")
-	msgs[0] += "*Selecting both teams nullifies your vote.\n"
-	msgs[0] += "*Matchups will disappear at their scheduled start time."
-	reacts.append(())
-
+	intro = "Welcome to pickems for " + date + ". You will receive one point for each game correctly picked.\n"
+	intro += "*Selecting both teams nullifies your vote.\n"
+	intro += "*Votes will be ignored after games' scheduled start times."
+	
 	# Gather all games
+	msgs = []
 	if len(root["dates"]) > 0:
 		games = root["dates"][0]["games"]
 		for game in games:
@@ -208,18 +283,28 @@ def PostPickems():
 			away_emoji = ParseFeeds.emojis[team_map[away.lower().split(" ")[-1]]]
 			home_emoji = ParseFeeds.emojis[team_map[home.lower().split(" ")[-1]]]
 
-			msgs.append(away_emoji + " **" + away + "** @ " + home_emoji + " **" + home + "**")
-			reacts.append((away_emoji, home_emoji))
+			gameId = game["gamePk"]
+			time = datetime.datetime.strptime(game["gameDate"], "%Y-%m-%dT%H:%M:%SZ")
+
+			msg = away_emoji + " **" + away + "** @ " + home_emoji + " **" + home + "**"
+
+			pickem = {"time": time, "msg": msg, "reacts": (away_emoji, home_emoji), "gameId": gameId}
+			picks[gameId] = {int(away_emoji[6:24]): [], int(home_emoji[6:24]): []}
+			msgs.append(pickem)
 
 			yield from asyncio.sleep(.25)
 
 	# Post to appropriate channels
 	bot_channels = [client.get_channel(KK_PICKEM_CHANNEL_ID)]
 	for channel in bot_channels:
+		yield from channel.send(intro)
 		for i in range(len(msgs)):
-			msg = yield from channel.send(msgs[i])
-			for emoji in reacts[i]:
+			msg = yield from channel.send(msgs[i]["msg"])
+			pickems[msg.id] = msgs[i]
+			for emoji in msgs[i]["reacts"]:
 				yield from msg.add_reaction(emoji)
+
+	SavePickems()
 
 @asyncio.coroutine
 def check_scores():
