@@ -102,6 +102,7 @@ def PrintOTStandings(guild, channel):
 			msg += author_name + "|" + wins + "|" + guesses + "\n"
 
 		msg += "``"
+		msg += "*Standings bulk updated overnight"
 		yield from channel.send(msg)
 
 @asyncio.coroutine
@@ -636,7 +637,7 @@ def on_message(message):
 			else:
 				yield from message.channel.send("I do not recognize the team '" + team + "'")
 
-######################### Meme Responses ####################################
+	######################### Meme Responses ####################################
 	if message.content.startswith("!fifi") and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
 						"pops bottles pops pussies so keep your finger on that lamp light limpdick cause the forecast is goals. Fuck your cookie jar and your water bottles, " + \
@@ -663,7 +664,7 @@ def on_message(message):
 						"SHL, AHL, NHL it doesn't fucking matter 100 points to Pettersson because he's winning the House Cup, The Calder Cup, " + \
 						"The Stanley Cup and whatever fucking cup is in Sweden. Game Over.")
 
-#################### OTH-specific responses #######################################
+	#################### OTH-specific responses #######################################
 	MINNE_USER_ID = 144483356531228672
 	if message.author.id == MINNE_USER_ID and (" wes " in message.content.lower().replace(".", " ")) and message.guild.id == OTH_SERVER_ID:
 		yield from message.channel.send("<@" + str(MINNE_USER_ID) + "> watch your mouth. Just cuz you tell me to do something doesn't " + \
@@ -738,37 +739,37 @@ def on_message(message):
 			db.close()
 
 	# Woppa cup check response
-#
-#	I think this will be a lot easier once the Challonge API v2 is out. That should allow me to just
-#	make calls instead of having to scrape the page.
-#
-#	if message.content.startswith("!woppacup") and message.guild.id == OTH_SERVER_ID:
-#		if len(message.content.split(" ")) == 1:
-#			yield from message.channel.send("Usage: !woppacup <fleaflicker username>")
-#		else:
-#			myteam = message.content.split(" ")[1]
+	#
+	# I think this will be a lot easier once the Challonge API v2 is out. That should allow me to just
+	# make calls instead of having to scrape the page.
+	#
+	# if message.content.startswith("!woppacup") and message.guild.id == OTH_SERVER_ID:
+	#	 if len(message.content.split(" ")) == 1:
+	#		 yield from message.channel.send("Usage: !woppacup <fleaflicker username>")
+	#	 else:
+	# 		 myteam = message.content.split(" ")[1]
 
-			# might need selenium or scrapy for delay load
-#			url = "http://challonge.com/woppacup%d" % (year+1)
-#			req = urllib.request.Request(url, headers={"User-Agent" : "Magic Browser"})
-#			response = urllib.request.urlopen(req)
-#			page = response.read()
-#			root = html.document_fromstring(page)
+				# might need selenium or scrapy for delay load
+	#		 url = "http://challonge.com/woppacup%d" % (year+1)
+	#		 req = urllib.request.Request(url, headers={"User-Agent" : "Magic Browser"})
+	#		 response = urllib.request.urlopen(req)
+	#		 page = response.read()
+	#		 root = html.document_fromstring(page)
 
-#			if root.cssselect("li.active")[0].text_content() == "Final Stage":
-#				matches = root.cssselect(".match.-open")
-#				yield from message.channel.send("%d" % (len(matches)))
-#				for match in matches:
-#					team1 = match.cssselect(".match--player-name")[0].text_content().split(".")[-1]
-#					team2 = match.cssselect(".match--player-name")[1].text_content().split(".")[-1]
-#					yield from message.channel.send("%s %s" % (team1, team2))
-#
-#			yield from message.channel.send("DONE")
+	#		 if root.cssselect("li.active")[0].text_content() == "Final Stage":
+	#			 matches = root.cssselect(".match.-open")
+	#			 yield from message.channel.send("%d" % (len(matches)))
+	#			 for match in matches:
+	#				 team1 = match.cssselect(".match--player-name")[0].text_content().split(".")[-1]
+	#				 team2 = match.cssselect(".match--player-name")[1].text_content().split(".")[-1]
+	#				 yield from message.channel.send("%s %s" % (team1, team2))
 
-################# Minigame responses ###########################
+	#		 yield from message.channel.send("DONE")
+
+	################# Minigame responses ###########################
 	# For debugging purposes
-#	if message.content.startswith("!processot") and message.channel.id == OTH_TECH_CHANNEL_ID:
-#		yield from ProcessOTGuesses()
+	# if message.content.startswith("!processot") and message.channel.id == OTH_TECH_CHANNEL_ID:
+	#	 yield from ProcessOTGuesses()
 
 	# For debugging purposes
 	if message.content.startswith("!postpickems") and message.channel.id in [KK_PICKEM_CHANNEL_ID]:
