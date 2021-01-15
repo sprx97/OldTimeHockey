@@ -768,8 +768,8 @@ def on_message(message):
 
 	################# Minigame responses ###########################
 	# For debugging purposes
-	# if message.content.startswith("!processot") and message.channel.id == OTH_TECH_CHANNEL_ID:
-	#	 yield from ProcessOTGuesses()
+	if message.content.startswith("!processot") and message.channel.id == OTH_TECH_CHANNEL_ID:
+		yield from ProcessOTGuesses()
 
 	# For debugging purposes
 	if message.content.startswith("!postpickems") and message.channel.id in [KK_PICKEM_CHANNEL_ID]:
