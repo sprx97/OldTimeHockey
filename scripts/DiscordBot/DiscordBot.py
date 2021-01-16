@@ -73,7 +73,7 @@ intents.reactions = True
 client = discord.Client(heartbeat_timeout=120.0, intents=intents)
 
 @asyncio.coroutine
-def PrintOTStandings(guild, channel, invoker_id=None, max_to_show=10):
+def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
     with open("otstandings.pickle", "rb") as f:
         try:
             pickled = pickle.load(f)
@@ -87,20 +87,31 @@ def PrintOTStandings(guild, channel, invoker_id=None, max_to_show=10):
 
         standings = pickled[guild]
         msg = "**OT Challenge Standings**\n"
-        msg +=  "``\n"
+        if show_full:
+            msg +=  "``Full Standings\n"
+        else:
+            msg += "``Top-10 Standings\n"
         msg += "Rank|User          | Wins | Guesses\n"
         msg += "----|--------------|------|--------\n"
         count = 0
         last_user = None
+        last_rank = 0
         for user in standings:
             count += 1
             rank = count # may be modified over the course of this loop, so reset it every time through
 
             if last_user and standings[user][0] == standings[last_user][0] and standings[user][1] == standings[last_user][1]:
                 rank = ""
+            else:
+                last_rank = rank
 
-            if isinstance(rank, int) and rank > max_to_show and user != invoker_id:
-                continue
+            last_user = user
+
+            if not show_full and last_rank > 10:
+                if user != invoker_id:
+                    continue
+                else:
+                    rank = last_rank # Show the rank for the invoker if they're outside the top-10
 
             user_name = client.get_guild(guild).get_member(user).name + "              "
             wins = str(standings[user][0]) + "      "
@@ -113,8 +124,6 @@ def PrintOTStandings(guild, channel, invoker_id=None, max_to_show=10):
             guesses = guesses[:8]
 
             msg += " " + str(rank) + "|" + user_name + "|" + wins + "|" + guesses + "\n"
-
-            last_user = user
 
         msg += "``"
         msg += "*Standings bulk updated overnight"
@@ -797,7 +806,8 @@ def on_message(message):
             if len(tokens) == 1:
                 raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
             if tokens[1] == "standings":
-                yield from PrintOTStandings(message.guild.id, message.channel, message.author.id)
+                show_full = len(tokens) > 2 and tokens[2] == "full"
+                yield from PrintOTStandings(message.guild.id, message.channel, message.author.id, show_full)
                 return
             if len(tokens) != 3:
                 raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
