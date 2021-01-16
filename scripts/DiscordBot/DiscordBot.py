@@ -27,6 +27,7 @@ HOCKEY_GENERAL_CHANNEL_ID = 507616755510673409
 TRADEREVIEW_CHANNEL_ID = 235926223757377537
 MODS_CHANNEL_ID = 220663309786021888
 GUAVAS_AND_APPLES_CHANNEL_ID = 747906611959562280
+OT_CHALLENGE_CHANNEL_ID = 799892107560222741
 
 # team name mappings, ALL LOWERCASE
 team_map = {}
@@ -209,7 +210,7 @@ def ProcessOTGuesses():
         pickle.dump(pickled, f)
 
     # yield from PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
-    # yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID))
+    # yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(OT_CHALLENGE_CHANNEL_ID))
 
 KK_PICKEM_CHANNEL_ID = 799100000972963891
 with open("pickems.pickle", "rb+") as pickems_picklefile:
@@ -800,7 +801,7 @@ def on_message(message):
         yield from PostPickems()
 
     # OT contest check response
-    if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID]: # Add KK channel
+    if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID, OT_CHALLENGE_CHANNEL_ID]:
         try:
             tokens = message.content.split(" ")
             if len(tokens) == 1:
