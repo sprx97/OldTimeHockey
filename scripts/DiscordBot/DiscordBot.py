@@ -11,6 +11,7 @@ from lxml import html # xml parsing
 import json
 import os
 import pickle
+import emojis
 
 import ParseFeeds
 import CheckTrades
@@ -121,6 +122,7 @@ def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
             rank = str(rank) + "   "
             rank = rank[:3]
             user_name = user_name[:12]
+            user_name = user_name[:12-int(1.5*emojis.count(user_name))]
             wins = wins[:6]
             guesses = guesses[:8]
 
