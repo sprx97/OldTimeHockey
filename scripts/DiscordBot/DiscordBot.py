@@ -92,8 +92,8 @@ def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
             msg +=  "``Full Standings\n"
         else:
             msg += "``Top-10 Standings\n"
-        msg += "Rank|User          | Wins | Guesses\n"
-        msg += "----|--------------|------|--------\n"
+        msg += "Rank|User        | Wins | Guesses\n"
+        msg += "----|------------|------|--------\n"
         count = 0
         last_user = None
         last_rank = 0
@@ -114,13 +114,13 @@ def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
                 else:
                     rank = last_rank # Show the rank for the invoker if they're outside the top-10
 
-            user_name = client.get_guild(guild).get_member(user).name + "              "
+            user_name = client.get_guild(guild).get_member(user).display_name + "              "
             wins = str(standings[user][0]) + "      "
             guesses = str(standings[user][1]) + "        "
 
             rank = str(rank) + "   "
             rank = rank[:3]
-            user_name = user_name[:14]
+            user_name = user_name[:12]
             wins = wins[:6]
             guesses = guesses[:8]
 
@@ -154,7 +154,7 @@ def ProcessOTGuesses():
             game = guess[0]
             guild = guess[1]
             author = guess[2]
-            author_name = client.get_guild(guild).get_member(author).name
+            author_name = client.get_guild(guild).get_member(author).display_name
             team = pickled[guess][0]
             player = pickled[guess][1]
 
@@ -881,7 +881,7 @@ def on_message(message):
             except Exception as e:
                 raise Exception("Issue storing guess in local file. " + str(e))
 
-            confirmation = message.author.name + " selects " + player["fullName"] + " for the OT GWG."
+            confirmation = message.author.display_name + " selects " + player["fullName"] + " for the OT GWG."
             print(confirmation)
             raise Exception(confirmation)
 
