@@ -237,7 +237,9 @@ if __name__ == "__main__":
                                         pass                            
 
                                 if str(next[2]) == "591742":
-                                        next[2] = 157129 # override for rellek multi accounts...
+                                    next[2] = 157129 # override for rellek multi accounts...
+                                elif str(next[2]) == "698576":
+                                    next[2] = 1357398 # override for MWHazard's old account
 
                                 cursor.execute("SELECT * from Teams where teamID = " + next[0] + " AND year=" + str(year))
                                 data = cursor.fetchall()
