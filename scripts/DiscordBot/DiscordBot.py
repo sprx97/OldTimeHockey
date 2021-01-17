@@ -28,7 +28,7 @@ HOCKEY_GENERAL_CHANNEL_ID = 507616755510673409
 TRADEREVIEW_CHANNEL_ID = 235926223757377537
 MODS_CHANNEL_ID = 220663309786021888
 GUAVAS_AND_APPLES_CHANNEL_ID = 747906611959562280
-OT_CHALLENGE_CHANNEL_ID = 799892107560222741
+LIVE_GAME_CHAT_CHANNEL_ID = 745031984601890906
 
 # team name mappings, ALL LOWERCASE
 team_map = {}
@@ -212,7 +212,7 @@ def ProcessOTGuesses():
         pickle.dump(pickled, f)
 
     # yield from PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
-    # yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(OT_CHALLENGE_CHANNEL_ID))
+    # yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(LIVE_GAME_CHAT_CHANNEL_ID))
 
 KK_PICKEM_CHANNEL_ID = 799100000972963891
 with open("pickems.pickle", "rb+") as pickems_picklefile:
@@ -760,7 +760,10 @@ def on_message(message):
             if len(results) == 0:
                 yield from message.channel.send("User " + team + " not found.")
             else:
-                yield from message.channel.send("%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**\n<https://www.fleaflicker.com/nhl/leagues/%d/scores/%d>" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3], results[0][4], results[0][5]))
+                msg = "%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3])
+                link = f"https://www.fleaflicker.com/nhl/leagues/{results[0][4]}/scores/{results[0][5]}"
+                embed = discord.Embed(title=msg, url=link)
+                yield from message.channel.send(embed=embed)
 
             cursor.close()
             db.close()
@@ -803,7 +806,7 @@ def on_message(message):
         yield from PostPickems()
 
     # OT contest check response
-    if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID, OT_CHALLENGE_CHANNEL_ID]:
+    if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID, LIVE_GAME_CHAT_CHANNEL_ID]:
         try:
             tokens = message.content.split(" ")
             if len(tokens) == 1:
@@ -830,7 +833,7 @@ def on_message(message):
             teamFound = False
             for game in games:
                 game = ParseFeeds.getFeed("https://statsapi.web.nhl.com" + game["link"])
-                if game["gameData"]["teams"]["away"]["triCode"] == guess_team or game["gameData"]["teams"]["home"]["triCode"] == guess_team:
+                if game["gameData"]["teams"]["away"]["triCode"] in team_map[guess_team] or game["gameData"]["teams"]["home"]["triCode"] in team_map[guess_team]:
                     teamFound = True
                     break
 
@@ -843,14 +846,14 @@ def on_message(message):
 
             # validate that the game <2min left in the 3rd and is tied
             if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
-                raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
+                raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
 
             mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
             if mins_remaining == "END":
                 mins_remaining = 0
             mins_remaining = int(mins_remaining)
-            if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 2:
-                raise Exception(guess_team + " is not in the final 2 minutes of a tied game.")
+            if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 5:
+                raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
 
             # validate that the selected team has a player of the selected number
             playerFound = False
