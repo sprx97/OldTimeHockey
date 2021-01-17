@@ -263,14 +263,29 @@ export default class Leaderboard extends Component {
     this.setState({ query: value, isLoaded: false, seasonFilters: null, tierFilters: null }, () => this.getData());
   };
 
+  reversedColumns = ["leaguename", "teamname", "FFname"];
+  getSortedData(data, clickedColumn) {
+    var sortedData = _.sortBy(data, [function(datum) { 
+                                        if (typeof datum[clickedColumn] === "string") 
+                                            return datum[clickedColumn].toLowerCase(); 
+                                        else 
+                                            return datum[clickedColumn]; }])
+              
+    if (this.reversedColumns.indexOf(clickedColumn) > -1) {
+        return sortedData;
+    }
+
+    return sortedData.reverse();
+  }
+
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state;
 
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
-        data: _.sortBy(data, [function(datum) { if (typeof datum[clickedColumn] === "string") return datum[clickedColumn].toLowerCase(); else return datum[clickedColumn]; }]).reverse(),
-        direction: 'descending',
+        data: this.getSortedData(data, clickedColumn),
+        direction: (this.reversedColumns.indexOf(clickedColumn) > -1) ? "ascending" : "descending",
       });
 
       return;
