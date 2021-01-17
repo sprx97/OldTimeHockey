@@ -1,13 +1,10 @@
-jquery/bracket
-scripts/__pycache__
-scripts/DiscordBot/__pycache__
-.htaccess
+# Project excludes
+**/__pycache__/
 *.pyc
 config.json
-scripts/DiscordBot/nohup.out
-node/nohup.out
-nohup.out
-scripts/DiscordBot/*.pickle
+scripts/DiscordBot/messages.pickle
+scripts/DiscordBot/ot.pickle
+scripts/DiscordBot/pickems.pickle
 
 # react
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
