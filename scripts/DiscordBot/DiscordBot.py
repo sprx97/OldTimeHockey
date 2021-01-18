@@ -748,6 +748,11 @@ def on_message(message):
             db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
             cursor = db.cursor()
             team = message.content.split(" ")[1].lower()
+            
+            # For the lulz
+            if team == "doodoosteve":
+                team = "voodoosteve"
+
             cursor.execute("SELECT me_u.FFname, me.currentWeekPF, opp_u.FFname, opp.currentWeekPF, me.leagueID, me.matchupID, me.wins, me.losses, opp.wins, opp.losses, me.year " + \
                        "FROM Teams AS me " + \
                        "INNER JOIN Teams AS opp ON (me.CurrOpp=opp.teamID AND me.year=opp.year) " + \
