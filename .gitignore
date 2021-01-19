@@ -5,7 +5,7 @@ config.json
 scripts/DiscordBot/messages.pickle
 scripts/DiscordBot/ot.pickle
 scripts/DiscordBot/pickems.pickle
-scripts/DiscordBot/v2/Logs
+scripts/DiscordBot/v2/Logs/*
 
 # react
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
