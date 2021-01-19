@@ -1,0 +1,243 @@
+2021-01-18 02:15:40,459 INFO Shared.py 28 OTH cog initialized.
+2021-01-18 02:15:43,099 ERROR Shared.py 34 Command raised an exception: TypeError: check_trades() takes 0 positional arguments but 1 was given
+2021-01-18 02:16:07,288 INFO Shared.py 28 OTH cog initialized.
+2021-01-18 02:16:09,672 ERROR Shared.py 34 Command raised an exception: FileNotFoundError: [Errno 2] No such file or directory: 'posted_trades.txt'
+2021-01-18 02:18:02,754 INFO Shared.py 28 OTH cog initialized.
+2021-01-18 02:18:06,335 ERROR Shared.py 34 Command raised an exception: FileNotFoundError: [Errno 2] No such file or directory: '../../posted_trades.txt'
+2021-01-18 02:18:21,334 INFO Shared.py 28 OTH cog initialized.
+2021-01-18 02:18:25,879 ERROR Shared.py 34 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:26:57,060 INFO Shared.py 29 OTH cog initialized.
+2021-01-18 02:27:23,562 ERROR Shared.py 35 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:38:27,563 INFO Shared.py 34 OTH cog initialized.
+2021-01-18 02:38:36,255 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:09,684 INFO Shared.py 34 OTH cog initialized.
+2021-01-18 02:39:12,416 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:54,402 INFO Shared.py 34 OTH cog initialized.
+2021-01-18 02:39:55,894 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:57,885 INFO Shared.py 34 OTH cog initialized.
+2021-01-18 02:40:02,746 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 15:20:05,195 INFO Shared.py 36 OTH cog initialized.
+2021-01-18 15:20:38,622 ERROR Shared.py 42 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 15:21:52,369 INFO Shared.py 36 OTH cog initialized.
+2021-01-18 15:22:21,791 INFO Shared.py 36 OTH cog initialized.
+2021-01-18 15:42:13,439 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:42:36,147 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:43:02,176 ERROR Shared.py 47 Command raised an exception: KeyError: 'trades'
+2021-01-18 15:43:42,462 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:43:50,107 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:03,324 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:25,479 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:44:32,157 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:50,335 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:44:53,670 ERROR Shared.py 47 Command raised an exception: TypeError: send() takes no keyword arguments
+2021-01-18 15:47:40,054 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:47:47,790 ERROR Shared.py 47 Command raised an exception: TypeError: send() takes no keyword arguments
+2021-01-18 15:53:21,395 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:54:43,444 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:55:12,956 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:55:16,786 ERROR Shared.py 48 Command raised an exception: AttributeError: 'coroutine' object has no attribute 'to_dict'
+2021-01-18 15:56:34,175 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 15:59:54,808 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 16:06:11,703 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 16:06:16,663 ERROR Shared.py 48 Command raised an exception: KeyError: 'name'
+2021-01-18 16:07:09,224 INFO Shared.py 41 OTH cog initialized.
+2021-01-18 16:14:50,516 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:14:55,522 ERROR Shared.py 52 Command raised an exception: TypeError: an integer is required (got type str)
+2021-01-18 16:15:15,852 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:15:19,314 ERROR Shared.py 52 Command raised an exception: ValueError: year 52134 is out of range
+2021-01-18 16:17:35,311 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:17:37,756 ERROR Shared.py 52 Command raised an exception: TypeError: 'EmbedProxy' object is not callable
+2021-01-18 16:18:56,863 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:24:39,185 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:25:49,411 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:27:00,927 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:27:08,126 ERROR Shared.py 52 Command raised an exception: NameError: name 'time_eastern' is not defined
+2021-01-18 16:27:38,696 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:27:45,108 ERROR Shared.py 52 Command raised an exception: NameError: name 'time_eastern' is not defined
+2021-01-18 16:27:52,477 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:30:42,481 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:30:46,304 ERROR Shared.py 52 Command raised an exception: KeyError: 'trades'
+2021-01-18 16:31:33,840 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:32:21,136 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:32:23,714 ERROR Shared.py 52 Command raised an exception: UnboundLocalError: local variable 'trade' referenced before assignment
+2021-01-18 16:32:32,629 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:32:34,670 ERROR Shared.py 52 Command "trade" is not found
+2021-01-18 16:33:38,497 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:33:53,899 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:36:51,697 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:36:54,270 ERROR Shared.py 52 Command raised an exception: UnsupportedOperation: not readable
+2021-01-18 16:39:19,162 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:54:51,151 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:55:02,236 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 16:57:06,102 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 17:02:36,349 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 18:58:06,219 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 18:58:55,088 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 18:59:22,333 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 18:59:52,635 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:13:38,881 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:15:10,168 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:24:37,732 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:26:59,172 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:27:21,315 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:28:06,385 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:28:10,155 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:28:15,736 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:34:25,735 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:36:29,090 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:37:14,252 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:38:02,311 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:48:28,495 INFO Shared.py 45 OTH cog initialized.
+2021-01-18 22:48:30,950 INFO OTH.py 42 Sleeping inactives_loop for 5 days, 1:11:29.049470
+2021-01-18 23:11:10,712 INFO Shared.py 46 OTH cog initialized.
+2021-01-18 23:11:13,341 INFO OTH.py 69 Sleeping inactives_loop for 5 days, 0:48:46.658565
+2021-01-18 23:11:24,000 INFO OTH.py 50 Inactives check complete.
+2021-01-18 23:11:24,166 INFO OTH.py 140 Trades check complete.
+2021-01-18 23:12:12,180 INFO Shared.py 46 OTH cog initialized.
+2021-01-18 23:12:14,666 INFO OTH.py 69 Sleeping inactives_loop for 5 days, 0:47:45.333695
+2021-01-18 23:15:13,909 INFO Shared.py 46 OTH cog initialized.
+2021-01-18 23:15:16,424 INFO OTH.py 69 Sleeping inactives_loop for 5 days, 0:44:43.575179
+2021-01-18 23:15:21,792 INFO OTH.py 140 Trades check complete.
+2021-01-18 23:15:35,168 INFO OTH.py 50 Inactives check complete.
+2021-01-18 23:20:19,275 INFO Shared.py 46 OTH cog initialized.
+2021-01-18 23:20:21,822 INFO OTH.py 69 Sleeping inactives_loop for 5 days, 0:39:38.177291
+2021-01-18 23:20:27,233 INFO OTH.py 140 Trades check complete.
+2021-01-18 23:21:07,817 INFO Shared.py 46 OTH cog initialized.
+2021-01-18 23:21:10,358 INFO OTH.py 69 Sleeping inactives_loop for 5 days, 0:38:49.641644
+2021-01-18 23:21:15,824 INFO OTH.py 140 Trades check complete.
+2021-01-18 23:21:43,509 INFO OTH.py 51 Inactives check complete.
+2021-01-18 23:24:30,378 INFO Shared.py 46 OTH cog initialized.
+2021-01-18 23:24:32,840 INFO OTH.py 61 Sleeping inactives_loop for 5 days, 0:35:27.159226
+2021-01-18 23:24:38,170 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:24:49,078 INFO OTH.py 43 Inactives check complete.
+2021-01-18 23:29:31,873 INFO Shared.py 50 OTH cog initialized.
+2021-01-18 23:29:34,296 INFO OTH.py 61 Sleeping inactives_loop for 5 days, 0:30:25.704019
+2021-01-18 23:29:39,541 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:29:51,570 INFO OTH.py 43 Inactives check complete.
+2021-01-18 23:29:51,699 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:39:02,802 INFO Shared.py 50 OTH cog initialized.
+2021-01-18 23:39:05,358 INFO OTH.py 61 Sleeping inactives_loop for 5 days, 0:20:54.641512
+2021-01-18 23:39:10,594 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:39:13,592 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-18 23:39:54,770 INFO Shared.py 50 OTH cog initialized.
+2021-01-18 23:39:57,295 INFO OTH.py 61 Sleeping inactives_loop for 5 days, 0:20:02.704083
+2021-01-18 23:40:02,596 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:40:02,617 ERROR Shared.py 57 Command raised an exception: UserNotFound: sprx97
+2021-01-18 23:46:34,337 INFO Shared.py 50 OTH cog initialized.
+2021-01-18 23:46:36,896 INFO OTH.py 61 Sleeping inactives_loop for 5 days, 0:13:23.103703
+2021-01-18 23:46:42,200 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:46:42,423 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-18 23:47:59,867 INFO Shared.py 50 OTH cog initialized.
+2021-01-18 23:48:02,461 INFO OTH.py 61 Sleeping inactives_loop for 5 days, 0:11:57.539019
+2021-01-18 23:48:07,699 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:48:10,206 ERROR Shared.py 57 sprx97
+2021-01-18 23:49:44,907 INFO Shared.py 50 OTH cog initialized.
+2021-01-18 23:49:47,393 INFO OTH.py 61 Sleeping inactives_loop for 5 days, 0:10:12.606435
+2021-01-18 23:49:52,638 INFO OTH.py 132 Trades check complete.
+2021-01-18 23:49:55,181 ERROR Shared.py 56 sprx97
+2021-01-19 00:06:32,526 INFO Shared.py 50 OTH cog initialized.
+2021-01-19 00:06:35,038 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:53:24.961749
+2021-01-19 00:06:40,299 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:06:43,228 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:06:48,769 ERROR Shared.py 57 Command raised an exception: UnboundLocalError: local variable 'user' referenced before assignment
+2021-01-19 00:07:16,270 INFO Shared.py 50 OTH cog initialized.
+2021-01-19 00:07:18,702 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:52:41.297924
+2021-01-19 00:07:23,915 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:07:24,067 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:07:25,591 ERROR Shared.py 57 Command raised an exception: NameError: name 'results' is not defined
+2021-01-19 00:07:39,672 INFO Shared.py 50 OTH cog initialized.
+2021-01-19 00:07:41,984 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:07:42,199 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:52:17.800522
+2021-01-19 00:07:47,464 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:07:47,615 ERROR Shared.py 57 asdfasdf
+2021-01-19 00:08:34,198 INFO Shared.py 50 OTH cog initialized.
+2021-01-19 00:08:36,752 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:51:23.247159
+2021-01-19 00:08:41,961 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:08:42,129 ERROR Shared.py 57 asdfasdfasdf
+2021-01-19 00:25:25,137 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:26:00,811 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:26:09,976 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:26:12,450 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:33:47.550096
+2021-01-19 00:26:17,685 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:26:44,475 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:26:46,976 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:33:13.023373
+2021-01-19 00:26:52,246 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:27:31,931 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:27:34,375 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:32:25.625053
+2021-01-19 00:27:39,612 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:29:29,545 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:29:32,016 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:30:27.983576
+2021-01-19 00:29:37,304 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:29:44,157 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:29:46,615 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:30:13.384342
+2021-01-19 00:29:51,847 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:37:23,172 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:37:27,369 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:37:47,464 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:37:49,948 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:22:10.051439
+2021-01-19 00:37:55,153 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:38:11,110 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:38:13,589 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:21:46.410998
+2021-01-19 00:38:18,898 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:39:02,980 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:39:05,536 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:20:54.463084
+2021-01-19 00:39:10,755 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:40:09,516 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:40:11,981 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:19:48.018629
+2021-01-19 00:40:17,236 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:40:33,435 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:40:35,925 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:19:24.074186
+2021-01-19 00:40:41,159 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:41:45,590 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:41:48,133 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:18:11.866638
+2021-01-19 00:41:53,374 INFO OTH.py 132 Trades check complete.
+2021-01-19 00:49:29,804 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:49:45,236 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:50:10,387 INFO Shared.py 54 OTH cog initialized.
+2021-01-19 00:50:12,862 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 23:09:47.137734
+2021-01-19 00:50:18,133 INFO OTH.py 132 Trades check complete.
+2021-01-19 01:01:22,698 INFO Shared.py 57 OTH cog initialized.
+2021-01-19 01:01:25,206 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 22:58:34.793716
+2021-01-19 01:01:30,465 INFO OTH.py 132 Trades check complete.
+2021-01-19 01:05:36,765 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:05:37,785 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:05:42,784 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:05:44,253 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:05:48,884 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:05:49,936 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:05:54,988 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:05:55,947 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:01,001 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:02,241 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:07,054 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:08,118 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:13,076 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:14,174 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:19,133 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:20,107 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:25,106 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:26,099 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:31,117 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:32,179 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:37,219 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:38,168 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:43,197 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:44,195 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:49,219 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:50,195 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:55,221 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:06:56,177 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:01,207 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:02,378 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:07,213 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:08,290 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:13,247 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:14,274 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:19,259 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:20,371 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:25,286 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:07:27,726 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 22:52:32.273716
+2021-01-19 01:07:32,916 INFO OTH.py 132 Trades check complete.
+2021-01-19 01:07:59,379 INFO Shared.py 131 OTH cog initialized.
+2021-01-19 01:08:01,866 INFO OTH.py 61 Sleeping inactives_loop for 4 days, 22:51:58.133560
+2021-01-19 01:08:07,114 INFO OTH.py 132 Trades check complete.

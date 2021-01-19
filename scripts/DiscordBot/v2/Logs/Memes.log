@@ -1,0 +1,235 @@
+2021-01-16 18:16:34,178 INFO Memes.py 12 fifi
+2021-01-16 18:16:34,179 ERROR Memes.py 13 oops
+2021-01-16 18:26:55,090 INFO Shared.py 19 Memes initialized.
+2021-01-16 18:32:06,740 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:32:26,729 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:33:35,917 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:39:44,363 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:41:41,038 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:42:22,215 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:42:56,926 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:43:13,236 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:43:40,827 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:44:14,510 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:44:52,191 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:45:14,964 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:49:01,506 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:49:55,323 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:55:29,553 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:56:14,920 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 18:56:32,417 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:00:44,374 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:04:18,692 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:07:44,034 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:10:43,311 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:13:55,926 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:15:49,715 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:17:15,778 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:17:37,118 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:20:33,827 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:38:54,974 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:39:29,695 INFO Shared.py 19 Memes cog initialized.
+2021-01-16 19:41:15,827 INFO Shared.py 19 Memes cog initialized.
+2021-01-17 21:46:44,797 INFO Shared.py 19 Memes cog initialized.
+2021-01-17 21:47:44,054 INFO Shared.py 19 Memes cog initialized.
+2021-01-17 21:49:10,670 INFO Shared.py 19 Memes cog initialized.
+2021-01-17 21:50:42,310 INFO Shared.py 19 Memes cog initialized.
+2021-01-17 21:52:11,257 INFO Shared.py 19 Memes cog initialized.
+2021-01-17 21:52:44,043 ERROR Memes.py 53 Command raised an exception: ExtensionNotLoaded: Extension 'Cogs.stuff' has not been loaded.
+2021-01-18 02:04:54,380 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:05:14,117 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:05:29,529 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:05:48,203 ERROR Shared.py 34 Command raised an exception: NameError: name 'check_trades' is not defined
+2021-01-18 02:06:03,376 ERROR Shared.py 34 Command raised an exception: NameError: name 'check_trades' is not defined
+2021-01-18 02:07:12,474 INFO Shared.py 30 Memes cog initialized.
+2021-01-18 02:07:19,282 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:07:23,297 ERROR Shared.py 34 Command raised an exception: NameError: name 'check_trades' is not defined
+2021-01-18 02:09:20,051 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:09:45,115 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:09:58,273 ERROR Shared.py 34 Command raised an exception: NameError: name 'check_trades' is not defined
+2021-01-18 02:11:00,817 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:11:05,838 ERROR Shared.py 34 Command raised an exception: NameError: name 'check_trades' is not defined
+2021-01-18 02:11:21,147 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:11:26,078 ERROR Shared.py 34 Command raised an exception: NameError: name 'check_trades' is not defined
+2021-01-18 02:11:37,614 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:11:42,298 ERROR Shared.py 34 Command raised an exception: TypeError: check_trades() takes 0 positional arguments but 1 was given
+2021-01-18 02:14:44,750 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:14:51,329 ERROR Shared.py 34 Command raised an exception: TypeError: check_trades() takes 0 positional arguments but 1 was given
+2021-01-18 02:15:40,435 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:15:43,099 ERROR Shared.py 34 Command raised an exception: TypeError: check_trades() takes 0 positional arguments but 1 was given
+2021-01-18 02:16:07,259 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:16:09,672 ERROR Shared.py 34 Command raised an exception: FileNotFoundError: [Errno 2] No such file or directory: 'posted_trades.txt'
+2021-01-18 02:18:02,739 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:18:06,335 ERROR Shared.py 34 Command raised an exception: FileNotFoundError: [Errno 2] No such file or directory: '../../posted_trades.txt'
+2021-01-18 02:18:21,322 INFO Shared.py 28 Memes cog initialized.
+2021-01-18 02:18:25,878 ERROR Shared.py 34 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:26:57,054 INFO Shared.py 29 Memes cog initialized.
+2021-01-18 02:27:23,560 ERROR Shared.py 35 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:37:37,859 INFO Shared.py 34 Memes cog initialized.
+2021-01-18 02:38:27,556 INFO Shared.py 34 Memes cog initialized.
+2021-01-18 02:38:36,254 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:12,414 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:55,890 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:57,882 INFO Shared.py 34 Memes cog initialized.
+2021-01-18 02:40:02,746 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 15:20:05,190 INFO Shared.py 36 Memes cog initialized.
+2021-01-18 15:20:38,618 ERROR Shared.py 42 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 15:21:21,094 INFO Shared.py 36 Memes cog initialized.
+2021-01-18 15:21:52,362 INFO Shared.py 36 Memes cog initialized.
+2021-01-18 15:37:23,517 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:39:41,078 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:40:13,440 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:40:26,625 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:40:35,003 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:41:40,721 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:42:13,432 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:42:36,139 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:43:02,174 ERROR Shared.py 47 Command raised an exception: KeyError: 'trades'
+2021-01-18 15:43:42,455 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:43:50,106 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:03,323 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:25,476 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:44:32,157 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:50,328 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:44:53,669 ERROR Shared.py 47 Command raised an exception: TypeError: send() takes no keyword arguments
+2021-01-18 15:47:40,046 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:47:47,790 ERROR Shared.py 47 Command raised an exception: TypeError: send() takes no keyword arguments
+2021-01-18 15:53:21,387 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:53:46,503 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:54:43,437 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:55:12,949 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:55:16,785 ERROR Shared.py 48 Command raised an exception: AttributeError: 'coroutine' object has no attribute 'to_dict'
+2021-01-18 15:56:07,539 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:56:34,168 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 15:59:54,799 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 16:06:11,694 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 16:06:16,661 ERROR Shared.py 48 Command raised an exception: KeyError: 'name'
+2021-01-18 16:07:09,214 INFO Shared.py 41 Memes cog initialized.
+2021-01-18 16:14:50,507 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:14:55,520 ERROR Shared.py 52 Command raised an exception: TypeError: an integer is required (got type str)
+2021-01-18 16:15:15,845 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:15:19,313 ERROR Shared.py 52 Command raised an exception: ValueError: year 52134 is out of range
+2021-01-18 16:17:37,755 ERROR Shared.py 52 Command raised an exception: TypeError: 'EmbedProxy' object is not callable
+2021-01-18 16:18:56,856 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:24:39,176 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:25:49,404 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:27:00,911 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:27:08,124 ERROR Shared.py 52 Command raised an exception: NameError: name 'time_eastern' is not defined
+2021-01-18 16:27:38,687 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:27:45,107 ERROR Shared.py 52 Command raised an exception: NameError: name 'time_eastern' is not defined
+2021-01-18 16:30:46,302 ERROR Shared.py 52 Command raised an exception: KeyError: 'trades'
+2021-01-18 16:32:23,713 ERROR Shared.py 52 Command raised an exception: UnboundLocalError: local variable 'trade' referenced before assignment
+2021-01-18 16:32:34,669 ERROR Shared.py 52 Command "trade" is not found
+2021-01-18 16:33:38,495 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:36:51,685 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:36:54,269 ERROR Shared.py 52 Command raised an exception: UnsupportedOperation: not readable
+2021-01-18 16:39:19,154 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:54:51,144 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:55:02,231 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 16:57:06,099 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 17:02:36,340 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 18:58:06,211 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 18:58:55,075 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 18:59:22,324 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 18:59:52,627 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:13:38,871 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:15:10,160 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:24:37,725 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:26:59,164 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:27:21,306 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:28:06,377 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:28:10,152 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:28:15,733 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:34:25,728 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:36:29,077 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:37:14,244 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:38:02,303 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 22:48:28,488 INFO Shared.py 45 Memes cog initialized.
+2021-01-18 23:11:10,697 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:12:12,170 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:15:03,480 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:15:13,897 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:18:03,542 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:19:43,922 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:20:19,254 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:21:07,806 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:24:30,369 INFO Shared.py 46 Memes cog initialized.
+2021-01-18 23:29:31,863 INFO Shared.py 50 Memes cog initialized.
+2021-01-18 23:39:02,793 INFO Shared.py 50 Memes cog initialized.
+2021-01-18 23:39:13,589 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-18 23:39:54,763 INFO Shared.py 50 Memes cog initialized.
+2021-01-18 23:40:02,614 ERROR Shared.py 57 Command raised an exception: UserNotFound: sprx97
+2021-01-18 23:46:34,328 INFO Shared.py 50 Memes cog initialized.
+2021-01-18 23:46:42,421 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-18 23:47:59,845 INFO Shared.py 50 Memes cog initialized.
+2021-01-18 23:48:10,206 ERROR Shared.py 57 sprx97
+2021-01-18 23:49:44,898 INFO Shared.py 50 Memes cog initialized.
+2021-01-18 23:49:55,181 ERROR Shared.py 56 sprx97
+2021-01-19 00:06:32,510 INFO Shared.py 50 Memes cog initialized.
+2021-01-19 00:06:43,226 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:06:48,768 ERROR Shared.py 57 Command raised an exception: UnboundLocalError: local variable 'user' referenced before assignment
+2021-01-19 00:07:16,266 INFO Shared.py 50 Memes cog initialized.
+2021-01-19 00:07:24,067 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:07:25,591 ERROR Shared.py 57 Command raised an exception: NameError: name 'results' is not defined
+2021-01-19 00:07:39,647 INFO Shared.py 50 Memes cog initialized.
+2021-01-19 00:07:41,984 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:07:47,615 ERROR Shared.py 57 asdfasdf
+2021-01-19 00:08:34,195 INFO Shared.py 50 Memes cog initialized.
+2021-01-19 00:08:42,128 ERROR Shared.py 57 asdfasdfasdf
+2021-01-19 00:25:25,129 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:26:00,808 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:26:09,973 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:26:44,471 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:27:31,927 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:29:29,541 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:29:44,154 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:37:23,168 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:37:27,365 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:37:47,461 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:38:11,107 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:39:02,976 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:40:09,513 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:40:33,432 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:41:45,579 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:49:29,794 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:49:45,230 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 00:50:10,384 INFO Shared.py 54 Memes cog initialized.
+2021-01-19 01:01:22,695 INFO Shared.py 57 Memes cog initialized.
+2021-01-19 01:05:36,762 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:05:37,778 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:05:42,780 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:05:44,250 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:05:48,881 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:05:49,933 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:05:54,984 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:05:55,943 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:00,998 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:02,238 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:07,050 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:08,112 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:13,073 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:14,170 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:19,129 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:20,099 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:25,102 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:26,095 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:31,113 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:32,175 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:37,216 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:38,164 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:43,194 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:44,191 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:49,215 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:50,190 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:55,217 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:06:56,174 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:01,203 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:02,366 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:07,210 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:08,287 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:13,244 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:14,270 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:19,255 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:20,367 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:25,283 INFO Shared.py 131 Memes cog initialized.
+2021-01-19 01:07:59,375 INFO Shared.py 131 Memes cog initialized.

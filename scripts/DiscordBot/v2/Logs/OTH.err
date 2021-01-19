@@ -1,0 +1,39 @@
+2021-01-18 02:15:43,099 ERROR Shared.py 34 Command raised an exception: TypeError: check_trades() takes 0 positional arguments but 1 was given
+2021-01-18 02:16:09,672 ERROR Shared.py 34 Command raised an exception: FileNotFoundError: [Errno 2] No such file or directory: 'posted_trades.txt'
+2021-01-18 02:18:06,335 ERROR Shared.py 34 Command raised an exception: FileNotFoundError: [Errno 2] No such file or directory: '../../posted_trades.txt'
+2021-01-18 02:18:25,879 ERROR Shared.py 34 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:27:23,562 ERROR Shared.py 35 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:38:36,255 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:12,416 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:39:55,894 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 02:40:02,746 ERROR Shared.py 40 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 15:20:38,622 ERROR Shared.py 42 Command raised an exception: TypeError: object NoneType can't be used in 'await' expression
+2021-01-18 15:43:02,176 ERROR Shared.py 47 Command raised an exception: KeyError: 'trades'
+2021-01-18 15:43:50,107 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:03,324 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:32,157 ERROR Shared.py 47 Command raised an exception: NameError: name 'discord' is not defined
+2021-01-18 15:44:53,670 ERROR Shared.py 47 Command raised an exception: TypeError: send() takes no keyword arguments
+2021-01-18 15:47:47,790 ERROR Shared.py 47 Command raised an exception: TypeError: send() takes no keyword arguments
+2021-01-18 15:55:16,786 ERROR Shared.py 48 Command raised an exception: AttributeError: 'coroutine' object has no attribute 'to_dict'
+2021-01-18 16:06:16,663 ERROR Shared.py 48 Command raised an exception: KeyError: 'name'
+2021-01-18 16:14:55,522 ERROR Shared.py 52 Command raised an exception: TypeError: an integer is required (got type str)
+2021-01-18 16:15:19,314 ERROR Shared.py 52 Command raised an exception: ValueError: year 52134 is out of range
+2021-01-18 16:17:37,756 ERROR Shared.py 52 Command raised an exception: TypeError: 'EmbedProxy' object is not callable
+2021-01-18 16:27:08,126 ERROR Shared.py 52 Command raised an exception: NameError: name 'time_eastern' is not defined
+2021-01-18 16:27:45,108 ERROR Shared.py 52 Command raised an exception: NameError: name 'time_eastern' is not defined
+2021-01-18 16:30:46,304 ERROR Shared.py 52 Command raised an exception: KeyError: 'trades'
+2021-01-18 16:32:23,714 ERROR Shared.py 52 Command raised an exception: UnboundLocalError: local variable 'trade' referenced before assignment
+2021-01-18 16:32:34,670 ERROR Shared.py 52 Command "trade" is not found
+2021-01-18 16:36:54,270 ERROR Shared.py 52 Command raised an exception: UnsupportedOperation: not readable
+2021-01-18 23:39:13,592 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-18 23:40:02,617 ERROR Shared.py 57 Command raised an exception: UserNotFound: sprx97
+2021-01-18 23:46:42,423 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-18 23:48:10,206 ERROR Shared.py 57 sprx97
+2021-01-18 23:49:55,181 ERROR Shared.py 56 sprx97
+2021-01-19 00:06:43,228 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:06:48,769 ERROR Shared.py 57 Command raised an exception: UnboundLocalError: local variable 'user' referenced before assignment
+2021-01-19 00:07:24,067 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:07:25,591 ERROR Shared.py 57 Command raised an exception: NameError: name 'results' is not defined
+2021-01-19 00:07:41,984 ERROR Shared.py 57 user is a required argument that is missing.
+2021-01-19 00:07:47,615 ERROR Shared.py 57 asdfasdf
+2021-01-19 00:08:42,129 ERROR Shared.py 57 asdfasdfasdf
