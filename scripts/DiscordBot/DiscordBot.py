@@ -838,7 +838,7 @@ def on_message(message):
             teamFound = False
             for game in games:
                 game = ParseFeeds.getFeed("https://statsapi.web.nhl.com" + game["link"])
-                if game["gameData"]["teams"]["away"]["triCode"] in team_map[guess_team] or game["gameData"]["teams"]["home"]["triCode"] in team_map[guess_team]:
+                if game["gameData"]["teams"]["away"]["triCode"] in team_map[guess_team.lower()] or game["gameData"]["teams"]["home"]["triCode"] in team_map[guess_team.lower()]:
                     teamFound = True
                     break
 
