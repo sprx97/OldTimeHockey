@@ -4,7 +4,7 @@ from lxml import html # xml parsing
 import smtplib
 import ssl
 from email.mime.text import MIMEText
-import MySQLdb
+import pymysql
 import Config
 
 def updatePlayoffOdds(league):
@@ -108,7 +108,7 @@ def updatePlayoffOdds(league):
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
-db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
 
 cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year

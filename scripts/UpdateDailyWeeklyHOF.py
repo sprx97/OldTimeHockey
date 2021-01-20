@@ -3,7 +3,7 @@
 import urllib.request # url reading
 from lxml import etree
 from lxml import html # xml parsing
-import MySQLdb # sql queries
+import pymysql # sql queries
 import smtplib
 from email.mime.text import MIMEText
 import Config
@@ -28,7 +28,7 @@ def getWeekStart(year, week):
 weeklyHighs = []
 dailyHighs = []
 
-db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")

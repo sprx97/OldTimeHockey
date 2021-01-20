@@ -1,4 +1,4 @@
-import MySQLdb
+import pymysql
 import Config
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
@@ -12,7 +12,7 @@ f.write(str(year) + "\n")
 f.write(str(week) + "\n")
 f.close()
 
-db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
 cursor.execute("UPDATE Teams SET PrevWeekPF=currentWeekPF")
 db.commit()

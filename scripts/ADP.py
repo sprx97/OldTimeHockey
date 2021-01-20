@@ -1,5 +1,5 @@
 import Config
-import MySQLdb
+import pymysql
 import requests
 import sys
 import json
@@ -13,7 +13,7 @@ TIERS = [str(n) for n in TIERS] # convert to strings
 last_pick = 18*14 # hardcoded yolo
 
 # Grab the list of leagues for this query from our database
-db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
 cmd = "SELECT L.id FROM Leagues L WHERE L.year=" + YEAR
 if len(TIERS) > 0:

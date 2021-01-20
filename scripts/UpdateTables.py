@@ -1,7 +1,7 @@
 import urllib.request # url reading
 from lxml import etree
 from lxml import html # xml parsing
-import MySQLdb # sql queries
+import pymysql # sql queries
 import sys
 import Config
 import re
@@ -215,7 +215,7 @@ def demojify(text):
         return regex_pattern.sub(r'', text)
 
 if __name__ == "__main__":
-        db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+        db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
         cursor = db.cursor()
 
         for year in years_to_update:

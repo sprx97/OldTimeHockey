@@ -1,7 +1,7 @@
 import urllib.request # url reading
 from lxml import etree
 from lxml import html # xml parsing
-import MySQLdb # sql queries
+import pymysql # sql queries
 import Config # my config file
 
 years_to_update = [] # Can manually seed if necessary
@@ -56,7 +56,7 @@ def updateCurrentPF(league, year):
                 cursor.execute("UPDATE Teams SET CurrOpp=" + teamID1 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID2 + " AND year=" + str(year))
                 cursor.execute("UPDATE Teams SET CurrOpp=" + teamID2 + ", matchupID=" + matchupID + " WHERE teamID=" + teamID1 + " AND year=" + str(year))
 
-db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
 
 for year in years_to_update:

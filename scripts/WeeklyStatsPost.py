@@ -1,4 +1,4 @@
-import MySQLdb
+import pymysql
 import sys
 import os.path
 import Config
@@ -13,7 +13,7 @@ if os.path.isfile(Config.config["srcroot"] + "scripts/weeks/" + str(year) + "_We
 
 sys.stdout = open(Config.config["srcroot"] + "scripts/weeks/" + str(year) + "_Week_" + str(week) + ".txt", "w")
 
-db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
 
 s = "###OVERALL POINTS LEADERS - Who has scored the most points this season?\n"
