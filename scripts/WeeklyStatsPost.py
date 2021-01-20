@@ -156,7 +156,7 @@ s += "-----\n"
 s += "###BIGGEST BLOWOUT - Who forgot to bring their 'A' game?\n"
 
 cursor.execute("SELECT L.name, T1.name, T2.name, T1.currentWeekPF, T2.currentWeekPF, ROUND(T1.currentWeekPF-T2.currentWeekPF, 2) AS diff FROM Leagues L " + \
-               "INNER JOIN Teams T1 ON (L.id = T1.leagueID and L.year = T1.year) INNER JOIN Teams T2 ON T1.currOpp = T2.teamID " + \
+               "INNER JOIN Teams T1 ON (L.id = T1.leagueID and L.year = T1.year) INNER JOIN Teams T2 ON (T1.currOpp = T2.teamID and T1.year = T2.year) " + \
                "WHERE L.year=" + str(year) + " AND (T1.currentWeekPF > T2.currentWeekPF) ORDER BY diff DESC")
 
 teams = cursor.fetchall()

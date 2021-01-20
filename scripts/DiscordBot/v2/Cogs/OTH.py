@@ -107,6 +107,7 @@ class OTH(WesCog):
         # Find the list of trades that have already been posted so that we can ignore them.
         f = open("../posted_trades.txt", "a+") # TODO: Fix the directory when this bot is completed
         posted = [int(x.strip()) for x in f.readlines()]
+        print(notavar5)
 
         # Get the list of leagueIds for this year from the database
         leagues = get_leagues_from_database(CURRENT_YEAR)

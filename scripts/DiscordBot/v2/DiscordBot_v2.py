@@ -15,6 +15,7 @@ class Wes(commands.Bot):
     def __init__(self, *args, **kwargs):
         self.killed = False
         self.start_timestamp = datetime.utcnow()
+        self.log = self.create_log("Bot")
         super(Wes, self).__init__(*args, **kwargs)
 
     # Creates or returns a log file of the given name.
@@ -52,21 +53,24 @@ intents.members = True
 intents.reactions = True
 
 bot = Wes(command_prefix="!", case_insensitive=True, intents=intents, heartbeat_timeout = 120)
-log = bot.create_log("Bot")
 
 @bot.event
-async def on_ready():
+async def on_connect():
     bot.start_timestamp = datetime.utcnow()
     await bot.change_presence(activity=discord.Game(name="NHL '94"))
     await bot.user.edit(username="Wes McCauley") # avatar=fp.read()
-    log.info("Bot started.")
+    bot.log.info("Bot started.")
 
 @bot.event
 async def on_disconnect():
     days, hours, minutes, seconds = bot.calculate_uptime()
-    log.info(f"Bot disconnected after {days} day(s), {hours} hour(s), {minutes} minute(s), {seconds} seconds(s).")
+    bot.log.info(f"Bot disconnected after {days} day(s), {hours} hour(s), {minutes} minute(s), {seconds} seconds(s).")
     if not bot.killed:
         bot.run(Config.config["beta_discord_token"])
+
+@bot.event
+async def on_error(self, event, *args, **kwargs):
+    self.bot.log.error("ERROR")
 
 # Remove default help command
 bot.remove_command("help")
@@ -79,6 +83,7 @@ bot.load_extension("Cogs.Scoreboard")
 
 bot.run(Config.config["beta_discord_token"])
 
+# TODO: Uncomment
 # "Hang" if bot was force-killed to prevent recreation by pm2
 #if (bot.killed)
 #    while True:

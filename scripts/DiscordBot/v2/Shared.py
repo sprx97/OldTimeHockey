@@ -133,12 +133,16 @@ class WesCog(commands.Cog):
         self.log = bot.create_log(self.__class__.__name__)
         self.log.info(f"{self.__class__.__name__} cog initialized.")
 
-    # Generic error handler for all Cogs, just logs the error
-    # Can override this method or specific commands' error handlers in cogs
+    # Generic error handler for all Discord Command Exceptions. Just logs the error,
+    # but can override this method or specific commands' error handlers in cogs
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         self.log.error(str(error))
 
+    # Default handler for python exceptions
+    async def on_error(self, event, *args, **kwargs):
+        self.log.error("ERROR")
+        
 ######################## Custom Exceptions ########################
 
 # Custom exception for a failure to fetch a link
