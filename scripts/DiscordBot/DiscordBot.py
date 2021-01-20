@@ -547,7 +547,7 @@ def check_threads():
             last_message = (yield from channel.history(limit=1).flatten())[0]
             if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "tkeep" not in channel.name and last_message.author != client.user:
                 print(channel.name, "is stale")
-                yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_BASIC_ROLE_ID), send_messages=False)
+                yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_BASIC_ROLE_ID), send_messages=False, view_channels=True)
                 yield from channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 12 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
             elif (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(hours=12) and "tkeep" not in channel.name and last_message.author == client.user: # last comment was locking the thread
                 print(channel.name, "is deleted")
