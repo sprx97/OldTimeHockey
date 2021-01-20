@@ -1,7 +1,7 @@
 import urllib.request # url reading
 from lxml import etree
 from lxml import html # xml parsing
-import MySQLdb
+import pymysql
 import re
 
 import sys
@@ -17,7 +17,7 @@ def checkFleaflickerTrades():
 	posted = [int(x.strip()) for x in posted]
 
 	strs = []
-	db = MySQLdb.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+	db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 	cursor = db.cursor()
 	cursor.execute("SELECT id from Leagues where year=" + str(year))
 	for league in cursor.fetchall():
