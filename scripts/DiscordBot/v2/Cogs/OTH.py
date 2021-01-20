@@ -1,5 +1,4 @@
 # Discord Libraries
-import discord
 from discord.ext import commands, tasks
 
 # Python Libraries
@@ -17,6 +16,18 @@ class OTH(WesCog):
         self.trades_loop.start()
         self.inactives_loop.start()
 
+######################## Cog-specific Exceptions ########################
+
+    # Custom exception for an invalid fleaflicker username
+    class UserNotFound(discord.ext.commands.CommandError):
+        def __init__(self, user):
+            self.message = f"Fleaflicker user {user} not found."
+
+    # Custom exception for finding multiple matchups for a user
+    class MultipleMatchupsFound(discord.ext.commands.CommandError):
+        def __init__(self, user):
+            self.message = f"Multiple matchups found for user {user}."
+
 ######################## Inactives ########################
 
     # Checks all OTH leagues for inactive managers and abandoned teams
@@ -24,7 +35,7 @@ class OTH(WesCog):
         msg = ""
         leagues = get_leagues_from_database(CURRENT_YEAR)
         for league in leagues:
-            standings = make_fleaflicker_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league['id']}")
+            standings = make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league['id']}")
 
             for team in standings["divisions"][0]["teams"]:
                 # If there's no owners, mark as inactive
@@ -105,7 +116,7 @@ class OTH(WesCog):
         # Make Fleaflicker API calls to get pending trades in all the leagues
         count = 0
         for league in leagues:
-            trades = make_fleaflicker_api_call(f"https://www.fleaflicker.com/api/FetchTrades?sport=NHL&league_id={league['id']}&filter=TRADES_UNDER_REVIEW")
+            trades = make_api_call(f"https://www.fleaflicker.com/api/FetchTrades?sport=NHL&league_id={league['id']}&filter=TRADES_UNDER_REVIEW")
 
             # No trades in this league
             if "trades" not in trades:
@@ -148,16 +159,6 @@ class OTH(WesCog):
 
 ######################## Matchup ########################
 
-    # Custom exception for an invalid fleaflicker username
-    class UserNotFound(discord.ext.commands.CommandError):
-        def __init__(self, user):
-            self.message = f"Fleaflicker user {user} not found."
-
-    # Custom exception for an invalid fleaflicker username
-    class MultipleMatchupsFound(discord.ext.commands.CommandError):
-        def __init__(self, user):
-            self.message = f"Multiple matchups found for user {user}."
-
     # Posts the current matchup score for the given user
     @commands.command(name="matchup")
     @is_OTH_guild()
@@ -184,6 +185,8 @@ class OTH(WesCog):
             await ctx.send(error.message)
         elif isinstance(error, self.MultipleMatchupsFound):
             await ctx.send(error.message)
+        else:
+            await ctx.send(error)
 
 ######################## Woppa Cup ########################
 

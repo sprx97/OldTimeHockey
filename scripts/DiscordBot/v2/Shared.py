@@ -1,4 +1,5 @@
 # Discord Libraries
+import discord
 from discord.ext import commands
 
 # Python Libraries
@@ -134,8 +135,19 @@ class WesCog(commands.Cog):
     # Can override this method or specific commands' error handlers in cogs
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        print(str(error.message))
-        self.log.error(str(error.message))
+        self.log.error(str(error))
+
+######################## Custom Exceptions ########################
+
+# Custom exception for a failure to fetch a link
+class LinkError(discord.ext.commands.CommandError):
+    def __init__(self, url):
+        self.message = f"Could not open url {url}."
+
+# Custom exception for an invalid NHL team
+class NHLTeamNotFound(discord.ext.commands.CommandError):
+    def __init__(self, team):
+        self.message = f"Team {team} not recognized."
 
 ######################## Helper functions ########################
 
@@ -176,9 +188,13 @@ def get_user_matchup_from_database(user):
     return matchup
 
 # Gets the JSON data from the given fleaflicker.com/api call
-def make_fleaflicker_api_call(link):
-    with urllib.request.urlopen(link) as url:
-        data = json.loads(url.read().decode())
+def make_api_call(link):
+    try:
+        with urllib.request.urlopen(link) as url: # Throws HTTPError if page fails to open
+            data = json.loads(url.read().decode())
+    except urllib.request.HTTPError:
+        raise LinkError(link)
+
     return data
 
 ######################## Decorator command checks ########################
