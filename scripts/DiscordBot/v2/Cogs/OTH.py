@@ -97,7 +97,7 @@ class OTH(WesCog):
 
             embed.add_field(name=team["team"]["name"], value=players)
 
-        time_secs = int(trade["tentative_execution_time"])/1000.0
+        time_secs = int(trade["tentativeExecutionTime"])/1000.0
         embed.set_footer(text="Processes at " + datetime.fromtimestamp(time_secs).strftime("%A, %B %d, %Y %I:%M:%S ET"))
 
         return embed
