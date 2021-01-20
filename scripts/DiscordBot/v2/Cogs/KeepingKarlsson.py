@@ -17,7 +17,7 @@ class KeepingKarlsson(WesCog):
     # Thread management loop
     @tasks.loop(hours=1.0)
     async def check_threads_loop(self):
-        for channel in self.bot.get_channel(403805619175292930).text_channels: # TODO: text_channels[2:] and ASK_KEEPING_KARLSSON_CATEGORY_ID
+        for channel in self.bot.get_channel(403805619175292930).text_channels: # TODO: text_channels[1:] and ASK_KEEPING_KARLSSON_CATEGORY_ID
             last_message = (await channel.history(limit=1).flatten())[0]
             last_message_delta = datetime.utcnow() - last_message.created_at
 

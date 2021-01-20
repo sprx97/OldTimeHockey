@@ -62,7 +62,7 @@ team_map["tor"] = team_map["toronto"] = team_map["leafs"] = team_map["maple leaf
 team_map["van"] = team_map["vancouver"] = team_map["canucks"] = team_map["nucks"]                                           = "VAN"
 team_map["vgk"] = team_map["vegas"] = team_map["las vegas"] = team_map["golden knights"] = team_map["knights"]              = "VGK"
 team_map["wsh"] = team_map["was"] = team_map["washington"] = team_map["capitals"] = team_map["caps"]                        = "WSH"
-team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]                                                 = "WPJ"
+team_map["wpj"] = team_map["wpg"] = team_map["winnipeg"] = team_map["jets"]                                                 = "WPG"
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -543,7 +543,7 @@ KK_BASIC_ROLE_ID = 782759776773603328
 @asyncio.coroutine
 def check_threads():
     while not client.is_closed():
-        for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[2:]: # skip #make-a-thread and #sit-start-polls
+        for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[1:]: # skip #make-a-thread
             last_message = (yield from channel.history(limit=1).flatten())[0]
             if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "tkeep" not in channel.name and last_message.author != client.user:
                 print(channel.name, "is stale")
@@ -854,20 +854,20 @@ def on_message(message):
 
             # validate that the game <2min left in the 3rd and is tied
             if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
-                raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
+                raise Exception(guess_team + " game is not tied.")
 
             mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
             if mins_remaining == "END":
                 mins_remaining = 0
             mins_remaining = int(mins_remaining)
             if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= 5:
-                raise Exception(guess_team + " is not in the final 5 minutes of a tied game.")
+                raise Exception(guess_team + " game is not in the final 5 minutes of the 3rd.")
 
             # validate that the selected team has a player of the selected number
             playerFound = False
             for pid in game["gameData"]["players"].keys():
                 player = game["gameData"]["players"][pid]
-                if (player["lastName"].lower() == guess_player.lower() or str(player["primaryNumber"]) == guess_player) and player["currentTeam"]["triCode"] == guess_team:
+                if (player["lastName"].lower() == guess_player.lower() or str(player["primaryNumber"]) == guess_player) and player["currentTeam"]["triCode"] == team_map[guess_team.lower()]:
                     playerFound = True
                     break
 

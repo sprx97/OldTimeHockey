@@ -210,7 +210,7 @@ def parseGame(game):
 				stringsToAnnounce.append(endkey)
 				pickled[endkey] = {"msg_id":None, "msg_text":finalstring, "msg_link":None}
 
-	if isFinal and pickled[endkey]["msg_link"] == None:
+	if isFinal and endkey in pickled and pickled[endkey]["msg_link"] == None:
 		pickled[endkey]["msg_link"] = FindRecapLink(endkey)
 		if pickled[endkey]["msg_link"] != None:
 			stringsToAnnounce.append(endkey)

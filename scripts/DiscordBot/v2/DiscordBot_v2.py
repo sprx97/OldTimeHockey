@@ -51,7 +51,7 @@ intents = discord.Intents.default()
 intents.members = True
 intents.reactions = True
 
-bot = Wes(command_prefix="!", case_insensitive=True, intents=intents)
+bot = Wes(command_prefix="!", case_insensitive=True, intents=intents, heartbeat_timeout = 120)
 log = bot.create_log("Bot")
 
 @bot.event
