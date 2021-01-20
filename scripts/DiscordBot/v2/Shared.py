@@ -1,6 +1,6 @@
 # Discord Libraries
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 # Python Libraries
 import json
@@ -137,12 +137,12 @@ class WesCog(commands.Cog):
     # but can override this method or specific commands' error handlers in cogs
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        self.log.error(str(error))
+        self.log.error(str(error)) # TODO: stacklevel=2 (Python3.8+)
 
     # Default handler for python exceptions
     async def on_error(self, event, *args, **kwargs):
-        self.log.error("ERROR")
-        
+        self.log.error(str(error)) # TODO: stacklevel=2 (Python3.8+)
+
 ######################## Custom Exceptions ########################
 
 # Custom exception for a failure to fetch a link

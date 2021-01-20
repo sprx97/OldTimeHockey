@@ -40,5 +40,9 @@ class KeepingKarlsson(WesCog):
     async def before_check_threads_loop(self):
         await self.bot.wait_until_ready()
 
+    @check_threads_loop.error
+    async def check_threads_loop_error(self, error):
+        self.log.error(error)
+
 def setup(bot):
     bot.add_cog(KeepingKarlsson(bot))
