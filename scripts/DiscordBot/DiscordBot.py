@@ -73,17 +73,16 @@ intents.members = True
 intents.reactions = True
 client = discord.Client(heartbeat_timeout=120.0, intents=intents)
 
-@asyncio.coroutine
-def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
+async def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
     with open("otstandings.pickle", "rb") as f:
         try:
             pickled = pickle.load(f)
         except EOFError:
-            yield from channel.send("Unable to read standings.")
+            await channel.send("Unable to read standings.")
             return
 
         if guild not in pickled:
-            yield from channel.send("No standings for this server.")
+            await channel.send("No standings for this server.")
             return
 
         standings = pickled[guild]
@@ -135,10 +134,9 @@ def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
         msg += "*Standings bulk updated overnight"
         if not show_full:
             msg += "\n*Use '!ot standings full' to display full standings"
-        yield from channel.send(msg)
+        await channel.send(msg)
 
-@asyncio.coroutine
-def ProcessOTGuesses():
+async def ProcessOTGuesses():
     standings_file = open("otstandings.pickle", "rb")
     try:
         standings = pickle.load(standings_file)
@@ -216,8 +214,8 @@ def ProcessOTGuesses():
         f.truncate()
         pickle.dump(pickled, f)
 
-    # yield from PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
-    # yield from PrintOTStandings(KK_SERVER_ID, client.get_channel(LIVE_GAME_CHAT_CHANNEL_ID))
+    # await PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
+    # await PrintOTStandings(KK_SERVER_ID, client.get_channel(LIVE_GAME_CHAT_CHANNEL_ID))
 
 KK_PICKEM_CHANNEL_ID = 799100000972963891
 with open("pickems.pickle", "rb+") as pickems_picklefile:
@@ -287,8 +285,7 @@ async def on_raw_reaction_add(payload):
 
     SavePickems()
 
-@asyncio.coroutine
-def PostPickems():
+async def PostPickems():
     global pickems, picks
 
     # Award points from previous night
@@ -323,22 +320,21 @@ def PostPickems():
             picks[gameId] = {int(away_emoji[6:24]): [], int(home_emoji[6:24]): []}
             msgs.append(pickem)
 
-            yield from asyncio.sleep(.25)
+            await asyncio.sleep(.25)
 
     # Post to appropriate channels
     bot_channels = [client.get_channel(KK_PICKEM_CHANNEL_ID)]
     for channel in bot_channels:
-        yield from channel.send(intro)
+        await channel.send(intro)
         for i in range(len(msgs)):
-            msg = yield from channel.send(msgs[i]["msg"])
+            msg = await channel.send(msgs[i]["msg"])
             pickems[msg.id] = msgs[i]
             for emoji in msgs[i]["reacts"]:
-                yield from msg.add_reaction(emoji)
+                await msg.add_reaction(emoji)
 
     SavePickems()
 
-@asyncio.coroutine
-def check_scores():
+async def check_scores():
     bot_channels = [client.get_channel(HOCKEY_GENERAL_CHANNEL_ID), client.get_channel(GUAVAS_AND_APPLES_CHANNEL_ID)]
     # bot_channels.append(client.get_channel(OTH_TECH_CHANNEL_ID))
 
@@ -351,8 +347,8 @@ def check_scores():
         if lastdate != date: # date has rolled over. Clear picklefile
             print("============ DATE ROLLOVER", date, "============")
             ParseFeeds.ClearPickleFile()
-            yield from ProcessOTGuesses()
-            yield from PostPickems()
+            await ProcessOTGuesses()
+            await PostPickems()
             lastdate = date
             print("=========== ROLLOVER COMPLETE ==================")
         try:
@@ -367,14 +363,14 @@ def check_scores():
                 for game in games:
                     ann = ParseFeeds.parseGame(game)
                     stringsToAnnounce.extend(ann)
-                    yield from asyncio.sleep(.25)
+                    await asyncio.sleep(.25)
 
                 for key in stringsToAnnounce:
                     embed = discord.Embed(title=ParseFeeds.pickled[key]["msg_text"], url=ParseFeeds.pickled[key]["msg_link"])
                     if ParseFeeds.pickled[key]["msg_id"] == None:
                         msgids = []
                         for channel in bot_channels:
-                            msg = yield from channel.send(embed=embed)
+                            msg = await channel.send(embed=embed)
                             msgids.append(msg.id)
                             print("Post:", key, msg.id, embed.title)
                         print("") # newline for easier log reading
@@ -384,12 +380,12 @@ def check_scores():
                             msg = None
                             for channel in bot_channels:
                                 try:
-                                    msg = yield from channel.fetch_message(msgid)
+                                    msg = await channel.fetch_message(msgid)
                                 except:
                                     continue
                             if msg != None:
                                 # print("Edit:", key, msg.id, embed.title)
-                                yield from msg.edit(embed=embed)
+                                await msg.edit(embed=embed)
 
             ParseFeeds.WritePickleFile()
 
@@ -398,7 +394,7 @@ def check_scores():
             ParseFeeds.WritePickleFile() # Write whatever we've sent so far to hopefully prevent spamming.
             sys.stdout.flush()
 
-        yield from asyncio.sleep(10)
+        await asyncio.sleep(10)
 
     if client.is_closed():
         print("CLIENT CLOSED UNEXPECTEDLY")
@@ -427,8 +423,7 @@ CHELIOS_ROLE_ID = 496385004574605323
 PRONGER_ROLE_ID = 496385073507991552
 LEETCH_ROLE_ID = 496384959720718348
 
-@asyncio.coroutine
-def set_flairs():
+async def set_flairs():
     OTH_GUILD = client.get_guild(OTH_SERVER_ID)
 
     all_division_roles = {"D1": OTH_GUILD.get_role(D1_ROLE_ID),
@@ -480,17 +475,16 @@ def set_flairs():
         # Remove all division roles
         for role in all_division_roles.values():
             if role in member.roles:
-                yield from member.remove_roles(role)
+                await member.remove_roles(role)
 
         # Add roles for the correct division
         for role in current_roles:
             if role not in member.roles:
-                yield from member.add_roles(role)
+                await member.add_roles(role)
 
     print("Finished with Flairing!")
 
-@asyncio.coroutine
-def check_inactives():
+async def check_inactives():
     bot_channel = client.get_channel(MODS_CHANNEL_ID)
 
     # repeat the task every week
@@ -501,7 +495,7 @@ def check_inactives():
         if not updated:
             pass
         elif len(inactives) == 0 and len(unclaimed) == 0:
-            yield from bot_channel.send("No inactive or unclaimed teams in any league currently!")
+            await bot_channel.send("No inactive or unclaimed teams in any league currently!")
         else:
             body = ""
             for league in unclaimed:
@@ -522,12 +516,11 @@ def check_inactives():
             if count == 0:
                 body += "No inactive teams.\n"
 
-            yield from bot_channel.send(body)
+            await bot_channel.send(body)
 
-        yield from asyncio.sleep(43200)
+        await asyncio.sleep(43200)
 
-@asyncio.coroutine
-def check_trades():
+async def check_trades():
     bot_channel = client.get_channel(TRADEREVIEW_CHANNEL_ID)
 
     # repeat the task every hour
@@ -535,36 +528,34 @@ def check_trades():
         announcements = CheckTrades.checkFleaflickerTrades()
         for mystr in announcements:
             mystr = "<@&235926008266620929>\n" + mystr
-            yield from bot_channel.send(mystr)
+            await bot_channel.send(mystr)
 
-        yield from asyncio.sleep(3600)
+        await asyncio.sleep(3600)
 
 KK_ASK_KEEPING_KARLSSON_CATEGORY_ID = 744981120311099422
 KK_BASIC_ROLE_ID = 782759776773603328
 
-@asyncio.coroutine
-def check_threads():
+async def check_threads():
     while not client.is_closed():
         for channel in client.get_channel(KK_ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[1:]: # skip #make-a-thread
-            last_message = (yield from channel.history(limit=1).flatten())[0]
+            last_message = (await channel.history(limit=1).flatten())[0]
             if (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(days=1) and "tkeep" not in channel.name and last_message.author != client.user:
                 print(channel.name, "is stale")
-                yield from channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_BASIC_ROLE_ID), send_messages=False, view_channel=True)
-                yield from channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 12 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
+                await channel.set_permissions(client.get_guild(KK_SERVER_ID).get_role(KK_BASIC_ROLE_ID), send_messages=False, view_channel=True)
+                await channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 12 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
             elif (datetime.datetime.utcnow() - last_message.created_at) > datetime.timedelta(hours=12) and "tkeep" not in channel.name and last_message.author == client.user: # last comment was locking the thread
                 print(channel.name, "is deleted")
-                yield from channel.delete()
+                await channel.delete()
 
-        yield from asyncio.sleep(3600) # every hour
+        await asyncio.sleep(3600) # every hour
 
 @client.event
-@asyncio.coroutine
-def on_ready():
+async def on_ready():
     # Uncomment these to change some basic things about the bot account (avatar, status, nickname)
     # fp = open(Config.config["srcroot"] + "scripts/wes.jpg", "rb")
-    # yield from client.edit_profile(password=None, avatar=fp.read())
-    # yield from client.change_presence(activity=discord.Game(name="NHL '94"))
-    # yield from client.change_nickname(client.user, "Wes McCauley")
+    # await client.edit_profile(password=None, avatar=fp.read())
+    # await client.change_presence(activity=discord.Game(name="NHL '94"))
+    # await client.change_nickname(client.user, "Wes McCauley")
 
     # client.loop.create_task(set_flairs())
     client.loop.create_task(check_scores())
@@ -574,8 +565,7 @@ def on_ready():
     return
 
 @client.event
-@asyncio.coroutine
-def on_message(message):
+async def on_message(message):
     # don't reply to self
     if message.author == client.user:
         return
@@ -583,15 +573,15 @@ def on_message(message):
     ######################## Core Responses ######################################
     # Ping response
     if message.content.startswith("!ping"):
-        yield from message.channel.send("pong")
+        await message.channel.send("pong")
 
     # Pong response
     if message.content.startswith("!pong"):
-        yield from message.channel.send("ping")
+        await message.channel.send("ping")
 
     # Killswitch
     if message.content.startswith("!kill") and message.channel.id == OTH_TECH_CHANNEL_ID:
-        yield from client.close()
+        await client.close()
         print("Bot shutdown via command.")
         while True:
             continue # Freeze the bot until I manually restart it
@@ -599,7 +589,7 @@ def on_message(message):
     # Help response
     if message.content.startswith("!help"):
         if message.guild.id == OTH_SERVER_ID:
-            yield from message.channel.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
+            await message.channel.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
                             "**!help**\n\tDisplays this list of commands.\n" + \
                             "**!ping or !pong**\n\tGets a response to check that bot is up.\n" + \
                             "**!matchup <fleaflicker username>**\n\tPosts the score of the user's fantasy matchup this week.\n" + \
@@ -608,7 +598,7 @@ def on_message(message):
                             "in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
                             "\t!ot standings (full): Displays the standings for the season-long OT prediction contest on this server.")
         else:
-            yield from message.channel.send("!help: Displays this list of commands.\n" + \
+            await message.channel.send("!help: Displays this list of commands.\n" + \
                             "!ping or !pong: Gets a response to check that the bot is up.\n" + \
                             "!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations." + \
                             "\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
@@ -618,7 +608,7 @@ def on_message(message):
     # Score check response
     if message.content.startswith("!score"):
         if len(message.content.split(" ")) == 1:
-            yield from message.channel.send("Usage: !score <team>")
+            await message.channel.send("Usage: !score <team>")
         else:
             team = (" ".join(message.content.split(" ")[1:])).lower()
             if team in team_map.keys():
@@ -628,11 +618,11 @@ def on_message(message):
                 try:
                     root = ParseFeeds.getFeed("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + date + "&endDate=" + date + "&expand=schedule.linescore")
                 except Exception as e:
-                    yield from message.channel.send("Failed to find feed")
+                    await message.channel.send("Failed to find feed")
                     return
 
                 if len(root["dates"]) == 0:
-                    yield from message.channel.send("No games today " + ParseFeeds.emojis["parros"])
+                    await message.channel.send("No games today " + ParseFeeds.emojis["parros"])
                     return
 
                 games = root["dates"][0]["games"]
@@ -647,7 +637,7 @@ def on_message(message):
                             opp = away
 
                         if game["status"]["detailedState"] == "Scheduled" or game["status"]["detailedState"] == "Pre-Game":
-                            yield from message.channel.send(ParseFeeds.emojis[team] + " " + team + "'s game against " + ParseFeeds.emojis[opp] + " " + opp + " has not started yet.")
+                            await message.channel.send(ParseFeeds.emojis[team] + " " + team + "'s game against " + ParseFeeds.emojis[opp] + " " + opp + " has not started yet.")
                         else:
                             period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
                             awayScore = game["teams"]["away"]["score"]
@@ -655,23 +645,23 @@ def on_message(message):
                             if game["status"]["detailedState"] == "Final":
                                 if period == "(3rd)":
                                     period = ""
-                                yield from message.channel.send("Final: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
+                                await message.channel.send("Final: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
                             else:
                                 timeleft = game["linescore"]["currentPeriodTimeRemaining"]
                                 period = period[:-1] + " " + timeleft + period[-1]
-                                yield from message.channel.send("Current score: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
+                                await message.channel.send("Current score: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
 
                         found = True
                         break
 
                 if not found:
-                    yield from message.channel.send("I do not think " + ParseFeeds.emojis[team] + " " + team + " plays tonight.")
+                    await message.channel.send("I do not think " + ParseFeeds.emojis[team] + " " + team + " plays tonight.")
             else:
-                yield from message.channel.send("I do not recognize the team '" + team + "'")
+                await message.channel.send("I do not recognize the team '" + team + "'")
 
     ######################### Meme Responses ####################################
     if message.content.startswith("!fifi") and message.guild.id == OTH_SERVER_ID:
-        yield from message.channel.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
+        await message.channel.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
                         "pops bottles pops pussies so keep your finger on that lamp light limpdick cause the forecast is goals. Fuck your cookie jar and your water bottles, " + \
                         "you better get quality rubbermaids bud cause she's gonna spend a lot of time hitting the fucking ice if Fifi has anything to say about it. " + \
                         "Blistering Wristers or fat clappers, this fuckin guy can't be stopped. If I had a choice of one attack to use to kill Hitler I would choose a " + \
@@ -682,16 +672,16 @@ def on_message(message):
                         "and the third would be for a trillion dollars so I could pay to watch ol Fifi Score top cheddar magic for all eternity.")
 
     if message.content.startswith("!laine") and message.guild.id == OTH_SERVER_ID:
-        yield from message.channel.send("Yeah, fuck off buddy we absolutely need more Laine clips. Fuckin every time this kid steps on the ice someone scores. " + \
+        await message.channel.send("Yeah, fuck off buddy we absolutely need more Laine clips. Fuckin every time this kid steps on the ice someone scores. " + \
                         "kids fuckin dirt nasty man. Does fuckin ovi have 14 goals this season I dont fuckin think so bud. I'm fuckin tellin ya Patrik 'golden flow' " + \
                         "Laine is pottin 50 in '17 fuckin callin it right now. Clap bombs, fuck moms, wheel, snipe, and fuckin celly boys fuck")
 
     if message.content.startswith("!xfactor") and message.guild.id == OTH_SERVER_ID:
-        yield from message.channel.send("I have studied tapes of him and I must disagree. While he is highly skilled, he does not have 'it' if you know what I mean. " + \
+        await message.channel.send("I have studied tapes of him and I must disagree. While he is highly skilled, he does not have 'it' if you know what I mean. " + \
                         "That 'x-factor'. The 'above and beyond' trait.")
 
     if message.content.startswith("!petey") and message.guild.id == OTH_SERVER_ID:
-        yield from message.channel.send("Kid might look like if Malfoy was a Hufflepuff but he plays like if Potter was a Slytherin the kids absolutely fucking nasty. " + \
+        await message.channel.send("Kid might look like if Malfoy was a Hufflepuff but he plays like if Potter was a Slytherin the kids absolutely fucking nasty. " + \
                         "If there was a fourth unforgiveable curse it would be called petterssaucious or some shit because this kids dishes are absolutely team killing, " + \
                         "SHL, AHL, NHL it doesn't fucking matter 100 points to Pettersson because he's winning the House Cup, The Calder Cup, " + \
                         "The Stanley Cup and whatever fucking cup is in Sweden. Game Over.")
@@ -699,7 +689,7 @@ def on_message(message):
     #################### OTH-specific responses #######################################
     MINNE_USER_ID = 144483356531228672
     if message.author.id == MINNE_USER_ID and (" wes " in message.content.lower().replace(".", " ")) and message.guild.id == OTH_SERVER_ID:
-        yield from message.channel.send("<@" + str(MINNE_USER_ID) + "> watch your mouth. Just cuz you tell me to do something doesn't " + \
+        await message.channel.send("<@" + str(MINNE_USER_ID) + "> watch your mouth. Just cuz you tell me to do something doesn't " + \
                         "mean I'm going to do it. Being a keyboard tough guy making smart ass remarks doesn't " + \
                         "make you funny or clever, just a coward hiding behind a computer")
 
@@ -709,11 +699,11 @@ def on_message(message):
 
         announcements = CheckTrades.checkFleaflickerTrades()
         if len(announcements) == 0:
-            yield from bot_channel.send("No pending trades to review.")
+            await bot_channel.send("No pending trades to review.")
         else:
             for mystr in announcements:
                 mystr = "<@&235926008266620929>\n" + mystr
-                yield from bot_channel.send(mystr)
+                await bot_channel.send(mystr)
 
     # Inactives response
     if message.content.startswith("!inactives") and message.channel.id in [OTH_TECH_CHANNEL_ID, MODS_CHANNEL_ID]:
@@ -721,7 +711,7 @@ def on_message(message):
 
         CheckInactives.checkAllLeagues(True) # force
         if len(CheckInactives.inactives) == 0 and len(CheckInactives.unclaimed) == 0:
-            yield from bot_channel.send("No inactive or unclaimed teams in any league currently!")
+            await bot_channel.send("No inactive or unclaimed teams in any league currently!")
         else:
             body = ""
             for league in CheckInactives.unclaimed:
@@ -742,12 +732,12 @@ def on_message(message):
             if count == 0:
                 body += "No inactive teams.\n"
 
-            yield from bot_channel.send(body)
+            await bot_channel.send(body)
 
     # Fantasy matchup check response
     if message.content.startswith("!matchup") and message.guild.id == OTH_SERVER_ID:
         if len(message.content.split(" ")) == 1:
-            yield from message.channel.send("Usage: !matchup <fleaflicker username>")
+            await message.channel.send("Usage: !matchup <fleaflicker username>")
         else:
             # might be slow if opening too many DB connections
             db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
@@ -768,12 +758,12 @@ def on_message(message):
 
             results = cursor.fetchall()
             if len(results) == 0:
-                yield from message.channel.send("User " + team + " not found.")
+                await message.channel.send("User " + team + " not found.")
             else:
                 msg = "%s (%d-%d): **%0.2f**\n%s (%d-%d): **%0.2f**" % (results[0][0], results[0][6], results[0][7], results[0][1], results[0][2], results[0][8], results[0][9], results[0][3])
                 link = f"https://www.fleaflicker.com/nhl/leagues/{results[0][4]}/scores/{results[0][5]}"
                 embed = discord.Embed(title=msg, url=link)
-                yield from message.channel.send(embed=embed)
+                await message.channel.send(embed=embed)
 
             cursor.close()
             db.close()
@@ -785,7 +775,7 @@ def on_message(message):
     #
     # if message.content.startswith("!woppacup") and message.guild.id == OTH_SERVER_ID:
     #	 if len(message.content.split(" ")) == 1:
-    #		 yield from message.channel.send("Usage: !woppacup <fleaflicker username>")
+    #		 await message.channel.send("Usage: !woppacup <fleaflicker username>")
     #	 else:
     # 		 myteam = message.content.split(" ")[1]
 
@@ -798,22 +788,22 @@ def on_message(message):
 
     #		 if root.cssselect("li.active")[0].text_content() == "Final Stage":
     #			 matches = root.cssselect(".match.-open")
-    #			 yield from message.channel.send("%d" % (len(matches)))
+    #			 await message.channel.send("%d" % (len(matches)))
     #			 for match in matches:
     #				 team1 = match.cssselect(".match--player-name")[0].text_content().split(".")[-1]
     #				 team2 = match.cssselect(".match--player-name")[1].text_content().split(".")[-1]
-    #				 yield from message.channel.send("%s %s" % (team1, team2))
+    #				 await message.channel.send("%s %s" % (team1, team2))
 
-    #		 yield from message.channel.send("DONE")
+    #		 await message.channel.send("DONE")
 
     ################# Minigame responses ###########################
     # For debugging purposes
     if message.content.startswith("!processot") and message.channel.id == OTH_TECH_CHANNEL_ID:
-        yield from ProcessOTGuesses()
+        await ProcessOTGuesses()
 
     # For debugging purposes
     if message.content.startswith("!postpickems") and message.channel.id in [KK_PICKEM_CHANNEL_ID]:
-        yield from PostPickems()
+        await PostPickems()
 
     # OT contest check response
     if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID, LIVE_GAME_CHAT_CHANNEL_ID]:
@@ -823,7 +813,7 @@ def on_message(message):
                 raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings (full)")
             if tokens[1] == "standings":
                 show_full = len(tokens) > 2 and tokens[2] == "full"
-                yield from PrintOTStandings(message.guild.id, message.channel, message.author.id, show_full)
+                await PrintOTStandings(message.guild.id, message.channel, message.author.id, show_full)
                 return
             if len(tokens) != 3:
                 raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings (full)")
@@ -901,7 +891,7 @@ def on_message(message):
             raise Exception(confirmation)
 
         except Exception as e:
-            yield from message.channel.send(e)
+            await message.channel.send(e)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
