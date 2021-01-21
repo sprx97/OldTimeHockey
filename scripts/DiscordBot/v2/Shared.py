@@ -137,11 +137,11 @@ class WesCog(commands.Cog):
     # but can override this method or specific commands' error handlers in cogs
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        self.log.error(str(error)) # TODO: stacklevel=2 (Python3.8+)
+        self.log.error(str(error), stacklevel=2)
 
     # Default handler for python exceptions
     async def on_error(self, event, *args, **kwargs):
-        self.log.error(str(error)) # TODO: stacklevel=2 (Python3.8+)
+        self.log.error(str(error), stacklevel=2)
 
 ######################## Custom Exceptions ########################
 

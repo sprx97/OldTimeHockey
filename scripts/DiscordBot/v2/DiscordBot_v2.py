@@ -66,11 +66,11 @@ async def on_disconnect():
     days, hours, minutes, seconds = bot.calculate_uptime()
     bot.log.info(f"Bot disconnected after {days} day(s), {hours} hour(s), {minutes} minute(s), {seconds} seconds(s).")
     if not bot.killed:
-        bot.run(Config.config["beta_discord_token"])
+        bot.run(Config.config["beta_discord_token"], reconnect=True)
 
 @bot.event
 async def on_error(self, event, *args, **kwargs):
-    bot.log.error("ERROR") # TODO: stacklevel=2)
+    bot.log.error("ERROR", stacklevel=2)
 
 # Remove default help command
 bot.remove_command("help")
@@ -81,7 +81,7 @@ bot.load_extension("Cogs.OTH")
 bot.load_extension("Cogs.KeepingKarlsson")
 bot.load_extension("Cogs.Scoreboard")
 
-bot.run(Config.config["beta_discord_token"])
+bot.run(Config.config["beta_discord_token"], reconnect=True)
 
 # TODO: Uncomment
 # "Hang" if bot was force-killed to prevent recreation by pm2
