@@ -82,7 +82,7 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
             </Table.Row>
           </Table.Header>
           <Table.Body>
-          {_.map(
+            {_.map(
               data,
               (
                 {
