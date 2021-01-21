@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import Standings from './Standings';
 import Leaderboard from './Leaderboard';
 import TrophyRoom from './TrophyRoom';
@@ -10,8 +10,12 @@ import ADP from './ADP';
 import Login from "./Login";
 import CreateAccount from "./CreateAccount";
 import NotFound from './NotFound';
+import UserProfile from "./UserProfile";
+
+const useQuery = () => new URLSearchParams(useLocation().search);
 
 const Routes = () => {
+  const query = useQuery();
   return (
     <Switch>
       <Route exact path="/standings" component={Standings} />
@@ -22,6 +26,7 @@ const Routes = () => {
       <Route exact path="/adp" component={ADP} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/createAccount" component={CreateAccount} />
+      <Route path="/profile" component={() => (<UserProfile username={query.get('username')}/>)} />
       <Route component={NotFound} />
     </Switch>
   );
