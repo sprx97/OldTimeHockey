@@ -91,14 +91,14 @@ class OTH(WesCog):
 
             # Display drops too
             if "playersReleased" in team:
-                players += "\n**Dropping**\n"
+                players += "**Dropping**\n"
                 for player in team["playersReleased"]:
                     players += player["proPlayer"]["nameFull"] + "\n"
 
-            embed.add_field(name=team["team"]["name"], value=players)
+            embed.add_field(name=f"**{team['team']['name']}**", value=players)
 
         time_secs = int(trade["tentativeExecutionTime"])/1000.0
-        embed.set_footer(text="Processes at " + datetime.fromtimestamp(time_secs).strftime("%A, %B %d, %Y %I:%M:%S ET"))
+        embed.set_footer(text="Processes at " + datetime.fromtimestamp(time_secs).strftime("%A, %B %d, %Y %I:%M ET"))
 
         return embed
 

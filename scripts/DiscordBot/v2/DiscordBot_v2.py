@@ -70,7 +70,7 @@ async def on_disconnect():
 
 @bot.event
 async def on_error(self, event, *args, **kwargs):
-    bot.log.error("ERROR", stacklevel=2)
+    bot.log.error("ERROR") # TODO: stacklevel=2)
 
 # Remove default help command
 bot.remove_command("help")
