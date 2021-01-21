@@ -133,6 +133,8 @@ def PrintOTStandings(guild, channel, invoker_id=None, show_full=False):
 
         msg += "``"
         msg += "*Standings bulk updated overnight"
+        if not show_full:
+            msg += "\n*Use '!ot standings full' to display full standings"
         yield from channel.send(msg)
 
 @asyncio.coroutine
@@ -604,14 +606,14 @@ def on_message(message):
                             "**!score <NHL team>**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations." + \
                             "\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
                             "in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
-                            "\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
+                            "\t!ot standings (full): Displays the standings for the season-long OT prediction contest on this server.")
         else:
             yield from message.channel.send("!help: Displays this list of commands.\n" + \
                             "!ping or !pong: Gets a response to check that the bot is up.\n" + \
                             "!score <NHL team>: Posts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations." + \
                             "\t!ot <NHL team> <player number>: Allows you to predict a player to score the OT winner. Must be done between 5 minutes left" + \
                             "in the 3rd period and the start of OT of a tied game. Can only guess one player per game." + \
-                            "\t!ot standings: Displays the standings for the season-long OT prediction contest on this server.")
+                            "\t!ot standings (full): Displays the standings for the season-long OT prediction contest on this server.")
 
     # Score check response
     if message.content.startswith("!score"):
@@ -818,16 +820,16 @@ def on_message(message):
         try:
             tokens = message.content.split(" ")
             if len(tokens) == 1:
-                raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
+                raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings (full)")
             if tokens[1] == "standings":
                 show_full = len(tokens) > 2 and tokens[2] == "full"
                 yield from PrintOTStandings(message.guild.id, message.channel, message.author.id, show_full)
                 return
             if len(tokens) != 3:
-                raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
+                raise Exception("Wrong number of arguments:\n\t!ot <team> <player lastname/number>\n\t!ot standings (full)")
             guess_team = tokens[1].upper()
             if guess_team.lower() not in team_map:
-                raise Exception("Team not recognized:\n\t!ot <team> <player lastname/number>\n\t!ot standings")
+                raise Exception("Team not recognized:\n\t!ot <team> <player lastname/number>\n\t!ot standings (full)")
 
             guess_player = tokens[2]
 
