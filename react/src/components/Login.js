@@ -6,8 +6,8 @@ import { Button, Header, Input, Segment } from 'semantic-ui-react';
 const Login = () => {
   return (
     <Segment basic>
-        <Input placeholder="email" /><br/>
-        <Input placeholder="password" /><br/>
+        <Input placeholder="email" type="email"/><br/>
+        <Input placeholder="password" type="password"/><br/>
         <Button primary>Login</Button>
         <Link to="/createAccount">
             <Button secondary>New Account</Button>

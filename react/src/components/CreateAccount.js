@@ -39,9 +39,9 @@ export default class CreateAccount extends Component {
     render() {
         return (
             <Segment basic>
-                <Input placeholder="email" onChange={this.handleEmail} /><br/>
-                <Input placeholder="password" onChange={this.handlePass1} /><br/>
-                <Input placeholder="confirm password" onChange={this.handlePass2} /><br/>
+                <Input placeholder="email" onChange={this.handleEmail} type="email"/><br/>
+                <Input placeholder="password" onChange={this.handlePass1} type="password"/><br/>
+                <Input placeholder="confirm password" onChange={this.handlePass2} type="password"/><br/>
                 <Link>
                     <Button onClick={this.onCreateAccount} primary>Create Account</Button>
                 </Link>
