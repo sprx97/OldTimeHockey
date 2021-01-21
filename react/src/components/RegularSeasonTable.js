@@ -82,14 +82,13 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {_.map(
+          {_.map(
               data,
-              ( row, index ) => {
-                const {
+              (
+                {
                   isChamp,
                   leagueID,
                   leaguename,
-                  FFid,
                   FFname,
                   Wins,
                   Losses,
@@ -100,40 +99,40 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
                   teamname,
                   tier,
                   year
-                } = row;
-                return (
-                  <Table.Row className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
-                    <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                    <Table.Cell textAlign="center" className={`D${tier}`}>
-                      <a
-                        href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}?season=${year}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {leaguename}
-                      </a>
-                    </Table.Cell>
-                    <Table.Cell textAlign="center">
-                      {isChamp ? (<img src={GetTrophy(tier, year)} alt={`${leaguename} winner`} align="center" title={`D${tier}`} width="12px" height="24px" />) : ''}
-                      <a
-                        href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}?season=${year}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {teamname}
-                      </a>
-                    </Table.Cell>
-                    <Table.Cell textAlign="center">
-                      <UserLink FFname={FFname} />
-                    </Table.Cell>
-                    <Table.Cell textAlign="center">{Wins}</Table.Cell>
-                    <Table.Cell textAlign="center">{Losses}</Table.Cell>
-                    <Table.Cell textAlign="center">{pointsFor}</Table.Cell>
-                    <Table.Cell textAlign="center">{pointsAgainst}</Table.Cell>
-                    <Table.Cell textAlign="center">{coachRating}%</Table.Cell>
-                  </Table.Row>
-                );
-              }
+                },
+                index,
+              ) => (
+                <Table.Row className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
+                  <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                  <Table.Cell textAlign="center" className={`D${tier}`}>
+                    <a
+                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}?season=${year}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {leaguename}
+                    </a>
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {isChamp ? (<img src={GetTrophy(tier, year)} alt={`${leaguename} winner`} align="center" title={`D${tier}`} width="12px" height="24px" />) : ''}
+                    <a
+                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}?season=${year}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {teamname}
+                    </a>
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <UserLink FFname={FFname} />
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{Wins}</Table.Cell>
+                  <Table.Cell textAlign="center">{Losses}</Table.Cell>
+                  <Table.Cell textAlign="center">{pointsFor}</Table.Cell>
+                  <Table.Cell textAlign="center">{pointsAgainst}</Table.Cell>
+                  <Table.Cell textAlign="center">{coachRating}%</Table.Cell>
+                </Table.Row>
+              )
             )}
           </Table.Body>
         </Table>
