@@ -34,44 +34,49 @@ class Scoreboard(WesCog):
 
         root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
 
-        print(notafar)
-
         if len(root["dates"]) == 0:
             raise NoGamesTodayError()
 
+        # Loop through each game in today's schedule
         games = root["dates"][0]["games"]
-        await ctx.send(len(games))
-        # TODO: Implement this shiz
+        found = False
+        for game in games:
+            away = team_map[game["teams"]["away"]["team"]["name"].split(" ")[-1].lower()]
+            home = team_map[game["teams"]["home"]["team"]["name"].split(" ")[-1].lower()]
 
-    #     found = False
-    #     for game in games:
-    #         away = team_map[game["teams"]["away"]["team"]["name"].split(" ")[-1].lower()]
-    #         home = team_map[game["teams"]["home"]["team"]["name"].split(" ")[-1].lower()]
-    #         if home == team or away == team:
-    #             opp = home
-    #             if home == team:
-    #                 opp = away
+            # These are not the teams you are looking for 👋🏻
+            if home != team and away != team:
+                continue
 
-    #             if game["status"]["detailedState"] == "Scheduled" or game["status"]["detailedState"] == "Pre-Game":
-    #                 yield from message.channel.send(ParseFeeds.emojis[team] + " " + team + "'s game against " + ParseFeeds.emojis[opp] + " " + opp + " has not started yet.")
-    #             else:
-    #                 period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
-    #                 awayScore = game["teams"]["away"]["score"]
-    #                 homeScore = game["teams"]["home"]["score"]
-    #                 if game["status"]["detailedState"] == "Final":
-    #                     if period == "(3rd)":
-    #                         period = ""
-    #                     yield from message.channel.send("Final: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
-    #                 else:
-    #                     timeleft = game["linescore"]["currentPeriodTimeRemaining"]
-    #                     period = period[:-1] + " " + timeleft + period[-1]
-    #                     yield from message.channel.send("Current score: %s %s %s, %s %s %s %s" % (ParseFeeds.emojis[away], away, awayScore, ParseFeeds.emojis[home], home, homeScore, period))
+            home_emoji = emojis[home]
+            away_emoji = emojis[away]
 
-    #             found = True
-    #             break
+            game_state = game["status"]["detailedState"]
+            # Game hasn't started yet
+            if game_state == "Scheduled" or game_state == "Pre-Game":
+                await ctx.send(f"{away_emoji} {away} vs {home_emoji} {home} has not started yet.")
+            else:
+                period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
+                away_score = game["teams"]["away"]["score"]
+                home_score = game["teams"]["home"]["score"]
 
-    #     if not found:
-    #         yield from message.channel.send("I do not think " + ParseFeeds.emojis[team] + " " + team + " plays tonight.")
+                # Game is over
+                if game_state == "Final":
+                    if period == "(3rd)":
+                        period = ""
+                    status = "Final:"
+                # Game is in progress
+                else:
+                    timeleft = game["linescore"]["currentPeriodTimeRemaining"]
+                    period = period[:-1] + " " + timeleft + period[-1]
+                    status = "Current score:"
+                await ctx.send(f"{status} {away_emoji} {away} {away_score}, {home_emoji} {home} {home_score} {period}")
+
+            found = True
+            break
+
+        if not found:
+            await ctx.send(f"I do not think {emojis[team]} {team} plays today.")
 
     @score.error
     async def score_error(self, ctx, error):
