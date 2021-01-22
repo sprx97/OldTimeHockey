@@ -105,7 +105,8 @@ class OTH(WesCog):
     # Function that checks all OTH fleaflicker leagues for new trades
     async def check_trades(self, verbose=False):
         # Find the list of trades that have already been posted so that we can ignore them.
-        f = open("../posted_trades.txt", "a+") # TODO: Fix the directory when this bot is completed
+        f = open("data/posted_trades.txt", "a+")
+        f.seek(0)
         posted = [int(x.strip()) for x in f.readlines()]
 
         # Get the list of leagueIds for this year from the database
@@ -132,7 +133,7 @@ class OTH(WesCog):
                 count += 1
                 
                 # Append this trade ID to the list of trades already covered
-                # f.write(str(tradeID) + "\n") # TODO: Uncomment
+                f.write(str(trade["id"]) + "\n")
 
         # Message if no trades were found
         if count == 0 and verbose:
@@ -153,11 +154,11 @@ class OTH(WesCog):
 
     @trades_loop.error
     async def trades_loop_error(self, error):
-        self.log.error(error)
+        await self.cog_command_error(None, error)
 
     @inactives_loop.error
-    async def trades_loop_error(self, error):
-        self.log.error(error)
+    async def inactives_loop_error(self, error):
+        await self.cog_command_error(None, error)
 
     # Checks for any new OTH trades
     @commands.command(name="trades")

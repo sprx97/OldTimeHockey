@@ -62,10 +62,6 @@ async def on_disconnect():
     if not bot.killed:
         bot.run(Config.config["beta_discord_token"], reconnect=True)
 
-@bot.event
-async def on_error(self, event, *args, **kwargs):
-    bot.log.error(event, stacklevel=2)
-
 # Remove default help command
 bot.remove_command("help")
 

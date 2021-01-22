@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 
 # Python Libraries
 import json
+import pickle
 import pymysql
 import sys
 import urllib.request
@@ -87,6 +88,12 @@ emojis["WPJ"] = "<:WPJ:269315448833703946>"
 emojis["goal"] = "<a:goalsiren:750190349963624510>"
 emojis["parros"] = "<:parros:372533524286275597>"
 
+# Returns the emoji if it's in the map, but blank if not
+def get_emoji(team):
+    if team in emojis:
+        return emojis[team]
+    return ""
+
 ######################## Global Variables ########################
 
 # Server IDs
@@ -121,7 +128,7 @@ with open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r") as f:
     CURRENT_YEAR = int(f.readline().strip())
 
 # Config settings
-MIN_INACTIVE_DAYS = 7 # Days at which a team is marked as inactive
+MIN_INACTIVE_DAYS = 7 # Number of days where we deem a team to be "inactive" on fleaflicker
 OT_CHALLENGE_BUFFER_MINUTES = 5 # Mintues left in the 3rd at which OT challenge submissions are accepted
 
 ######################## Base Cog Class ########################
@@ -135,17 +142,11 @@ class WesCog(commands.Cog):
 
     # Generic error handler for all Discord Command Exceptions. Just logs the error,
     # but can override this method or specific commands' error handlers in cogs
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        # Only handle this error in the correct Cog
-        if ctx.cog.qualified_name != self.__class__.__name__:
-            return
-
-        # Allows us to check for original exceptions raised and sent to CommandInvokeError.
-        # If nothing is found. We keep the exception passed to on_command_error.
-        error = getattr(error, 'original', error)
-
-        self.log.error(str(error), stacklevel=2)
+    async def cog_command_error(self, ctx, error):
+        try:
+            self.log.error(error.message, stacklevel=2)
+        except:
+            self.log.error(error, stacklevel=2)
 
 ######################## Custom Exceptions ########################
 
@@ -158,6 +159,11 @@ class LinkError(discord.ext.commands.CommandError):
 class NHLTeamNotFound(discord.ext.commands.CommandError):
     def __init__(self, team):
         self.message = f"Team {team} not recognized."
+
+# Custom exception for an invalid NHL team
+class DataFileNotFound(discord.ext.commands.CommandError):
+    def __init__(self, file):
+        self.message = f"File {file} not found."
 
 ######################## Helper functions ########################
 
@@ -204,6 +210,27 @@ def make_api_call(link):
             data = json.loads(url.read().decode())
     except urllib.request.HTTPError:
         raise LinkError(link)
+
+    return data
+
+######################## Pickle File commands ########################
+
+def WritePickleFile(file, data):
+    try:
+        with open(file, "wb") as f:
+            pickle.dump(data, f)
+    except:
+        raise DataFileNotFound(file)
+
+def LoadPickleFile(file):
+    try:
+        with open(file, "rb") as f:
+            try:
+                data = pickle.load(f)
+            except EOFError:
+                data = {}
+    except:
+        raise DataFileNotFound(file)
 
     return data
 

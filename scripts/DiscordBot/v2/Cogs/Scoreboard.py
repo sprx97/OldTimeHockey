@@ -12,11 +12,21 @@ class Scoreboard(WesCog):
         super().__init__(bot)
 
         self.scores_loop.start()
+        self.scoreboard_channels = [TEST_GENERAL_CHANNEL_ID]
 
     # Custom exception for a failure to fetch a link
     class NoGamesTodayError(discord.ext.commands.CommandError):
         def __init__(self, date):
             self.message = f"No games found today ({date})."
+
+    def get_games_for_today(self):
+        date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d") # Offset by 6 hours to roll over the day in the morning
+        root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
+
+        if len(root["dates"]) == 0:
+            raise self.NoGamesTodayError(date)
+
+        return root["dates"][0]["games"]
 
     @commands.command(name="score")
     async def score(self, ctx, input, *extras):
@@ -30,17 +40,9 @@ class Scoreboard(WesCog):
             raise NHLTeamNotFound(input)
 
         team = team_map[team]
-        date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d") # Offset by 6 hours to roll over the day in the morning
-
-        root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
-
-        if len(root["dates"]) == 0:
-            raise self.NoGamesTodayError(date)
-
-        raise self.NoGamesTodayError()
 
         # Loop through each game in today's schedule
-        games = root["dates"][0]["games"]
+        games = self.get_games_for_today()
         found = False
         for game in games:
             away = team_map[game["teams"]["away"]["team"]["name"].split(" ")[-1].lower()]
@@ -50,8 +52,8 @@ class Scoreboard(WesCog):
             if home != team and away != team:
                 continue
 
-            home_emoji = emojis[home]
-            away_emoji = emojis[away]
+            home_emoji = get_emoji(home)
+            away_emoji = get_emoji(away)
 
             game_state = game["status"]["detailedState"]
             # Game hasn't started yet
@@ -78,7 +80,7 @@ class Scoreboard(WesCog):
             break
 
         if not found:
-            await ctx.send(f"I do not think {emojis[team]} {team} plays today.")
+            await ctx.send(f"I do not think {get_emoji(team)} {team} plays today.")
 
     @score.error
     async def score_error(self, ctx, error):
@@ -93,16 +95,72 @@ class Scoreboard(WesCog):
         else:
             await ctx.send(error)
 
-    # TODO: Separate Cron Job to handle nightly rollover
+    async def update_announcement(self, key, string, link):
+        pass
+        # for msgid in ParseFeeds.pickled[key]["msg_id"]:
+        #     msg = None
+        #     for channel in scoreboard_channels:
+        #         try:
+        #             msg = await channel.fetch_message(msgid)
+        #         except:
+        #             continue
+        #     if msg != None:
+        #         # print("Edit:", key, msg.id, embed.title)
+        #         await msg.edit(embed=embed)
+
+    async def announce_string(self, key, string):
+        self.messages[key] = {"msg_id":None, "msg_text":string, "msg_link":None}
+
+        print(key + " " + string)
+
+        embed = discord.Embed(title=self.messages[key]["msg_text"], url=self.messages[key]["msg_link"])
+        if self.messages[key]["msg_id"] == None:
+            msgids = []
+            for channel in self.scoreboard_channels: # TODO: Helper function to get all channels to send goals to
+                msg = await self.bot.get_channel(channel).send(embed=embed)
+                msgids.append(msg.id)
+                self.log.info(f"Post: {key} {msg.id} {string}")
+            self.messages[key]["msg_id"] = msgids
+
+        WritePickleFile("data/messages.pickle", self.messages)
+
+    async def parse_game(self, game):
+        # Get the game from NHL.com
+        playbyplay = make_api_call(f"https://statsapi.web.nhl.com{game['link']}")
+
+        away = playbyplay["gameData"]["teams"]["away"]["abbreviation"]
+        home = playbyplay["gameData"]["teams"]["home"]["abbreviation"]
+        away_emoji = get_emoji(away)
+        home_emoji = get_emoji(home)
+        key = str(playbyplay["gamePk"])
+        game_state = playbyplay["gameData"]["status"]["detailedState"]
+
+        # Send game starting notification if necessary
+        start_key = key + ":S"
+        if game_state == "In Progress" and start_key not in self.messages: 
+            start_string = away_emoji + " " + away + " at " + home_emoji + " " + home + " Starting."
+            await self.announce_string(start_key, start_string)
+
+        # Goal Plays
+        # Final Scores
 
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
-        pass
-        # TODO: Check for any goal updates
+        self.messages = LoadPickleFile("data/messages.pickle")
+
+        games = self.get_games_for_today()
+        print(notavar)
+
+        for game in games:
+            await self.parse_game(game)
 
     @scores_loop.before_loop
     async def before_scores_loop(self):
         await self.bot.wait_until_ready()
+
+    @scores_loop.error
+    async def scores_loop_error(self, error):
+        await self.cog_command_error(None, error)
 
 def setup(bot):
     bot.add_cog(Scoreboard(bot))
