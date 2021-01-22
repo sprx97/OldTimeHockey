@@ -1,10 +1,19 @@
-# Project excludes
+# Python excess stuff
 **/__pycache__/
 *.pyc
+
+# Personal info
 config.json
+
+# Bot daily data files
 scripts/DiscordBot/messages.pickle
 scripts/DiscordBot/ot.pickle
 scripts/DiscordBot/pickems.pickle
+scripts/DiscordBot/v2/data/messages.pickle
+scripts/DiscordBot/v2/data/ot.pickle
+scripts/DiscordBot/v2/data/pickems.pickle
+
+# Bot log files
 scripts/DiscordBot/v2/Logs/*
 
 # react

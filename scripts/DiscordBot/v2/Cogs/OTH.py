@@ -40,7 +40,8 @@ class OTH(WesCog):
             for team in standings["divisions"][0]["teams"]:
                 # If there's no owners, mark as inactive
                 if "owners" not in team:
-                    msg += f"**{league['name']}**: *Inactive team: {team['name']}*\n"
+                    msg += f"**{league['name']}**: *Unowned team: {team['name']}*\n"
+                    continue
 
                 # If there are owners, check if the primary one has been seen in the last MIN_INACTIVE_DAYS days
                 last_seen = team["owners"][0]["lastSeenIso"]
