@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
+import UserLink from './UserLink';
 import { GetTrophy, highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
@@ -114,7 +115,9 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                       {teamname}
                     </a>
                   </Table.Cell>
-                  <Table.Cell textAlign="center">{FFname}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <UserLink FFname={FFname} />
+                  </Table.Cell>
                   <Table.Cell textAlign="center">{wins}</Table.Cell>
                   <Table.Cell textAlign="center">{losses}</Table.Cell>
                   <Table.Cell textAlign="center">{pointsFor}</Table.Cell>

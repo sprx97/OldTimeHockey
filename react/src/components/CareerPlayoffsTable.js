@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
+import UserLink from './UserLink';
 import { generateTrophies } from './Helpers';
 
 const CareerPlayoffsTable = ({ column, data, isLoaded, direction, handleSort, tiers, hideInactives }) => {
@@ -107,7 +108,10 @@ const CareerPlayoffsTable = ({ column, data, isLoaded, direction, handleSort, ti
               ) => (
                 <Table.Row className={`${!tiers[FFname] && hideInactives ? "hidden" : ""}`}>
                   <Table.Cell textAlign="center">{!tiers[FFname] && hideInactives ? counter : counter++}</Table.Cell>
-                  <Table.Cell textAlign="center" className={`D${tiers[FFname] ? tiers[FFname] : "Inactive"}`}>{generateTrophies(trophies)}{FFname}</Table.Cell>
+                  <Table.Cell textAlign="center" className={`D${tiers[FFname] ? tiers[FFname] : "Inactive"}`}>
+                    {generateTrophies(trophies)}
+                    <UserLink FFname={FFname} />
+                  </Table.Cell>
                   <Table.Cell textAlign="center">{seasons}</Table.Cell>
                   <Table.Cell textAlign="center">{wins}</Table.Cell>
                   <Table.Cell textAlign="center">{losses}</Table.Cell>

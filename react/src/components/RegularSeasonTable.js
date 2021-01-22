@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
+import UserLink from './UserLink';
 import { GetTrophy, highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
@@ -85,19 +86,18 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
               data,
               (
                 {
+                  isChamp,
                   leagueID,
                   leaguename,
-                  teamID,
-                  teamname,
                   FFname,
                   Wins,
                   Losses,
                   pointsFor,
                   pointsAgainst,
                   coachRating,
-                  isChamp,
+                  teamID,
+                  teamname,
                   tier,
-                  FFid,
                   year
                 },
                 index,
@@ -123,14 +123,16 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
                       {teamname}
                     </a>
                   </Table.Cell>
-                  <Table.Cell textAlign="center">{FFname}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <UserLink FFname={FFname} />
+                  </Table.Cell>
                   <Table.Cell textAlign="center">{Wins}</Table.Cell>
                   <Table.Cell textAlign="center">{Losses}</Table.Cell>
                   <Table.Cell textAlign="center">{pointsFor}</Table.Cell>
                   <Table.Cell textAlign="center">{pointsAgainst}</Table.Cell>
                   <Table.Cell textAlign="center">{coachRating}%</Table.Cell>
                 </Table.Row>
-              ),
+              )
             )}
           </Table.Body>
         </Table>

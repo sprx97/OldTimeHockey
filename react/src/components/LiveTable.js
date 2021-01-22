@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
+import UserLink from './UserLink';
 import { highlightLeague, unhighlightLeague } from './Helpers'
 import '../styles/Leagues.css';
 
@@ -90,7 +91,7 @@ const LiveTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => 
                 },
                 index,
               ) => (
-                <Table.Row className={leaguename} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
+                <Table.Row className={leaguename} key={index} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
                   <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                   <Table.Cell textAlign="center" className={`D${tier}`}>
                     <a
@@ -110,7 +111,9 @@ const LiveTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => 
                       {teamname}
                     </a>
                   </Table.Cell>
-                  <Table.Cell textAlign="center">{FFname}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <UserLink FFname={FFname} />
+                  </Table.Cell>
                   <Table.Cell textAlign="center">{currentWeekPF}</Table.Cell>
                   <Table.Cell textAlign="center">{regTotal}</Table.Cell>
                   <Table.Cell textAlign="center">{PA}</Table.Cell>
