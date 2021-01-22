@@ -35,7 +35,9 @@ class Scoreboard(WesCog):
         root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
 
         if len(root["dates"]) == 0:
-            raise NoGamesTodayError()
+            raise self.NoGamesTodayError(date)
+
+        raise self.NoGamesTodayError()
 
         # Loop through each game in today's schedule
         games = root["dates"][0]["games"]
@@ -86,7 +88,7 @@ class Scoreboard(WesCog):
             await ctx.send(error.message)
         elif isinstance(error, LinkError):
             await ctx.send(error.message)
-        elif isinstance(error, NoGamesTodayError):
+        elif isinstance(error, self.NoGamesTodayError):
             await ctx.send(error.message)
         else:
             await ctx.send(error)

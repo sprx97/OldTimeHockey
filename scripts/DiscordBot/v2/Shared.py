@@ -130,17 +130,21 @@ OT_CHALLENGE_BUFFER_MINUTES = 5 # Mintues left in the 3rd at which OT challenge 
 class WesCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.log = bot.create_log(self.__class__.__name__)
+        self.log = self.bot.create_log(self.__class__.__name__)
         self.log.info(f"{self.__class__.__name__} cog initialized.")
 
     # Generic error handler for all Discord Command Exceptions. Just logs the error,
     # but can override this method or specific commands' error handlers in cogs
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        self.log.error(str(error), stacklevel=2)
+        # Only handle this error in the correct Cog
+        if ctx.cog.qualified_name != self.__class__.__name__:
+            return
 
-    # Default handler for python exceptions
-    async def on_error(self, event, *args, **kwargs):
+        # Allows us to check for original exceptions raised and sent to CommandInvokeError.
+        # If nothing is found. We keep the exception passed to on_command_error.
+        error = getattr(error, 'original', error)
+
         self.log.error(str(error), stacklevel=2)
 
 ######################## Custom Exceptions ########################

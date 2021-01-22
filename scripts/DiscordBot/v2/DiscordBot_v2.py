@@ -20,25 +20,19 @@ class Wes(commands.Bot):
 
     # Creates or returns a log file of the given name.
     def create_log(self, name):    
-        log = logging.getLogger(name)
+        logger = logging.getLogger(name)
         
         # Only create file handlers if the log doesn't have any, not on reload
-        if not log.hasHandlers():
-            log.setLevel(logging.DEBUG)
+        if not logger.hasHandlers():
+            logger.setLevel(logging.INFO)
 
             # Create <Cog>.log log file
             fh = logging.FileHandler(f"Logs/{name}.log", "a+")
-            fh.setLevel(logging.DEBUG)
+            fh.setLevel(logging.INFO)
             fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(filename)s %(lineno)d %(message)s"))
-            log.addHandler(fh)
+            logger.addHandler(fh)
 
-            # Create <Cog>.err log file
-            fh = logging.FileHandler(f"Logs/{name}.err", "a+")
-            fh.setLevel(logging.ERROR)
-            fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(filename)s %(lineno)d %(message)s"))
-            log.addHandler(fh)
-
-        return log
+        return logger
 
     # Returns the days, hours, minutes, and seconds since the bot was last initialized
     def calculate_uptime(self):
@@ -70,7 +64,7 @@ async def on_disconnect():
 
 @bot.event
 async def on_error(self, event, *args, **kwargs):
-    bot.log.error("ERROR", stacklevel=2)
+    bot.log.error(event, stacklevel=2)
 
 # Remove default help command
 bot.remove_command("help")
