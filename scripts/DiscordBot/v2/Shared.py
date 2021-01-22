@@ -213,7 +213,20 @@ def make_api_call(link):
 
     return data
 
+# Gets discord channel objects from a list of ids
+scoreboard_channel_ids = [TEST_GENERAL_CHANNEL_ID]
+def get_channels_from_ids(bot, ids):
+    channels = []
+    for id in ids:
+        channels.append(bot.get_channel(id))
+    return channels
+
 ######################## Pickle File commands ########################
+
+messages_datafile = "data/messages.pickle"
+ot_datafile = "data/ot.pickle"
+otstandings_datafile = "data/otstandings.pickle"
+pickems_datafile = "data/pickems.pickle"
 
 def WritePickleFile(file, data):
     try:

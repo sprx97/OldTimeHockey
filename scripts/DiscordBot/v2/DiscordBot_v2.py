@@ -59,8 +59,6 @@ async def on_connect():
 async def on_disconnect():
     days, hours, minutes, seconds = bot.calculate_uptime()
     bot.log.info(f"Bot disconnected after {days} day(s), {hours} hour(s), {minutes} minute(s), {seconds} seconds(s).")
-    if not bot.killed:
-        bot.run(Config.config["beta_discord_token"], reconnect=True)
 
 # Remove default help command
 bot.remove_command("help")

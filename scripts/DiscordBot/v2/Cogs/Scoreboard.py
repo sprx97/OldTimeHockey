@@ -12,7 +12,6 @@ class Scoreboard(WesCog):
         super().__init__(bot)
 
         self.scores_loop.start()
-        self.scoreboard_channels = [TEST_GENERAL_CHANNEL_ID]
 
     # Custom exception for a failure to fetch a link
     class NoGamesTodayError(discord.ext.commands.CommandError):
@@ -95,34 +94,42 @@ class Scoreboard(WesCog):
         else:
             await ctx.send(error)
 
-    async def update_announcement(self, key, string, link):
-        pass
-        # for msgid in ParseFeeds.pickled[key]["msg_id"]:
-        #     msg = None
-        #     for channel in scoreboard_channels:
-        #         try:
-        #             msg = await channel.fetch_message(msgid)
-        #         except:
-        #             continue
-        #     if msg != None:
-        #         # print("Edit:", key, msg.id, embed.title)
-        #         await msg.edit(embed=embed)
+    # Update a message string that has already been sent
+    async def update_goal(self, key, string, link):
+        # Do nothing if nothing has changed
+        if string == self.messages[key]["msg_text"] and link == self.messages[key]["msg_link"]:
+            return
 
-    async def announce_string(self, key, string):
+        embed = discord.Embed(title=string, url=link)
+        self.messages[key]["msg_text"] = string
+        self.messages[key]["msg_link"] = link
+        for msgid in self.messages[key]["msg_id"]:
+            msg = None
+            for channel in get_channels_from_ids(bot, scoreboard_channel_ids):
+                try:
+                    msg = await channel.fetch_message(msgid)
+                except:
+                    continue
+            if msg != None:
+                # print("Edit:", key, msg.id, embed.title)
+                await msg.edit(embed=embed)
+
+        WritePickleFile(messages_datafile, self.messages)
+
+    # Post a goal (or other related message) string to chat and track the data
+    async def post_goal(self, key, string):
         self.messages[key] = {"msg_id":None, "msg_text":string, "msg_link":None}
-
-        print(key + " " + string)
 
         embed = discord.Embed(title=self.messages[key]["msg_text"], url=self.messages[key]["msg_link"])
         if self.messages[key]["msg_id"] == None:
             msgids = []
-            for channel in self.scoreboard_channels: # TODO: Helper function to get all channels to send goals to
-                msg = await self.bot.get_channel(channel).send(embed=embed)
+            for channel in get_channels_from_ids(bot, scoreboard_channel_ids):
+                msg = await channel.send(embed=embed)
                 msgids.append(msg.id)
                 self.log.info(f"Post: {key} {msg.id} {string}")
             self.messages[key]["msg_id"] = msgids
 
-        WritePickleFile("data/messages.pickle", self.messages)
+        WritePickleFile(messages_datafile, self.messages)
 
     async def parse_game(self, game):
         # Get the game from NHL.com
@@ -139,17 +146,16 @@ class Scoreboard(WesCog):
         start_key = key + ":S"
         if game_state == "In Progress" and start_key not in self.messages: 
             start_string = away_emoji + " " + away + " at " + home_emoji + " " + home + " Starting."
-            await self.announce_string(start_key, start_string)
+            await self.post_goal(start_key, start_string)
 
-        # Goal Plays
-        # Final Scores
+        # TODO: Goal Plays
+        # TODO: Final Scores
 
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
-        self.messages = LoadPickleFile("data/messages.pickle")
+        self.messages = LoadPickleFile(messages_datafile)
 
         games = self.get_games_for_today()
-        print(notavar)
 
         for game in games:
             await self.parse_game(game)
