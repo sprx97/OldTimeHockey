@@ -134,7 +134,7 @@ class Scoreboard(WesCog):
     # Update a message string that has already been sent
     async def update_goal(self, key, string, link):
         # Do nothing if nothing has changed
-        if string == self.messages[key]["msg_text"] and link == self.messages[key]["msg_link"]:
+        if string == self.messages[key]["msg_text"] and (link == self.messages[key]["msg_link"] or link == None):
             return
 
         embed = discord.Embed(title=string, url=link)
@@ -161,18 +161,14 @@ class Scoreboard(WesCog):
             await self.update_goal(key, string, link)
             return
 
-        self.messages[key] = {"msg_id":None, "msg_text":string, "msg_link":None}
+        embed = discord.Embed(title=string, url=link)
 
-        embed = discord.Embed(title=self.messages[key]["msg_text"], url=self.messages[key]["msg_link"])
-        if self.messages[key]["msg_id"] == None:
-            msgids = []
-            for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
-                msg = await channel.send(embed=embed)
-                msgids.append(msg.id)
-                self.log.info(f"Post: {key} {msg.id} {string}")
-            self.messages[key]["msg_id"] = msgids
-
-        WritePickleFile(messages_datafile, self.messages)
+        msgids = []
+        for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
+            msg = await channel.send(embed=embed)
+            msgids.append(msg.id)
+            self.log.info(f"Post: {key} {msg.id} {string}")
+        self.messages[key] = {"msg_id":msgids, "msg_text":string, "msg_link":link}
 
     # Checks for new goals in the play-by-play and posts them
     async def check_for_goals(self, key, playbyplay):
@@ -263,7 +259,7 @@ class Scoreboard(WesCog):
         start_key = key + ":S"
         if game_state == "In Progress" and start_key not in self.messages: 
             start_string = away_emoji + " " + away + " at " + home_emoji + " " + home + " Starting."
-            await self.post_goal(start_key, start_string)
+            await self.post_goal(start_key, start_string, None)
 
         # Send goal and disallowed goal notifications
         await self.check_for_disallowed_goals(key, playbyplay)
@@ -308,6 +304,8 @@ class Scoreboard(WesCog):
             recap_link = self.get_recap_link(end_key)
             if recap_link != None:
                 await self.post_goal(end_key, self.messages[end_key]["msg_text"], recap_link)
+
+        WritePickleFile(messages_datafile, self.messages)
 
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
