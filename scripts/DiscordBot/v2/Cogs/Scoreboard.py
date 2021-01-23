@@ -18,6 +18,7 @@ class Scoreboard(WesCog):
         def __init__(self, date):
             self.message = f"No games found today ({date})."
 
+    # Gets a list of games for the current date
     def get_games_for_today(self):
         date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d") # Offset by 6 hours to roll over the day in the morning
         root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
@@ -94,6 +95,42 @@ class Scoreboard(WesCog):
         else:
             await ctx.send(error)
 
+    # Gets the game recap link
+    def get_recap_link(self, key):
+        try:
+            game_id = key.split(":")[0]
+            media = make_api_call(f"https://statsapi.web.nhl.com/api/v1/game/{game_id}/content")
+            for item in media["media"]["epg"]:
+                if item["title"] == "Recap":
+                    return item["items"][0]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
+        except:
+            return None
+
+    # Gets the highlight link for a goal
+    def get_media_link(self, key):
+        try:
+            game_id, event_id = key.split(":")
+            media = make_api_call(f"https://statsapi.web.nhl.com/api/v1/game/{game_id}/content")
+            for event in media["media"]["milestones"]["items"]:
+                if event["statsEventId"] == event_id:
+                    return event["highlight"]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
+        except:
+            return None
+
+    # Gets the strength (EV, PP, SH, EN) of a goal 
+    def get_goal_strength(self, goal):
+        strength = f"({goal['result']['strength']['code']}) "
+        if strength == "(EVEN) ":
+            strength = ""
+        if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
+            strength += "(EN) "
+
+        # TODO: Check for Penalty Shot
+        # Preceding play (key-1) would be type "Penalty" with penaltySeverity "Penalty Shot"
+        # Sample game: https://statsapi.web.nhl.com/api/v1/game/2020020074/feed/live
+
+        return strength
+
     # Update a message string that has already been sent
     async def update_goal(self, key, string, link):
         # Do nothing if nothing has changed
@@ -102,7 +139,8 @@ class Scoreboard(WesCog):
 
         embed = discord.Embed(title=string, url=link)
         self.messages[key]["msg_text"] = string
-        self.messages[key]["msg_link"] = link
+        if link != None:
+            self.messages[key]["msg_link"] = link
         for msgid in self.messages[key]["msg_id"]:
             msg = None
             for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
@@ -117,7 +155,12 @@ class Scoreboard(WesCog):
         WritePickleFile(messages_datafile, self.messages)
 
     # Post a goal (or other related message) string to chat and track the data
-    async def post_goal(self, key, string):
+    async def post_goal(self, key, string, link):
+        # If this key already exists, we're updating, not posting
+        if key in self.messages:
+            await self.update_goal(key, string, link)
+            return
+
         self.messages[key] = {"msg_id":None, "msg_text":string, "msg_link":None}
 
         embed = discord.Embed(title=self.messages[key]["msg_text"], url=self.messages[key]["msg_link"])
@@ -131,6 +174,80 @@ class Scoreboard(WesCog):
 
         WritePickleFile(messages_datafile, self.messages)
 
+    # Checks for new goals in the play-by-play and posts them
+    async def check_for_goals(self, key, playbyplay):
+        # Get list of scoring play ids
+        goals = playbyplay["liveData"]["plays"]["scoringPlays"]
+        away = playbyplay["gameData"]["teams"]["away"]["abbreviation"]
+        home = playbyplay["gameData"]["teams"]["home"]["abbreviation"]
+
+        # Check all the goals to report new ones
+        for goal in goals:
+            goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
+            goal_key = f"{key}:{goal['about']['eventId']}"
+
+            # Find the strength of the goal
+            strength = self.get_goal_strength(goal)
+
+            # Find the team that scored the goal
+            team_code = goal["team"]["triCode"]
+            team = f"{get_emoji(team_code)} {team_code}"
+
+            # Find the period and time the goal was scored in
+            time = f"{goal['about']['periodTime']} {goal['about']['ordinalNum']}"
+
+            # Create the full string to post to chat
+            # NB, the spacing after strength is handled in get_goal_strength
+            goal_str = f"{get_emoji('goal')} GOAL {strength}{team} {time}: {goal['result']['description']}"
+            score = f" ({away} {goal['about']['goals']['away']}, {home} {goal['about']['goals']['home']})"
+            goal_str += score
+
+            # Find the media link if we don't have one for this goal yet
+            goal_link = None
+            if goal_key not in self.messages or self.messages[goal_key]["msg_link"] == None:
+                goal_link = self.get_media_link(goal_key)
+
+            await self.post_goal(goal_key, goal_str, goal_link)
+
+    # Checks for disallowed goals (ones we have posted, but are no longer in the play-by-play) and updates them
+    async def check_for_disallowed_goals(self, key, playbyplay):
+        # Get list of scoring play ids
+        goals = playbyplay["liveData"]["plays"]["scoringPlays"]
+
+        # Loop through all of our pickled goals
+     	# If one of them doesn't exist in the list of scoring plays anymore
+     	# We should cross it out and notify that it was disallowed.
+        for pickle_key in list(self.messages.keys()):
+            game_id, event_id = pickle_key.split(":")
+
+            # Skip goals from other games, or start, end, and disallow events
+            if game_id != key or event_id == "S" or event_id == "E" or event_id[-1] == "D":
+                continue
+
+            found = False
+            for goal in goals:
+                if event_id == str(playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]):
+                    found = True
+                    break
+
+            # This goal is still there, no need to disallow
+            # Continue onto next pickle_key
+            if found:
+                continue
+
+            # Skip updating goals that have already been crossed out
+            if self.messages[pickle_key]["msg_text"][0] != "~":
+                await self.post_goal(pickle_key, f"~~{self.messages[pickle_key]['msg_text']}~~", None)
+
+            # Announce that the goal has been disallowed
+            disallow_key = pickle_key + "D"
+            if disallow_key not in self.messages:
+                away = playbyplay["gameData"]["teams"]["away"]["abbreviation"]
+                home = playbyplay["gameData"]["teams"]["home"]["abbreviation"]
+                disallow_str = f"Goal disallowed in {away}-{home}."
+                await self.post_goal(disallow_key, disallow_str, None)
+
+    # Parses a game play-by-play and posts start, goals, and end messages
     async def parse_game(self, game):
         # Get the game from NHL.com
         playbyplay = make_api_call(f"https://statsapi.web.nhl.com{game['link']}")
@@ -148,8 +265,49 @@ class Scoreboard(WesCog):
             start_string = away_emoji + " " + away + " at " + home_emoji + " " + home + " Starting."
             await self.post_goal(start_key, start_string)
 
-        # TODO: Goal Plays
-        # TODO: Final Scores
+        # Send goal and disallowed goal notifications
+        await self.check_for_disallowed_goals(key, playbyplay)
+        await self.check_for_goals(key, playbyplay)              
+                
+        # Check whether the game finished notification needs to be sent
+        end_key = key + ":E"
+        if game_state == "Final" and end_key not in self.messages:
+            # Some exhibition games don't get play-by-play data. Skip these.
+            all_plays = playbyplay["liveData"]["plays"]["allPlays"]
+            if len(all_plays) == 0:
+                return
+
+            event_type_id = all_plays[-1]["result"]["eventTypeId"]
+            if event_type_id == "GAME_END" or event_type_id == "GAME_OFFICIAL":
+                away_score = all_plays[-1]["about"]["goals"]["away"]
+                home_score = all_plays[-1]["about"]["goals"]["home"]
+
+                # Sometimes shootout winners take longer to report, so allow this to defer to the next cycle
+                skip = False
+                if away_score == home_score: # adjust for shootout winner
+                    shootout_info = playbyplay["liveData"]["linescore"]["shootoutInfo"]
+                    if shootout_info["away"]["scores"] > shootout_info["home"]["scores"]:
+                        away_score += 1
+                    elif shootout_info["away"]["scores"] < shootout_info["home"]["scores"]:
+                        home_score += 1
+                    else:
+                        skip = True
+
+                if skip:
+                    return
+
+                # Report the final score, including the OT/SO tag
+                period = f"({all_plays[-1]['about']['ordinalNum']})"
+                if period == "(3rd)": # No additional tag for a regulation final
+                    period = ""
+                final_str = f"{get_emoji(away)} {away} {away_score}, {get_emoji(home)} {home} {home_score} Final {period}"
+                await self.post_goal(end_key, final_str, None)
+
+        # Find the game recap link if we don't have it already
+        if game_state == "Final" and end_key in self.messages and self.messages[end_key]["msg_link"] == None:
+            recap_link = self.get_recap_link(end_key)
+            if recap_link != None:
+                await self.post_goal(end_key, self.messages[end_key]["msg_text"], recap_link)
 
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
