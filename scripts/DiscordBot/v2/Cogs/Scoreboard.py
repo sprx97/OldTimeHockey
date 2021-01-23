@@ -12,6 +12,7 @@ class Scoreboard(WesCog):
         super().__init__(bot)
 
         self.scores_loop.start()
+        self.loops = [self.scores_loop]
 
     # Custom exception for a failure to fetch a link
     class NoGamesTodayError(discord.ext.commands.CommandError):
@@ -137,10 +138,12 @@ class Scoreboard(WesCog):
         if string == self.messages[key]["msg_text"] and (link == self.messages[key]["msg_link"] or link == None):
             return
 
-        embed = discord.Embed(title=string, url=link)
+        embed = discord.Embed(title=string)
         self.messages[key]["msg_text"] = string
+
         if link != None:
             self.messages[key]["msg_link"] = link
+            embed.url = link
         for msgid in self.messages[key]["msg_id"]:
             msg = None
             for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
@@ -149,7 +152,7 @@ class Scoreboard(WesCog):
                 except:
                     continue
             if msg != None:
-                # print("Edit:", key, msg.id, embed.title)
+                self.log.info("Edit:", key, msg.id, embed.title)
                 await msg.edit(embed=embed)
 
         WritePickleFile(messages_datafile, self.messages)

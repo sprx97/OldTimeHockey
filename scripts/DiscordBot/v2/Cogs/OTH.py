@@ -15,6 +15,7 @@ class OTH(WesCog):
 
         self.trades_loop.start()
         self.inactives_loop.start()
+        self.loops = [self.trades_loop, self.inactives_loop]
 
 ######################## Cog-specific Exceptions ########################
 

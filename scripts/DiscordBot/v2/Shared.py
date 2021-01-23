@@ -139,6 +139,12 @@ class WesCog(commands.Cog):
         self.bot = bot
         self.log = self.bot.create_log(self.__class__.__name__)
         self.log.info(f"{self.__class__.__name__} cog initialized.")
+        self.loops = []
+
+    # Cancels all running loops
+    def cog_unload(self):
+        for loop in self.loops:
+            loop.cancel()
 
     # Generic error handler for all Discord Command Exceptions. Just logs the error,
     # but can override this method or specific commands' error handlers in cogs
