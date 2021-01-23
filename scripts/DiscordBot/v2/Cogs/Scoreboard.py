@@ -105,7 +105,7 @@ class Scoreboard(WesCog):
         self.messages[key]["msg_link"] = link
         for msgid in self.messages[key]["msg_id"]:
             msg = None
-            for channel in get_channels_from_ids(bot, scoreboard_channel_ids):
+            for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
                 try:
                     msg = await channel.fetch_message(msgid)
                 except:
@@ -123,7 +123,7 @@ class Scoreboard(WesCog):
         embed = discord.Embed(title=self.messages[key]["msg_text"], url=self.messages[key]["msg_link"])
         if self.messages[key]["msg_id"] == None:
             msgids = []
-            for channel in get_channels_from_ids(bot, scoreboard_channel_ids):
+            for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
                 msg = await channel.send(embed=embed)
                 msgids.append(msg.id)
                 self.log.info(f"Post: {key} {msg.id} {string}")
