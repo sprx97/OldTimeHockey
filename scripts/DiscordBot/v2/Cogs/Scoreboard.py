@@ -134,22 +134,21 @@ class Scoreboard(WesCog):
 
     # Update a message string that has already been sent
     async def update_goal(self, key, string, link):
-        # Do nothing if nothing has changed
-        if string == self.messages[key]["msg_text"] and (link == self.messages[key]["msg_link"] or link == None):
+        # Do nothing if nothing has changed, including the link.
+        if string == self.messages[key]["msg_text"] and link == self.messages[key]["msg_link"]:
             return
 
-        embed = discord.Embed(title=string)
         self.messages[key]["msg_text"] = string
+        self.messages[key]["msg_link"] = link
+        embed = discord.Embed(title=string, url=link)
 
-        if link != None:
-            self.messages[key]["msg_link"] = link
-            embed.url = link
+        # Update all the messages that have been posted containing this
         for channel_id, msg_id in self.messages[key]["msg_id"].items():
             try:
                 msg = await self.bot.get_channel(channel_id).fetch_message(msg_id)
                 await msg.edit(embed=embed)
                 self.log.info(f"Edit: {key} {channel_id}:{msg_id} {string} {link}")
-            except e:
+            except Exception as e:
                 self.log.warn(e)
                 continue
 
@@ -199,9 +198,10 @@ class Scoreboard(WesCog):
             goal_str += score
 
             # Find the media link if we don't have one for this goal yet
-            goal_link = None
             if goal_key not in self.messages or self.messages[goal_key]["msg_link"] == None:
                 goal_link = self.get_media_link(goal_key)
+            else:
+                goal_link = self.messages[goal_key]["msg_link"]
 
             await self.post_goal(goal_key, goal_str, goal_link)
 
