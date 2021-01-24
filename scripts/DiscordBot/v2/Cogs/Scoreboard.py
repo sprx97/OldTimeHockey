@@ -144,18 +144,14 @@ class Scoreboard(WesCog):
         if link != None:
             self.messages[key]["msg_link"] = link
             embed.url = link
-        for msgid in self.messages[key]["msg_id"]:
-            msg = None
-            for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
-                try:
-                    msg = await channel.fetch_message(msgid)
-                except:
-                    continue
-            if msg != None:
-                self.log.info("Edit:", key, msg.id, embed.title)
+        for channel_id, msg_id in self.messages[key]["msg_id"].items():
+            try:
+                msg = await self.bot.get_channel(channel_id).fetch_message(msg_id)
                 await msg.edit(embed=embed)
-
-        WritePickleFile(messages_datafile, self.messages)
+                self.log.info(f"Edit: {key} {channel_id}:{msg_id} {string} {link}")
+            except e:
+                self.log.warn(e)
+                continue
 
     # Post a goal (or other related message) string to chat and track the data
     async def post_goal(self, key, string, link):
@@ -166,11 +162,12 @@ class Scoreboard(WesCog):
 
         embed = discord.Embed(title=string, url=link)
 
-        msgids = []
+        msgids = {}
         for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
             msg = await channel.send(embed=embed)
-            msgids.append(msg.id)
-            self.log.info(f"Post: {key} {msg.id} {string}")
+            msgids[channel.id] = msg.id
+            self.log.info(f"Post: {key} {channel.id}:{msg.id} {string} {link}")
+
         self.messages[key] = {"msg_id":msgids, "msg_text":string, "msg_link":link}
 
     # Checks for new goals in the play-by-play and posts them
@@ -302,7 +299,7 @@ class Scoreboard(WesCog):
                 final_str = f"{get_emoji(away)} {away} {away_score}, {get_emoji(home)} {home} {home_score} Final {period}"
                 await self.post_goal(end_key, final_str, None)
 
-        # Find the game recap link if we don't have it already
+        # Find the game recap link if we don't have it already.
         if game_state == "Final" and end_key in self.messages and self.messages[end_key]["msg_link"] == None:
             recap_link = self.get_recap_link(end_key)
             if recap_link != None:
