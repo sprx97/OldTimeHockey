@@ -77,7 +77,7 @@ class Debug(WesCog):
         await ctx.send(msg = "Failure in kill: " + str(error))
 
     # Reloads a cog
-    @commands.command(name="reload", aliases=["reboot", "restart"])
+    @commands.command(name="reload", aliases=["reboot", "restart", "update"])
     @commands.is_owner()
     @is_tech_channel()
     async def reload(self, ctx, cog):
