@@ -10,8 +10,9 @@ import sys
 import urllib.request
 
 # Local Includes
-# TODO: Update this path when v2 is finalized
-sys.path.append("../../../..") # Root of the OldTimeHockey project
+sys.path.append("../..")
+sys.path.append("../../..")
+sys.path.append("../../../..")
 import Config
 
 ######################## Team and Emoji Mappings ########################
@@ -233,6 +234,7 @@ messages_datafile = "data/messages.pickle"
 ot_datafile = "data/ot.pickle"
 otstandings_datafile = "data/otstandings.pickle"
 pickems_datafile = "data/pickems.pickle"
+pickemsstandings_datafile = "data/pickemsstandings.pickle"
 
 def WritePickleFile(file, data):
     try:
