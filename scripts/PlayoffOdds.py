@@ -95,7 +95,7 @@ def updatePlayoffOdds(league):
                 msg["To"] = ",".join(recips)
 
                 s = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-                s.login("roldtimehockey@gmail.com", "OTHMods!");
+                s.login(Config.config["email_username"], Config.config["email_password"])
                 s.sendmail(msg["From"], recips, msg.as_string())
                 s.quit()
 
