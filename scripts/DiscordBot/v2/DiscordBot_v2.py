@@ -70,8 +70,7 @@ bot.load_extension("Cogs.Scoreboard")
 
 bot.run(config["beta_discord_token"], reconnect=True)
 
-# TODO: Uncomment
-# "Hang" if bot was force-killed to prevent recreation by pm2
-#if (bot.killed)
-#    while True:
-#        continue
+# Hang if bot was killed by command to prevent recreation by pm2
+if bot.killed:
+    while True:
+        continue
