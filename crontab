@@ -34,7 +34,7 @@ MAILTO=jeremy.vercillo@gmail.com
  02 5  * * 1   root    python3 /var/www/OldTimeHockey/scripts/PFLeadersPost.py
 
 # Post to reddit (weekly)
- 04 5  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditPostBot.py
+ 04 05  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditPostBot.py
 
 # Update league playoff odds on SportsClubStats (weekly)
  06 5  * * 1   root    python3 /var/www/OldTimeHockey/scripts/PlayoffOdds.py
