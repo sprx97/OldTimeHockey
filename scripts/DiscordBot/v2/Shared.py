@@ -222,7 +222,7 @@ def make_api_call(link):
     return data
 
 # Gets discord channel objects from a list of ids
-scoreboard_channel_ids = [TEST_GENERAL_CHANNEL_ID]
+scoreboard_channel_ids = [TEST_GENERAL_CHANNEL_ID] # TODO: HOCKEY_GENERAL_CHANNEL_ID, LIVE_GAME_CHAT_CHANNEL_ID
 def get_channels_from_ids(bot, ids):
     channels = []
     for id in ids:

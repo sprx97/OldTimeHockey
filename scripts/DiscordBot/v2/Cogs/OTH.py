@@ -191,7 +191,7 @@ class OTH(WesCog):
     @matchup.error
     async def matchup_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage: !matchup <fleaflicker username>")
+            await ctx.send("Usage: !matchup [fleaflicker username]")
         elif isinstance(error, self.UserNotFound):
             await ctx.send(error.message)
         elif isinstance(error, self.MultipleMatchupsFound):

@@ -63,9 +63,10 @@ async def on_disconnect():
 bot.remove_command("help")
 
 bot.load_extension("Cogs.Debug")
-bot.load_extension("Cogs.Memes")
-bot.load_extension("Cogs.OTH")
 bot.load_extension("Cogs.KeepingKarlsson")
+bot.load_extension("Cogs.Memes")
+bot.load_extension("Cogs.OTChallenge")
+bot.load_extension("Cogs.OTH")
 bot.load_extension("Cogs.Scoreboard")
 
 bot.run(config["beta_discord_token"], reconnect=True)

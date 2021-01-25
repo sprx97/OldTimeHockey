@@ -14,7 +14,7 @@ class OTChallenge(WesCog):
 
     @commands.command(name="ot")
     async def ot(self, ctx, team, *player):
-        if team = "standings":
+        if team == "standings":
             # PrintOTStandings()
             return
         
@@ -113,7 +113,7 @@ class OTChallenge(WesCog):
     @ot.error
     async def ot_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\n\t!ot standings\n\t!ot <NHL team> <Player number/lastname")
+            await ctx.send("Usage:\n\t!ot standings\n\t!ot [NHL team] [Player number/lastname]")
         # elif isinstance(error, NHLTeamNotFound):
         #     await ctx.send(error.message)
         # elif isinstance(error, LinkError):
