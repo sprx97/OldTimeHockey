@@ -11,7 +11,7 @@ class Scoreboard(WesCog):
     def __init__(self, bot):
         super().__init__(bot)
 
-        self.lastdate = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
+        self.date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
         self.scores_loop.start()
         self.loops = [self.scores_loop]
 
@@ -22,11 +22,10 @@ class Scoreboard(WesCog):
 
     # Gets a list of games for the current date
     def get_games_for_today(self):
-        date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d") # Offset by 6 hours to roll over the day in the morning
-        root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
+        root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={self.date}&expand=schedule.linescore")
 
         if len(root["dates"]) == 0:
-            raise self.NoGamesTodayError(date)
+            raise self.NoGamesTodayError(self.date)
 
         return root["dates"][0]["games"]
 
@@ -311,19 +310,22 @@ class Scoreboard(WesCog):
     # Checks if this iteration is "tomorrow", and does some cleanup code
     def check_date_rollover(self):
         date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
-        if self.lastdate == date:
-            return
+        if self.date == date:
+            return False
 
         # TODO: Import OT and Pickems cogs, and run their Process Standings methods
 
         for f in [messages_datafile, ot_datafile, pickems_datafile]:
             WritePickleFile(f, {}) # Reset files
 
-        self.lastdate = date
+        self.date = date
+        self.log.info("Rolling over date.")
+
+        return True
 
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
-        self.check_date_rollover()
+        if self.check_date_rollover()
 
         self.messages = LoadPickleFile(messages_datafile)
 
