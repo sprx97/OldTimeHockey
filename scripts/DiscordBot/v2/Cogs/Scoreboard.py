@@ -309,7 +309,7 @@ class Scoreboard(WesCog):
         WritePickleFile(messages_datafile, self.messages)
 
     # Checks if this iteration is "tomorrow", and does some cleanup code
-    async def check_date_rollover(self):
+    def check_date_rollover(self):
         date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
         if self.lastdate == date:
             return

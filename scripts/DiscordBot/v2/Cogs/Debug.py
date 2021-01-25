@@ -2,9 +2,11 @@
 from discord.ext import commands
 
 # Python Libraries
+import importlib
 import logging
 
 # Local Includes
+Shared = importlib.import_module("Shared")
 from Shared import *
 
 class Debug(WesCog):
@@ -81,6 +83,8 @@ class Debug(WesCog):
     @commands.is_owner()
     @is_tech_channel()
     async def reload(self, ctx, cog):
+        importlib.reload(Shared)
+
         self.bot.reload_extension(f"Cogs.{cog}")
         await ctx.send(f"Cogs.{cog} successfully reloaded.")
         self.log.info(f"Reloaded Cogs.{cog}.")
