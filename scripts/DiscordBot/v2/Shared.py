@@ -4,16 +4,17 @@ from discord.ext import commands, tasks
 
 # Python Libraries
 import json
+import os
 import pickle
 import pymysql
 import sys
 import urllib.request
 
 # Local Includes
-sys.path.append("../..")
-sys.path.append("../../..")
-sys.path.append("../../../..")
+sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 import Config
+
+config = Config.config
 
 ######################## Team and Emoji Mappings ########################
 

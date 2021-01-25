@@ -8,8 +8,7 @@ import logging
 import sys
 
 # Local Includes
-sys.path.append("../..")
-import Config
+from Shared import *
 
 class Wes(commands.Bot):
     def __init__(self, *args, **kwargs):
@@ -69,7 +68,7 @@ bot.load_extension("Cogs.OTH")
 bot.load_extension("Cogs.KeepingKarlsson")
 bot.load_extension("Cogs.Scoreboard")
 
-bot.run(Config.config["beta_discord_token"], reconnect=True)
+bot.run(config["beta_discord_token"], reconnect=True)
 
 # TODO: Uncomment
 # "Hang" if bot was force-killed to prevent recreation by pm2
