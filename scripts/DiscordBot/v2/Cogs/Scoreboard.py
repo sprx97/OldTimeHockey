@@ -311,7 +311,9 @@ class Scoreboard(WesCog):
     def check_date_rollover(self):
         date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
         if self.date == date:
-            return False
+            return
+
+        self.log.info("Rolling over date.")
 
         # TODO: Import OT and Pickems cogs, and run their Process Standings methods
 
@@ -319,13 +321,10 @@ class Scoreboard(WesCog):
             WritePickleFile(f, {}) # Reset files
 
         self.date = date
-        self.log.info("Rolling over date.")
-
-        return True
 
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
-        if self.check_date_rollover()
+        self.check_date_rollover()
 
         self.messages = LoadPickleFile(messages_datafile)
 
