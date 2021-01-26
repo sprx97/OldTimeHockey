@@ -2,6 +2,7 @@
 from discord.ext import commands
 
 # Python Libraries
+import asyncio
 from datetime import datetime, timedelta
 import inspect
 
@@ -11,6 +12,8 @@ from Shared import *
 class OTChallenge(WesCog):
     def __init__(self, bot):
         super().__init__(bot)
+
+        self.file_lock = asyncio.Lock()
     
     class OTException(discord.ext.commands.CommandError):
         def __init__(self, msg):
@@ -21,9 +24,9 @@ class OTChallenge(WesCog):
     # TODO: PrintOTStandings(ctx, show_full)
 
     @commands.command(name="ot")
-    async def ot(self, ctx, team, *player):
+    async def ot(self, ctx, team, *guess_player):
         if team == "standings":
-            show_full = len(player) > 0 and player[0] == "full"
+            show_full = len(guess_player) > 0 and guess_player[0] == "full"
             # PrintOTStandings(ctx, show_full)
             return
         
@@ -33,10 +36,10 @@ class OTChallenge(WesCog):
         team = team_map[team.lower()]
 
         # If submitting a guess, must have a player
-        if len(player) == 0:
-            raise commands.MissingRequiredArgument(inspect.Parameter("player", inspect.Parameter.POSITIONAL_ONLY))
-        player = " ".join(player)
-        player = sanitize(player)
+        if len(guess_player) == 0:
+            raise commands.MissingRequiredArgument(inspect.Parameter("guess_player", inspect.Parameter.POSITIONAL_ONLY))
+        guess_player = " ".join(guess_player)
+        guess_player = sanitize(guess_player)
 
         # Get the games for today
         date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
@@ -75,42 +78,29 @@ class OTChallenge(WesCog):
         found = 0
         for pid in game["gameData"]["players"].keys():
             player = game["gameData"]["players"][pid]
-            if (player["lastName"].lower() == player.lower() or player["fullName"].lower == player.lower() or str(player["primaryNumber"]) == player) and player["currentTeam"]["triCode"] == team:
+            if (player["lastName"].lower() == guess_player.lower() or player["fullName"].lower == guess_player.lower() or str(player["primaryNumber"]) == guess_player) and player["currentTeam"]["triCode"] == team:
                 found += 1
 
+        # Ensure only one player was found on this team
         if found == 0:
-            raise self.OTException(f"{team} does not have player {player}.")
+            raise self.OTException(f"{team} does not have player {guess_player}.")
         if found > 1:
-            raise self.OTException(f"{team} has multiple players matching {player}. Try using jersey numbers instead.")
+            raise self.OTException(f"{team} has multiple players matching {guess_player}. Try using full name or jersey number instead.")
 
-        await ctx.send(f"COMPLETE {team} {player}")
+        # store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable
+        game_id = game["gamePk"]
+        guild = ctx.guild.id
+        user = ctx.author.id
 
-        #         # store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable
-        #         try:
-        #             with open("ot.pickle", "rb+") as f:
-        #                 try:
-        #                     pickled = pickle.load(f)
-        #                 except EOFError:
-        #                     pickled = {}
+        # Save the user's guess to the file, locking to prevent from being overwritten
+        async with self.file_lock:
+            guesses = LoadPickleFile(ot_datafile)
+            guesses[(game_id, guild, user)] = (team, player["id"])
+            WritePickleFile(ot_datafile, guesses)
 
-        #                 gameid = game["gamePk"]
-        #                 guild = message.guild.id
-        #                 author = message.author.id
-
-        #                 pickled[(gameid, guild, author)] = (guess_team, player["id"])
-
-        #                 f.seek(0)
-        #                 f.truncate()
-        #                 pickle.dump(pickled, f)
-        #         except Exception as e:
-        #             raise Exception("Issue storing guess in local file. " + str(e))
-
-        #         confirmation = message.author.display_name + " selects " + player["fullName"] + " for the OT GWG."
-        #         print(confirmation)
-        #         raise Exception(confirmation)
-
-        #     except Exception as e:
-        #         await message.channel.send(e)
+        confirmation = f"{ctx.author.display_name} selects {player['fullName']} for the OT GWG."
+        self.log.info(confirmation)
+        await ctx.send(confirmation)
 
     @ot.error
     async def ot_error(self, ctx, error):
