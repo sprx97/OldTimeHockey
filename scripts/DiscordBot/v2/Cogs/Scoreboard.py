@@ -15,17 +15,12 @@ class Scoreboard(WesCog):
         self.scores_loop.start()
         self.loops = [self.scores_loop]
 
-    # Custom exception for a failure to fetch a link
-    class NoGamesTodayError(discord.ext.commands.CommandError):
-        def __init__(self, date):
-            self.message = f"No games found today ({date})."
-
     # Gets a list of games for the current date
     def get_games_for_today(self):
         root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={self.date}&expand=schedule.linescore")
 
         if len(root["dates"]) == 0:
-            raise self.NoGamesTodayError(self.date)
+            raise NoGamesTodayError(self.date)
 
         return root["dates"][0]["games"]
 
@@ -81,7 +76,7 @@ class Scoreboard(WesCog):
             break
 
         if not found:
-            await ctx.send(f"I do not think {get_emoji(team)} {team} plays today.")
+            raise TeamDoesNotPlayToday(team)
 
     @score.error
     async def score_error(self, ctx, error):
@@ -91,7 +86,9 @@ class Scoreboard(WesCog):
             await ctx.send(error.message)
         elif isinstance(error, LinkError):
             await ctx.send(error.message)
-        elif isinstance(error, self.NoGamesTodayError):
+        elif isinstance(error, NoGamesTodayError):
+            await ctx.send(error.message)
+        elif isinstance(error, TeamDoesNotPlayToday):
             await ctx.send(error.message)
         else:
             await ctx.send(error)

@@ -173,6 +173,16 @@ class DataFileNotFound(discord.ext.commands.CommandError):
     def __init__(self, file):
         self.message = f"File {file} not found."
 
+# Custom exception for a failure to fetch a link
+class NoGamesTodayError(discord.ext.commands.CommandError):
+    def __init__(self, date):
+        self.message = f"No games found today ({date})."
+
+# Custom exception for when a team doesn't play today
+class TeamDoesNotPlayToday(discord.ext.commands.CommandError):
+    def __init__(self, team):
+        self.message = f"I do not think {team} plays today."
+
 ######################## Helper functions ########################
 
 DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
@@ -228,6 +238,10 @@ def get_channels_from_ids(bot, ids):
     for id in ids:
         channels.append(bot.get_channel(id))
     return channels
+
+def sanitize(name):
+    # TODO: Replace special characters like the accent e in Lafreniere or the umlat u in Stutzle
+    return name
 
 ######################## Pickle File commands ########################
 
