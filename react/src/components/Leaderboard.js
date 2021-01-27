@@ -211,6 +211,21 @@ export default class Leaderboard extends Component {
 
   currentTiers = {};
 
+  reversedColumns = ["leaguename", "teamname", "FFname"];
+  getSortedData(data, clickedColumn) {
+    var sortedData = _.sortBy(data, [function(datum) { 
+                                        if (typeof datum[clickedColumn] === "string") 
+                                            return datum[clickedColumn].toLowerCase(); 
+                                        else 
+                                            return datum[clickedColumn]; }, "regTotal", "pointsFor"]) // regTotal and pointsFor are secondary sorts depending on view
+
+    if (this.reversedColumns.indexOf(clickedColumn) > -1) {
+        return sortedData;
+    }
+
+    return sortedData.reverse();
+  }
+
   getData = async () => {
     var filters = "";
     if (this.state.seasonFilters != null && this.state.seasonFilters != "") {
@@ -248,7 +263,7 @@ export default class Leaderboard extends Component {
     }
 
     this.setState({
-      data: _.sortBy(leaders, defaultSort).reverse(),
+      data: this.getSortedData(leaders, defaultSort),
       isLoaded: true,
       column: leaders.length > 0 ? defaultSort : null,
     });
@@ -262,21 +277,6 @@ export default class Leaderboard extends Component {
     const { value } = result || event.target;
     this.setState({ query: value, isLoaded: false, seasonFilters: null, tierFilters: null }, () => this.getData());
   };
-
-  reversedColumns = ["leaguename", "teamname", "FFname"];
-  getSortedData(data, clickedColumn) {
-    var sortedData = _.sortBy(data, [function(datum) { 
-                                        if (typeof datum[clickedColumn] === "string") 
-                                            return datum[clickedColumn].toLowerCase(); 
-                                        else 
-                                            return datum[clickedColumn]; }])
-              
-    if (this.reversedColumns.indexOf(clickedColumn) > -1) {
-        return sortedData;
-    }
-
-    return sortedData.reverse();
-  }
 
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state;
