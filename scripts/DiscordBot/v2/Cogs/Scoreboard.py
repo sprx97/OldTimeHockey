@@ -2,6 +2,7 @@
 from discord.ext import commands, tasks
 
 # Python Libraries
+import asyncio
 from datetime import datetime, timedelta
 
 # Local Includes
@@ -10,6 +11,8 @@ from Shared import *
 class Scoreboard(WesCog):
     def __init__(self, bot):
         super().__init__(bot)
+
+        self.messages_lock = asyncio.Lock()
 
         self.date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
         self.scores_loop.start()
@@ -326,12 +329,14 @@ class Scoreboard(WesCog):
     async def scores_loop(self):
         self.check_date_rollover()
 
-        self.messages = LoadPickleFile(messages_datafile)
+        # We're holding this lock for a long time, but I think it'll work since only this method and the reset method use it
+        async with self.messages_lock: 
+            self.messages = LoadPickleFile(messages_datafile)
 
-        games = self.get_games_for_today()
+            games = self.get_games_for_today()
 
-        for game in games:
-            await self.parse_game(game)
+            for game in games:
+                await self.parse_game(game)
 
     @scores_loop.before_loop
     async def before_scores_loop(self):
