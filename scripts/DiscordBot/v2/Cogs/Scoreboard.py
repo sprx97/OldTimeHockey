@@ -314,8 +314,10 @@ class Scoreboard(WesCog):
         self.log.info("Rolling over date.")
 
         # TODO: Import OT and Pickems cogs, and run their Process Standings methods
+        ot = self.bot.get_cog("OTChallenge")
+        ot.ProcessOTGuesses(None)
 
-        for f in [messages_datafile, ot_datafile, pickems_datafile]:
+        for f in [messages_datafile, pickems_datafile]:
             WritePickleFile(f, {}) # Reset files
 
         self.date = date

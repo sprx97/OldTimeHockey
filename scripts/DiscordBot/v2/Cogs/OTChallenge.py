@@ -146,7 +146,10 @@ class OTChallenge(WesCog):
             guesses = {}
             WritePickleFile(ot_datafile, guesses)
 
-        await ctx.send("Finished processing ot guesses.")
+        # Send a confirmation message if this was manually triggered
+        self.log.info("Finished processing ot guesses.")
+        if ctx:
+            await ctx.send("Finished processing ot guesses.")
 
     @commands.command(name="processot")
     async def processot(self, ctx):
