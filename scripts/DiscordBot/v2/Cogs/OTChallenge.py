@@ -70,22 +70,27 @@ class OTChallenge(WesCog):
         if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
             raise self.OTException(f"{team} game is not tied.")
 
+        game_type = game["gameData"]["game"]["type"]
+        current_period = game["liveData"]["linescore"]["currentPeriod"]
         mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
         if mins_remaining == "END":
             mins_remaining = 0
         mins_remaining = int(mins_remaining)
-        if game["liveData"]["linescore"]["currentPeriod"] != 3 or mins_remaining >= OT_CHALLENGE_BUFFER_MINUTES:
-            raise self.OTException(f"{team} game is not in the final {OT_CHALLENGE_BUFFER_MINUTES} minutes of the 3rd.")
+
+        is_late_3rd = (mins_remaining < OT_CHALLENGE_BUFFER_MINUTES and current_period == 3)
+        is_pre_OT = (current_period > 3 and ((mins_remaining == 5 and game_type == "R") or (mins_remaining == 20 and game_type == "P")))
+
+        if is_late_3rd or  is_pre_OT:
+            raise self.OTException(f"{team} game is not in the final {OT_CHALLENGE_BUFFER_MINUTES} minutes of the 3rd or an OT intermission.")
 
         # validate that the selected team has a player of the selected number
         found_player = None
         for pid in game["gameData"]["players"].keys():
             player = game["gameData"]["players"][pid]
-            if (player["lastName"].lower() == guess_player.lower() or player["fullName"].lower == guess_player.lower() or str(player["primaryNumber"]) == guess_player) and player["currentTeam"]["triCode"] == team:
+            if (sanitize(player["lastName"].lower()) == guess_player.lower() or sanitize(player["fullName"].lower()) == guess_player.lower() or str(player["primaryNumber"]) == guess_player) and player["currentTeam"]["triCode"] == team:
                 if found_player != None:
                     raise self.OTException(f"{team} has multiple players matching {guess_player}. Try using full name or jersey number instead.")
                 found_player = player
-
 
         # Ensure only one player was found on this team
         if found_player == None:
@@ -109,7 +114,7 @@ class OTChallenge(WesCog):
     @ot.error
     async def ot_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\n\t!ot standings\n\t!ot [NHL team] [Player number/lastname]")
+            await ctx.send("Usage:\n\t!ot standings\n\t!ot [Team] [Player Name/Number]")
         elif isinstance(error, NHLTeamNotFound):
             await ctx.send(error.message)
         elif isinstance(error, LinkError):

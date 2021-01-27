@@ -240,7 +240,10 @@ def get_channels_from_ids(bot, ids):
     return channels
 
 def sanitize(name):
-    # TODO: Replace special characters like the accent e in Lafreniere or the umlat u in Stutzle
+    name = name.replace("è", "e") # Lafreniere
+    name = name.replace("ü", "u") # Stutzle
+    name = name.replace("'", "") # O'Reilly
+    name = name.replace("’", "") # O’Reilly
     return name
 
 ######################## Pickle File commands ########################
