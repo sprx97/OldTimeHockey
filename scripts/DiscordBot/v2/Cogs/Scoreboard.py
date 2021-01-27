@@ -320,8 +320,8 @@ class Scoreboard(WesCog):
         ot = self.bot.get_cog("OTChallenge")
         ot.ProcessOTGuesses(None)
 
-        for f in [messages_datafile, pickems_datafile]:
-            WritePickleFile(f, {}) # Reset files
+        async with self.messages_lock:
+            WritePickleFile(messages_datafile, {}) # Reset file
 
         self.date = date
 
