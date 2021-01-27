@@ -30,6 +30,7 @@ class Scoreboard(WesCog):
         team = input
         if len(extras) > 0:
             team += " " + " ".join(extras)
+        team = team.replace("[", "").replace("]", "")
         team = team.lower()
 
         if team not in team_map:

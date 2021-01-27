@@ -174,6 +174,8 @@ class OTH(WesCog):
     @commands.command(name="matchup")
     @is_OTH_guild()
     async def matchup(self, ctx, user):
+        user = user.replace("[", "").replace("]", "")
+
         matchup = get_user_matchup_from_database(user)
         if len(matchup) == 0:
             raise self.UserNotFound(user)

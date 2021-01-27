@@ -25,6 +25,8 @@ class OTChallenge(WesCog):
 
     @commands.command(name="ot")
     async def ot(self, ctx, team, *guess_player):
+        team = team.replace("[", "").replace("]", "")
+
         if team == "standings":
             show_full = len(guess_player) > 0 and guess_player[0] == "full"
             # PrintOTStandings(ctx, show_full)
@@ -39,6 +41,7 @@ class OTChallenge(WesCog):
         if len(guess_player) == 0:
             raise commands.MissingRequiredArgument(inspect.Parameter("guess_player", inspect.Parameter.POSITIONAL_ONLY))
         guess_player = " ".join(guess_player)
+        guess_player = guess_player.replace("[", "").replace("]", "")
         guess_player = sanitize(guess_player)
 
         # Get the games for today
@@ -75,17 +78,18 @@ class OTChallenge(WesCog):
             raise self.OTException(f"{team} game is not in the final {OT_CHALLENGE_BUFFER_MINUTES} minutes of the 3rd.")
 
         # validate that the selected team has a player of the selected number
-        found = 0
+        found_player = None
         for pid in game["gameData"]["players"].keys():
             player = game["gameData"]["players"][pid]
             if (player["lastName"].lower() == guess_player.lower() or player["fullName"].lower == guess_player.lower() or str(player["primaryNumber"]) == guess_player) and player["currentTeam"]["triCode"] == team:
-                found += 1
+                if found_player != None:
+                    raise self.OTException(f"{team} has multiple players matching {guess_player}. Try using full name or jersey number instead.")
+                found_player = player
+
 
         # Ensure only one player was found on this team
-        if found == 0:
+        if found_player == None:
             raise self.OTException(f"{team} does not have player {guess_player}.")
-        if found > 1:
-            raise self.OTException(f"{team} has multiple players matching {guess_player}. Try using full name or jersey number instead.")
 
         # store the user, server, the gameid, and the player they chose, overwriting previous choices if applicable
         game_id = game["gamePk"]
@@ -95,10 +99,10 @@ class OTChallenge(WesCog):
         # Save the user's guess to the file, locking to prevent from being overwritten
         async with self.file_lock:
             guesses = LoadPickleFile(ot_datafile)
-            guesses[(game_id, guild, user)] = (team, player["id"])
+            guesses[(game_id, guild, user)] = (team, found_player["id"])
             WritePickleFile(ot_datafile, guesses)
 
-        confirmation = f"{ctx.author.display_name} selects {player['fullName']} for the OT GWG."
+        confirmation = f"{ctx.author.display_name} selects {found_player['fullName']} for the OT GWG."
         self.log.info(confirmation)
         await ctx.send(confirmation)
 
