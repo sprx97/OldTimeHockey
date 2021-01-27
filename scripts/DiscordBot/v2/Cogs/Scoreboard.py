@@ -318,7 +318,7 @@ class Scoreboard(WesCog):
 
         # TODO: Import OT and Pickems cogs, and run their Process Standings methods
         ot = self.bot.get_cog("OTChallenge")
-        ot.ProcessOTGuesses(None)
+        ot.process_ot_guesses(None)
 
         async with self.messages_lock:
             WritePickleFile(messages_datafile, {}) # Reset file
