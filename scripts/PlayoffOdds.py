@@ -23,7 +23,7 @@ def updatePlayoffOdds(league):
 
     teams = root.cssselect(".league-name a")
     for team in teams:
-        body += "\t\tTeam: " + team.text_content() + "\n"
+        body += "\t\tTeam: " + team.text_content().replace("(", "").replace(")", "") + "\n"
 
     body += "\tKind: fantasy\n"
     body += "\tSport: hockey\n"
@@ -75,8 +75,8 @@ def updatePlayoffOdds(league):
             away = scores[m]
             home = scores[m+1]
 
-            awayname = away.cssselect(".league-name")[0].text_content()
-            homename = home.cssselect(".league-name")[0].text_content()
+            awayname = away.cssselect(".league-name")[0].text_content().replace("(", "").replace(")", "")
+            homename = home.cssselect(".league-name")[0].text_content().replace("(", "").replace(")", "")
 
             awayscore = int(float(away.cssselect(".right")[0].text_content())*100)
             homescore = int(float(home.cssselect(".right")[0].text_content())*100)
@@ -90,7 +90,7 @@ def updatePlayoffOdds(league):
 
     body += "GamesEnd\n"
 
-    #print(body)
+    # print(body)
 
     try:
         msg = MIMEText(body)
@@ -115,6 +115,7 @@ cursor = db.cursor()
 
 cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
 leagues = cursor.fetchall()
-leagues = leagues + tuple([(9559, "OTHKeeper", 2019, 0, 0)])
+leagues = leagues + tuple([(9559, "OTHKeeper", str(year), 0, 0)])
+leagues = [(12092, "Lemieux", 2020, 0, 0)]
 for league in leagues:
     updatePlayoffOdds(league[0])

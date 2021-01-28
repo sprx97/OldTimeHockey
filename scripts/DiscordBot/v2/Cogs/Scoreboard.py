@@ -309,7 +309,7 @@ class Scoreboard(WesCog):
         WritePickleFile(messages_datafile, self.messages)
 
     # Checks if this iteration is "tomorrow", and does some cleanup code
-    def check_date_rollover(self):
+    async def check_date_rollover(self):
         date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
         if self.date == date:
             return
@@ -327,7 +327,7 @@ class Scoreboard(WesCog):
 
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
-        self.check_date_rollover()
+        await self.check_date_rollover()
 
         # We're holding this lock for a long time, but I think it'll work since only this method and the reset method use it
         async with self.messages_lock: 
