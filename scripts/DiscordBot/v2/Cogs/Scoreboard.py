@@ -14,16 +14,17 @@ class Scoreboard(WesCog):
 
         self.messages_lock = asyncio.Lock()
 
-        self.date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
         self.scores_loop.start()
         self.loops = [self.scores_loop]
 
     # Gets a list of games for the current date
     def get_games_for_today(self):
-        root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={self.date}&expand=schedule.linescore")
+        date = (datetime.utcnow()-timedelta(hours=ROLLOVER_HOUR_UTC)).strftime("%Y-%m-%d")
+
+        root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
 
         if len(root["dates"]) == 0:
-            raise NoGamesTodayError(self.date)
+            raise NoGamesTodayError(date)
 
         return root["dates"][0]["games"]
 
@@ -309,29 +310,8 @@ class Scoreboard(WesCog):
         async with self.messages_lock:
             WritePickleFile(messages_datafile, self.messages)
 
-    # Checks if this iteration is "tomorrow", and does some cleanup code
-    async def check_date_rollover(self):
-        date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
-        if self.date == date:
-            return
-
-        self.log.info("Rolling over date.")
-
-        # Process the ot cog rollover method
-        ot = self.bot.get_cog("OTChallenge")
-        ot.processot(None)
-
-        # TODO: ImportPickems cog, and run their Process Standings methods
-
-        async with self.messages_lock:
-            WritePickleFile(messages_datafile, {}) # Reset file
-
-        self.date = date
-
     @tasks.loop(seconds=10.0)
     async def scores_loop(self):
-        await self.check_date_rollover()
-
         games = self.get_games_for_today()
         for game in games:
             await self.parse_game(game)

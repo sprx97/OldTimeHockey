@@ -2,6 +2,8 @@
 from discord.ext import commands
 
 # Python Libraries
+import asyncio
+from datetime import datetime, timedelta
 import importlib
 import logging
 
@@ -12,6 +14,9 @@ from Shared import *
 class Debug(WesCog):
     def __init__(self, bot):
         super().__init__(bot)
+
+        self.rollover_loop.start()
+        self.loops = [self.rollover_loop]
 
     # Basic call-and-response commands to test if bot is working.
     @commands.command(name="ping")
@@ -78,6 +83,11 @@ class Debug(WesCog):
     async def kill_error(self, ctx, error):
         await ctx.send(msg = "Failure in kill: " + str(error))
 
+    async def reload_single_cog(self, ctx, cog):
+        self.bot.reload_extension(f"Cogs.{cog}")
+        await ctx.send(f"Cogs.{cog} successfully reloaded.")
+        self.log.info(f"Reloaded Cogs.{cog}.")
+
     # Reloads a cog
     @commands.command(name="reload", aliases=["reboot", "restart", "update"])
     @commands.is_owner()
@@ -85,14 +95,50 @@ class Debug(WesCog):
     async def reload(self, ctx, cog):
         importlib.reload(Shared)
 
-        self.bot.reload_extension(f"Cogs.{cog}")
-        await ctx.send(f"Cogs.{cog} successfully reloaded.")
-        self.log.info(f"Reloaded Cogs.{cog}.")
+        if cog.lower() == "all":
+            all_cogs = list(self.bot.cogs.keys())
+            for cog in all_cogs:
+                if cog != "Debug": # Save this cog for last
+                    await self.reload_single_cog(ctx, cog)
+            await self.reload_single_cog(ctx, "Debug")
+            await ctx.send("All cogs successfully reloaded.")
+            return
+
+        await self.reload_single_cog(ctx, cog)
 
     # Error handler for reloading cog
     @reload.error
     async def reload_error(self, ctx, error):
         await ctx.send("Failure in reload: " + str(error))
+
+    @tasks.loop(hours=24.0)
+    async def rollover_loop(self):
+        self.log.info("Rolling over date.")
+
+        # Process the ot cog rollover method
+        ot = self.bot.get_cog("OTChallenge")
+        ot.processot(None)
+
+        # # TODO: ImportPickems cog, and run their Process Standings methods
+
+        scoreboard = self.bot.get_cog("Scoreboard")
+        async with scoreboard.messages_lock:
+            scoreboard.messages = {}
+            WritePickleFile(messages_datafile, scoreboard.messages) # reset file
+
+    # Wait to start the first iteration of this loop at the appropriate time
+    @rollover_loop.before_loop
+    async def before_rollover_loop(self):
+        current_time = datetime.utcnow()
+        target_time = current_time
+
+        if target_time.hour > ROLLOVER_HOUR_UTC:
+            target_time += timedelta(days=1)
+        target_time = target_time.replace(hour=ROLLOVER_HOUR_UTC, minute=0, second=0)
+
+        self.log.info(f"Sleeping rollover loop for for {target_time-current_time}")
+
+        await asyncio.sleep((target_time-current_time).total_seconds())
 
 def setup(bot):
     bot.add_cog(Debug(bot))

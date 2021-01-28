@@ -167,7 +167,7 @@ class OTChallenge(WesCog):
         guess_player = sanitize(guess_player)
 
         # Get the games for today
-        date = (datetime.now()-timedelta(hours=6)).strftime("%Y-%m-%d")
+        date = (datetime.utcnow()-timedelta(hours=ROLLOVER_HOUR_UTC)).strftime("%Y-%m-%d")
         root = make_api_call(f"https://statsapi.web.nhl.com/api/v1/schedule?date={date}&expand=schedule.linescore")
         if len(root["dates"]) <= 0:
             raise NoGamesTodayError(date)

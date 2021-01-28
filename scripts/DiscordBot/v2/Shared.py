@@ -132,6 +132,7 @@ with open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r") as f:
 # Config settings
 MIN_INACTIVE_DAYS = 7 # Number of days where we deem a team to be "inactive" on fleaflicker
 OT_CHALLENGE_BUFFER_MINUTES = 5 # Mintues left in the 3rd at which OT challenge submissions are accepted
+ROLLOVER_HOUR_UTC = 11 # 11am UTC = 6am EST = 3am PST
 
 ######################## Base Cog Class ########################
 

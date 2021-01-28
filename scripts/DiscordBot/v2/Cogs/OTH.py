@@ -65,7 +65,7 @@ class OTH(WesCog):
         await self.bot.wait_until_ready()
         
         # Sleep until midnight Sunday (Sat night) to call at the same time every week
-        curr_time = datetime.now() # Should default to EST because that's where the server is located
+        curr_time = datetime.utcnow()-timedelta(hours=ROLLOVER_HOUR_UTC)
         days_delta = timedelta((13-curr_time.weekday()) % 7)
         target_time = curr_time + days_delta
         target_time = target_time.replace(hour=0, minute=0, second=0, microsecond=0)
