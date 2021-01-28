@@ -54,7 +54,7 @@ class Debug(WesCog):
                                         "**!score [NHL team]**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
                                         "**!ot [NHL team] [player name/number]**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
                                         "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
-                                        "**!ot standings**\n\tDisplays the standings for the season-long OT prediction contest on this server.")
+                                        "**!otstandings**\n\tDisplays the standings for the season-long OT prediction contest on this server.")
         if commands.check(is_KK_guild()):
             await ctx.message.channel.send("I'm Wes McCauley, the official referee of Keeping Karlsson. Here are some of the commands I respond to:\n" + \
                                             "**!help**\n\tDisplays this list of commands.\n" + \
@@ -62,7 +62,7 @@ class Debug(WesCog):
                                             "**!score [NHL team]**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
                                             "**!ot [NHL team] [player name/number]**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
                                             "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
-                                            "**!ot standings**\n\tDisplays the standings for the season-long OT prediction contest on this server.")
+                                            "**!otstandings**\n\tDisplays the standings for the season-long OT prediction contest on this server.")
 
     # Shuts down the bot or a cog
     @commands.command(name="kill", aliases=["shutdown", "unload"])
@@ -98,9 +98,7 @@ class Debug(WesCog):
         if cog.lower() == "all":
             all_cogs = list(self.bot.cogs.keys())
             for cog in all_cogs:
-                if cog != "Debug": # Save this cog for last
-                    await self.reload_single_cog(ctx, cog)
-            await self.reload_single_cog(ctx, "Debug")
+                await self.reload_single_cog(ctx, cog)
             await ctx.send("All cogs successfully reloaded.")
             return
 
@@ -119,7 +117,7 @@ class Debug(WesCog):
         ot = self.bot.get_cog("OTChallenge")
         ot.processot(None)
 
-        # # TODO: ImportPickems cog, and run their Process Standings methods
+        # TODO: ImportPickems cog, and run their Process Standings methods
 
         scoreboard = self.bot.get_cog("Scoreboard")
         async with scoreboard.messages_lock:
