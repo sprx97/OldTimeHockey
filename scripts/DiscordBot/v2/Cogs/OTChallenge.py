@@ -156,6 +156,7 @@ class OTChallenge(WesCog):
         await self.process_ot_guesses(ctx)
 
     @commands.command(name="ot")
+    @commands.cooldown(3, 120.0, commands.BucketType.member) # 3 uses per 120 seconds per user
     async def ot(self, ctx, team, *guess_player):
         team = team.replace("[", "").replace("]", "")
 
@@ -247,6 +248,8 @@ class OTChallenge(WesCog):
     async def ot_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Usage:\n\t!ot standings\n\t!ot [Team] [Player Name/Number]")
+        elif isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f"Two-minute penalty for spamming {get_emoji('parros')}")
         elif isinstance(error, NHLTeamNotFound):
             await ctx.send(error.message)
         elif isinstance(error, LinkError):
