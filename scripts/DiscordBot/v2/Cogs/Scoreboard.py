@@ -306,7 +306,8 @@ class Scoreboard(WesCog):
             if recap_link != None:
                 await self.post_goal(end_key, self.messages[end_key]["msg_text"], recap_link)
 
-        WritePickleFile(messages_datafile, self.messages)
+        async with self.messages_lock:
+            WritePickleFile(messages_datafile, self.messages)
 
     # Checks if this iteration is "tomorrow", and does some cleanup code
     async def check_date_rollover(self):
@@ -316,9 +317,11 @@ class Scoreboard(WesCog):
 
         self.log.info("Rolling over date.")
 
-        # TODO: Import OT and Pickems cogs, and run their Process Standings methods
+        # Process the ot cog rollover method
         ot = self.bot.get_cog("OTChallenge")
-        ot.process_ot_guesses(None)
+        ot.processot(None)
+
+        # TODO: ImportPickems cog, and run their Process Standings methods
 
         async with self.messages_lock:
             WritePickleFile(messages_datafile, {}) # Reset file
@@ -329,18 +332,17 @@ class Scoreboard(WesCog):
     async def scores_loop(self):
         await self.check_date_rollover()
 
-        # We're holding this lock for a long time, but I think it'll work since only this method and the reset method use it
-        async with self.messages_lock: 
-            self.messages = LoadPickleFile(messages_datafile)
-
-            games = self.get_games_for_today()
-
-            for game in games:
-                await self.parse_game(game)
+        games = self.get_games_for_today()
+        for game in games:
+            await self.parse_game(game)
 
     @scores_loop.before_loop
     async def before_scores_loop(self):
         await self.bot.wait_until_ready()
+
+        # Load any messages we've sent previously today
+        async with self.messages_lock: 
+            self.messages = LoadPickleFile(messages_datafile)
 
     @scores_loop.error
     async def scores_loop_error(self, error):

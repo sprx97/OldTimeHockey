@@ -14,20 +14,24 @@ class OTChallenge(WesCog):
         super().__init__(bot)
 
         self.guesses_lock = asyncio.Lock()
+        self.guesses = LoadPickleFile(ot_datafile)
+        self.standings = LoadPickleFile(otstandings_datafile)
     
     class OTException(discord.ext.commands.CommandError):
         def __init__(self, msg):
             self.message = msg
 
-    async def print_ot_standings(self, ctx, show_full):
-        standings = LoadPickleFile(otstandings_datafile)
+    @commands.command(name="otstandings")
+    async def otstandings(self, ctx, show_full=None):
+        show_full = (show_full == "full")
+
         guild = ctx.guild.id
 
-        if guild not in standings:
+        if guild not in self.standings:
             raise self.OTException("No standings for this server.")
 
         # Standings message header
-        standings = standings[guild]
+        standings = self.standings[guild]
         msg = "**OT Challenge Standings**\n"
         if show_full:
             msg +=  "``Full Standings\n"
@@ -83,87 +87,76 @@ class OTChallenge(WesCog):
         msg += "``"
         msg += "*Standings bulk updated overnight"
         if not show_full:
-            msg += "\n*'!ot standings full' to display full standings"
+            msg += "\n*'!otstandings full' to display full standings"
 
         await ctx.send(msg)
 
-    async def process_ot_guesses(self, ctx):
+    @commands.command(name="processot")
+    async def processot(self, ctx):
+        # This may be a bit slow, since I'm re-loading the game for each
+        # guess, instead of processing all guesses for a game, but it shouldn't matter.
+        for guess in self.guesses:
+            game = guess[0]
+            guild = guess[1]
+            user = guess[2]
+            user_name = self.bot.get_guild(guild).get_member(user).display_name
+            team = self.guesses[guess][0]
+            player = self.guesses[guess][1]
+
+            # Load boxscore from NHL.com and pull the scorer of the last goal in this game.
+            playbyplay = make_api_call(f"https://statsapi.web.nhl.com/api/v1/game/{game}/feed/live")
+
+            # Check that the GWG play exists -- may trigger in a 0-0 shootout game
+            try:
+                goal = playbyplay["liveData"]["plays"]["scoringPlays"][-1]
+                goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
+            except:
+                self.log.info(f"Failed to find GWG play. {str(e)}") # Just log, don't raise exception so we continue processing
+                continue
+
+            # Check that game didn't end late in the 3rd or in a shootout
+            if goal["about"]["periodType"] != "OVERTIME":
+                self.log.info(f"{team} game did not end in OT.") # Just log, don't raise exception so we continue processing
+                continue
+
+            # See if the player was guessed correctly
+            correct = 0
+            scorer_name = goal["players"][0]["player"]["fullName"]
+            if goal["team"]["triCode"] == team and goal["players"][0]["player"]["id"] == player:
+                self.log.info(f"{user_name} CORRECT for {team} {scorer_name}")
+                correct = 1
+            else:
+                self.log.info(f"{user_name} INCORRECT for {team} {scorer_name}")
+
+            # Update the standings for this user
+            if guild not in self.standings:
+                self.standings[guild] = {}
+
+            if user not in self.standings[guild]:
+                self.standings[guild][user] = [0, 0]
+
+            self.standings[guild][user][0] += correct
+            self.standings[guild][user][1] += 1
+
+        for g in self.standings:
+            self.standings[g] = {k  : v for k, v in sorted(self.standings[g].items(), key=lambda item: item[1][1])} # first sort by ascending number of guesses, which is used as a tiebreaker
+            self.standings[g] = {k  : v for k, v in sorted(self.standings[g].items(), key=lambda item: item[1][0], reverse=True)} # then sort by number of correct answers
+
+        # Write updated standings and cleared guesses file
         async with self.guesses_lock:
-            standings = LoadPickleFile(otstandings_datafile)
-            guesses = LoadPickleFile(ot_datafile)
-
-            # This may be a bit slow, since I'm re-loading the game for each
-            # guess, instead of processing all guesses for a game, but it shouldn't matter.
-            for guess in guesses:
-                game = guess[0]
-                guild = guess[1]
-                user = guess[2]
-                user_name = self.bot.get_guild(guild).get_member(user).display_name
-                team = guesses[guess][0]
-                player = guesses[guess][1]
-
-                # Load boxscore from NHL.com and pull the scorer of the last goal in this game.
-                playbyplay = make_api_call(f"https://statsapi.web.nhl.com/api/v1/game/{game}/feed/live")
-
-                # Check that the GWG play exists -- may trigger in a 0-0 shootout game
-                try:
-                    goal = playbyplay["liveData"]["plays"]["scoringPlays"][-1]
-                    goal = playbyplay["liveData"]["plays"]["allPlays"][goal]
-                except:
-                    self.log.info(f"Failed to find GWG play. {str(e)}") # Just log, don't raise exception so we continue processing
-                    continue
-
-                # Check that game didn't end late in the 3rd or in a shootout
-                if goal["about"]["periodType"] != "OVERTIME":
-                    self.log.info(f"{team} game did not end in OT.") # Just log, don't raise exception so we continue processing
-                    continue
-
-                # See if the player was guessed correctly
-                correct = 0
-                scorer_name = goal["players"][0]["player"]["fullName"]
-                if goal["team"]["triCode"] == team and goal["players"][0]["player"]["id"] == player:
-                    self.log.info(f"{user_name} CORRECT for {team} {scorer_name}")
-                    correct = 1
-                else:
-                    self.log.info(f"{user_name} INCORRECT for {team} {scorer_name}")
-
-                # Update the standings for this user
-                if guild not in standings:
-                    standings[guild] = {}
-
-                if user not in standings[guild]:
-                    standings[guild][user] = [0, 0]
-
-                standings[guild][user][0] += correct
-                standings[guild][user][1] += 1
-
-            for g in standings:
-                standings[g] = {k  : v for k, v in sorted(standings[g].items(), key=lambda item: item[1][1])} # first sort by ascending number of guesses, which is used as a tiebreaker
-                standings[g] = {k  : v for k, v in sorted(standings[g].items(), key=lambda item: item[1][0], reverse=True)} # then sort by number of correct answers
-            WritePickleFile(otstandings_datafile, standings)
-
-            # Reset guesses file for tomorrow
-            guesses = {}
-            WritePickleFile(ot_datafile, guesses)
+            WritePickleFile(otstandings_datafile, self.standings)
+            self.guesses = {}
+            WritePickleFile(ot_datafile, self.guesses)
 
         # Send a confirmation message if this was manually triggered
         self.log.info("Finished processing ot guesses.")
         if ctx:
             await ctx.send("Finished processing ot guesses.")
 
-    @commands.command(name="processot")
-    async def processot(self, ctx):
-        await self.process_ot_guesses(ctx)
-
     @commands.command(name="ot")
     @commands.cooldown(3, 120.0, commands.BucketType.member) # 3 uses per 120 seconds per user
     async def ot(self, ctx, team, *guess_player):
         team = team.replace("[", "").replace("]", "")
-
-        if team == "standings":
-            show_full = len(guess_player) > 0 and guess_player[0] == "full"
-            await self.print_ot_standings(ctx, show_full)
-            return
         
         # Check that we've been given a valid team
         if team.lower() not in team_map:
@@ -235,9 +228,8 @@ class OTChallenge(WesCog):
         user = ctx.author.id
 
         # Save the user's guess to the file, locking to prevent from being overwritten
+        guesses[(game_id, guild, user)] = (team, found_player["id"])
         async with self.guesses_lock:
-            guesses = LoadPickleFile(ot_datafile)
-            guesses[(game_id, guild, user)] = (team, found_player["id"])
             WritePickleFile(ot_datafile, guesses)
 
         confirmation = f"{ctx.author.display_name} selects {found_player['fullName']} for the OT GWG."
@@ -247,7 +239,7 @@ class OTChallenge(WesCog):
     @ot.error
     async def ot_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\n\t!ot standings\n\t!ot [Team] [Player Name/Number]")
+            await ctx.send("Usage:\n\t!otstandings\n\t!ot [Team] [Player Name/Number]")
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"Two-minute penalty for spamming {get_emoji('parros')}")
         elif isinstance(error, NHLTeamNotFound):
