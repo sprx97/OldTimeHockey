@@ -4,7 +4,6 @@ from discord.ext import commands
 # Python Libraries
 import asyncio
 from datetime import datetime, timedelta
-import inspect
 
 # Local Includes
 from Shared import *
@@ -155,7 +154,7 @@ class OTChallenge(WesCog):
 
     @commands.command(name="ot")
     @commands.cooldown(3, 120.0, commands.BucketType.member) # 3 uses per 120 seconds per user
-    async def ot(self, ctx, team, *guess_player):
+    async def ot(self, ctx, team, guess_player, *extra):
         team = team.replace("[", "").replace("]", "")
         
         # Check that we've been given a valid team
@@ -163,10 +162,7 @@ class OTChallenge(WesCog):
             raise NHLTeamNotFound(team)
         team = team_map[team.lower()]
 
-        # If submitting a guess, must have a player
-        if len(guess_player) == 0:
-            raise commands.MissingRequiredArgument(inspect.Parameter("guess_player", inspect.Parameter.POSITIONAL_ONLY))
-        guess_player = " ".join(guess_player)
+        guess_player += " " + " ".join(extra)
         guess_player = guess_player.replace("[", "").replace("]", "")
         guess_player = sanitize(guess_player)
 
