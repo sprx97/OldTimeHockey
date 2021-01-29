@@ -638,6 +638,8 @@ async def on_message(message):
 
                         if game["status"]["detailedState"] == "Scheduled" or game["status"]["detailedState"] == "Pre-Game":
                             await message.channel.send(ParseFeeds.emojis[team] + " " + team + "'s game against " + ParseFeeds.emojis[opp] + " " + opp + " has not started yet.")
+                        elif game["status"]["detailedState"] == "Postponed":
+                            await message.channel.send(ParseFeeds.emojis[team] + " " + team +"'s game against " + ParseFeeds.emojis[opp] + " " + opp + " was postponed.")
                         else:
                             period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
                             awayScore = game["teams"]["away"]["score"]
