@@ -162,7 +162,8 @@ class OTChallenge(WesCog):
             raise NHLTeamNotFound(team)
         team = team_map[team.lower()]
 
-        guess_player += " " + " ".join(extra)
+        if len(extra) > 0:
+            guess_player += " " + " ".join(extra)
         guess_player = guess_player.replace("[", "").replace("]", "")
         guess_player = sanitize(guess_player)
 
@@ -193,7 +194,7 @@ class OTChallenge(WesCog):
             raise self.OTException(f"{team} game is not tied.")
 
         game_type = game["gameData"]["game"]["type"]
-        current_period = game["liveData"]["linescore"]["currentPeriod"]
+        current_period = int(game["liveData"]["linescore"]["currentPeriod"])
         mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
         if mins_remaining == "END":
             mins_remaining = 0
@@ -202,7 +203,7 @@ class OTChallenge(WesCog):
         is_late_3rd = (mins_remaining < OT_CHALLENGE_BUFFER_MINUTES and current_period == 3)
         is_pre_OT = (current_period > 3 and ((mins_remaining == 5 and game_type == "R") or (mins_remaining == 20 and game_type == "P")))
 
-        if is_late_3rd or  is_pre_OT:
+        if not is_late_3rd or not is_pre_OT:
             raise self.OTException(f"{team} game is not in the final {OT_CHALLENGE_BUFFER_MINUTES} minutes of the 3rd or an OT intermission.")
 
         # validate that the selected team has a player of the selected number
@@ -224,9 +225,9 @@ class OTChallenge(WesCog):
         user = ctx.author.id
 
         # Save the user's guess to the file, locking to prevent from being overwritten
-        guesses[(game_id, guild, user)] = (team, found_player["id"])
+        self.guesses[(game_id, guild, user)] = (team, found_player["id"])
         async with self.guesses_lock:
-            WritePickleFile(ot_datafile, guesses)
+            WritePickleFile(ot_datafile, self.guesses)
 
         confirmation = f"{ctx.author.display_name} selects {found_player['fullName']} for the OT GWG."
         self.log.info(confirmation)
