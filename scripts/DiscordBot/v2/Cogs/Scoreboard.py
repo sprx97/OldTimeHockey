@@ -28,6 +28,47 @@ class Scoreboard(WesCog):
 
         return root["dates"][0]["games"]
 
+    async def get_score_string(self, game):
+        away = team_map[game["teams"]["away"]["team"]["name"].split(" ")[-1].lower()]
+        home = team_map[game["teams"]["home"]["team"]["name"].split(" ")[-1].lower()]
+
+        home_emoji = get_emoji(home)
+        away_emoji = get_emoji(away)
+
+        game_state = game["status"]["detailedState"]
+        # Game hasn't started yet
+        if game_state == "Scheduled" or game_state == "Pre-Game":
+            return f"{away_emoji} {away} vs {home_emoji} {home} has not started yet."
+        elif game_state == "Postponed":
+            return f"{away_emoji} {away} vs {home_emoji} {home} was postponed."
+        else:
+            period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
+            away_score = game["teams"]["away"]["score"]
+            home_score = game["teams"]["home"]["score"]
+
+            # Game is over
+            if game_state == "Final":
+                if period == "(3rd)":
+                    period = ""
+                status = "Final:"
+            # Game is in progress
+            else:
+                timeleft = game["linescore"]["currentPeriodTimeRemaining"]
+                period = period[:-1] + " " + timeleft + period[-1]
+                status = "Current score:"
+
+            return f"{status} {away_emoji} {away} {away_score}, {home_emoji} {home} {home_score} {period}"
+
+    @commands.command(name="scores")
+    async def scores(self, ctx):
+        # Loop through each game in today's schedule
+        games = self.get_games_for_today()
+        msg = ""
+        for game in games:
+            msg += await self.get_score_string(game) + "\n"
+        
+        await ctx.send(msg)
+
     @commands.command(name="score")
     async def score(self, ctx, input, *extras):
         # Account for teams with two-word names (San Jose, St. Louis, Tampa Bay, etc)
@@ -53,29 +94,8 @@ class Scoreboard(WesCog):
             if home != team and away != team:
                 continue
 
-            home_emoji = get_emoji(home)
-            away_emoji = get_emoji(away)
-
-            game_state = game["status"]["detailedState"]
-            # Game hasn't started yet
-            if game_state == "Scheduled" or game_state == "Pre-Game":
-                await ctx.send(f"{away_emoji} {away} vs {home_emoji} {home} has not started yet.")
-            else:
-                period = "(" + game["linescore"]["currentPeriodOrdinal"] + ")"
-                away_score = game["teams"]["away"]["score"]
-                home_score = game["teams"]["home"]["score"]
-
-                # Game is over
-                if game_state == "Final":
-                    if period == "(3rd)":
-                        period = ""
-                    status = "Final:"
-                # Game is in progress
-                else:
-                    timeleft = game["linescore"]["currentPeriodTimeRemaining"]
-                    period = period[:-1] + " " + timeleft + period[-1]
-                    status = "Current score:"
-                await ctx.send(f"{status} {away_emoji} {away} {away_score}, {home_emoji} {home} {home_score} {period}")
+            msg = await self.get_score_string(game)
+            await ctx.send(msg)
 
             found = True
             break
