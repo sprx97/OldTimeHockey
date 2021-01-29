@@ -20,6 +20,28 @@ class OTChallenge(WesCog):
         def __init__(self, msg):
             self.message = msg
 
+    # Lists the days OT Challenge guesses for a user or team
+    @commands.command(name="otlist")
+    async def otlist(self, ctx, arg):
+        arg = arg.lower()
+        if arg in team_map:
+            await ctx.send(f"Team: {team_map[arg]}")
+
+        elif "@" in arg:
+            if len(ctx.message.mentions) > 0:
+                await ctx.send(f"User: {ctx.message.mentions[0].id}")
+
+    @otlist.error
+    async def otlist_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("Usage:\n\t!otstandings\n\t!ot [Team] [Player Name/Number]\n\t!otlist [Team or @User]")
+        elif isinstance(error, NHLTeamNotFound):
+            await ctx.send(error.message)
+        # TODO: Error for no guesses found for team or no guesses found for user
+        else:
+            await ctx.send(error)
+
+    # Displays the OT Challenge standings for this server
     @commands.command(name="otstandings")
     async def otstandings(self, ctx, show_full=None):
         show_full = (show_full == "full")
@@ -236,7 +258,7 @@ class OTChallenge(WesCog):
     @ot.error
     async def ot_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\n\t!otstandings\n\t!ot [Team] [Player Name/Number]")
+            await ctx.send("Usage:\n\t!otstandings\n\t!ot [Team] [Player Name/Number]\n\t!otlist [Team or @User]")
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"Two-minute penalty for spamming {get_emoji('parros')}")
         elif isinstance(error, NHLTeamNotFound):

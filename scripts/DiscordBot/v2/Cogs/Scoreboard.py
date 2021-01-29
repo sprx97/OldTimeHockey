@@ -12,10 +12,15 @@ class Scoreboard(WesCog):
     def __init__(self, bot):
         super().__init__(bot)
 
+        # TODO: Load scores channels from new datafile
+        self.scoreboard_channel_ids = [TEST_GENERAL_CHANNEL_ID] # TODO: HOCKEY_GENERAL_CHANNEL_ID, LIVE_GAME_CHAT_CHANNEL_ID
+
         self.messages_lock = asyncio.Lock()
 
         self.scores_loop.start()
         self.loops = [self.scores_loop]
+
+    # TODO: !reportscores command to add a channel to score reporting datafile/struct
 
     # Gets a list of games for the current date
     def get_games_for_today(self):
@@ -184,7 +189,7 @@ class Scoreboard(WesCog):
         embed = discord.Embed(title=string, url=link)
 
         msgids = {}
-        for channel in get_channels_from_ids(self.bot, scoreboard_channel_ids):
+        for channel in get_channels_from_ids(self.bot, self.scoreboard_channel_ids):
             msg = await channel.send(embed=embed)
             msgids[channel.id] = msg.id
             self.log.info(f"Post: {key} {channel.id}:{msg.id} {string} {link}")

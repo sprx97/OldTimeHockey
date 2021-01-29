@@ -54,7 +54,8 @@ class Debug(WesCog):
                                         "**!score [NHL team]**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
                                         "**!ot [NHL team] [player name/number]**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
                                         "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
-                                        "**!otstandings**\n\tDisplays the standings for the season-long OT prediction contest on this server.")
+                                        "**!otstandings**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
+                                        "**!otlist [NHL team or @User]**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
         if commands.check(is_KK_guild()):
             await ctx.message.channel.send("I'm Wes McCauley, the official referee of Keeping Karlsson. Here are some of the commands I respond to:\n" + \
                                             "**!help**\n\tDisplays this list of commands.\n" + \
@@ -62,7 +63,8 @@ class Debug(WesCog):
                                             "**!score [NHL team]**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
                                             "**!ot [NHL team] [player name/number]**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
                                             "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
-                                            "**!otstandings**\n\tDisplays the standings for the season-long OT prediction contest on this server.")
+                                            "**!otstandings**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
+                                            "**!otlist [NHL team or @User]**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
 
     # Shuts down the bot or a cog
     @commands.command(name="kill", aliases=["shutdown", "unload"])
