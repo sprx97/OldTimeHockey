@@ -12,6 +12,7 @@ class Memes(WesCog):
         super().__init__(bot)
 
     @commands.command(name="fifi")
+    @commands.cooldown(1, 300.0, commands.BucketType.guild) # 1 use per 5 minutes per guild
     @is_OTH_guild()
     async def fifi(self, ctx):
         await ctx.send("Aw yeah buddy we need way more Kevin “Fifi” Fiala up in this thread, all that animal does is rip shelfies buddy, " + \
@@ -25,6 +26,7 @@ class Memes(WesCog):
                        "and the third would be for a trillion dollars so I could pay to watch ol Fifi Score top cheddar magic for all eternity.")
 
     @commands.command(name="laine")
+    @commands.cooldown(1, 300.0, commands.BucketType.guild) # 1 use per 5 minutes per guild
     @is_OTH_guild()
     async def laine(self, ctx):
         await ctx.send("Yeah, fuck off buddy we absolutely need more Laine clips. Fuckin every time this kid steps on the ice someone scores. " + \
@@ -32,12 +34,14 @@ class Memes(WesCog):
                        "Laine is pottin 50 in '17 fuckin callin it right now. Clap bombs, fuck moms, wheel, snipe, and fuckin celly boys fuck")
 
     @commands.command(name="xfactor")
+    @commands.cooldown(1, 300.0, commands.BucketType.guild) # 1 use per 5 minutes per guild
     @is_OTH_guild()
     async def xfactor(self, ctx):
         await ctx.send("I have studied tapes of him and I must disagree. While he is highly skilled, he does not have 'it' if you know what I mean. " + \
                        "That 'x-factor'. The 'above and beyond' trait.")
 
     @commands.command(name="petey")
+    @commands.cooldown(1, 300.0, commands.BucketType.guild) # 1 use per 5 minutes per guild
     @is_OTH_guild()
     async def petey(self, ctx):
         await ctx.send("Kid might look like if Malfoy was a Hufflepuff but he plays like if Potter was a Slytherin the kids absolutely fucking nasty. " + \
