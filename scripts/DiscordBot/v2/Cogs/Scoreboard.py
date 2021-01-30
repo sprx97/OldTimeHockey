@@ -111,7 +111,7 @@ class Scoreboard(WesCog):
     @score.error
     async def score_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage: !score [NHL team]")
+            await ctx.send("Usage: `!score [NHL team]`")
         elif isinstance(error, NHLTeamNotFound):
             await ctx.send(error.message)
         elif isinstance(error, LinkError):

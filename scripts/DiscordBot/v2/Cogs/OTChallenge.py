@@ -175,14 +175,22 @@ class OTChallenge(WesCog):
             await ctx.send("Finished processing ot guesses.")
 
     @commands.command(name="ot")
-    @commands.cooldown(3, 120.0, commands.BucketType.member) # 3 uses per 120 seconds per user
-    async def ot(self, ctx, team, guess_player, *extra):
+    @commands.cooldown(3, 120.0, commands.BucketType.member) # 3 uses per 120 seconds per member
+    async def ot(self, ctx, team, guess_player = None, *extra):
         team = team.replace("[", "").replace("]", "")
         
         # Check that we've been given a valid team
         if team.lower() not in team_map:
-            raise NHLTeamNotFound(team)
+            if team.lower() == "list":
+                raise self.OTException("Did you mean `!otlist`?")
+            elif team.lower() == "standings":
+                raise self.OTException("Did you mean `!otstandings`?")
+            else:
+                raise NHLTeamNotFound(team)
         team = team_map[team.lower()]
+
+        if guess_player == None:
+            raise self.OTException("Must guess a player.")
 
         if len(extra) > 0:
             guess_player += " " + " ".join(extra)
@@ -258,7 +266,7 @@ class OTChallenge(WesCog):
     @ot.error
     async def ot_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\n\t!otstandings\n\t!ot [Team] [Player Name/Number]\n\t!otlist [Team or @User]")
+            await ctx.send("Usage:\n\t`!otstandings`\n\t!ot [Team] [Player Name/Number]`\n\t`!otlist [Team or @User]`")
         elif isinstance(error, commands.CommandOnCooldown):
             await ctx.send(f"Two-minute penalty for spamming {get_emoji('parros')}")
         elif isinstance(error, NHLTeamNotFound):

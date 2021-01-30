@@ -49,6 +49,21 @@ class Memes(WesCog):
                         "SHL, AHL, NHL it doesn't fucking matter 100 points to Pettersson because he's winning the House Cup, The Calder Cup, " + \
                         "The Stanley Cup and whatever fucking cup is in Sweden. Game Over.")
 
+    @commands.command(name="mcavoy")
+    @commands.cooldown(1, 300.0, commands.BucketType.guild) # 1 use per 5 minutes per guild
+    @is_OTH_guild()
+    async def mcavoy(self, ctx):
+        await ctx.send("WTF you say he hasn’t done anything notable he only the best baddest defenseman you ever seen. " + \
+                       "Now that Krug is out of the way he is going to tear it up and show that top tier fantasy D man you all wish you could have drafted. " + \
+                        "Big brains got in the ground floor while you’ll have to overpay next year admitting your wrongs as you wallow in self pity " + \
+                        "from your relegation only asking yourself why, why didn’t I draft McAvoy")
+
+    @commands.command(name="bryz")
+    @commands.cooldown(1, 300.0, commands.BucketType.guild) # 1 use per 5 minutes per guild
+    @is_OTH_guild()
+    async def bryz(self, ctx):
+        await ctx.send("http://2.bp.blogspot.com/-ut7bwg8rrp8/UCFRrZinwVI/AAAAAAAACNw/M6LRPCMuUtg/s1600/its-only-game.gif")
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.id == MINNE_USER_ID and " wes " in (message.content + " ").lower().replace(".", " "):
