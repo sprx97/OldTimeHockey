@@ -43,7 +43,7 @@ class Scoreboard(WesCog):
     async def scoresstart_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send("Usage:\n\t`!scoresstart [Scoreboard Channel Id]`")
-        elif isinstance(error, ChannelNotFound):
+        elif isinstance(error, self.ChannelNotFound):
             await ctx.send(error.message)
         else:
             await ctx.send(error)
