@@ -311,7 +311,7 @@ class Scoreboard(WesCog):
         # Send goal and disallowed goal notifications
         await self.check_for_disallowed_goals(key, playbyplay)
         await self.check_for_goals(key, playbyplay)      
-        if self.check_for_ot_challenge_start(key, playbyplay):
+        if self.check_for_ot_challenge_start(key, playbyplay): # TODO: Only do this if OT Challenge is enabled for this guild
             ot_key = key + ":O"
             ot_string = f"OT Challenge for {away_emoji} {away} at {home_emoji} {home} is open."
             await self.post_goal(ot_key, ot_string, None)
