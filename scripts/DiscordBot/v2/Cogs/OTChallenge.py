@@ -174,6 +174,19 @@ class OTChallenge(WesCog):
         if ctx:
             await ctx.send("Finished processing ot guesses.")
 
+    def is_ot_challenge_window(game):
+        game_type = game["gameData"]["game"]["type"]
+        current_period = int(game["liveData"]["linescore"]["currentPeriod"])
+        mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
+        if mins_remaining == "END":
+            mins_remaining = 0
+        mins_remaining = int(mins_remaining)
+
+        is_late_3rd = (mins_remaining < OT_CHALLENGE_BUFFER_MINUTES and current_period == 3)
+        is_pre_OT = (current_period > 3 and ((mins_remaining == 5 and game_type == "R") or (mins_remaining == 20 and game_type == "P")))
+
+        return (is_late_3rd or is_pre_OT)
+
     @commands.command(name="ot")
     @commands.cooldown(3, 120.0, commands.BucketType.member) # 3 uses per 120 seconds per member
     async def ot(self, ctx, team, guess_player = None, *extra):
@@ -223,17 +236,7 @@ class OTChallenge(WesCog):
         if game["liveData"]["linescore"]["teams"]["home"]["goals"] != game["liveData"]["linescore"]["teams"]["away"]["goals"]:
             raise self.OTException(f"{team} game is not tied.")
 
-        game_type = game["gameData"]["game"]["type"]
-        current_period = int(game["liveData"]["linescore"]["currentPeriod"])
-        mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]
-        if mins_remaining == "END":
-            mins_remaining = 0
-        mins_remaining = int(mins_remaining)
-
-        is_late_3rd = (mins_remaining < OT_CHALLENGE_BUFFER_MINUTES and current_period == 3)
-        is_pre_OT = (current_period > 3 and ((mins_remaining == 5 and game_type == "R") or (mins_remaining == 20 and game_type == "P")))
-
-        if not is_late_3rd or not is_pre_OT:
+        if not self.is_ot_challenge_window(game):
             raise self.OTException(f"{team} game is not in the final {OT_CHALLENGE_BUFFER_MINUTES} minutes of the 3rd or an OT intermission.")
 
         # validate that the selected team has a player of the selected number

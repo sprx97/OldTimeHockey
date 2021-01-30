@@ -20,7 +20,8 @@ class Scoreboard(WesCog):
         self.scores_loop.start()
         self.loops = [self.scores_loop]
 
-    # TODO: !reportscores command to add a channel to score reporting datafile/struct
+    # TODO: !scoresstart command to add a channel to score reporting datafile/struct
+    # TODO: !scoresstop command to remove channel from score reporting datafile/struct
 
     # Gets a list of games for the current date
     def get_games_for_today(self):
@@ -270,6 +271,25 @@ class Scoreboard(WesCog):
                 disallow_str = f"Goal disallowed in {away}-{home}."
                 await self.post_goal(disallow_key, disallow_str, None)
 
+    # Checks to see if OT challenge starting for a game
+    def check_for_ot_challenge_start(self, key, playbyplay):
+        status = playbyplay["gameData"]["status"]["detailedState"]
+        # Game not in progress
+        if "In Progress" not in status:
+            return False
+
+        # Game not tied
+        if playbyplay["liveData"]["linescore"]["teams"]["home"]["goals"] != playbyplay["liveData"]["linescore"]["teams"]["away"]["goals"]:
+            return False
+
+        # Game not in final 5 minutes of 3rd or OT intermission
+        ot = self.bot.get_cog("OTChallenge")
+        ot.processot(None)
+        if not ot.is_ot_challenge_window(playbyplay):
+            return False
+
+        return True
+
     # Parses a game play-by-play and posts start, goals, and end messages
     async def parse_game(self, game):
         # Get the game from NHL.com
@@ -290,8 +310,12 @@ class Scoreboard(WesCog):
 
         # Send goal and disallowed goal notifications
         await self.check_for_disallowed_goals(key, playbyplay)
-        await self.check_for_goals(key, playbyplay)              
-                
+        await self.check_for_goals(key, playbyplay)      
+        if self.check_for_ot_challenge_start(key, playbyplay):
+            ot_key = key + ":O"
+            ot_string = f"OT Challenge for {away_emoji} {away} at {home_emoji} {home} is open."
+            await self.post_goal(ot_key, ot_string, None)
+
         # Check whether the game finished notification needs to be sent
         end_key = key + ":E"
         if game_state == "Final" and end_key not in self.messages:
