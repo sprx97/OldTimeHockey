@@ -12,16 +12,51 @@ class Scoreboard(WesCog):
     def __init__(self, bot):
         super().__init__(bot)
 
-        # TODO: Load scores channels from new datafile
-        self.scoreboard_channel_ids = [TEST_GENERAL_CHANNEL_ID] # TODO: HOCKEY_GENERAL_CHANNEL_ID, LIVE_GAME_CHAT_CHANNEL_ID
+        self.scoreboard_channel_ids = LoadPickleFile(channels_datafile)
+        self.channels_lock = asyncio.Lock()
 
         self.messages_lock = asyncio.Lock()
 
         self.scores_loop.start()
         self.loops = [self.scores_loop]
 
-    # TODO: !scoresstart command to add a channel to score reporting datafile/struct
-    # TODO: !scoresstop command to remove channel from score reporting datafile/struct
+    class ChannelNotFound(discord.ext.commands.CommandError):
+        def __init__(self, id):
+            self.message = f"Could not find channel {id}."
+
+    @commands.command(name="scoresstart")
+    @commands.has_permissions(manage_guild=True) 
+    async def scoresstart(self, ctx, scores_channel_id):
+        scores_channel_id = int(scores_channel_id)
+        scores_channel = self.bot.get_channel(scores_channel_id)
+        if not scores_channel:
+            raise self.ChannelNotFound(scores_channel_id)
+
+        self.scoreboard_channel_ids[ctx.guild.id] = scores_channel_id
+
+        async with self.channels_lock:
+            WritePickleFile(channels_datafile, self.scoreboard_channel_ids)
+
+        await ctx.send("Scoreboard setup complete.")
+
+    @scoresstart.error
+    async def scoresstart_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("Usage:\n\t`!scoresstart [Scoreboard Channel Id]`")
+        elif isinstance(error, ChannelNotFound):
+            await ctx.send(error.message)
+        else:
+            await ctx.send(error)
+
+    @commands.command(name="scoresstop")
+    @commands.has_permissions(manage_guild=True) 
+    async def scoresstop(self, ctx):
+        self.scoreboard_channel_ids.pop(ctx.guild.id)
+
+        async with self.channels_lock:
+            WritePickleFile(channels_datafile, self.scoreboard_channel_ids)
+
+        await ctx.send("Scoreboard disabled.")
 
     # Gets a list of games for the current date
     def get_games_for_today(self):
@@ -311,7 +346,7 @@ class Scoreboard(WesCog):
         # Send goal and disallowed goal notifications
         await self.check_for_disallowed_goals(key, playbyplay)
         await self.check_for_goals(key, playbyplay)      
-        if self.check_for_ot_challenge_start(key, playbyplay): # TODO: Only do this if OT Challenge is enabled for this guild
+        if self.check_for_ot_challenge_start(key, playbyplay):
             ot_key = key + ":O"
             ot_string = f"OT Challenge for {away_emoji} {away} at {home_emoji} {home} is open."
             await self.post_goal(ot_key, ot_string, None)

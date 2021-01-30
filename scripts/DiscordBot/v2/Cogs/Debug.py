@@ -47,25 +47,33 @@ class Debug(WesCog):
     @commands.command(name="help")
     async def help(self, ctx):
         if commands.check(is_OTH_guild()):
-            await ctx.message.channel.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
-                                        "**`!help`**\n\tDisplays this list of commands.\n" + \
-                                        "**`!ping` or `!pong`**\n\tGets a response to check that bot is up.\n" + \
-                                        "**`!matchup [fleaflicker username]`**\n\tPosts the score of the user's fantasy matchup this week.\n" + \
-                                        "**`!score [NHL team]`**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
-                                        "**`!ot [NHL team] [player name/number]`**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
-                                        "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
-                                        "**`!otstandings`**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
-                                        "**`!otlist [NHL team or @User]`**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
-        if commands.check(is_KK_guild()):
-            await ctx.message.channel.send("I'm Wes McCauley, the official referee of Keeping Karlsson. Here are some of the commands I respond to:\n" + \
-                                            "**`!help`**\n\tDisplays this list of commands.\n" + \
-                                            "**`!ping` or `!pong`**\n\tGets a response to check that bot is up.\n" + \
-                                            "**`!score [NHL team]`**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
-                                            "**`!ot [NHL team] [player name/number]`**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
-                                            "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
-                                            "**`!otstandings`**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
-                                            "**`!otlist [NHL team or @User]`**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
-
+            await ctx.send("I'm Wes McCauley, the official referee of /r/OldTimeHockey. Here are some of the commands I respond to:\n" + \
+                            "**`!help`**\n\tDisplays this list of commands.\n" + \
+                            "**`!ping` or `!pong`**\n\tGets a response to check that bot is up.\n" + \
+                            "**`!matchup [fleaflicker username]`**\n\tPosts the score of the user's fantasy matchup this week.\n" + \
+                            "**`!score [NHL team]`**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
+                            "**`!ot [NHL team] [player name/number]`**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
+                            "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
+                            "**`!otstandings`**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
+                            "**`!otlist [NHL team or @User]`**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
+        elif commands.check(is_KK_guild()):
+            await ctx.send("I'm Wes McCauley, the official referee of Keeping Karlsson. Here are some of the commands I respond to:\n" + \
+                            "**`!help`**\n\tDisplays this list of commands.\n" + \
+                            "**`!ping` or `!pong`**\n\tGets a response to check that bot is up.\n" + \
+                            "**`!score [NHL team]`**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
+                            "**`!ot [NHL team] [player name/number]`**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
+                            "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
+                            "**`!otstandings`**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
+                            "**`!otlist [NHL team or @User]`**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
+        else:
+            await ctx.send("I'm Wes McCauley, an NHL scoreboard bot!\n" + \
+                           "To setup a scoreboard channel and OT Challenge channel for this guild, checkout the command `!scoresstart`. Once that's done, the following commands should work.\n" + \
+                            "**`!score [NHL team]`**\n\tPosts the score of the given NHL team's game tonight. Accepts a variety of nicknames and abbreviations.\n" + \
+                            "**`!ot [NHL team] [player name/number]`**\n\tAllows you to predict a player to score the OT winner.\n\tMust be done between 5 minutes left" + \
+                            "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
+                            "**`!otstandings`**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
+                            "**`!otlist [NHL team or @User]`**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
+                            
     # Shuts down the bot or a cog
     @commands.command(name="kill", aliases=["shutdown", "unload"])
     @commands.is_owner()

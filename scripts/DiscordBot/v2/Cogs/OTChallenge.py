@@ -34,7 +34,7 @@ class OTChallenge(WesCog):
     @otlist.error
     async def otlist_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\n\t!otstandings\n\t!ot [Team] [Player Name/Number]\n\t!otlist [Team or @User]")
+            await ctx.send("Usage:\n\t`!otstandings`\n\t`!ot [Team] [Player Name/Number]`\n\t`!otlist [Team or @User]`")
         elif isinstance(error, NHLTeamNotFound):
             await ctx.send(error.message)
         # TODO: Error for no guesses found for team or no guesses found for user
