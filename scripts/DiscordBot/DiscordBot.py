@@ -26,9 +26,11 @@ OTH_TECH_CHANNEL_ID = 489882482838077451
 HOCKEY_GENERAL_CHANNEL_ID = 507616755510673409
 TRADEREVIEW_CHANNEL_ID = 235926223757377537
 MODS_CHANNEL_ID = 220663309786021888
+OTH_OT_CHALLENGE_CHANNEL_ID = 207638168269225984
+
 GUAVAS_AND_APPLES_CHANNEL_ID = 747906611959562280
 LIVE_GAME_CHAT_CHANNEL_ID = 745031984601890906
-OT_CHALLENGE_CHANNEL_ID = 805021649799741480
+KK_OT_CHALLENGE_CHANNEL_ID = 805021649799741480
 
 # team name mappings, ALL LOWERCASE
 team_map = {}
@@ -215,8 +217,8 @@ async def ProcessOTGuesses():
         f.truncate()
         pickle.dump(pickled, f)
 
-    # await PrintOTStandings(OTH_SERVER_ID, client.get_channel(HOCKEY_GENERAL_CHANNEL_ID))
-    # await PrintOTStandings(KK_SERVER_ID, client.get_channel(OT_CHALLENGE_CHANNEL_ID))
+    # await PrintOTStandings(OTH_SERVER_ID, client.get_channel(OTH_OT_CHALLENGE_CHANNEL_ID))
+    # await PrintOTStandings(KK_SERVER_ID, client.get_channel(KK_OT_CHALLENGE_CHANNEL_ID))
 
 KK_PICKEM_CHANNEL_ID = 799100000972963891
 with open("pickems.pickle", "rb+") as pickems_picklefile:
@@ -809,7 +811,7 @@ async def on_message(message):
         await PostPickems()
 
     # OT contest check response
-    if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, HOCKEY_GENERAL_CHANNEL_ID, OT_CHALLENGE_CHANNEL_ID]:
+    if message.content.startswith("!ot") and message.channel.id in [OTH_TECH_CHANNEL_ID, OTH_OT_CHALLENGE_CHANNEL_ID, KK_OT_CHALLENGE_CHANNEL_ID]:
         try:
             tokens = message.content.split(" ")
             if len(tokens) == 1:
