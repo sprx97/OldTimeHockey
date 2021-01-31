@@ -148,5 +148,20 @@ class Debug(WesCog):
 
         await asyncio.sleep((target_time-current_time).total_seconds())
 
+    # Prints the last 5 lines of the error file
+    @commands.command(name="error", aliases=["errors", "log", "logs"])
+    @commands.is_owner()
+    @is_tech_channel()
+    async def kill(self, ctx, cog, num_lines=5):
+        num_lines = int(num_lines)
+        try:
+            f = open(f"{config['srcroot']}scripts/DiscordBot/v2/Logs/{cog}.log")
+            lines = f.readlines()[-num_lines:]
+            msg = "\n".join(lines)
+            for line in lines:
+                await ctx.send(line)
+        except:
+            await ctx.send(f"Could not find file {cog}.log.")
+
 def setup(bot):
     bot.add_cog(Debug(bot))

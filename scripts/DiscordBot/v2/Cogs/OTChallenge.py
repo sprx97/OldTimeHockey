@@ -174,7 +174,7 @@ class OTChallenge(WesCog):
         if ctx:
             await ctx.send("Finished processing ot guesses.")
 
-    def is_ot_challenge_window(game):
+    def is_ot_challenge_window(self, game):
         game_type = game["gameData"]["game"]["type"]
         current_period = int(game["liveData"]["linescore"]["currentPeriod"])
         mins_remaining = game["liveData"]["linescore"]["currentPeriodTimeRemaining"].split(":")[0]

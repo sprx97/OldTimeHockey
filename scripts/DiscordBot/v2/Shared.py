@@ -81,7 +81,7 @@ emojis["SEA"] = "<:SEA:747291968681541682>"
 emojis["STL"] = "<:STL:269315296328679436>"
 emojis["SJS"] = "<:SJS:269315542509289472>"
 emojis["TBL"] = "<:TBL:269315471919022090>"
-emojis["TOR"] = "<:torontomapleleafs:745344256532545566>"
+emojis["TOR"] = "<:TRT:805177551843885063>"
 emojis["VAN"] = "<:VAN:269315315194658818>"
 emojis["VGK"] = "<:VGK:363836502859448320>"
 emojis["WSH"] = "<:WSH:269327070977458181>"
@@ -236,8 +236,12 @@ def make_api_call(link):
 # Gets discord channel objects from a list of ids
 def get_channels_from_ids(bot, ids):
     channels = []
-    for id in ids:
-        channels.append(bot.get_channel(id))
+    for id in ids.values():
+        chan = bot.get_channel(id)
+        if chan:
+            channels.append(chan)
+        else:
+            bot.log.error(f"Could not find channel {id}. Does the bot have access to it?")
     return channels
 
 def sanitize(name):
