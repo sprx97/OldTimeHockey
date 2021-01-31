@@ -279,8 +279,8 @@ class Scoreboard(WesCog):
         for pickle_key in list(self.messages.keys()):
             game_id, event_id = pickle_key.split(":")
 
-            # Skip goals from other games, or start, end, and disallow events
-            if game_id != key or event_id == "S" or event_id == "E" or event_id[-1] == "D":
+            # Skip goals from other games, or start, end, overtime start, and disallow events
+            if game_id != key or event_id == "S" or event_id == "E" or event_id == "O" or event_id[-1] == "D":
                 continue
 
             found = False
