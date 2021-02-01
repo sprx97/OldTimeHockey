@@ -17,22 +17,22 @@ class KeepingKarlsson(WesCog):
     # Thread management loop
     @tasks.loop(hours=1.0)
     async def check_threads_loop(self):
-        for channel in self.bot.get_channel(403805619175292930).text_channels: # TODO: text_channels[1:] and ASK_KEEPING_KARLSSON_CATEGORY_ID
+        for channel in self.bot.get_channel(ASK_KEEPING_KARLSSON_CATEGORY_ID).text_channels[1:]:
             last_message = (await channel.history(limit=1).flatten())[0]
             last_message_delta = datetime.utcnow() - last_message.created_at
 
             # If the last message in the threads was more than a day ago and we aren't keeping it, lock it and mark for removal
-            if last_message_delta > timedelta(minutes=30) and "tkeep" not in channel.name and last_message.author != self.bot.user: # TODO: hours=24
+            if last_message_delta > timedelta(hours=24) and "tkeep" not in channel.name and last_message.author != self.bot.user:
                 self.log.info(f"{channel.name} is stale.")
-                role = self.bot.get_guild(TEST_GUILD_ID).get_role(TEST_ROLE_ROLE_ID) # TODO: KK_GUILD_ID, BASIC_ROLE_ID
+                role = self.bot.get_guild(KK_GUILD_ID).get_role(BASIC_ROLE_ID)
                 perms = channel.overwrites_for(role)
                 perms.send_messages=False
-#                await channel.set_permissions(role, overwrite=perms) # TODO: Uncomment
-#                await channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 12 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
+                await channel.set_permissions(role, overwrite=perms)
+                await channel.send("This thread has been locked due to 24h of inactivity, and will be deleted in 12 hours. Tag @zebra in #help-me if you'd like to keep the thread open longer.")
             # If the last message was more than 12 hours ago by this bot, delete the thread
             elif last_message_delta > timedelta(hours=12) and "tkeep" not in channel.name and last_message.author == self.bot.user:
                 self.log.info(f"{channel.name} deleted.")
-#                await channel.delete() # TODO: Uncomment this
+                await channel.delete()
 
         self.log.info("Thread check complete.")
 

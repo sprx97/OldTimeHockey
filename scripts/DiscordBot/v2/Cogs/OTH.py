@@ -51,7 +51,7 @@ class OTH(WesCog):
                 if time_since_seen.days > MIN_INACTIVE_DAYS:
                     msg += f"**{league['name']}**: *Owner {team['owners'][0]['displayName']} not seen in last {MIN_INACTIVE_DAYS} days*\n"
 
-        channel = self.bot.get_channel(TEST_GENERAL_CHANNEL_ID) # TODO: MODS_CHANNEL_ID
+        channel = self.bot.get_channel(MODS_CHANNEL_ID)
         await channel.send(msg)
         self.log.info("Inactives check complete.")
 
@@ -114,7 +114,7 @@ class OTH(WesCog):
         # Get the list of leagueIds for this year from the database
         leagues = get_leagues_from_database(CURRENT_YEAR)
 
-        trades_channel = self.bot.get_channel(TEST_GENERAL_CHANNEL_ID) # TODO: Update to TRADE_REVIEW_CHANNEL_ID
+        trades_channel = self.bot.get_channel(TRADE_REVIEW_CHANNEL_ID)
 
         # Make Fleaflicker API calls to get pending trades in all the leagues
         count = 0
