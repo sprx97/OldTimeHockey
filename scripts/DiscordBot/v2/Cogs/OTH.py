@@ -114,7 +114,7 @@ class OTH(WesCog):
         # Get the list of leagueIds for this year from the database
         leagues = get_leagues_from_database(CURRENT_YEAR)
 
-        trades_channel = self.bot.get_channel(TRADE_REVIEW_CHANNEL_ID)
+        trades_channel = self.bot.get_channel(TRADEREVIEW_CHANNEL_ID)
 
         # Make Fleaflicker API calls to get pending trades in all the leagues
         count = 0
