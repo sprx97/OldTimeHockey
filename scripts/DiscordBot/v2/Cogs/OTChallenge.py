@@ -113,6 +113,7 @@ class OTChallenge(WesCog):
         await ctx.send(msg)
 
     @commands.command(name="processot")
+    @commands.is_owner()
     async def processot(self, ctx):
         # This may be a bit slow, since I'm re-loading the game for each
         # guess, instead of processing all guesses for a game, but it shouldn't matter.
@@ -173,6 +174,8 @@ class OTChallenge(WesCog):
         self.log.info("Finished processing ot guesses.")
         if ctx:
             await ctx.send("Finished processing ot guesses.")
+
+        # TODO: Print OT Standings to KK and OTH servers
 
     def is_ot_challenge_window(self, game):
         game_type = game["gameData"]["game"]["type"]
