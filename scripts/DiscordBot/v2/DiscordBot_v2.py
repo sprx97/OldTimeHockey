@@ -69,7 +69,12 @@ bot.load_extension("Cogs.OTChallenge")
 bot.load_extension("Cogs.OTH")
 bot.load_extension("Cogs.Scoreboard")
 
-bot.run(config["beta_discord_token"], reconnect=True)
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "test":
+            bot.run(config["beta_discord_token"], reconnect=True)
+    else:
+        bot.run(config["discord_token"], reconnect=True)
 
 # Hang if bot was killed by command to prevent recreation by pm2
 if bot.killed:
