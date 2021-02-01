@@ -70,6 +70,8 @@ class OTH(WesCog):
         target_time = curr_time + days_delta
         target_time = target_time.replace(hour=0, minute=0, second=0, microsecond=0)
         delta = target_time-curr_time
+        while delta.days < 0:
+            delta += timedelta(days=7)
 
         self.log.info("Sleeping inactives_loop for " + str(delta))
         await asyncio.sleep(delta.total_seconds())
