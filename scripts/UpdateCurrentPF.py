@@ -40,10 +40,6 @@ def updateCurrentPF(league, year):
             teamID = teamID[(teamID.find("/teams/") + 7):]
         score = row.cssselect("td")[1].text_content()
 
-        # projections don't count!
-#                if isProjected:
-#                    cursor.execute("UPDATE Teams set currentWeekPF=0.0 where teamID=" + str(teamID) + " AND year=" + str(year))
-#                else:
         cursor.execute("UPDATE Teams set currentWeekPF=" + str(score) + " where teamID=" + str(teamID) + " AND year=" + str(year))
 
     # This only needs to run once per week, but not worth the time to optimize right now

@@ -116,6 +116,5 @@ cursor = db.cursor()
 cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
 leagues = cursor.fetchall()
 leagues = leagues + tuple([(9559, "OTHKeeper", str(year), 0, 0)])
-leagues = [(12092, "Lemieux", 2020, 0, 0)]
 for league in leagues:
     updatePlayoffOdds(league[0])
