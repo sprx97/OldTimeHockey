@@ -190,6 +190,7 @@ class TeamDoesNotPlayToday(discord.ext.commands.CommandError):
 ######################## Helper functions ########################
 
 DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
+DB.autocommit(True)
 
 # Grabs the list of OTH leagues for the given year
 # from the SQL database
