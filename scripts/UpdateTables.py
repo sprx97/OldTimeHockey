@@ -10,42 +10,42 @@ years_to_update = [] # can manually seed if necessary
 playoffs_to_update = []
 
 if len(sys.argv) == 1: # no arguments
-        f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
-        year = int(f.readline().strip())
-        years_to_update.append(year)
+    f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+    year = int(f.readline().strip())
+    years_to_update.append(year)
 
-        if int(f.readline().strip()) > 23: # most years only have 23 weeks
-                playoffs_to_update.append(year)
-        f.close()
+    if int(f.readline().strip()) > 23: # most years only have 23 weeks
+        playoffs_to_update.append(year)
+    f.close()
 
 else:
-        for arg in sys.argv[1:]:
-                if len(arg) == 4:
-                        years_to_update.append(int(arg))
-                elif len(arg) == 5 and arg[-1] == "p":
-                        playoffs_to_update.append(int(arg[:-1]))
-                else:
-                        print("Invalid argument")
-                        quit()
+    for arg in sys.argv[1:]:
+        if len(arg) == 4:
+            years_to_update.append(int(arg))
+        elif len(arg) == 5 and arg[-1] == "p":
+            playoffs_to_update.append(int(arg[:-1]))
+        else:
+            print("Invalid argument")
+            quit()
 
 def printHtml(root, depth):
-        for n in range(0, depth):
-                print(" ", end='')
-        print(depth, end='')
-        print(root.tag, root.get("class"), root.text)
-        for child in root:
-                printHtml(child, depth+1)
+    for n in range(0, depth):
+        print(" ", end='')
+    print(depth, end='')
+    print(root.tag, root.get("class"), root.text)
+    for child in root:
+        printHtml(child, depth+1)
 
 # More error-safe parseInt and parseFloat methods
 def intP(str):
-        if str == "":
-                return 0
-        return int(str)
+    if str == "":
+        return 0
+    return int(str)
 
 def floatP(str):
-        if str == "":
-                return 0.0
-        return float(str)
+    if str == "":
+        return 0.0
+    return float(str)
 
 # Checks the standings pages of the given league and updates the datafile
 def getStandings(leagueID, year):
