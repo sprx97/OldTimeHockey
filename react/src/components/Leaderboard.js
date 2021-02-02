@@ -8,30 +8,6 @@ import CareerRegularSeasonTable from './CareerRegularSeasonTable';
 import CareerPlayoffsTable from './CareerPlayoffsTable';
 import LiveTable from './LiveTable';
 
-const regularSeason = [
-  '2012',
-  '2013',
-  '2014',
-  '2015',
-  '2016',
-  '2017',
-  '2018',
-  '2019',
-  '2020',
-];
-const playoffs = [
-  '2012p',
-  '2013p',
-  '2014p',
-  '2015p',
-  '2016p',
-  '2017p',
-  '2018p',
-];
-const careerRegularSeason = ['career'];
-const careerPlayoffs = ['careerp'];
-const live = ['week'];
-
 export default class Leaderboard extends Component {
   numSeasonsOptions = [
     {key:0, text:"0", value:0},
@@ -128,21 +104,21 @@ export default class Leaderboard extends Component {
 
     // Sets the default column to sort by
     var defaultSort = "FFname";
-    if (regularSeason.indexOf(this.state.query) > -1) {
-      defaultSort = "pointsFor";
-    }
-    else if (playoffs.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1) {
+    if (this.state.query.slice(-1) == "p" || this.state.query == "careerp") { // playoffs and career playoffs
       defaultSort = "wins";
     }
-    else if (careerRegularSeason.indexOf(this.state.query) > -1) {
+    else if (this.state.query == "career") { // career regular season
       defaultSort = "PF";
     }
-    else if (live.indexOf(this.state.query) > -1) {
+    else if (this.state.query == "week") { // live week
       defaultSort = "currentWeekPF";
+    }
+    else { // Regular Season
+      defaultSort = "pointsFor";
     }
 
     // Get the current tier styling if this is a career leaderboard
-    if (Object.keys(this.currentTiers).length == 0 && (careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1)) {
+    if (Object.keys(this.currentTiers).length == 0 && (this.state.query.includes("career"))) {
       const tierres = await fetch("http://www.roldtimehockey.com/node/currenttier?year=" + this.seasonOptions[this.seasonOptions.length - 1].key);
       const tiers = await tierres.json();
       for(var i = 0; i < tiers.length; i++) {
@@ -191,54 +167,53 @@ export default class Leaderboard extends Component {
     return (
       <Container>
         <Segment basic textAlign="center">
-        <div style={{width: "220px", margin: "0 auto"}}>
-          <Dropdown
-            fluid
-            selection
-            options={this.dropdownOptions}
-            defaultValue={this.state.query}
-            wrapSelection={false}
-            onChange={this.onChange}
-          />
-          </div>
-          {(careerRegularSeason.indexOf(this.state.query) > -1 || careerPlayoffs.indexOf(this.state.query) > -1 || live.indexOf(this.state.query) > -1) ? (
+            <div style={{width: "220px", margin: "0 auto"}}>
+            <Dropdown
+                fluid
+                selection
+                options={this.dropdownOptions}
+                defaultValue={this.state.query}
+                wrapSelection={false}
+                onChange={this.onChange}
+            />
+            </div>
             <Fragment>
-              <Divider hidden />
-              <Grid centered>
+                <Divider hidden />
+                <Grid centered>
                 <Grid.Row columns="equal">
                 <Grid.Column>
                     <Dropdown
-                      fluid
-                      search
-                      multiple
-                      selection
-                      placeholder="Division(s)"
-                      options={this.tierOptions}
-                      wrapSelection={false}
-                      onChange={(event, value) => {
+                        fluid
+                        search
+                        multiple
+                        selection
+                        placeholder="Division(s)"
+                        options={this.tierOptions}
+                        wrapSelection={false}
+                        onChange={(event, value) => {
                         this.setState({tierFilters : value.value}, () => {this.getData();});
-                      }}
+                        }}
                     />
-                  </Grid.Column>
-                  {( live.indexOf(this.state.query) == -1) ? (
-                  <Grid.Column>
+                    </Grid.Column>
+                    {this.state.query.includes("career") ? (
+                    <Grid.Column>
                     <Dropdown
-                      fluid
-                      search
-                      multiple
-                      selection
-                      placeholder="Season(s)"
-                      options={this.seasonOptions}
-                      wrapSelection={false}
-                      onChange={(event, value) => {
+                        fluid
+                        search
+                        multiple
+                        selection
+                        placeholder="Season(s)"
+                        options={this.seasonOptions}
+                        wrapSelection={false}
+                        onChange={(event, value) => {
                         this.setState({seasonFilters : value.value}, () => {this.getData();});
-                      }}
+                        }}
                     />
-                  </Grid.Column>
-                  ) : ('') }
-                  {( live.indexOf(this.state.query) == -1) ? (
-                  <Grid.Column>
-                      <Dropdown
+                    </Grid.Column>
+                    ) : ('') }
+                    {this.state.query.includes("career") ? (
+                    <Grid.Column>
+                        <Dropdown
                         fluid
                         search
                         selection
@@ -247,30 +222,27 @@ export default class Leaderboard extends Component {
                         onChange={(event, value) => {
                             this.setState({minSeasons : value.value}, () => {this.getData();});
                         }}
-                      />
-                  </Grid.Column>
-                  ) : ('') }
+                        />
+                    </Grid.Column>
+                    ) : ('') }
                 </Grid.Row>
-                {( live.indexOf(this.state.query) == -1) ? (
+                {this.state.query.includes("career") ? (
                 <Grid.Row columns="equal">
-                  <Grid.Column>
+                    <Grid.Column>
                     <Checkbox
-                      label="Only show active managers"
-                      onChange={(event, value) => {
+                        label="Only show active managers"
+                        onChange={(event, value) => {
                         this.setState({hideInactives: value.checked}, () => {this.getData();});
-                      }}
+                        }}
                     >
                     </Checkbox>
-                  </Grid.Column>
+                    </Grid.Column>
                 </Grid.Row>
-                ) : ('')}
-              </Grid>
-            </Fragment> 
-          ) : (
-          ''
-          )}
+                ) : ('') }
+                </Grid>
+            </Fragment>
         </Segment>
-        {regularSeason.indexOf(this.state.query) > -1 ? (
+        {!isNaN(parseInt(this.state.query)) ? (
           <RegularSeasonTable
             column={column}
             data={data}
@@ -281,7 +253,7 @@ export default class Leaderboard extends Component {
         ) : (
           ''
         )}
-        {playoffs.indexOf(this.state.query) > -1 ? (
+        {this.state.query.slice(4, 5) == "p" ? (
           <PlayoffsTable
             column={column}
             data={data}
@@ -292,7 +264,7 @@ export default class Leaderboard extends Component {
         ) : (
           ''
         )}
-        {(careerRegularSeason.indexOf(this.state.query) > -1) ? (
+        {this.state.query == "career" ? (
           <CareerRegularSeasonTable
             column={column}
             data={data}
@@ -305,7 +277,7 @@ export default class Leaderboard extends Component {
         ) : (
           ''
         )}
-        {careerPlayoffs.indexOf(this.state.query) > -1 ? (
+        {this.state.query == "careerp" ? (
           <CareerPlayoffsTable
             column={column}
             data={data}
@@ -318,7 +290,7 @@ export default class Leaderboard extends Component {
         ) : (
           ''
         )}
-        {live.indexOf(this.state.query) > -1 ? (
+        {this.state.query == "week" ? (
           <LiveTable
             column={column}
             data={data}
