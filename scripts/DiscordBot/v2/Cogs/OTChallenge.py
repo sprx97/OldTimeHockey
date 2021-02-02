@@ -25,11 +25,32 @@ class OTChallenge(WesCog):
     async def otlist(self, ctx, arg):
         arg = arg.lower()
         if arg in team_map:
-            await ctx.send(f"Team: {team_map[arg]}")
+            msg = ""
+            for key, value in self.guesses.items():
+                if key[1] == ctx.guild.id and value[0] == team_map[arg]:
+                    user = (await ctx.guild.fetch_member(key[2])).display_name
+                    msg += f"{user}: **{value[2]}**\n"
+            if msg == "":
+                raise self.OTException("No OT guesses found for that team today.")
 
-        elif "@" in arg:
+            await ctx.send(msg)
+        elif "@" in arg: # Get all today's OT guesses for the user
             if len(ctx.message.mentions) > 0:
-                await ctx.send(f"User: {ctx.message.mentions[0].id}")
+                msg = ""
+                for key, value in self.guesses.items():
+                    if key[1] == ctx.guild.id and key[2] == ctx.message.mentions[0].id:
+                        team = value[0]
+                        msg += f"{emojis[team]} {team}: **{value[2]}**\n"
+                
+                if msg == "":
+                    raise self.OTException("No OT guesses found for that user today.")
+
+                await ctx.send(msg)
+        else:
+            raise NHLTeamNotFound("No valid team or user found. Did you forget the '@' symbol?")
+
+        # TODO: Check all guesses for team's game or for user.
+        #       Throw an OTException if there aren't any found.
 
     @otlist.error
     async def otlist_error(self, ctx, error):
@@ -37,7 +58,8 @@ class OTChallenge(WesCog):
             await ctx.send("Usage:\n\t`!otstandings`\n\t`!ot [Team] [Player Name/Number]`\n\t`!otlist [Team or @User]`")
         elif isinstance(error, NHLTeamNotFound):
             await ctx.send(error.message)
-        # TODO: Error for no guesses found for team or no guesses found for user
+        elif isinstance(error, self.OTException):
+            await ctx.send(error.message)
         else:
             await ctx.send(error)
 
@@ -261,7 +283,7 @@ class OTChallenge(WesCog):
         user = ctx.author.id
 
         # Save the user's guess to the file, locking to prevent from being overwritten
-        self.guesses[(game_id, guild, user)] = (team, found_player["id"])
+        self.guesses[(game_id, guild, user)] = (team, found_player["id"], found_player["fullName"])
         async with self.guesses_lock:
             WritePickleFile(ot_datafile, self.guesses)
 
