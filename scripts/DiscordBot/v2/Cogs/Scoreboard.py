@@ -69,7 +69,18 @@ class Scoreboard(WesCog):
 
         return root["dates"][0]["games"]
 
-    async def get_score_string(self, game):
+    # Gets the game recap link
+    def get_recap_link(self, key):
+        try:
+            game_id = key.split(":")[0]
+            media = make_api_call(f"https://statsapi.web.nhl.com/api/v1/game/{game_id}/content")
+            for item in media["media"]["epg"]:
+                if item["title"] == "Recap":
+                    return item["items"][0]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
+        except:
+            return None
+
+    def get_score_string(self, game):
         away = team_map[game["teams"]["away"]["team"]["name"].split(" ")[-1].lower()]
         home = team_map[game["teams"]["home"]["team"]["name"].split(" ")[-1].lower()]
 
@@ -98,7 +109,7 @@ class Scoreboard(WesCog):
                 period = period[:-1] + " " + timeleft + period[-1]
                 status = "Current score:"
 
-            return f"{status} {away_emoji} {away} {away_score}, {home_emoji} {home} {home_score} {period}"
+            return f"{status} {away_emoji} {away} {away_score}, {home_emoji} {home} {home_score} {period}", self.get_recap_link(str(game["gamePk"]))
 
     @commands.command(name="scores")
     async def scores(self, ctx):
@@ -106,7 +117,7 @@ class Scoreboard(WesCog):
         games = self.get_games_for_today()
         msg = ""
         for game in games:
-            msg += await self.get_score_string(game) + "\n"
+            msg += self.get_score_string(game)[0] + "\n"
         
         await ctx.send(msg)
 
@@ -135,8 +146,8 @@ class Scoreboard(WesCog):
             if home != team and away != team:
                 continue
 
-            msg = await self.get_score_string(game)
-            await ctx.send(msg)
+            msg, link = self.get_score_string(game)
+            await ctx.send(embed=discord.Embed(title=msg, url=link))
 
             found = True
             break
@@ -158,17 +169,6 @@ class Scoreboard(WesCog):
             await ctx.send(error.message)
         else:
             await ctx.send(error)
-
-    # Gets the game recap link
-    def get_recap_link(self, key):
-        try:
-            game_id = key.split(":")[0]
-            media = make_api_call(f"https://statsapi.web.nhl.com/api/v1/game/{game_id}/content")
-            for item in media["media"]["epg"]:
-                if item["title"] == "Recap":
-                    return item["items"][0]["playbacks"][3]["url"] # 3 = FLASH_1800K_896x504
-        except:
-            return None
 
     # Gets the highlight link for a goal
     def get_media_link(self, key):
