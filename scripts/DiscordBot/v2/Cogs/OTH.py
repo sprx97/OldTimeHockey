@@ -63,7 +63,7 @@ class OTH(WesCog):
     @inactives_loop.before_loop
     async def before_inactives_loop(self):
         await self.bot.wait_until_ready()
-        
+
         # Sleep until midnight Sunday (Sat night) to call at the same time every week
         curr_time = datetime.utcnow()-timedelta(hours=ROLLOVER_HOUR_UTC)
         days_delta = timedelta((13-curr_time.weekday()) % 7)
@@ -102,7 +102,7 @@ class OTH(WesCog):
             embed.add_field(name=f"**{team['team']['name']}**", value=players)
 
         time_secs = int(trade["tentativeExecutionTime"])/1000.0
-        embed.set_footer(text="Processes at " + datetime.fromtimestamp(time_secs).strftime("%A, %B %d, %Y %I:%M ET"))
+        embed.set_footer(text="Processes " + datetime.fromtimestamp(time_secs).strftime("%A, %B %d, %Y %I:%M ET"))
 
         return embed
 
