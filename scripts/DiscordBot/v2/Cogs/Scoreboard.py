@@ -288,6 +288,10 @@ class Scoreboard(WesCog):
             if game_id != key or event_id == "S" or event_id == "E" or event_id == "O" or event_id[-1] == "D":
                 continue
 
+            # Skip events for games that are already over, as these are often false alarms
+            if f"{game_id}:E" in self.messages.keys():
+                continue
+
             found = False
             for goal in goals:
                 if event_id == str(playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]):
