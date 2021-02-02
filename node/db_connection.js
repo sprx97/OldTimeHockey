@@ -68,12 +68,22 @@ http.createServer(function(request, response) {
 		       where T.ownerID=" + mysql.escape(query.ffid);
 	}
 	else if (path == "/leaders") {
-		if (query.year == "week") {
-			tierfilter = "";
-			if (query.tiers) {
-				tierfilter = " and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
-			}
+        yearfilter = "";
+        if (query.seasons) {
+            yearfilter = "and Leagues.year in " + mysqlEscapeArray(query.seasons.split(",")).toString() + " ";
+        }
 
+        tierfilter = "";
+        if (query.tiers) {
+            tierfilter = "and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
+        }
+
+        minseasons = "";
+        if (query.minseasons && !isNaN(parseInt(query.minseasons))) {
+            minseasons = "HAVING count(*) >= " + parseInt(query.minseasons) + " ";
+        }
+
+		if (query.year == "week") {
 			sql = "SELECT Leagues.id as leagueID, Leagues.tier as tier, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
 			       round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA, round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal \
 			       from Teams as t1 inner join Leagues on (t1.leagueID=Leagues.id AND t1.year=Leagues.year) inner join Users on t1.ownerID=Users.FFid left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
@@ -81,34 +91,14 @@ http.createServer(function(request, response) {
 			       where Leagues.year=" + mysql.escape(year) + tierfilter + " order by t1.currentWeekPF";
 		}
 		else if (query.year == "careerp") {
-			yearfilter = "";
-			if (query.seasons) {
-				yearfilter = "and Leagues.year in " + mysqlEscapeArray(query.seasons.split(",")).toString() + " ";
-			}
-
-			tierfilter = "";
-			if (query.tiers) {
-				tierfilter = "and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
-			}
-
 			sql = "SELECT FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2) as PF, round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, \
 			       round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins) as wins, sum(Teams_post.losses) as losses, \
 			       sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, \
-                               round(exp(sum(log(CASE WHEN isChamp = 0 THEN 1 WHEN tier = 1 THEN isChamp*7 WHEN tier = 2 THEN isChamp*5 WHEN tier = 3 THEN isChamp*3 WHEN tier = 4 THEN isChamp*2 END)))) as trophies, FFid \
+                   round(exp(sum(log(CASE WHEN isChamp = 0 THEN 1 WHEN tier = 1 THEN isChamp*7 WHEN tier = 2 THEN isChamp*5 WHEN tier = 3 THEN isChamp*3 WHEN tier = 4 THEN isChamp*2 END)))) as trophies, FFid \
 			       from Teams_post inner join Teams on Teams_post.teamID=Teams.teamID inner join Users on ownerID=FFid inner join Leagues on (Teams.leagueID=Leagues.id AND Teams.year = Leagues.year) \
-			       where replacement != 1 " + yearfilter + tierfilter + "group by FFid) as T1 order by PF DESC";
+			       where replacement != 1 " + yearfilter + tierfilter + "group by FFid " + minseasons + ") as T1 order by PF DESC";
 		}
 		else if (query.year == "career") {
-			yearfilter = "";
-			if (query.seasons) {
-				yearfilter = "and Leagues.year in " + mysqlEscapeArray(query.seasons.split(",")).toString() + " ";
-			}
-
-			tierfilter = "";
-			if (query.tiers) {
-				tierfilter = "and tier in " + mysqlEscapeArray(query.tiers.split(",")).toString() + " ";
-			}
-
 			sql = "SELECT FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2) as PF, round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA, \
 			       round(PA/(wins+losses), 2) as avgPA, trophies, careerCR, FFid from (select FFname, count(*) as Seasons, \
                                sum(wins) as wins, sum(losses) as losses, sum(pointsFor) as PF, sum(pointsAgainst) as PA, \
@@ -123,7 +113,7 @@ http.createServer(function(request, response) {
 													WHEN (tier = 3 AND Teams.year != 2019) THEN isChamp*3 \
 													WHEN (tier = 4 AND Teams.year != 2019) THEN isChamp*2 END)))) as trophies, \
                                round(100*sum(pointsFor)/sum(100.0*pointsFor/coachRating), 2) as careerCR, FFid \
-			       from Teams inner join Users on ownerID=FFid inner join Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) where replacement != 1 and pointsFor >=0 " + yearfilter + tierfilter + "group by FFid) as T1 order by PF DESC";
+			       from Teams inner join Users on ownerID=FFid inner join Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) where replacement != 1 and pointsFor >=0 " + yearfilter + tierfilter + "group by FFid " + minseasons + ") as T1 order by PF DESC";
 		}
 		else if (query.year[query.year.length-1] == "p") {
 			year = mysql.escape(query.year.slice(0, -1));
