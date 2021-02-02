@@ -182,16 +182,21 @@ class Scoreboard(WesCog):
             return None
 
     # Gets the strength (EV, PP, SH, EN) of a goal 
-    def get_goal_strength(self, goal):
+    def get_goal_strength(self, playbyplay, goal):
         strength = f"({goal['result']['strength']['code']}) "
         if strength == "(EVEN) ":
             strength = ""
         if "emptyNet" in goal["result"] and goal["result"]["emptyNet"]:
             strength += "(EN) "
 
-        # TODO: Check for Penalty Shot
-        # Preceding play (key-1) would be type "Penalty" with penaltySeverity "Penalty Shot"
-        # Sample game: https://statsapi.web.nhl.com/api/v1/game/2020020074/feed/live
+        # Check if it was a penalty shot by looking at previous play (Sample game: https://statsapi.web.nhl.com/api/v1/game/2020020074/feed/live)
+        try:
+            prev_id = goal["about"]["eventIdx"] - 1
+            prev_play = playbyplay["liveData"]["plays"]["allPlays"][prev_id]
+            if "eventTypeId" in prev_play and prev_play["eventTypeId"] == "PENALTY" and prev_play["penaltySeverity"] == "Penalty Shot":
+                strength += "(PS) "
+        except:
+            self.log.info("Failure in PS check.")
 
         return strength
 
@@ -245,7 +250,7 @@ class Scoreboard(WesCog):
             goal_key = f"{key}:{goal['about']['eventId']}"
 
             # Find the strength of the goal
-            strength = self.get_goal_strength(goal)
+            strength = self.get_goal_strength(playbyplay, goal)
 
             # Find the team that scored the goal
             team_code = goal["team"]["triCode"]
