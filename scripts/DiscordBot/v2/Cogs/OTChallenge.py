@@ -22,41 +22,38 @@ class OTChallenge(WesCog):
 
     # Lists the days OT Challenge guesses for a user or team
     @commands.command(name="otlist")
-    async def otlist(self, ctx, arg):
-        arg = arg.lower()
-        if arg in team_map:
-            msg = ""
-            for key, value in self.guesses.items():
-                if key[1] == ctx.guild.id and value[0] == team_map[arg]:
-                    user = (await ctx.guild.fetch_member(key[2])).display_name
-                    msg += f"{user}: **{value[2]}**\n"
-            if msg == "":
-                raise self.OTException("No OT guesses found for that team today.")
-
-            await ctx.send(msg)
-        elif "@" in arg: # Get all today's OT guesses for the user
-            if len(ctx.message.mentions) > 0:
-                msg = ""
-                for key, value in self.guesses.items():
-                    if key[1] == ctx.guild.id and key[2] == ctx.message.mentions[0].id:
-                        team = value[0]
-                        msg += f"{emojis[team]} {team}: **{value[2]}**\n"
-                
-                if msg == "":
-                    raise self.OTException("No OT guesses found for that user today.")
-
-                await ctx.send(msg)
+    async def otlist(self, ctx, arg=None):
+        user_id = team = None
+        if arg == None:
+            user_id = ctx.message.author.id
         else:
-            raise NHLTeamNotFound("No valid team or user found. Did you forget the '@' symbol?")
+            if arg.lower() in team_map:
+                team = team_map[arg.lower()]
+            elif "@" in arg and len(ctx.message.mentions) > 0:
+                user_id = ctx.message.mentions[0].id
+            else:
+                raise NHLTeamNotFound("No valid team or user found. Did you forget the '@' symbol?")
 
-        # TODO: Check all guesses for team's game or for user.
-        #       Throw an OTException if there aren't any found.
+        msg = ""
+        for key, value in self.guesses.items():
+            # if we were given a team, check against that
+            if team and key[1] == ctx.guild.id and value[0] == team:
+                guess_user = (await ctx.guild.fetch_member(key[2])).display_name
+                msg += f"{guess_user}: **{value[2]}**\n"
+
+            # or if we were given a user check against that
+            if user_id and key[1] == ctx.guild.id and key[2] == user_id:
+                guess_team = value[0]
+                msg += f"{emojis[guess_team]} {guess_team}: **{value[2]}**\n"
+
+        if msg == "":
+            raise self.OTException("No OT guesses found.")
+
+        await ctx.send(msg)
 
     @otlist.error
     async def otlist_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\n\t`!otstandings`\n\t`!ot [Team] [Player Name/Number]`\n\t`!otlist [Team or @User]`")
-        elif isinstance(error, NHLTeamNotFound):
+        if isinstance(error, NHLTeamNotFound):
             await ctx.send(error.message)
         elif isinstance(error, self.OTException):
             await ctx.send(error.message)
