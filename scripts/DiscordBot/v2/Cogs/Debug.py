@@ -31,7 +31,7 @@ class Debug(WesCog):
     @commands.command(name="uptime")
     async def uptime(self, ctx):
         days, hours, minutes, seconds = self.bot.calculate_uptime()
-        
+
         msg = "It has been "
         if days > 0:
             msg += str(days) + " day(s), "
@@ -73,7 +73,7 @@ class Debug(WesCog):
                             "in the 3rd period and the start of OT of a tied game.\n\tCan only guess one player per game.\n" + \
                             "**`!otstandings`**\n\tDisplays the standings for the season-long OT prediction contest on this server." + \
                             "**`!otlist [NHL team or @User]`**\n\tDisplays the guesses for the given team or user in today's OT Challenge.")
-                            
+
     # Shuts down the bot or a cog
     @commands.command(name="kill", aliases=["shutdown", "unload"])
     @commands.is_owner()
@@ -125,7 +125,7 @@ class Debug(WesCog):
 
         # Process the ot cog rollover method
         ot = self.bot.get_cog("OTChallenge")
-        ot.processot(None)
+        await ot.processot(None)
 
         # TODO: ImportPickems cog, and run their Process Standings methods
 
