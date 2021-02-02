@@ -5,6 +5,7 @@ from discord.ext import commands
 # Python Libaries
 from datetime import datetime
 import logging
+from logging.handlers import RotatingFileHandler
 import sys
 
 # Local Includes
@@ -26,7 +27,7 @@ class Wes(commands.Bot):
             logger.setLevel(logging.INFO)
 
             # Create <Cog>.log log file
-            fh = logging.FileHandler(f"Logs/{name}.log", "a+")
+            fh = RotatingFileHandler(f"Logs/{name}.log", "a+", maxBytes=1000000, backupCount=1) # one file, max size of 4mb
             fh.setLevel(logging.INFO)
             fh.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(filename)s %(lineno)d %(message)s"))
             logger.addHandler(fh)
