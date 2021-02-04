@@ -222,6 +222,10 @@ class Scoreboard(WesCog):
 
     # Post a goal (or other related message) string to chat and track the data
     async def post_goal(self, key, string, link):
+        # Add emoji to end of string to indicate a replay exists.
+        if link != None:
+            string += " :movie_camera:"
+
         # If this key already exists, we're updating, not posting
         if key in self.messages:
             await self.update_goal(key, string, link)
