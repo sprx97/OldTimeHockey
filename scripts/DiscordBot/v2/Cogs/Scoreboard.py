@@ -281,6 +281,12 @@ class Scoreboard(WesCog):
     async def check_for_disallowed_goals(self, key, playbyplay):
         # Get list of scoring play ids
         goals = playbyplay["liveData"]["plays"]["scoringPlays"]
+        all_plays = playbyplay["liveData"]["plays"]["allPlays"]
+
+        # Skip if there aren't any plays or goals. Seems like feeds "disappear" for short periods of time occasionally,
+        # and we don't want this to incorrectly trigger disallows.
+        if len(all_plays) == 0 or len(goals) == 0:
+            return
 
         # Loop through all of our pickled goals
      	# If one of them doesn't exist in the list of scoring plays anymore
@@ -298,7 +304,7 @@ class Scoreboard(WesCog):
 
             found = False
             for goal in goals:
-                if event_id == str(playbyplay["liveData"]["plays"]["allPlays"][goal]["about"]["eventId"]):
+                if event_id == str(all_plays[goal]["about"]["eventId"]):
                     found = True
                     break
 
