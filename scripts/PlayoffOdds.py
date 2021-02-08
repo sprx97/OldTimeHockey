@@ -96,7 +96,7 @@ def updatePlayoffOdds(league):
         msg = MIMEText(body)
         msg["Subject"] = "playoff odds update"
         msg["From"] = "no-reply@roldtimehockey.com"
-        recips = ["import@sportsclubstats.com", "jeremy.vercillo@gmail.com"]
+        recips = ["import@sportsclubstats.com"]
         msg["To"] = ",".join(recips)
 
         s = smtplib.SMTP_SSL("smtp.gmail.com", 465)
