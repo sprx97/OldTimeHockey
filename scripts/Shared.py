@@ -1,7 +1,3 @@
-# Discord Libraries
-import discord
-from discord.ext import commands, tasks
-
 # Python Libraries
 import json
 import pymysql
@@ -10,12 +6,10 @@ import urllib.request
 # Local Includes
 import Config
 
-DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
-DB.autocommit(True)
-
 # Grabs the list of OTH leagues for the given year
 # from the SQL database
 def get_leagues_from_database(year):
+    DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
     cursor = DB.cursor()
     cursor.execute(f"SELECT id, name, year from Leagues where year={year}")
     leagues = cursor.fetchall()
