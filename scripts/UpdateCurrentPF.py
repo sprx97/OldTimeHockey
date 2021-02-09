@@ -1,6 +1,6 @@
 # Local Includes
 import Config
-from DiscordBot.v2.Shared import *
+from Shared import *
 
 # Python Includes
 import pymysql # sql queries
@@ -26,9 +26,7 @@ db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql
 cursor = db.cursor()
 
 for year in years_to_update:
-    cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
-    leagues = cursor.fetchall()
-    for league in leagues:
+    for league in get_leagues_from_database(year):
         updateCurrentPF(league["id"], league["year"])
 
 db.commit()

@@ -12,11 +12,7 @@
         "reddit_client_id": "",
         "reddit_secret": "",
 
-	// You should not need these unless you're running the "check trade emails" part of the discord bot
+	// You should not need these unless you're running the Playoff Odds script
 	"email_username": "",
 	"email_password": "",
-
-	// You should not need this unless you're trying to run the discord bot in chat
-	"discord_token": "",
-	"discord_token_beta": ""
 }
