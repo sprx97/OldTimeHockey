@@ -118,7 +118,7 @@ class Scoreboard(WesCog):
         msg = ""
         for game in games:
             msg += self.get_score_string(game)[0] + "\n"
-        
+
         await ctx.send(msg)
 
     @commands.command(name="score")
@@ -181,7 +181,7 @@ class Scoreboard(WesCog):
         except:
             return None
 
-    # Gets the strength (EV, PP, SH, EN) of a goal 
+    # Gets the strength (EV, PP, SH, EN) of a goal
     def get_goal_strength(self, playbyplay, goal):
         strength = f"({goal['result']['strength']['code']}) "
         if strength == "(EVEN) ":
@@ -192,7 +192,7 @@ class Scoreboard(WesCog):
         # Check if it was a penalty shot by looking at previous play (Sample game: https://statsapi.web.nhl.com/api/v1/game/2020020074/feed/live)
         try:
             prev_id = goal["about"]["eventIdx"] - 1
-            prev_play = playbyplay["liveData"]["plays"]["allPlays"][prev_id]
+            prev_play = playbyplay["liveData"]["plays"]["allPlays"][prev_id]["result"]
             if "eventTypeId" in prev_play and prev_play["eventTypeId"] == "PENALTY" and prev_play["penaltySeverity"] == "Penalty Shot":
                 strength += "(PS) "
         except:
