@@ -9,9 +9,17 @@ years_to_update = [] # Can manually seed if necessary
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 years_to_update.append(int(f.readline().strip()))
+week = int(f.readline().strip()) # Set to None if manually seeding
+
+if week != 1:
+    week = (week-1)*7 - 1
 
 def updateCurrentPF(league, year):
-    standings = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
+    url = f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}"
+    if week != None:
+        url += f"&scoring_period={week}"
+
+    standings = make_api_call(url)
     for game in standings["games"]:
         matchup_id = game["id"]
         away_id = game["away"]["id"]

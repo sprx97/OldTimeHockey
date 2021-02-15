@@ -34,7 +34,6 @@ cursor = db.cursor()
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
-week = 3
 f.close()
 
 # only check the most recent week
