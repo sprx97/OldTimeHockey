@@ -2,10 +2,18 @@ import _ from 'lodash';
 import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
 import UserLink from './UserLink';
-import { highlightLeague, unhighlightLeague } from './Helpers'
+import { highlightLeague, unhighlightLeague } from './Helpers';
 import '../styles/Leagues.css';
 
-const LiveTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => {
+const LiveTable = ({
+  column,
+  data,
+  isLoaded,
+  direction,
+  handleSort,
+  tiers,
+  managerFilter = null,
+}) => {
   return (
     <div>
       {!isLoaded ? (
@@ -87,39 +95,56 @@ const LiveTable = ({ column, data, isLoaded, direction, handleSort, tiers }) => 
                   regTotal,
                   PA,
                   regPATotal,
-                  tier
+                  tier,
                 },
-                index,
-              ) => (
-                <Table.Row className={leaguename} key={index} onMouseOver={highlightLeague} onMouseLeave={unhighlightLeague}>
-                  <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                  <Table.Cell textAlign="center" className={`D${tier}`}>
-                    <a
-                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {leaguename}
-                    </a>
-                  </Table.Cell>
-                  <Table.Cell textAlign="center">
-                    <a
-                      href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {teamname}
-                    </a>
-                  </Table.Cell>
-                  <Table.Cell textAlign="center">
-                    <UserLink FFname={FFname} />
-                  </Table.Cell>
-                  <Table.Cell textAlign="center">{currentWeekPF}</Table.Cell>
-                  <Table.Cell textAlign="center">{regTotal}</Table.Cell>
-                  <Table.Cell textAlign="center">{PA}</Table.Cell>
-                  <Table.Cell textAlign="center">{regPATotal}</Table.Cell>
-                </Table.Row>
-              ),
+                index
+              ) => {
+                const matchesManagerFilter =
+                  !managerFilter ||
+                  teamname
+                    .toLowerCase()
+                    .includes(managerFilter.toLowerCase()) ||
+                  FFname.toLowerCase().includes(managerFilter.toLowerCase())
+                    ? 'showRow'
+                    : 'hidden';
+                const classes = `${leaguename} ${matchesManagerFilter}`;
+
+                return (
+                  <Table.Row
+                    className={classes}
+                    key={index}
+                    onMouseOver={highlightLeague}
+                    onMouseLeave={unhighlightLeague}
+                  >
+                    <Table.Cell textAlign="center">{index + 1}</Table.Cell>
+                    <Table.Cell textAlign="center" className={`D${tier}`}>
+                      <a
+                        href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {leaguename}
+                      </a>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <a
+                        href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {teamname}
+                      </a>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <UserLink FFname={FFname} />
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{currentWeekPF}</Table.Cell>
+                    <Table.Cell textAlign="center">{regTotal}</Table.Cell>
+                    <Table.Cell textAlign="center">{PA}</Table.Cell>
+                    <Table.Cell textAlign="center">{regPATotal}</Table.Cell>
+                  </Table.Row>
+                );
+              }
             )}
           </Table.Body>
         </Table>
