@@ -9,10 +9,6 @@ import ReactGA from 'react-ga';
 
 const trackingId = 'UA-156842946-1';
 ReactGA.initialize(trackingId, { testMode: process.env.NODE_ENV === 'test' });
-ReactGA.set({
-  // any data that is relevant to the user session
-  // that you would like to track with google analytics
-});
 
 function App() {
   return (
