@@ -19,6 +19,9 @@ def updateCurrentPF(league, year):
     if week != None:
         url += f"&scoring_period={week}"
 
+    # Track which teams in this division we've updated, because for playoffs, teams on bye don't show up in FetchLeagueScoreboard
+    tracked = []
+
     standings = make_api_call(url)
     for game in standings["games"]:
         matchup_id = game["id"]
@@ -27,8 +30,16 @@ def updateCurrentPF(league, year):
         home_id = game["home"]["id"]
         home_score = game["homeScore"]["score"]["formatted"]
 
+        tracked.append(str(away_id))
+        tracked.append(str(home_id))
+
         cursor.execute(f"UPDATE Teams set currentWeekPF={away_score}, CurrOpp={home_id}, matchupID={matchup_id} where teamID={away_id} AND year={year}")
         cursor.execute(f"UPDATE Teams set currentWeekPF={home_score}, CurrOpp={away_id}, matchupID={matchup_id} where teamID={home_id} AND year={year}")
+
+    # Reset teams on bye to 0.0 points with null opponent and matchup id
+    if len(tracked) < 14:
+        tracked_string = ",".join(tracked)
+        cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID={league} and year={year} and teamID NOT IN ({tracked_string})")
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
 cursor = db.cursor()
