@@ -366,6 +366,9 @@ export default class Leaderboard extends Component {
         ) : (
           ''
         )}
+        <Divider hidden />
+        <Divider hidden />
+        <Divider hidden />
       </Container>
     );
   }
