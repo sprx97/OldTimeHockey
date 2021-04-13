@@ -70,6 +70,11 @@ def updatePlayoffOdds(league):
         weekpage = weekresponse.read()
         weekroot = html.document_fromstring(weekpage)
 
+        # Reached playoff weeks. Stop.
+        playoff_indicator = weekroot.cssselect("tr.last span.text-success")
+        if len(playoff_indicator) > 0 and playoff_indicator[0].text_content() == "Playoff Game":
+            break
+
         scores = weekroot.cssselect(".scoreboard")
         for m in range(0, len(scores), 2):
             away = scores[m]
