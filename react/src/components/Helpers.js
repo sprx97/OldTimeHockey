@@ -1,10 +1,25 @@
 import React from 'react';
 
+// Most seasons playoffs start in week 24, but some are special cases.
+export function isPlayoffWeek(week, year) {
+  switch (year)
+  {
+    case 2012:
+      return week > 10;
+    case 2013:
+      return week > 20;
+    case 2020:
+      return week > 13;
+    default:
+      return week > 23;
+  }
+}
+
 // Returns the appropriate trophy image file for a given tier and year
 export function GetTrophy(tier, year) {
   var str = "images/trophies/D" + tier;
 
-  if (year == 2019) str += "Covid";
+  if (year === 2019) str += "Covid";
   else str += "Champion";
 
   str += ".png";

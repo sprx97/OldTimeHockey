@@ -11,8 +11,8 @@ const LiveTable = ({
   isLoaded,
   direction,
   handleSort,
-  tiers,
   managerFilter = null,
+  isplayoffs
 }) => {
   return (
     <div>
@@ -96,6 +96,8 @@ const LiveTable = ({
                   PA,
                   regPATotal,
                   tier,
+                  postTotal,
+                  postPATotal,
                 },
                 index
               ) => {
@@ -139,9 +141,9 @@ const LiveTable = ({
                       <UserLink FFname={FFname} />
                     </Table.Cell>
                     <Table.Cell textAlign="center">{currentWeekPF}</Table.Cell>
-                    <Table.Cell textAlign="center">{regTotal}</Table.Cell>
+                    <Table.Cell textAlign="center">{isplayoffs ? postTotal : regTotal}</Table.Cell>
                     <Table.Cell textAlign="center">{PA}</Table.Cell>
-                    <Table.Cell textAlign="center">{regPATotal}</Table.Cell>
+                    <Table.Cell textAlign="center">{isplayoffs ? postPATotal : regPATotal}</Table.Cell>
                   </Table.Row>
                 );
               }

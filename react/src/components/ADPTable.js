@@ -13,13 +13,13 @@ export default class ADPTable extends Component {
         if (this.props.positionFilters == null)
             return true; // empty filters just means everything
 
-        if (position.includes("C") || position == "F")
+        if (position.includes("C") || position === "F")
             return this.props.positionFilters.includes("C")
 
-        if (position.includes("LW") || position == "F" || position == "W")
+        if (position.includes("LW") || position === "F" || position === "W")
             return this.props.positionFilters.includes("LW")
 
-        if (position.includes("RW") || position == "F" || position == "W")
+        if (position.includes("RW") || position === "F" || position === "W")
             return this.props.positionFilters.includes("RW")
 
         if (position.includes("D"))

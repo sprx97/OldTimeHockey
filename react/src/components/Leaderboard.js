@@ -15,6 +15,7 @@ import PlayoffsTable from './PlayoffsTable';
 import CareerRegularSeasonTable from './CareerRegularSeasonTable';
 import CareerPlayoffsTable from './CareerPlayoffsTable';
 import LiveTable from './LiveTable';
+import { isPlayoffWeek } from './Helpers';
 
 export default class Leaderboard extends Component {
   numSeasonsOptions = [
@@ -81,6 +82,7 @@ export default class Leaderboard extends Component {
     minSeasons: 0,
     hideInactives: false,
     managerFilter: null,
+    week: -1
   };
 
   currentTiers = {};
@@ -105,6 +107,9 @@ export default class Leaderboard extends Component {
   }
 
   getData = async () => {
+    const week = parseInt(await (await fetch('http://www.roldtimehockey.com/node/getweek')).json());
+    const year = parseInt(await (await fetch('http://www.roldtimehockey.com/node/getyear')).json());
+
     var filters = '';
     if (this.state.seasonFilters != null && this.state.seasonFilters != '') {
       filters += '&seasons=' + this.state.seasonFilters;
@@ -158,6 +163,7 @@ export default class Leaderboard extends Component {
       data: this.getSortedData(leaders, defaultSort),
       isLoaded: true,
       column: leaders.length > 0 ? defaultSort : null,
+      isplayoffs: isPlayoffWeek(week, year)
     });
   };
 
@@ -362,11 +368,11 @@ export default class Leaderboard extends Component {
             tiers={this.currentTiers}
             hideInactives={this.state.hideInactives}
             managerFilter={this.state.managerFilter}
+            isplayoffs={this.state.isplayoffs}
           />
         ) : (
           ''
         )}
-        <Divider hidden />
         <Divider hidden />
         <Divider hidden />
       </Container>

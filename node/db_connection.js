@@ -87,7 +87,7 @@ http.createServer(function(request, response) {
 			sql = "SELECT Leagues.id as leagueID, Leagues.tier as tier, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, \
 			       round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA, round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal \
 			       from Teams as t1 inner join Leagues on (t1.leagueID=Leagues.id AND t1.year=Leagues.year) inner join Users on t1.ownerID=Users.FFid left outer join Teams_post as tp1 on tp1.teamID=Users.FFid \
-			       INNER JOIN Teams as t2 on (t1.CurrOpp=t2.teamID AND t1.year=t2.year) \
+			       LEFT JOIN Teams as t2 on (t1.CurrOpp=t2.teamID AND t1.year=t2.year) \
 			       where Leagues.year=" + mysql.escape(year) + tierfilter + " order by t1.currentWeekPF";
 		}
 		else if (query.year == "careerp") {
