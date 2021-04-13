@@ -364,7 +364,7 @@ const Homepage = () => {
                   <li>(20) D3 ranks 1-4 (semifinalists)</li>
                   <li>(3)  D4 top-3 PF teams</li>
                   <li>(1)  Woppa Cup Runner Up</li>
-                  <li><i>Extra slots filled from highest regular season PF out of D2 and D3 teams</i></li>
+                  <li><i>Extra slots filled from highest regular season PF out of D1, D2, and D3 teams</i></li>
                 </ul>
               </Grid.Column>
             </Grid.Row>
