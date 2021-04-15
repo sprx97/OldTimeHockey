@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
 export default class NavBar extends Component {
-  state = { activeItem: location.pathname }
+  state = { activeItem: location.pathname };
 
-  handleItemClick = name => this.setState({ activeItem: name });
+  handleItemClick = (name) => this.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
@@ -14,14 +14,24 @@ export default class NavBar extends Component {
     return (
       // Probably should wrap this all in a hamburger button at mobile resolutions...
       <Fragment>
-        <div style={{display: "flex"}}>
-          <Menu style={{flexGrow: "1"}} size="large" inverted stackable attached compact left>
+        <div style={{ display: 'flex' }}>
+          <Menu
+            style={{ flexGrow: '1' }}
+            size="large"
+            inverted
+            stackable
+            attached
+            compact
+          >
             <Link to="/" onClick={() => this.handleItemClick('/')}>
               <Menu.Item name="home" active={activeItem === '/'} link={false}>
                 Home
               </Menu.Item>
             </Link>
-            <Link to="/standings" onClick={() => this.handleItemClick('/standings')}>
+            <Link
+              to="/standings"
+              onClick={() => this.handleItemClick('/standings')}
+            >
               <Menu.Item
                 name="standings"
                 active={activeItem === '/standings'}
@@ -72,14 +82,29 @@ export default class NavBar extends Component {
               </Menu.Item>
             </Link>
             <Link to="/chat" onClick={() => this.handleItemClick('/chat')}>
-              <Menu.Item name="chat" active={activeItem === '/chat'} link={false}>
+              <Menu.Item
+                name="chat"
+                active={activeItem === '/chat'}
+                link={false}
+              >
                 Chat
               </Menu.Item>
             </Link>
           </Menu>
-          <Menu style={{width: "fit-content"}} size="large" inverted stackable attached compact>
+          <Menu
+            style={{ width: 'fit-content' }}
+            size="large"
+            inverted
+            stackable
+            attached
+            compact
+          >
             <Link to="/login" onClick={() => this.handleItemClick('/login')}>
-              <Menu.Item name="login" active={activeItem === '/login'} link={false}>
+              <Menu.Item
+                name="login"
+                active={activeItem === '/login'}
+                link={false}
+              >
                 Login/Register
               </Menu.Item>
             </Link>
