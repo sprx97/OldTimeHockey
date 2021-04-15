@@ -250,10 +250,8 @@ if __name__ == "__main__":
                     str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ")")
 
                 elif len(data) == 1:
-                    if intP(data[0][2]) != intP(next[2]):
+                    if intP(data[0][2]) != intP(next[2]) and intP(next[2]) != 0:
                         cursor.execute("UPDATE Teams set ownerID=" + str(next[2]) + ", replacement=1 where teamID=" + str(next[0]) + " AND year=" + str(year))
-                        with open(Config.config["srcroot"] + "scripts/replacement_teams.txt", "a") as myfile:
-                            myfile.write(str(next[0]) + "\n")
 
                     cursor.execute("UPDATE Teams set  name='" + next[1] + \
                     "', wins=" + str(next[5]) + ", losses=" + str(next[6]) + ", gamesBack=" + str(next[7]) + \
