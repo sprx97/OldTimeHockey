@@ -14,22 +14,24 @@ export default class LeagueRanksTable extends Component {
     direction: 'descending',
   };
 
-  reversedColumns = ["StdDev"];
+  reversedColumns = ['StdDev'];
   getSortedData(data, clickedColumn) {
-    var sortedData = _.sortBy(data, [function(datum) { 
-                                        if (typeof datum[clickedColumn] === "string") 
-                                            return datum[clickedColumn].toLowerCase(); 
-                                        else 
-                                            return datum[clickedColumn]; }])
-              
+    var sortedData = _.sortBy(data, [
+      function(datum) {
+        if (typeof datum[clickedColumn] === 'string')
+          return datum[clickedColumn].toLowerCase();
+        else return datum[clickedColumn];
+      },
+    ]);
+
     if (this.reversedColumns.indexOf(clickedColumn) > -1) {
-        return sortedData;
+      return sortedData;
     }
 
     return sortedData.reverse();
   }
 
-  handleSort = clickedColumn => () => {
+  handleSort = (clickedColumn) => () => {
     const { column, data, direction } = this.state;
 
     // Sorting by a new column
@@ -37,7 +39,10 @@ export default class LeagueRanksTable extends Component {
       this.setState({
         column: clickedColumn,
         data: this.getSortedData(data, clickedColumn),
-        direction: (this.reversedColumns.indexOf(clickedColumn) > -1) ? "ascending" : "descending",
+        direction:
+          this.reversedColumns.indexOf(clickedColumn) > -1
+            ? 'ascending'
+            : 'descending',
       });
 
       return;
@@ -51,13 +56,13 @@ export default class LeagueRanksTable extends Component {
 
   getData = async () => {
     const res = await fetch(
-      'http://www.roldtimehockey.com/node/leagueranks?year=' + this.props.year,
+      'http://www.roldtimehockey.com/node/leagueranks?year=' + this.props.year
     );
     const leaders = await res.json();
     this.setState({
       data: leaders,
-      column: "avgPF",
-      direction: "descending"
+      column: 'avgPF',
+      direction: 'descending',
     });
   };
 
@@ -66,8 +71,7 @@ export default class LeagueRanksTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.year != this.props.year)
-      this.getData();
+    if (prevProps.year != this.props.year) this.getData();
   }
 
   render() {
@@ -78,7 +82,7 @@ export default class LeagueRanksTable extends Component {
         {!data ? (
           <Loader active size="large" style={{ marginTop: '13px' }} />
         ) : (
-          <Table definition celled compact sortable unstackable center>
+          <Table definition celled compact sortable unstackable>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell width={2} />
@@ -100,7 +104,7 @@ export default class LeagueRanksTable extends Component {
                   width={3}
                   textAlign="center"
                   sorted={column === 'avgPF' ? direction : null}
-                  onClick={this.handleSort("avgPF")}
+                  onClick={this.handleSort('avgPF')}
                 >
                   Avg PF
                 </Table.HeaderCell>
@@ -108,7 +112,7 @@ export default class LeagueRanksTable extends Component {
                   width={3}
                   textAlign="center"
                   sorted={column === 'StdDev' ? direction : null}
-                  onClick={this.handleSort("StdDev")}
+                  onClick={this.handleSort('StdDev')}
                 >
                   StdDev
                 </Table.HeaderCell>
