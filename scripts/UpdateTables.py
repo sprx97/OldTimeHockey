@@ -17,7 +17,6 @@ if len(sys.argv) == 1: # no arguments
     if int(f.readline().strip()) > 23: # most years only have 23 weeks
         playoffs_to_update.append(year)
     f.close()
-
 else:
     for arg in sys.argv[1:]:
         if len(arg) == 4:

@@ -89,7 +89,6 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   pointsAgainst,
                   isChamp,
                   tier,
-                  FFid,
                   year
                 },
                 index,

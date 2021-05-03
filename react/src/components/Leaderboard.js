@@ -55,6 +55,7 @@ export default class Leaderboard extends Component {
     { key: '2018p', text: '2018-2019 Playoffs', value: '2018p' },
     { key: '2019', text: '2019-2020 Regular Season', value: '2019' },
     { key: '2020', text: '2020-2021 Regular Season', value: '2020' },
+    { key: '2020p', text: '2020-2021 Playoffs', value: '2020p' },
     { key: 'career', text: 'Career Regular Season', value: 'career' },
     { key: 'careerp', text: 'Career Playoffs', value: 'careerp' },
     { key: 'week', text: 'This Week (Live)', value: 'week' },
@@ -310,8 +311,8 @@ export default class Leaderboard extends Component {
             </Grid>
           </Fragment>
         </Segment>
-        {!isNaN(parseInt(this.state.query)) ? (
-          <RegularSeasonTable
+        {this.state.query.slice(4, 5) == 'p' ? (
+          <PlayoffsTable
             column={column}
             data={data}
             isLoaded={this.state.isLoaded}
@@ -321,8 +322,10 @@ export default class Leaderboard extends Component {
         ) : (
           ''
         )}
-        {this.state.query.slice(4, 5) == 'p' ? (
-          <PlayoffsTable
+        {!isNaN(parseInt(this.state.query)) ? (
+          // The parseInt here also turns '2020p' into 2020, so instead
+          // of fixing it I just moved the playoff check first 🧠
+          <RegularSeasonTable
             column={column}
             data={data}
             isLoaded={this.state.isLoaded}
