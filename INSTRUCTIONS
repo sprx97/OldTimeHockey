@@ -1,6 +1,6 @@
 Things to do at the beginning of a year:
 ✔️- Update scripts/WeekVars.txt
-- Add rows to the "Leagues" table for each of the new leagues
+✔️- Add rows to the "Leagues" table for each of the new leagues (scrips/SqlQueries/newleagues.sql)
 ✔️- Update homepage.js to include the previous years champions and new rule info
 - Update TrophyRoom.js to include new banners (chizzle makes them)
 - Run "UpdateTables.py" to grab all of the teams from each league (once the leagues are filled) -- normally this runs sunday night
