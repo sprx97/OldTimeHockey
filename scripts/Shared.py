@@ -1,7 +1,6 @@
 # Python Libraries
-import json
 import pymysql
-import urllib.request
+import requests
 
 # Local Includes
 import Config
@@ -20,9 +19,9 @@ def get_leagues_from_database(year):
 # Gets the JSON data from the given fleaflicker.com/api call
 def make_api_call(link):
     try:
-        with urllib.request.urlopen(link) as url: # Throws HTTPError if page fails to open
-            data = json.loads(url.read().decode())
-    except urllib.request.HTTPError:
+        with requests.get(link) as response: # Throws HTTPError if page fails to open
+            data = response.json()
+    except requests.exceptions.HTTPError:
         print(f"Error accessing {link}")
         return {}
 

@@ -1,7 +1,6 @@
 # Checks scores to update daily/weekly scoring records
 
-import urllib.request # url reading
-from lxml import etree
+import requests # url reading
 from lxml import html # xml parsing
 import pymysql # sql queries
 import smtplib
@@ -104,9 +103,8 @@ if __name__ == "__main__":
 
                 URL = "http://www.fleaflicker.com/nhl/leagues/" + str(league[0]) + "/scores?season=" + str(year) + "&week=" + str(weekid)
                 print(URL)
-                response = urllib.request.urlopen(URL)
-                page = response.read()
-                root = html.document_fromstring(page)
+                response = requests.get(URL)
+                root = html.document_fromstring(response.text)
                 response.close()
 
                 if len(root.cssselect(".scoreboard-win")) == 0:
@@ -120,9 +118,8 @@ if __name__ == "__main__":
                     boxlink = "http://www.fleaflicker.com" + boxlink
                     matchid = boxlink[boxlink.find("scores/")+7:]
 
-                    response2 = urllib.request.urlopen(boxlink)
-                    page2 = response2.read()
-                    boxroot = html.document_fromstring(page2)
+                    response2 = requests.get(boxlink)
+                    boxroot = html.document_fromstring(response2.text)
 
                     # gets the two team IDs
                     team1 = boxroot.cssselect(".league-name a")[0].get("href")

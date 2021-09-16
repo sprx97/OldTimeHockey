@@ -1,5 +1,4 @@
-import urllib.request # url reading
-from lxml import etree
+import requests
 from lxml import html # xml parsing
 import pymysql # sql queries
 import sys
@@ -49,9 +48,8 @@ def floatP(str):
 # Checks the standings pages of the given league and updates the datafile
 def getStandings(leagueID, year):
     standingsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "?season=" + str(year)
-    response = urllib.request.urlopen(standingsURL)
-    page = response.read()
-    root = html.document_fromstring(page)
+    response = requests.get(standingsURL)
+    root = html.document_fromstring(response.text)
 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     #                                                             #
@@ -60,10 +58,9 @@ def getStandings(leagueID, year):
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
     leadersTabURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "/leaders?season=" + str(year)
-    response2 = urllib.request.urlopen(leadersTabURL)
-    page2 = response2.read()
-    root2 = html.document_fromstring(page2)
-    rows2 = root2.cssselect(".table-group")[0].findall("tr");
+    response2 = requests.get(leadersTabURL)
+    root2 = html.document_fromstring(response2.text)
+    rows2 = root2.cssselect(".table-group")[0].findall("tr")
     coachRating = {}
     optimumPF = {}
     numrows = len(rows2)-1
@@ -150,13 +147,12 @@ def getStandings(leagueID, year):
 
 def getPlayoffs(leagueID, year):
     playoffsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "/playoffs?season=" + str(year)
-    response = urllib.request.urlopen(playoffsURL)
-    page = response.read()
-    root = html.document_fromstring(page)
+    response = requests.get(playoffsURL)
+    root = html.document_fromstring(response.text)
     bracket = root.cssselect(".playoff-bracket")[0]
 
     teams = {}
-    brackets = bracket.cssselect(".league-name");
+    brackets = bracket.cssselect(".league-name")
     for n in range(0, len(brackets)):
         team = brackets[n]
         teamID = team.findall("a")[0].get("href")

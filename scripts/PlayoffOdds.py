@@ -1,8 +1,6 @@
-import urllib.request # url reading
-from lxml import etree
+import requests
 from lxml import html # xml parsing
 import smtplib
-import ssl
 from email.mime.text import MIMEText
 import pymysql
 import Config
@@ -12,9 +10,8 @@ year = int(f.readline().strip())
 
 def updatePlayoffOdds(league):
     link = "http://www.fleaflicker.com/nhl/leagues/" + str(league)
-    response = urllib.request.urlopen(link)
-    page = response.read()
-    root = html.document_fromstring(page)
+    response = requests.get(link)
+    root = html.document_fromstring(response.text)
 
     body = ""
 
@@ -66,9 +63,8 @@ def updatePlayoffOdds(league):
 
     for n in range(0, 23):
         weeklink = link + "/scores?week=" + str(n*7 + 4) # weird offset from FF... might change year-to-year
-        weekresponse = urllib.request.urlopen(weeklink)
-        weekpage = weekresponse.read()
-        weekroot = html.document_fromstring(weekpage)
+        weekresponse = requests.get(weeklink)
+        weekroot = html.document_fromstring(weekresponse.text)
 
         # Reached playoff weeks. Stop.
         playoff_indicator = weekroot.cssselect("tr.last span.text-success")
