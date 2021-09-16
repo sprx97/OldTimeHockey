@@ -108,8 +108,8 @@ export default class Leaderboard extends Component {
   }
 
   getData = async () => {
-    const week = parseInt(await (await fetch('http://www.roldtimehockey.com/node/getweek')).json());
-    const year = parseInt(await (await fetch('http://www.roldtimehockey.com/node/getyear')).json());
+    const week = parseInt(await (await fetch('https://roldtimehockey.com/node/getweek')).json());
+    const year = parseInt(await (await fetch('https://roldtimehockey.com/node/getyear')).json());
 
     var filters = '';
     if (this.state.seasonFilters != null && this.state.seasonFilters != '') {
@@ -123,7 +123,7 @@ export default class Leaderboard extends Component {
     }
 
     const res = await fetch(
-      'http://www.roldtimehockey.com/node/leaders?year=' +
+      'https://roldtimehockey.com/node/leaders?year=' +
         this.state.query +
         filters
     );
@@ -151,7 +151,7 @@ export default class Leaderboard extends Component {
       this.state.query.includes('career')
     ) {
       const tierres = await fetch(
-        'http://www.roldtimehockey.com/node/currenttier?year=' +
+        'https://roldtimehockey.com/node/currenttier?year=' +
           this.seasonOptions[this.seasonOptions.length - 1].key
       );
       const tiers = await tierres.json();

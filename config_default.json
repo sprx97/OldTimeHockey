@@ -9,10 +9,14 @@
 	// You should not need the following unless you are updating RedditPostBot.py
 	"reddit_username": "",
 	"reddit_password": "",
-        "reddit_client_id": "",
-        "reddit_secret": "",
+    "reddit_client_id": "",
+    "reddit_secret": "",
 
 	// You should not need these unless you're running the Playoff Odds script
 	"email_username": "",
 	"email_password": "",
+
+	// You should not need these unless you're running scripts that use OTHAdmin's commish powers on fleaflicker
+	"fleaflicker_email": "",
+	"fleaflicker_password": ""
 }

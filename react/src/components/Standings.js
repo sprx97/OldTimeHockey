@@ -71,7 +71,7 @@ export default class Standings extends Component {
 
     for (let i = 1; i <= 4; i++) {
       const res = await fetch(
-        'http://www.roldtimehockey.com/node/divisionleagues?year=' +
+        'https://roldtimehockey.com/node/divisionleagues?year=' +
           this.state.query +
           '&tiers=' +
           i.toString()

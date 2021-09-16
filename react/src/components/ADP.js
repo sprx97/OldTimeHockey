@@ -40,14 +40,14 @@ export default class ADP extends Component {
         }
         var query = this.state.query;
 
-        const res1 = await fetch("http://www.roldtimehockey.com/node/divisionleagues?year=" + query + filters);
+        const res1 = await fetch("https://roldtimehockey.com/node/divisionleagues?year=" + query + filters);
         const leagueids = await res1.json();
 
         this.setState({
             totalLeagues: leagueids.length
         });
 
-        const res2 = await fetch("http://www.roldtimehockey.com/node/adp?year=" + query + filters);
+        const res2 = await fetch("https://roldtimehockey.com/node/adp?year=" + query + filters);
         const adp = await res2.json();
 
         // return early if our state has changed since the fetch requests were made

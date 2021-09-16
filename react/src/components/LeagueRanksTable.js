@@ -56,7 +56,7 @@ export default class LeagueRanksTable extends Component {
 
   getData = async () => {
     const res = await fetch(
-      'http://www.roldtimehockey.com/node/leagueranks?year=' + this.props.year
+      'https://roldtimehockey.com/node/leagueranks?year=' + this.props.year
     );
     const leaders = await res.json();
     this.setState({

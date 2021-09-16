@@ -5,39 +5,39 @@ import { Container, Grid, Header, Segment, List, Placeholder } from 'semantic-ui
 
 const HallOfFame = () => {
   const [winsRecord, winsRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/winsrecord?limit=5',
+    'https://roldtimehockey.com/node/winsrecord?limit=5',
   );
 
   const [winPctRecord, winPctRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/winpctrecord?limit=5',
+    'https://roldtimehockey.com/node/winpctrecord?limit=5',
   );
 
   const [pfRecord, pfRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/pfrecord?limit=5',
+    'https://roldtimehockey.com/node/pfrecord?limit=5',
   );
 
   const [avgPfRecord, avgPfRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/avgpfrecord?limit=5',
+    'https://roldtimehockey.com/node/avgpfrecord?limit=5',
   );
 
   const [coachRatingRecord, coachRatingRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/coachratingrecord?limit=5',
+    'https://roldtimehockey.com/node/coachratingrecord?limit=5',
   );
 
   const [seasonWinPctRecord, seasonWinPctRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinpctrecord?limit=5',
+    'https://roldtimehockey.com/node/seasonwinpctrecord?limit=5',
   );
 
   const [seasonWinsRecord, seasonWinsRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasonwinsrecord?limit=5',
+    'https://roldtimehockey.com/node/seasonwinsrecord?limit=5',
   );
 
   const [seasonPfRecord, seasonPfRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasonpfrecord?limit=5',
+    'https://roldtimehockey.com/node/seasonpfrecord?limit=5',
   );
 
   const [seasonCoachRatingRecord, seasonCoachRatingRecordLoading] = useFetch(
-    'http://www.roldtimehockey.com/node/seasoncoachratingrecord?limit=5',
+    'https://roldtimehockey.com/node/seasoncoachratingrecord?limit=5',
   );
 
   const winsRecordList =

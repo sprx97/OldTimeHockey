@@ -27,7 +27,7 @@ export default class CreateAccount extends Component {
         alert(this.state.email + " " + this.state.pass1 + " " + this.state.pass2);
 
     /*    const res = await fetch(
-            'http://www.roldtimehockey.com/node/leagueteams?id=' +
+            'https://roldtimehockey.com/node/leagueteams?id=' +
               this.props.leagueID,
           );
           const leaders = await res.json();

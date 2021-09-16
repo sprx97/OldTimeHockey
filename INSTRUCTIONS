@@ -9,7 +9,6 @@ Things to do at the beginning of a year:
 - Turn "Less secure app access" ON for roldtimehockey gmail account (For playoff odds script)
 
 Commands to start/restart things (SPRX only)
-
 - pm2 restart commands can use the process ID, found from sudo pm2 list
 
 Restart website NodeJS:
