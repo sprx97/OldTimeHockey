@@ -15,8 +15,13 @@ import LeagueStandingsTable from './LeagueStandingsTable';
 export default class Standings extends Component {
   state = {
     data: null,
-    query: '2020',
+    query: '2021',
     dropdownOptions: [
+      {
+        key: '2021',
+        text: '2021-2022',
+        value: '2021',
+      },
       {
         key: '2020',
         text: '2020-2021',

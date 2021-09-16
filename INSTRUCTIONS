@@ -1,12 +1,15 @@
 Things to do at the beginning of a year:
-- Update scripts/WeekVars.txt
+✔️- Update scripts/WeekVars.txt
 - Add rows to the "Leagues" table for each of the new leagues
-- Update homepage.js to include the previous years champions and new rule info
+✔️- Update homepage.js to include the previous years champions and new rule info
+- Update TrophyRoom.js to include new banners (chizzle makes them)
 - Run "UpdateTables.py" to grab all of the teams from each league (once the leagues are filled) -- normally this runs sunday night
-- Add the new year as a dropdown option in standings.js and make it the default
-- Add the new year (and previous playoffs) as options in leaders.js
+✔️- Add the new year as a dropdown option in standings.js and make it the default
+✔️- Add the new year (and previous playoffs) as options in leaders.js and increment the max value in NumSeasons
+✔️- Add the new year as an option in ADP.js
 - Uncomment the /etc/crontab lines for OTH (only do this the day the season starts)
 - Turn "Less secure app access" ON for roldtimehockey gmail account (For playoff odds script)
+- Clear/update the standings for the OT Challenge
 
 Commands to start/restart things (SPRX only)
 - pm2 restart commands can use the process ID, found from sudo pm2 list

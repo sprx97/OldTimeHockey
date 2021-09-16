@@ -29,6 +29,7 @@ export default class Leaderboard extends Component {
     { key: 7, text: '7', value: 7 },
     { key: 8, text: '8', value: 8 },
     { key: 9, text: '9', value: 9 },
+    { key: 10, text: '10', value: 10 },
   ];
 
   tierOptions = [
@@ -56,6 +57,7 @@ export default class Leaderboard extends Component {
     { key: '2019', text: '2019-2020 Regular Season', value: '2019' },
     { key: '2020', text: '2020-2021 Regular Season', value: '2020' },
     { key: '2020p', text: '2020-2021 Playoffs', value: '2020p' },
+    { key: '2021', text: '2021-2022 Regular Season', value: '2021' },
     { key: 'career', text: 'Career Regular Season', value: 'career' },
     { key: 'careerp', text: 'Career Playoffs', value: 'careerp' },
     { key: 'week', text: 'This Week (Live)', value: 'week' },
@@ -71,6 +73,7 @@ export default class Leaderboard extends Component {
     { key: '2018', text: '2018-2019', value: '2018' },
     { key: '2019', text: '2019-2020', value: '2019' },
     { key: '2020', text: '2020-2021', value: '2020' },
+    { key: '2021', text: '2021-2022', value: '2021' },
   ];
 
   state = {

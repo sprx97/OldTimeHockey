@@ -5,6 +5,7 @@ import ADPTable from "./ADPTable"
 
 export default class ADP extends Component {
     dropdownOptions = [
+        {key: "2021", text: "2021-2022", value: "2021"},
         {key: "2020", text: "2020-2021", value: "2020"},
         {key: "2019", text: "2019-2020", value: "2019"},
         {key: "2018", text: "2018-2019", value: "2018"},
@@ -28,7 +29,7 @@ export default class ADP extends Component {
 
     state = {
         data: null,
-        query: "2020",
+        query: "2021",
         tierFilters: null,
         positionFilters: null,
     };
