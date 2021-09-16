@@ -21,7 +21,8 @@ Restart web server:
 - sudo /etc/init.d/apache2 start/stop/restart
 
 Web config location:
-- /etc/apache2/sites-available/000-default.conf
+- /etc/apache2/sites-enabled/roldtimehockey.conf (http redirect)
+- /etc/apache2/sites-enabled/roldtimehockey-le-ssl.conf (https)
 
 Restart mysql:
 - sudo service mysql start/stop/restart
