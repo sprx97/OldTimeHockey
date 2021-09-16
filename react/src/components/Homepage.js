@@ -5,7 +5,7 @@ import Banner from './Banner';
 
 const panes = [
   {
-    menuItem: '2020-2021',
+    menuItem: '2021-2022',
     render: () => (
       <Tab.Pane>
         224 teams, 16 leagues, 4 divisions
@@ -26,6 +26,37 @@ const panes = [
           <li>
             <b>Woppa Cup Champion: </b>
             <a href=""></a>
+          </li>
+          <u>Rule Changes</u>
+          <ul>
+            <li>Removed 3rd IR+ slot.</li>
+          </ul>
+        </ul>
+      </Tab.Pane>
+    ),
+  },  
+  {
+    menuItem: '2020-2021',
+    render: () => (
+      <Tab.Pane>
+        224 teams, 16 leagues, 4 divisions
+        <ul>
+          <li>
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62775?season=2020">benzene96</a>
+            <br/>
+          </li>
+          <li>
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12096/teams/63385?season=2020">MWHazard</a>
+          </li>
+          <li>
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62750?season=2020">Kovellen</a>
+          </li>
+          <li>
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62749?season=2020">Boboombang</a>
           </li>
           <u>Rule Changes</u>
           <ul>
@@ -324,9 +355,8 @@ const Homepage = () => {
                 <a href="http://www.reddit.com/u/sprx97">SPRX97</a>,{' '}
                 <a href="http://www.reddit.com/u/TwoPlanksPrevail">Planks</a>
                 <br />
-                Website Administators:{' '}
-                <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>,{' '}
-                <a href="http://www.reddit.com/u/phillycheeeeez">phillycheeeeez</a>
+                Website Administator:{' '}
+                <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -341,6 +371,42 @@ const Homepage = () => {
               style: { display: 'flex', justifyContent: 'center' },
             }}
           />
+          <Header as="h1" textAlign="center">
+            Scoring and Settings
+          </Header>
+          <Grid>
+            <Grid.Row columns={2}>
+              <Grid.Column>
+                <Header as="h3" textAlign="center">Settings</Header>
+                <ul>
+                  <li>14-teams, H2H points.</li>
+                  <li>Top-6 make playoffs.</li>
+                  <li>7 free agent adds per week.</li>
+                  <li>Season-long cross-league total points competition.</li>
+                  <li>Season-long cross-league knockout tournament.</li>
+                  <a href="http://www.fleaflicker.com/nhl/leagues/12086/rules">Full Rules</a>
+                </ul>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h3" textAlign="center">Scoring</Header>
+                <ul>
+                  <li>Goal: 4</li>
+                  <li>Assist: 2.5</li>
+                  <li>PPP: 1</li>
+                  <li>Hit: .4</li>
+                  <li>Block: .4</li>
+                  <li>SOG: .25</li>
+                  <li>PIM: .2</li>
+                  <li>Win: 3</li>
+                  <li>Loss: -1.5</li>
+                  <li>OT Loss: 1</li>
+                  <li>Save: .25</li>
+                  <li>GA: -1</li>
+                  <a href="http://www.fleaflicker.com/nhl/leagues/12086/scoring">Full Scoring</a>
+                </ul>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
           <Header as="h1" textAlign="center">
             Promotion and Relegation
           </Header>
@@ -382,8 +448,8 @@ const Homepage = () => {
               <Grid.Column>
                 <Header as="h3" textAlign="center">D4</Header>
                 <ul>
-                  <li>All returning D3 teams</li>
-                  <li>All returning D4 teams</li>
+                  <li>All other returning D3 teams</li>
+                  <li>All other returning D4 teams</li>
                   <li>Newcomers</li>
                 </ul>
               </Grid.Column>
