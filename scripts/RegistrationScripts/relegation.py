@@ -35,11 +35,14 @@ def get_fill_list_for_div(div_managers_fp):
 
 if __name__ == '__main__':
   manager_data = load_manager_data()
-  # Get list of all upcoming D4 managers, along with their PF
+  # D1 fills == D2 managers, sorted by PF
   d1_fills = get_fill_list_for_div(D2_MANAGERS_FP)
+  # D2 fills == D3 managers, sorted by PF
   d2_fills = get_fill_list_for_div(D3_MANAGERS_FP)
+  # D3 fills == D4 managers, sorted by PF
   d3_fills = get_fill_list_for_div(D4_MANAGERS_FP)
 
+  # Print out the top N PF managers per div needing filled
   for tup in [('D1', d1_fills), ('D2', d2_fills), ('D3', d3_fills)]:
     print('\n-----\n{} Fills:'.format(tup[0]))
     for i in range(min(len(tup[1]), NUM_FILLS_TO_DISPLAY)):
