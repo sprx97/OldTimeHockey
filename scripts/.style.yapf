@@ -1,15 +1,15 @@
 [style]
 based_on_style = pep8
-blank_lines_between_top_level_imports_and_variables=2
+blank_lines_between_top_level_imports_and_variables=1
 blank_line_before_class_docstring=True
 blank_line_before_module_docstring=True
 blank_line_before_nested_class_or_def=True
 coalesce_brackets=True
 column_limit=90
-continuation_indent_width = 2
+continuation_indent_width = 4
 dedent_closing_brackets=True
 indent_dictionary_value=True
-indent_width = 2
+indent_width = 4
 spaces_around_dict_delimiters=True
 spaces_around_list_delimiters=True
 split_arguments_when_comma_terminated=False
