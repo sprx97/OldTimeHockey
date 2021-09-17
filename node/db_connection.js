@@ -120,12 +120,12 @@ http.createServer(function(request, response) {
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
 			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid, Leagues.year \
 			       from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) INNER JOIN Users on Teams.ownerID=Users.FFid \
-			       where Leagues.year=" + mysql.escape(query.year) + " order by Teams_post.pointsFor DESC";
+			       where Leagues.year=" + mysql.escape(query.year) + tierfilter + " order by Teams_post.pointsFor DESC";
 		}
 		else { // just a single-year
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, \
 			      isChamp, Leagues.tier, Users.FFid, Leagues.year \
-			      from Teams INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) INNER JOIN Users on ownerID=FFid where Leagues.year=" + mysql.escape(query.year) + " order by pointsFor DESC";
+			      from Teams INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) INNER JOIN Users on ownerID=FFid where Leagues.year=" + mysql.escape(query.year) + tierfilter + " order by pointsFor DESC";
 		}
 	}
 	else if (path == "/winsrecord") {

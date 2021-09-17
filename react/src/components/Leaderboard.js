@@ -178,7 +178,7 @@ export default class Leaderboard extends Component {
   onChange = (event, result) => {
     const { value } = result || event.target;
     this.setState(
-      { query: value, isLoaded: false, seasonFilters: null, tierFilters: null },
+      { query: value, isLoaded: false },
       () => this.getData()
     );
   };
@@ -325,9 +325,7 @@ export default class Leaderboard extends Component {
         ) : (
           ''
         )}
-        {!isNaN(parseInt(this.state.query)) ? (
-          // The parseInt here also turns '2020p' into 2020, so instead
-          // of fixing it I just moved the playoff check first 🧠
+        {!isNaN(parseInt(this.state.query)) && this.state.query.length == 4 ? (
           <RegularSeasonTable
             column={column}
             data={data}
