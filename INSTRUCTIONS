@@ -11,6 +11,7 @@ Things to do at the beginning of a year:
 - Turn "Less secure app access" ON for roldtimehockey gmail account (For playoff odds script)
 - Clear/update the standings for the OT Challenge
 - Update the year variable in DiscordBot/Config.json
+- Fix the "scoring_period = week*7-1" line in UpdateCurrentPF.py to account for the current season (the correct formuala to find the scoring_period for each week depends on what day of week the season starts on)
 
 Commands to start/restart things (SPRX only)
 - pm2 restart commands can use the process ID, found from sudo pm2 list
