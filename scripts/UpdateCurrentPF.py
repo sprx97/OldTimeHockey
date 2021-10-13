@@ -22,8 +22,8 @@ def updateCurrentPF(league, year):
     # Track which teams in this division we've updated, because for playoffs, teams on bye don't show up in FetchLeagueScoreboard
     tracked = []
 
-    standings = make_api_call(url)
-    for game in standings["games"]:
+    scores = make_api_call(url)
+    for game in scores["games"]:
         matchup_id = game["id"]
         away_id = game["away"]["id"]
         away_score = game["awayScore"]["score"]["formatted"]
