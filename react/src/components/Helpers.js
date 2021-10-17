@@ -70,6 +70,7 @@ export const divisionMapping = {
   'Price-Murray': 'D2',
   'Jones-Allen': 'D2',
   'Freddie-Hutton': 'D2',
+  Luuuuu: 'D2',
   Howe: 'D3',
   Lemieux: 'D3',
   Dionne: 'D3',
