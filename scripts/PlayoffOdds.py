@@ -61,7 +61,11 @@ def updatePlayoffOdds(league):
     body += "GamesBegin\n"
     body += "TeamListedFirst: home\n"
 
-    for n in range(0, 23):
+    for n in range(0, 25):
+        # Skip olympic break in 21-22
+        if (n == 17 or n == 18) and year == 2021:
+            continue
+
         weeklink = link + "/scores?week=" + str(n*7 + 4) # weird offset from FF... might change year-to-year
         weekresponse = requests.get(weeklink)
         weekroot = html.document_fromstring(weekresponse.text)
