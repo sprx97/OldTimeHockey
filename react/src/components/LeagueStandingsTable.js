@@ -50,7 +50,7 @@ export default class LeagueStandingsTable extends Component {
             <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />
             <Header.Subheader>
               <a
-                href={`http://www.sportsclubstats.com/You/${this.props.leagueName.replace(/-/g, '')}${this.props.year.toString().substring(2,4)}${parseInt(this.props.year.toString().substring(2,4))+1}2.html`}
+                href={`http://www.sportsclubstats.com/You/${this.props.leagueName.replace(/-/g, '')}${this.props.year.toString().substring(2,4)}${parseInt(this.props.year.toString().substring(2,4))+1}.html`}
                 target="_blank"
               >
                 {'Playoff Odds'}
