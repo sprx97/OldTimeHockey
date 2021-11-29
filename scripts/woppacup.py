@@ -90,7 +90,7 @@ for m in challonge.matches.index(wc_id):
     played.append([p1_name, p1_div])
     played.append([p2_name, p2_div])
 
-    print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
+#    print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
 
     # actually write to the challonge bracket if desired.
     if commit:
@@ -99,3 +99,6 @@ for m in challonge.matches.index(wc_id):
             winner_id = m["player2_id"]
 
         challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id)
+
+        # TODO: If it's a semifinal or final match (should be able to tell by number of remaining open matches),
+        #       then only write one week worth of scores, instead of finalizing. This may be tricky.
