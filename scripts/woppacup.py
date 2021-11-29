@@ -80,17 +80,17 @@ for m in challonge.matches.index(wc_id):
     # Get the matchup and verify uniqueness for each player, so we can find the PF
     p1_matchup = get_user_matchup_from_database(p1_name, p1_div)
     assert len(p1_matchup) == 1, f"Zero or multiple matchups found for {p1_name}, {p1_div}"
-    p1_pf = p1_matchup[0]["PF"]*100 # Multiply by 100 because Challonge doesn't support decimals
+    p1_pf = int(p1_matchup[0]["PF"]*100) # Multiply by 100 because Challonge doesn't support decimals
 
     p2_matchup = get_user_matchup_from_database(p2_name, p2_div)
     assert len(p2_matchup) == 1, f"Zero or multiple matchups found for {p2_name}, {p2_div}"
-    p2_pf = p2_matchup[0]["PF"]*100 # Multiply by 100 because Challonge doesn't support decimals
+    p2_pf = int(p2_matchup[0]["PF"]*100) # Multiply by 100 because Challonge doesn't support decimals
 
     # Mark these two users as having played
     played.append([p1_name, p1_div])
     played.append([p2_name, p2_div])
 
-#    print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
+    print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
 
     # actually write to the challonge bracket if desired.
     if commit:
