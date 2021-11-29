@@ -1,5 +1,6 @@
 {
 	"srcroot": "/var/www/roldtimehockey/", // update this to be your local path to the roldtimehockey folder
+	"year": "", // current season of OTH, updated annually
 
 	"sql_hostname": "localhost",
 	"sql_username": "", // update this to be your local mysql login
@@ -18,5 +19,9 @@
 
 	// You should not need these unless you're running scripts that use OTHAdmin's commish powers on fleaflicker
 	"fleaflicker_email": "",
-	"fleaflicker_password": ""
+	"fleaflicker_password": "",
+
+	// Challonge username and API key for woppacup bracket
+	"challonge_username": "",
+	"challonge_api_key": ""
 }
