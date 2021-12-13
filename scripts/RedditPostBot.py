@@ -9,8 +9,13 @@ year = int(f.readline().strip())
 week = int(f.readline().strip())
 f.close()
 
+# PF Leaderboard
 pf = open(Config.config["srcroot"] + "scripts/PFs/" + str(year) + "_Week_" + str(week) + ".txt", "r")
 r.subreddit("OldTimeHockey").submit(str(year) + " Week " + str(week) + " PF Rankings", selftext=pf.read())
 
+# Stats and Analysis Post
 weekly = open(Config.config["srcroot"] + "scripts/weeks/" + str(year) + "_Week_" + str(week) + ".txt", "r")
 r.subreddit("OldTimeHockey").submit(str(year) + " Week " + str(week) + " Stats and Analysis", selftext=weekly.read())
+
+# Woppa Cup Tournament (needs to be updated each year)
+r.subreddit("OldTimeHockey").submit("Woppa Cup " + str(year) + " Update", "https://challonge.com/woppacup22x")
