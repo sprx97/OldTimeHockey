@@ -5,6 +5,8 @@ import sys
 import Config
 import re
 
+from Shared import *
+
 years_to_update = [] # can manually seed if necessary
 playoffs_to_update = []
 
@@ -50,6 +52,19 @@ def getStandings(leagueID, year):
     standingsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "?season=" + str(year)
     response = requests.get(standingsURL)
     root = html.document_fromstring(response.text)
+    rows = root.cssselect(".table-striped")[0].findall("tr")
+    champs = []
+    for n in range(0, len(rows)):
+        isChamp = len(rows[n].cssselect(".fa-trophy")) > 0
+
+        if isChamp:
+            teamID = rows[n].cssselect(".league-name")[0].findall("a")[0].get("href")
+            if "?season" in teamID:
+                teamID = teamID[(teamID.find("/teams/") + 7):teamID.find("?season")]
+            else:
+                teamID = teamID[(teamID.find("/teams/") + 7):]
+
+            champs.append(teamID)
 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     #                                                             #
@@ -85,63 +100,42 @@ def getStandings(leagueID, year):
 
     all_teams = []
 
-    rows = root.cssselect(".table-striped")[0].findall("tr")
-    for n in range(0, len(rows)):
-        division = None # relic from older code
-        user = rows[n][1].text_content()
-        # 2 is just a horizontal spacer
-        wins = intP(rows[n][3].text_content())
-        losses = intP(rows[n][4].text_content())
-        # 5 is win %, which we can just calculate
-        try:
-            gamesBack = intP(rows[n][6].text_content())
-        except:
-            gamesBack = 0
-        # post = rows[n][7].text_content()
-        # if len(post) > 0:
-        #     wins += intP(post[:post.index("-")])
-        #     losses += intP(post[post.index("-")+1:])
+    standings = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={leagueID}&season={year}")
+    for team in standings["divisions"][0]["teams"]:
+        team_id = str(team["id"])
+        team_name = team["name"]
 
-        try:
-            streak = rows[n][8].text_content()
-            if streak[0] == 'L':
-                streak = -1*intP(streak[1:])
-            else:
-                streak = intP(streak[1:])
-            # 9 is another spacer
-            PF = floatP(rows[n][10].text_content().replace(",", ""))
-            # 11 is average PF
-            PA = floatP(rows[n][12].text_content().replace(",", ""))
-            # 13 is average PA
-        except: # Week one standings page looks weird (no "post" column)
-            streak = rows[n][7].text_content()
-            if len(streak) != 0 and streak[0] == 'L':
-                streak = -1*intP(streak[1:])
-            else:
-                streak = intP(streak[1:])
-            # 8 is a spacer
-            PF = floatP(rows[n][9].text_content().replace(",", ""))
-            PA = floatP(rows[n][10].text_content().replace(",", ""))
+        user_id = 0
+        if "owners" in team:
+            user_id = str(team["owners"][0]["id"])
+            user_name = team["owners"][0]["displayName"]
+            if user_id == "591742":
+                user_id = "157129" # override for rellek multiple accounts
+            elif user_id == "698576":
+                user_id = "1357398" # override for MWHazard multiple accounts
 
+        # wins, losses, gamesBack, streak, pointsFor, pointsAgainst, coachRating*, isChamp
+        record = team["recordOverall"]
+        wins = record["wins"] if "wins" in record else 0
+        losses = record["losses"] if "losses" in record else 0
+        # gamesBack? -- don't really need this IIRC, maybe just for 
+        streak = team["streak"]["value"] if "value" in team["streak"] else 0
+        points_for = team["pointsFor"]["value"]
+        points_against = team["pointsAgainst"]["value"]
 
-        try:
-            userID = rows[n].cssselect(".user-name")[0].get("href")
-            userID = userID[(userID.find("/users/") + 7):]
-        except:
-            userID = 0 # If the user has abandoned the team
-        teamname = rows[n].cssselect(".league-name")[0].text_content()
-        teamID = rows[n].cssselect(".league-name")[0].findall("a")[0].get("href")
-        if "?season" in teamID:
-            teamID = teamID[(teamID.find("/teams/") + 7):teamID.find("?season")]
-        else:
-            teamID = teamID[(teamID.find("/teams/") + 7):]
+        # I don't think these values are necessary anymore,
+        # but I'll have to disentangle some things to fully remove them
+        # If GamesBack is necessary that can easily be calculated in SQL
+        division = None
+        games_back = 0
 
-        # PF = corrected_pf[teamID][0]
-        CR = coachRating[teamID]
+        # CR is stored above, but I should have enough info to figure it out
+        # Should have enough info to get CR from, and isChamp I think I can figure out.
+            # https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id=12086&season=2020
+            # https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id=12086&fantasy_game_id=2579652&scoring_period=104
+            # https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id=12086&fantasy_game_id=2579653&scoring_period=108
 
-        isChamp = len(rows[n].cssselect(".fa-trophy")) > 0
-
-        all_teams.append([teamID, teamname, userID, user, division, wins, losses, gamesBack, streak, PF, PA, CR, isChamp])
+        all_teams.append([team_id, team_name, user_id, user_name, division, wins, losses, games_back, streak, points_for, points_against, coachRating[team_id], team_id in champs])
 
     return all_teams
 
