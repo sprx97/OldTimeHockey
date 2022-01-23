@@ -61,12 +61,8 @@ def updatePlayoffOdds(league):
     body += "GamesBegin\n"
     body += "TeamListedFirst: home\n"
 
+    # Convert back to 23 for most seasons
     for n in range(0, 25):
-        # Skip olympic break in 21-22
-        # Now un-skipped because sounds like there will be games then (changed 12/21/21)
-#        if (n == 17 or n == 18) and year == 2021:
-#            continue
-
         weeklink = link + "/scores?week=" + str(n*7 + 4) # weird offset from FF... might change year-to-year
         weekresponse = requests.get(weeklink)
         weekroot = html.document_fromstring(weekresponse.text)
@@ -87,16 +83,16 @@ def updatePlayoffOdds(league):
             awayscore = int(float(away.cssselect(".right")[0].text_content())*100)
             homescore = int(float(home.cssselect(".right")[0].text_content())*100)
 
-            is_over = len(away.cssselect(".scoreboard-win")) > 0 or len(home.cssselect(".scoreboard-win")) > 0
+            is_over = len(weekroot.cssselect("strong")) > 0 # <strong>Final</strong> exists in weeks that are completed
 
-            if awayscore != 0 and homescore != 0 and is_over:
+            if is_over:
                 body += "1/" + str(n+1) + "/18\t" + homename + "\t" + str(homescore) + "-" + str(awayscore) + "\t" + awayname + "\n"
             else:
                 body += "1/" + str(n+1) + "/18\t" + homename + "\t" + "\t" + "\t" + awayname + "\n"
 
     body += "GamesEnd\n"
 
-    # print(body)
+#    print(body)
 
     try:
         msg = MIMEText(body)
