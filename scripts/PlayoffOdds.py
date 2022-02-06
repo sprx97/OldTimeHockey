@@ -45,7 +45,7 @@ def updatePlayoffOdds(league):
     body += "\tPercentOfGamesThatEndInShootoutWin: 0\n"
     body += "\tHomeFieldAdvantage: 0.5\n"
     body += "\tWeightType: Pythagenpat\n" # This calculates based on opponent strength. Use 50/50 for random odds.
-    body += "\tWeightExponent: 0.27\n"
+    body += "\tWeightExponent: 0.0\n"
     body += "\tWhatDoYouCallATie: tie\n"
     body += "\tWhatDoYouCallALottery: lottery\n"
     body += "\tWhatDoYouCallPromoted: promoted\n"
@@ -82,6 +82,13 @@ def updatePlayoffOdds(league):
 
             awayscore = int(float(away.cssselect(".right")[0].text_content())*100)
             homescore = int(float(home.cssselect(".right")[0].text_content())*100)
+
+            # Hackhackhackhackhack for 2021
+            # https://www.fleaflicker.com/nhl/leagues/12087/scores/2751953
+            if awayscore == 18515 and homescore == 18515:
+                print("Found the fake tie")
+                awayscore += 1
+
 
             is_over = len(weekroot.cssselect("strong")) > 0 # <strong>Final</strong> exists in weeks that are completed
 
