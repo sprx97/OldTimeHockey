@@ -80,8 +80,8 @@ def updatePlayoffOdds(league):
             awayname = away.cssselect(".league-name")[0].text_content().replace("(", "").replace(")", "")
             homename = home.cssselect(".league-name")[0].text_content().replace("(", "").replace(")", "")
 
-            awayscore = int(float(away.cssselect(".right")[0].text_content())*100)
-            homescore = int(float(home.cssselect(".right")[0].text_content())*100)
+            awayscore = round(float(away.cssselect(".right")[0].text_content())*100)
+            homescore = round(float(home.cssselect(".right")[0].text_content())*100)
 
             # Hackhackhackhackhack for 2021
             # https://www.fleaflicker.com/nhl/leagues/12087/scores/2751953

@@ -1,4 +1,3 @@
-import requests
 import smtplib
 from email.mime.text import MIMEText
 from yahoo_oauth import OAuth2
@@ -9,7 +8,10 @@ import time
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
-leagues = ["411.l.19172", "411.l.19179", "411.l.19183", "411.l.24112", "411.l.24120", "411.l.24125", "411.l.24135", "411.l.24137", "411.l.24142", "411.l.24147", "411.l.24158", "411.l.24159", "411.l.24160", "411.l.24162", "411.l.24167", "411.l.24187", "411.l.24190", "411.l.24193", "411.l.24194", "411.l.26239", "411.l.24195", "411.l.25450", "411.l.24211", "411.l.24207", "411.l.24210", "411.l.24201", "411.l.24204", "411.l.24205", "411.l.24202", "411.l.24209", "411.l.24748", "411.l.73532"]
+leagues = [ "411.l.19172", "411.l.19179", "411.l.19183", "411.l.24112", "411.l.24120", "411.l.24125", "411.l.24135", "411.l.24137", "411.l.24142", \
+            "411.l.24147", "411.l.24158", "411.l.24159", "411.l.24160", "411.l.24162", "411.l.24167", "411.l.24187", "411.l.24190", "411.l.24193", \
+            "411.l.24194", "411.l.26239", "411.l.24195", "411.l.25450", "411.l.24211", "411.l.24207", "411.l.24210", "411.l.24201", "411.l.24204", \
+            "411.l.24205", "411.l.24202", "411.l.24209", "411.l.24748", "411.l.73532"]
 
 conn = OAuth2(None, None, from_file="yahoo_auth.json")
 if not conn.token_is_valid():
@@ -22,15 +24,19 @@ def sanitize(name):
     name = name.replace(")", "")
     return name
 
-def updatePlayoffOdds(league):
-    league = game.to_league(league)
+def updatePlayoffOdds(league_id):
+    league = game.to_league(league_id)
+    settings = league.settings()
 
     body = ""
 
     body += "LeagueBegin\n"
-    body += f"\tLeague: {league.settings()['name']} {year} (Sort: League) (Playoffs: 6)\n"
+    body += f"\tLeague: {settings['name']} {year} (Sort: League) (Playoffs: 6)\n"
 
-    for team in league.teams().values():
+    print(league_id, settings["name"])
+
+    teams = league.teams().values()
+    for team in teams:
         body += f"\t\tTeam: {sanitize(team['name'])}\n"
 
     body += "\tKind: fantasy\n"
@@ -72,20 +78,29 @@ def updatePlayoffOdds(league):
     body += "GamesBegin\n"
     body += "TeamListedFirst: home\n"
 
-    for week in range(1, int(league.settings()["playoff_start_week"])):
-        matchups = league.matchups(week)["fantasy_content"]["league"][1]["scoreboard"]["0"]["matchups"]
-        is_over = matchups["0"]["matchup"]["status"] == "postevent"
-        for m in range(matchups["count"]):
-            matchup = matchups[str(m)]["matchup"]["0"]["teams"]
-            away_name = sanitize(matchup["0"]["team"][0][2]["name"])
-            away_score = float(matchup["0"]["team"][1]["team_points"]["total"])*100
-            home_name = sanitize(matchup["1"]["team"][0][2]["name"])
-            home_score = float(matchup["1"]["team"][1]["team_points"]["total"])*100
+    weeks = ";week="
+    for week in range(1, int(settings["playoff_start_week"])):
+        weeks += str(week) + ","
+    weeks = weeks[:-1]
 
-            if is_over:
-                body += f"1/{week}/21\t{home_name}\t{home_score}-{away_score}\t{away_name}\n"
-            else:
-                body += f"1/{week}/21\t{home_name}\t\t\t{away_name}\n"
+    all_matchups = game.yhandler.get(f"league/{league_id}/scoreboard{weeks}")
+    all_matchups = all_matchups["fantasy_content"]["league"][1]["scoreboard"]["0"]["matchups"]
+    
+    for m in range(all_matchups["count"]):
+        matchup = all_matchups[str(m)]["matchup"]
+        week = matchup["week"]
+        is_over = matchup["status"] == "postevent"
+
+        matchup = matchup["0"]["teams"]
+        away_name = sanitize(matchup["0"]["team"][0][2]["name"])
+        away_score = round(float(matchup["0"]["team"][1]["team_points"]["total"])*100)
+        home_name = sanitize(matchup["1"]["team"][0][2]["name"])
+        home_score = round(float(matchup["1"]["team"][1]["team_points"]["total"])*100)
+
+        if is_over:
+            body += f"1/{week}/21\t{home_name}\t{home_score}-{away_score}\t{away_name}\n"
+        else:
+            body += f"1/{week}/21\t{home_name}\t\t\t{away_name}\n"
 
     body += "GamesEnd\n"
 
@@ -113,6 +128,4 @@ for league in leagues:
     try:
         updatePlayoffOdds(league)
     except RuntimeError as e:
-        print("Hit runtime error.")
-        time.sleep(3600)
-        updatePlayoffOdds(league)
+        print(f"Hit runtime error on league {league}.")
