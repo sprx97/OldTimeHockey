@@ -8,10 +8,11 @@ import time
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
+BBUPFL_LEAGUE_ID = "411.l.73833"
 leagues = [ "411.l.19172", "411.l.19179", "411.l.19183", "411.l.24112", "411.l.24120", "411.l.24125", "411.l.24135", "411.l.24137", "411.l.24142", \
             "411.l.24147", "411.l.24158", "411.l.24159", "411.l.24160", "411.l.24162", "411.l.24167", "411.l.24187", "411.l.24190", "411.l.24193", \
             "411.l.24194", "411.l.26239", "411.l.24195", "411.l.25450", "411.l.24211", "411.l.24207", "411.l.24210", "411.l.24201", "411.l.24204", \
-            "411.l.24205", "411.l.24202", "411.l.24209", "411.l.24748", "411.l.73532"]
+            "411.l.24205", "411.l.24202", "411.l.24209", "411.l.24748", "411.l.73532", BBUPFL_LEAGUE_ID]
 
 conn = OAuth2(None, None, from_file="yahoo_auth.json")
 if not conn.token_is_valid():
@@ -31,7 +32,9 @@ def updatePlayoffOdds(league_id):
     body = ""
 
     body += "LeagueBegin\n"
-    body += f"\tLeague: {settings['name']} {year} (Sort: League) (Playoffs: 6)\n"
+
+    playoff_teams = 8 if league_id == BBUPFL_LEAGUE_ID else 6
+    body += f"\tLeague: {settings['name']} {year} (Sort: League) (Playoffs: {playoff_teams})\n"
 
     print(league_id, settings["name"])
 

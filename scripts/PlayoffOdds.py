@@ -16,7 +16,10 @@ def updatePlayoffOdds(league):
     body = ""
 
     body += "LeagueBegin\n"
-    body += "\tLeague: " + root.cssselect("#top-bar .active")[0].text_content().split(" ")[0].rstrip() + str(year)[2:4] + str(year+1)[2:4] + " (Sort: League) (Playoffs: 6)\n"
+    if league == 9559 or league == 9899 or league == 14206:
+        body += "\tLeague: " + root.cssselect("#top-bar .active")[0].text_content().rstrip() + str(year)[2:4] + str(year+1)[2:4] + " (Sort: League) (Playoffs: 6)\n"
+    else:
+        body += "\tLeague: " + root.cssselect("#top-bar .active")[0].text_content().split(" ")[0].rstrip() + str(year)[2:4] + str(year+1)[2:4] + " (Sort: League) (Playoffs: 6)\n"
 
     teams = root.cssselect(".league-name a")
     for team in teams:
