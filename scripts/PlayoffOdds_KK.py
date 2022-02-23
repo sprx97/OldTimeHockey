@@ -88,7 +88,7 @@ def updatePlayoffOdds(league_id):
 
     all_matchups = game.yhandler.get(f"league/{league_id}/scoreboard{weeks}")
     all_matchups = all_matchups["fantasy_content"]["league"][1]["scoreboard"]["0"]["matchups"]
-    
+
     for m in range(all_matchups["count"]):
         matchup = all_matchups[str(m)]["matchup"]
         week = matchup["week"]
