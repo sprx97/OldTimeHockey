@@ -4,10 +4,6 @@ config = Config.config
 import pymysql
 import sys
 
-commit = False
-if len(sys.argv) > 1 and sys.argv[1].lower() == "true":
-    commit = True
-
 # Grabs the current score and opponent's current score for the given username
 # This is a direct copy from the one in DiscordBot/Shared.py
 DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
@@ -43,6 +39,12 @@ wc_id = 10521685 # TODO: hard-coded to test league for now. Need a way to update
 
 particpants = challonge.participants.index(wc_id)
 played = []
+
+# Find number of open matches. This will help us figure out what round it is.
+open_matches = 0
+for m in challonge.matches.index(wc_id):
+    if m["state"] == "open":
+        open_matches += 1
 
 for m in challonge.matches.index(wc_id):
     # Skip completed matches, because we only want the current one
@@ -90,15 +92,25 @@ for m in challonge.matches.index(wc_id):
     played.append([p1_name, p1_div])
     played.append([p2_name, p2_div])
 
-    print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
+    # Don't mark a winnner in the first week of a two-week matchup
+    # Currently this is only semifinals and finals, but subject to change each year
+    current_scores = m["scores_csv"]
+    finalize = True
+    if open_matches <= 2:
+        if current_scores == "":
+            challonge.matches.mark_as_underway(wc_id, m["id"])
+            finalize = False
+        else:
+            scores = current_scores.split("-")
+            assert len(scores) == 2, f"Scores CSV for ongoing match is malformed: {current_scores}"
+            p1_pf += int(scores[0])
+            p2_pf += int(scores[0])
 
-    # actually write to the challonge bracket if desired.
-    if commit:
+    winner_id = None
+    if finalize:
         winner_id = m["player1_id"]
         if p2_pf > p1_pf:
             winner_id = m["player2_id"]
 
-        challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id)
-
-        # TODO: If it's a semifinal or final match (should be able to tell by number of remaining open matches),
-        #       then only write one week worth of scores, instead of finalizing. This may be tricky.
+    print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
+    challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id)

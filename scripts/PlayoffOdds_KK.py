@@ -14,7 +14,8 @@ leagues = [ "411.l.19172", "411.l.19179", "411.l.19183", "411.l.24112", "411.l.2
             "411.l.24194", "411.l.26239", "411.l.24195", "411.l.25450", "411.l.24211", "411.l.24207", "411.l.24210", "411.l.24201", "411.l.24204", \
             "411.l.24205", "411.l.24202", "411.l.24209", "411.l.24748", "411.l.73532", BBUPFL_LEAGUE_ID]
 
-conn = OAuth2(None, None, from_file="yahoo_auth.json")
+oauth_file = Config.config["srcroot"] + "scripts/yahoo_auth.json"
+conn = OAuth2(None, None, from_file=oauth_file)
 if not conn.token_is_valid():
     conn.refresh_access_token()
 
