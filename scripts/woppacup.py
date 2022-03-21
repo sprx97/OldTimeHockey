@@ -104,7 +104,7 @@ for m in challonge.matches.index(wc_id):
             scores = current_scores.split("-")
             assert len(scores) == 2, f"Scores CSV for ongoing match is malformed: {current_scores}"
             p1_pf += int(scores[0])
-            p2_pf += int(scores[0])
+            p2_pf += int(scores[1])
 
     winner_id = None
     if finalize:
