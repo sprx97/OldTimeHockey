@@ -5,6 +5,18 @@ import requests
 # Local Includes
 import Config
 
+def is_playoff_week(week, year):
+    if year == 2012:
+        return week > 10;
+    elif year == 2013:
+        return week > 20;
+    elif year == 2020:
+        return week > 13;
+    elif year == 2021:
+        return week > 25;
+    else:
+        return week > 23;
+
 # Grabs the list of OTH leagues for the given year
 # from the SQL database
 def get_leagues_from_database(year):

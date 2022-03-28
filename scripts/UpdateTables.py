@@ -13,9 +13,10 @@ playoffs_to_update = []
 if len(sys.argv) == 1: # no arguments
     f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
     year = int(f.readline().strip())
-    years_to_update.append(year)
+    week = int(f.readline().strip())
 
-    if int(f.readline().strip()) > 23: # most years only have 23 weeks
+    years_to_update.append(year)
+    if is_playoff_week(week, year):
         playoffs_to_update.append(year)
     f.close()
 else:
@@ -118,7 +119,7 @@ def getStandings(leagueID, year):
         record = team["recordOverall"]
         wins = record["wins"] if "wins" in record else 0
         losses = record["losses"] if "losses" in record else 0
-        # gamesBack? -- don't really need this IIRC, maybe just for 
+        # gamesBack? -- don't really need this IIRC, maybe just for
         streak = team["streak"]["value"] if "value" in team["streak"] else 0
         points_for = team["pointsFor"]["value"]
         points_against = team["pointsAgainst"]["value"]
@@ -223,7 +224,7 @@ if __name__ == "__main__":
                     if next[3][-2] == "+":
                         next[3] = next[3][:-3] # elimites "+1" for managers with co-managers
                 except:
-                    pass                            
+                    pass
 
                 if str(next[2]) == "591742":
                     next[2] = 157129 # override for rellek multi accounts...
