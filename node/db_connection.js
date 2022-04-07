@@ -3,9 +3,9 @@ var http = require("http"),
     mysql = require("mysql"),
     mysqlEscapeArray = require("mysql-escape-array"),
     fs = require("fs"),
-	config = require("../config.json"),
-	PythonShell = require("python-shell")
-	
+    config = require("../config.json"),
+    PythonShell = require("python-shell")
+
 var conn = mysql.createConnection({
 	host: config.sql_hostname,
 	user: config.sql_username,

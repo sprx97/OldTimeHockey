@@ -58,8 +58,8 @@ const LiveTable = ({
               <Table.HeaderCell
                 width={2}
                 textAlign="center"
-                sorted={column === 'regTotal' ? direction : null}
-                onClick={handleSort('regTotal')}
+                sorted={(column === 'postTotal' || column === 'regTotal') ? direction : null}
+                onClick={handleSort(isplayoffs ? 'postTotal' : 'regTotal')}
               >
                 PF Total
               </Table.HeaderCell>
@@ -74,8 +74,8 @@ const LiveTable = ({
               <Table.HeaderCell
                 width={2}
                 textAlign="center"
-                sorted={column === 'regPATotal' ? direction : null}
-                onClick={handleSort('regPATotal')}
+                sorted={(column === 'postPATotal' || column === 'regPATotal') ? direction : null}
+                onClick={handleSort(isplayoffs ? 'postPATotal' : 'regPATotal')}
               >
                 PA Total
               </Table.HeaderCell>
