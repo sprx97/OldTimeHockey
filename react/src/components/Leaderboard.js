@@ -58,7 +58,7 @@ export default class Leaderboard extends Component {
     { key: '2020', text: '2020-2021 Regular Season', value: '2020' },
     { key: '2020p', text: '2020-2021 Playoffs', value: '2020p' },
     { key: '2021', text: '2021-2022 Regular Season', value: '2021' },
-//    { key: '2021p', text: '2021-2022 Playoffs', value: '2021p' },
+    { key: '2021p', text: '2021-2022 Playoffs', value: '2021p' },
     { key: 'career', text: 'Career Regular Season', value: 'career' },
     { key: 'careerp', text: 'Career Playoffs', value: 'careerp' },
     { key: 'week', text: 'This Week (Live)', value: 'week' },
