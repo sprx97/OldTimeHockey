@@ -178,7 +178,7 @@ http.createServer(function(request, response) {
 		args.push(query.year)
 		if (query.tiers)
 			args.push(query.tiers)
-		
+
 		PythonShell.PythonShell.run(config.srcroot + "scripts/ADP.py", {args: args}, function(err, results) {
 			if (err)
 				throw err;

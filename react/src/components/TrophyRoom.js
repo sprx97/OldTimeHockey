@@ -2,6 +2,8 @@
 import React from 'react';
 import { Container, Grid, Image, Header, Segment } from 'semantic-ui-react';
 
+const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022']
+
 const TrophyRoom = () => {
   return (
     <Container>
@@ -11,55 +13,16 @@ const TrophyRoom = () => {
         </Header>
         <Grid centered>
           <Grid.Row columns={4}>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2014.png"
-                alt="Division 1 champion 2014"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2015.png"
-                alt="Division 1 champion 2015"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2016.png"
-                alt="Division 1 champion 2016"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2017.png"
-                alt="Division 1 champion 2017"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2018.png"
-                alt="Division 1 champion 2018"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2019.png"
-                alt="Division 1 champion 2019"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2020.png"
-                alt="Division 1 champion 2020"
-              />
-              *Regular Season Champion, Playoffs Cancelled Due To Shortened Season
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/D1/2021.png"
-                alt="Division 1 champion 2021"
-              />
-            </Grid.Column>
+            {years.map(year => (
+              <Grid.Column>
+                {
+                  (year == 2013) ? <div><br/><br/><br/><br/><br/><br/><br/>"2013 Inaugural Season. No tiers yet!"</div> : <Image src={"/images/banners/D1/" + year + ".png"} alt={"Division 1 champion " + year} />
+                }
+                {
+                  (year == 2020) ? "*Regular Season Champion, Playoffs Cancelled Due To Shortened Season" : ""
+                }
+              </Grid.Column>
+            ))}
           </Grid.Row>
         </Grid>
 
@@ -68,60 +31,13 @@ const TrophyRoom = () => {
         </Header>
         <Grid centered>
           <Grid.Row columns={4}>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2013.png"
-                alt="Points for champion 2013"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2014.png"
-                alt="Points for champion 2014"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2015.png"
-                alt="Points for champion 2015"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2016.png"
-                alt="Points for champion 2016"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2017.png"
-                alt="Points for champion 2017"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2018.png"
-                alt="Points for champion 2018"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2019.png"
-                alt="Points for champion 2019"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2020.png"
-                alt="Points for champion 2020"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/PF/2021.png"
-                alt="Points for champion 2021"
-              />
-            </Grid.Column>
+            {years.map(year => (
+              <Grid.Column>
+                {
+                  <Image src={"/images/banners/PF/" + year + ".png"} alt={"Points for champion " + year} />
+                }
+              </Grid.Column>
+            ))}
           </Grid.Row>
         </Grid>
 
@@ -130,63 +46,15 @@ const TrophyRoom = () => {
         </Header>
         <Grid centered>
           <Grid.Row columns={4}>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2013.png"
-                alt="Woppa cup champion 2013"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2014.png"
-                alt="Woppa cup champion 2014"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2015.png"
-                alt="Woppa cup champion 2015"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2016.png"
-                alt="Woppa cup champion 2016"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2017.png"
-                alt="Woppa cup champion 2017"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2018.png"
-                alt="Woppa cup champion 2018"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2019.png"
-                alt="Woppa cup champion 2019"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2020.png"
-                alt="Woppa cup champion 2020"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Image
-                src="/images/banners/WC/2021.png"
-                alt="Woppa cup champion 2021"
-              />
-            </Grid.Column>
+            {years.map(year => (
+              <Grid.Column>
+                {
+                  <Image src={"/images/banners/WC/" + year + ".png"} alt={"Woppa cup champion " + year} />
+                }
+              </Grid.Column>
+            ))}
           </Grid.Row>
-
-          <Grid.Row columns={4}>Last Updated 9/29/21</Grid.Row>
+          <Grid.Row columns={4}>Last Updated 6/6/22</Grid.Row>
         </Grid>
       </Segment>
     </Container>
