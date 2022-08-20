@@ -1,5 +1,5 @@
 {
-	"srcroot": "/var/www/roldtimehockey/", // update this to be your local path to the roldtimehockey folder
+	"srcroot": "/var/www/OldTimeHockey/", // update this to be your local path to this folder
 	"year": "", // current season of OTH, updated annually
 
 	"sql_hostname": "localhost",
@@ -10,8 +10,8 @@
 	// You should not need the following unless you are updating RedditPostBot.py
 	"reddit_username": "",
 	"reddit_password": "",
-    "reddit_client_id": "",
-    "reddit_secret": "",
+	"reddit_client_id": "",
+	"reddit_secret": "",
 
 	// You should not need these unless you're running the Playoff Odds script
 	"email_username": "",
