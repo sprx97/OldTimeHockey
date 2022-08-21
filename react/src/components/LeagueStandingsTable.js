@@ -69,21 +69,21 @@ export default class LeagueStandingsTable extends Component {
           <Table definition celled compact unstackable>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell width={2} />
+                <Table.HeaderCell width={1} />
                 <Table.HeaderCell width={6} textAlign="center">
                   Team
                 </Table.HeaderCell>
                 <Table.HeaderCell width={3} textAlign="center">
                   Owner
                 </Table.HeaderCell>
-                <Table.HeaderCell width={2} textAlign="center">
+                <Table.HeaderCell width={1} textAlign="center">
                   Wins
                 </Table.HeaderCell>
-                <Table.HeaderCell width={2} textAlign="center">
+                <Table.HeaderCell width={1} textAlign="center">
                   Losses
                 </Table.HeaderCell>
                 {has_ties ? (
-                <Table.HeaderCell width={2} textAlign="center">
+                <Table.HeaderCell width={1} textAlign="center">
                   Ties
                 </Table.HeaderCell>
                 ) : ''}

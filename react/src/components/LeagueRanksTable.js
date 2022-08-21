@@ -85,7 +85,7 @@ export default class LeagueRanksTable extends Component {
           <Table definition celled compact sortable unstackable>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell width={2} />
+                <Table.HeaderCell width={1} />
                 <Table.HeaderCell
                   width={4}
                   textAlign="center"
@@ -94,14 +94,14 @@ export default class LeagueRanksTable extends Component {
                   League
                 </Table.HeaderCell>
                 <Table.HeaderCell
-                  width={3}
+                  width={2}
                   textAlign="center"
                   sorted={column === 'PF' ? direction : null}
                 >
                   Total PF
                 </Table.HeaderCell>
                 <Table.HeaderCell
-                  width={3}
+                  width={2}
                   textAlign="center"
                   sorted={column === 'avgPF' ? direction : null}
                   onClick={this.handleSort('avgPF')}
@@ -109,7 +109,7 @@ export default class LeagueRanksTable extends Component {
                   Avg PF
                 </Table.HeaderCell>
                 <Table.HeaderCell
-                  width={3}
+                  width={2}
                   textAlign="center"
                   sorted={column === 'StdDev' ? direction : null}
                   onClick={this.handleSort('StdDev')}
