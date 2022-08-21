@@ -16,8 +16,17 @@ export default class LeagueStandingsTable extends Component {
   getData = async () => {
     const res = await fetch('https://roldtimehockey.com/node/leagueteams?id=' + this.props.leagueID + "&year=" + this.props.year);
     const leaders = await res.json();
+
+    var has_ties = false;
+    for (const team in leaders) {
+      if (leaders[team]["ties"] != "0") {
+        has_ties = true;
+      }
+    }
+
     this.setState({
       data: leaders,
+      has_ties: has_ties
     });
   };
 
@@ -31,7 +40,7 @@ export default class LeagueStandingsTable extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, has_ties } = this.state;
 
     return (
       <div>
@@ -73,13 +82,18 @@ export default class LeagueStandingsTable extends Component {
                 <Table.HeaderCell width={2} textAlign="center">
                   Losses
                 </Table.HeaderCell>
+                {has_ties ? (
+                <Table.HeaderCell width={2} textAlign="center">
+                  Ties
+                </Table.HeaderCell>
+                ) : ''}
               </Table.Row>
             </Table.Header>
             <Table.Body>
               {_.map(
                 data,
                 (
-                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier },
+                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties },
                   index,
                 ) => (
                   <Table.Row
@@ -105,6 +119,7 @@ export default class LeagueStandingsTable extends Component {
                     <Table.Cell textAlign="center">{FFname}</Table.Cell>
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
+                    {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
                   </Table.Row>
                 ),
               )}

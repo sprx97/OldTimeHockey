@@ -55,7 +55,7 @@ http.createServer(function(request, response) {
 		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + tierfilter;
 	}
 	else if(path == "/leagueteams") {
-                sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.isChamp as isChamp, Leagues.tier as tier \
+                sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.ties as ties, Teams.isChamp as isChamp, Leagues.tier as tier \
                        from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on (leagueID=id and Teams.year=Leagues.year) where leagueid=" + mysql.escape(query.id) + " and Teams.year=" + mysql.escape(query.year) + " ORDER BY wins DESC, losses ASC, pointsFor DESC";
 	}
 	else if (path == "/currenttier") {

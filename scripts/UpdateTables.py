@@ -115,11 +115,12 @@ def getStandings(leagueID, year):
             elif user_id == "698576":
                 user_id = "1357398" # override for MWHazard multiple accounts
 
-        # wins, losses, gamesBack, streak, pointsFor, pointsAgainst, coachRating*, isChamp
+        # wins, losses, gamesBack, streak, pointsFor, pointsAgainst, coachRating*, isChamp, ties
         record = team["recordOverall"]
         wins = record["wins"] if "wins" in record else 0
         losses = record["losses"] if "losses" in record else 0
-        # gamesBack? -- don't really need this IIRC, maybe just for
+        ties = record["ties"] if "ties" in record else 0
+        # gamesBack? -- don't really need this IIRC
         streak = team["streak"]["value"] if "value" in team["streak"] else 0
         points_for = team["pointsFor"]["value"]
         points_against = team["pointsAgainst"]["value"]
@@ -136,7 +137,7 @@ def getStandings(leagueID, year):
             # https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id=12086&fantasy_game_id=2579652&scoring_period=104
             # https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id=12086&fantasy_game_id=2579653&scoring_period=108
 
-        all_teams.append([team_id, team_name, user_id, user_name, division, wins, losses, games_back, streak, points_for, points_against, coachRating[team_id], team_id in champs])
+        all_teams.append([team_id, team_name, user_id, user_name, division, wins, losses, games_back, streak, points_for, points_against, coachRating[team_id], team_id in champs, ties])
 
     return all_teams
 
@@ -237,14 +238,14 @@ if __name__ == "__main__":
                     # print(next[1])
                     cursor.execute("INSERT into Teams values (" + str(next[0]) + ", " + str(league[0]) + ", " + str(next[2]) + ", '" + \
                     next[1] + "', " + str(next[5]) + ", " + str(next[6]) + ", " + str(next[7]) + ", " + str(next[8]) + ", " + \
-                    str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ")")
+                    str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ", " + str(next[13]))
 
                 elif len(data) == 1:
                     if intP(data[0][2]) != intP(next[2]) and intP(next[2]) != 0:
                         cursor.execute("UPDATE Teams set ownerID=" + str(next[2]) + ", replacement=1 where teamID=" + str(next[0]) + " AND year=" + str(year))
 
                     cursor.execute("UPDATE Teams set  name='" + next[1] + \
-                    "', wins=" + str(next[5]) + ", losses=" + str(next[6]) + ", gamesBack=" + str(next[7]) + \
+                    "', wins=" + str(next[5]) + ", losses=" + str(next[6]) + ", ties=" + str(next[13]) + ", gamesBack=" + str(next[7]) + \
                     ", streak=" + str(next[8]) + ", pointsFor=" + str(next[9]) + ", pointsAgainst=" + str(next[10]) + \
                     ", coachRating=" + str(next[11]) + ", isChamp=" + str(next[12]) +  " where teamID=" + str(next[0]) + " AND year=" + str(year))
                 else:
