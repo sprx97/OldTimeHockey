@@ -4,9 +4,9 @@
 
 # Personal info
 config.json
-scripts/yahoo_auth.json
-scripts/Registration/auth.json
-scripts/Registration/tokens/*
+scripts/PlayoffOdds/yahoo_auth.json
+scripts/Emailer/auth.json
+scripts/Emailer/tokens/*
 
 # react
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.

@@ -1,8 +1,10 @@
 # Standard python libraries
 import datetime
+import sys
 
 # My libraries
-import GoogleHelpers
+sys.path.insert(0, "../Emailer")
+import Emailer
 
 # Failsafe 1
 print("Are you sure you want to run the registraton script? This will email more than 200 people. (yes/no)")
@@ -27,7 +29,7 @@ reg_sheet_2021_2022 = "1jC3zHsRuB6IawR-AM5ZtAOl360pCdjqUk230NiWPYbo"
 reg_sheet_2022_2023 = "1cJJROoZII06bjaYUfU6IITPrpPM_bKkN0nIsXcv7iFQ"
 
 # Get the registration spreadsheets
-sheets_service = GoogleHelpers.get_sheets_service()
+sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
 last_year = sheets.values().get(spreadsheetId=reg_sheet_2021_2022, range="B:B").execute()
 this_year = sheets.values().get(spreadsheetId=reg_sheet_2022_2023, range="B:B").execute()
@@ -55,7 +57,7 @@ body = \
 "Drafts this year will take place between September 29th and October 3rd. Hope to see you back!\n\n" + \
 "-- Admins"
 
-gmail_service = GoogleHelpers.get_gmail_service()
+gmail_service = Emailer.get_gmail_service()
 
 # Slice into chunks of < 100 to send -- that's the gmail API limit
 for n in range(0, len(emails), 90):
@@ -66,10 +68,10 @@ for n in range(0, len(emails), 90):
     emails_slice.append("morgan.t.adams.fromer@gmail.com")
 
     # Failsafe 3
-#    print("Stopped before sending. Comment out the failsafe lines to continue.")
-#    print(emails_slice)
-#    continue
+    print("Stopped before sending. Comment out the failsafe lines to continue.")
+    print(emails_slice)
+    continue
 
     # Send the email
     bcc = ",".join(emails_slice)
-    GoogleHelpers.send_message(gmail_service, subject, body, to, None, bcc)
+    Emailer.send_message(gmail_service, subject, body, to, None, bcc)

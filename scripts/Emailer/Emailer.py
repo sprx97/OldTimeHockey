@@ -13,7 +13,7 @@ import Config
 
 def obtain_creds(file, scopes):
     creds = None
-    file = "tokens/" + file # Use special tokens directory
+    file = Config.config["srcroot"] + "scripts/Emailer/tokens/" + file # Use special tokens directory
 
     # Read a stored credentials file if it exists
     if os.path.exists(file):
@@ -27,7 +27,7 @@ def obtain_creds(file, scopes):
 
         # Otherwise create new creds from a login
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("auth.json", scopes)
+            flow = InstalledAppFlow.from_client_secrets_file(Config.config["srcroot"] + "scripts/Emailer/auth.json", scopes)
             creds = flow.run_local_server(port=0)
 
         # Save creds for next run
