@@ -1,16 +1,20 @@
+# Standard Python libraries
 import pymysql
-import sys
 import os.path
+import sys
+
+# My libaries
+sys.path.insert(0, "..")
 import Config
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
 f.close()
-if os.path.isfile(Config.config["srcroot"] + "scripts/PFs/" + str(year) + "_Week_" + str(week) + ".txt"):
+if os.path.isfile(Config.config["srcroot"] + "scripts/RedditBot/PFs/" + str(year) + "_Week_" + str(week) + ".txt"):
         raise Exception("PFs file for " + str(year) + " week " + str(week) + " already exists.")
 
-sys.stdout = open(Config.config["srcroot"] + "scripts/PFs/" + str(year) + "_Week_" + str(week) + ".txt", "w")
+sys.stdout = open(Config.config["srcroot"] + "scripts/RedditBot/PFs/" + str(year) + "_Week_" + str(week) + ".txt", "w")
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
