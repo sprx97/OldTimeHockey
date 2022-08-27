@@ -1,9 +1,15 @@
-import smtplib
-from email.mime.text import MIMEText
+# Python libraries
+import sys
+
+# Yahoo sports libraries
 from yahoo_oauth import OAuth2
 import yahoo_fantasy_api as yfa
+
+# My libraries
+sys.path.insert(0, "../")
 import Config
-import time
+sys.path.insert(0, "../Emailer")
+import Emailer
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -14,7 +20,7 @@ leagues = [ "411.l.19172", "411.l.19179", "411.l.19183", "411.l.24112", "411.l.2
             "411.l.24194", "411.l.26239", "411.l.24195", "411.l.25450", "411.l.24211", "411.l.24207", "411.l.24210", "411.l.24201", "411.l.24204", \
             "411.l.24205", "411.l.24202", "411.l.24209", "411.l.24748", "411.l.73532", BBUPFL_LEAGUE_ID]
 
-oauth_file = Config.config["srcroot"] + "scripts/yahoo_auth.json"
+oauth_file = Config.config["srcroot"] + "scripts/PlayoffOdds/yahoo_auth.json"
 conn = OAuth2(None, None, from_file=oauth_file)
 if not conn.token_is_valid():
     conn.refresh_access_token()
@@ -108,25 +114,9 @@ def updatePlayoffOdds(league_id):
 
     body += "GamesEnd\n"
 
-#    print(body)
-
-    try:
-        msg = MIMEText(body)
-        msg["Subject"] = "playoff odds update"
-        msg["From"] = "no-reply@roldtimehockey.com"
-        recips = ["import@sportsclubstats.com"]
-        msg["To"] = ",".join(recips)
-
-        s = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-        s.login(Config.config["email_username"], Config.config["email_password"])
-        s.sendmail(msg["From"], recips, msg.as_string())
-        s.quit()
-
-        print("Email sent.")
-
-    except Exception as e:
-        print("Error sending email.")
-        print(e)
+    gmail_service = Emailer.get_gmail_service()
+    Emailer.send_message(gmail_service, "playoff odds update", body, "import@sportsclubstats.com", None, None)
+    print("Email sent.")
 
 for league in leagues:
     try:

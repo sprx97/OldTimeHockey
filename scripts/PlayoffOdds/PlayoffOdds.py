@@ -1,9 +1,14 @@
-import requests
+# Standard Python libaries
 from lxml import html # xml parsing
-import smtplib
-from email.mime.text import MIMEText
 import pymysql
+import requests
+import sys
+
+# My libraries
+sys.path.insert(0, "..")
 import Config
+sys.path.insert(0, "../Emailer")
+import Emailer
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -104,23 +109,9 @@ def updatePlayoffOdds(league):
 
 #    print(body)
 
-    try:
-        msg = MIMEText(body)
-        msg["Subject"] = "playoff odds update"
-        msg["From"] = "no-reply@roldtimehockey.com"
-        recips = ["import@sportsclubstats.com"]
-        msg["To"] = ",".join(recips)
-
-        s = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-        s.login(Config.config["email_username"], Config.config["email_password"])
-        s.sendmail(msg["From"], recips, msg.as_string())
-        s.quit()
-
-        print("Email sent.")
-
-    except Exception as e:
-        print("Error sending email.")
-        print(e)
+    gmail_service = Emailer.get_gmail_service()
+    Emailer.send_message(gmail_service, "playoff odds update", body, "import@sportsclubstats.com", None, None)
+    print("Email sent.")
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
