@@ -5,15 +5,14 @@ import Banner from './Banner';
 
 const panes = [
   {
-    menuItem: '2021-2022',
+    menuItem: '2022-2023',
     render: () => (
       <Tab.Pane>
-        224 teams, 16 leagues, 4 divisions
+        ??? teams, ?? leagues, 4 divisions
         <ul>
           <li>
             <b>Division 1 Champion: </b>
             <a href=""></a>
-            <br/>
           </li>
           <li>
             <b>Points For Champion: </b>
@@ -27,6 +26,32 @@ const panes = [
             <b>Woppa Cup Champion: </b>
             <a href=""></a>
           </li>
+        </ul>
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: '2021-2022',
+    render: () => (
+      <Tab.Pane>
+        196 teams, 14 leagues, 4 divisions
+        <ul>
+          <li>
+            <b>Division 1 Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62850?season=2021">Noddan</a>
+          </li>
+          <li>
+            <b>Points For Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12088/teams/63153?season=2021">akacesfan</a>
+          </li>
+          <li>
+            <b>Coaches Rating Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12087/teams/63169?season=2021">ovorc</a>
+          </li>
+          <li>
+            <b>Woppa Cup Champion: </b>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12091/teams/63276?season=2021">TwoPlanks</a>
+          </li>
           <u>Rule Changes</u>
           <ul>
             <li>Removed 3rd IR+ slot.</li>
@@ -34,7 +59,7 @@ const panes = [
         </ul>
       </Tab.Pane>
     ),
-  },  
+  },
   {
     menuItem: '2020-2021',
     render: () => (
@@ -44,7 +69,6 @@ const panes = [
           <li>
             <b>Division 1 Champion: </b>
             <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62775?season=2020">benzene96</a>
-            <br/>
           </li>
           <li>
             <b>Points For Champion: </b>
