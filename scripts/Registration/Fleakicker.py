@@ -10,6 +10,7 @@ import Shared
 
 # Comment this out to actually run the script.
 # This script is scary so leave this on in case of a fatfinger python command
+print("Aborting due to failsafe")
 quit()
 
 # Failsafe 1
