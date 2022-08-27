@@ -1,8 +1,10 @@
 # Python includes
 import datetime
 import requests
+import sys
 
 # OTH includes
+sys.path.insert(0, "../")
 import Config
 import Shared
 
