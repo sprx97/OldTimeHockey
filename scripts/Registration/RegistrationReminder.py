@@ -48,6 +48,7 @@ body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you played in the Old Time Hockey fantasy league last year. " + \
 "If you are interested in playing again, the registration form can be found here: https://forms.gle/V8VBqUVKe1kMJM6C6\n\n" + \
+"The deadline for returning members to keep their upper division slot is 11:59pm on Sunday, September 11th. After that your slot may be given to a fill team and you'll start back in D4.\n\n" + \
 "Drafts this year will take place between September 29th and October 3rd. Hope to see you back!\n\n" + \
 "-- Admins"
 
@@ -63,7 +64,7 @@ for n in range(0, len(emails), 90):
 
     # Failsafe 3
     print("Stopped before sending. Comment out the failsafe lines to continue.")
-    print(emails_slice)
+    print(len(emails_slice), emails_slice)
     continue
 
     # Send the email
