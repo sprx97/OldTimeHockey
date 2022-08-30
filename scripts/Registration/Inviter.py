@@ -23,12 +23,6 @@ for league in leagues:
     league_id = league["id"]
     league_name = league["name"]
 
-    # Get emails from ghseets and use to populate the emails field
-    # If possible don't send them to teams that have already joined
-    #   https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id=12086&season=2022
-    #   result["divisions"][0]["teams"][n]["owners"] does not exist
-    #   result["divisions"][0]["teams"][n]["owners"][0]["id"] matches the FFid
-
     # Get the list of managers already in the league
     already_registered = []
     standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year+1}")
@@ -38,10 +32,9 @@ for league in leagues:
 
     # Get the email addresses for this league from the registration spreadsheet
     emails = []
-    reg_sheet_2022_2023 = "1cJJROoZII06bjaYUfU6IITPrpPM_bKkN0nIsXcv7iFQ" # TODO: Move to Config file (or other shared location)
     sheets_service = Emailer.get_sheets_service()
     sheets = sheets_service.spreadsheets()
-    rows = sheets.values().get(spreadsheetId=reg_sheet_2022_2023, range="B:M").execute()
+    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:M").execute()
     values = rows.get("values", [])
 
     EMAIL_ADDRESS_COL = 0

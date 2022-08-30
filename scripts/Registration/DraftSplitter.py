@@ -2,6 +2,8 @@
 import sys
 
 # My libraries
+sys.path.insert(0, "/var/www/OldTimeHockey/scripts")
+import Config
 sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
 import Emailer
 
@@ -11,7 +13,7 @@ reg_sheet_2022_2023 = "1cJJROoZII06bjaYUfU6IITPrpPM_bKkN0nIsXcv7iFQ"
 # Get the registration spreadsheets
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
-rows = sheets.values().get(spreadsheetId=reg_sheet_2022_2023, range="B:I").execute()
+rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:I").execute()
 
 # Get all of last year's registrants
 values = rows.get("values", [])

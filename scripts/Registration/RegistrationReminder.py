@@ -3,6 +3,8 @@ import datetime
 import sys
 
 # My libraries
+sys.path.insert(0, "/var/www/OldTimeHockey/scripts")
+import Config
 sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
 import Emailer
 
@@ -20,15 +22,11 @@ if month >= 10 or month <= 6:
     print ("Why are we sending regisration pings during the season? Please be sure you want to do this.")
     quit()
 
-# IDs for this year's and last year's google sheets
-reg_sheet_2021_2022 = "1jC3zHsRuB6IawR-AM5ZtAOl360pCdjqUk230NiWPYbo"
-reg_sheet_2022_2023 = "1cJJROoZII06bjaYUfU6IITPrpPM_bKkN0nIsXcv7iFQ"
-
 # Get the registration spreadsheets
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
-last_year = sheets.values().get(spreadsheetId=reg_sheet_2021_2022, range="B:B").execute()
-this_year = sheets.values().get(spreadsheetId=reg_sheet_2022_2023, range="B:B").execute()
+last_year = sheets.values().get(spreadsheetId=Config.config["prev_season_reg_sheet_id"], range="B:B").execute()
+this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:B").execute()
 
 # Get all of last year's registrants
 values = last_year.get("values", [])
