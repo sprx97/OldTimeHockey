@@ -1,10 +1,11 @@
 # Python includes
 import datetime
+import os
 import requests
 import sys
 
 # OTH includes
-sys.path.insert(0, "../")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
 import Shared
 

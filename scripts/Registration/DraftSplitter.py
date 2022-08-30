@@ -1,14 +1,11 @@
 # Standard Python libaries
+import os
 import sys
 
 # My libraries
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
-import Emailer
-
-# IDs for this year's google sheet
-reg_sheet_2022_2023 = "1cJJROoZII06bjaYUfU6IITPrpPM_bKkN0nIsXcv7iFQ"
+from Emailer import Emailer
 
 # Get the registration spreadsheets
 sheets_service = Emailer.get_sheets_service()

@@ -1,10 +1,10 @@
 # Standard Python libraries
+import os
 import pymysql
-import os.path
 import sys
 
 # My libraries
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts/")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")

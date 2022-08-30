@@ -1,13 +1,13 @@
 # Python includes
 import requests
+import os
 import sys
 
 # OTH includes
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
 import Shared
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
-import Emailer
+from Emailer import Emailer
 
 # Get the login session for OTHAdmin
 session = requests.session()
@@ -55,14 +55,16 @@ for league in leagues:
 
         emails.append(row[EMAIL_ADDRESS_COL])
 
-    print(emails)
-    quit()
-
     invite_message_data = {
         "emails": ",".join(emails),
         "from": "OTHAdmin",
     }
 
+    # Skip inviting if there's no new managers in this league
+    if len(emails) == 0:
+        print(f"No invites to send to {league_name}")
+        continue
+
     # Invite to league
-    print(f"Inviting to {name}")
-#    session.post(invite_url.format(id), invite_message_data)
+    print(f"Inviting to {league_name}")
+    session.post(invite_url.format(id), invite_message_data)

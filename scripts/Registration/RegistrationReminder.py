@@ -1,12 +1,12 @@
 # Standard python libraries
 import datetime
+import os
 import sys
 
 # My libraries
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
-import Emailer
+from Emailer import Emailer
 
 # Failsafe 1
 print("Are you sure you want to run the registraton script? This will email more than 200 people. (yes/no)")

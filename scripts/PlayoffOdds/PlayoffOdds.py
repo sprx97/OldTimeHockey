@@ -1,14 +1,14 @@
 # Standard Python libaries
 from lxml import html # xml parsing
+import os
 import pymysql
 import requests
 import sys
 
 # My libraries
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
-import Emailer
+from Emailer import Emailer
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())

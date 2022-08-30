@@ -1,9 +1,10 @@
 # Standard Python libraries
+import os
 import praw
 import sys
 
 # My libaries
-sys.path.insert(0, "/var/www/OldTimeHockey/scripts/")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
 
 r = praw.Reddit(client_id=Config.config["reddit_client_id"], client_secret=Config.config["reddit_secret"], username=Config.config["reddit_username"], password=Config.config["reddit_password"], user_agent="/r/oldtimehockey stats bot by /u/SPRX97 v1.0")
