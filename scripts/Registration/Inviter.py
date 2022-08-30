@@ -18,7 +18,7 @@ f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 leagues = Shared.get_leagues_from_database(year)
 
-invite_url = "https://www.fleaflicker.com/nhl/leagues/{}}/invite"
+invite_url = "https://www.fleaflicker.com/nhl/leagues/{}/invite"
 for league in leagues:
     league_id = league["id"]
     league_name = league["name"]
@@ -67,4 +67,4 @@ for league in leagues:
 
     # Invite to league
     print(f"Inviting to {league_name}")
-    session.post(invite_url.format(id), invite_message_data)
+    session.post(invite_url.format(league_id), invite_message_data)
