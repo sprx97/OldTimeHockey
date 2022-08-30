@@ -41,7 +41,7 @@ for row in values:
     if email in emails:
         emails.remove(email)
 
-# Construct the email
+# Construct the email -- TODO Update the form link each offseason
 to = "roldtimehockey@gmail.com"
 subject = "Old Time Hockey 2022-23 Registration"
 body = \
