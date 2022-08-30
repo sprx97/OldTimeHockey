@@ -4,7 +4,7 @@ import os.path
 import sys
 
 # My libraries
-sys.path.insert(0, "..")
+sys.path.insert(0, "/var/www/OldTimeHockey/scripts/")
 import Config
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")

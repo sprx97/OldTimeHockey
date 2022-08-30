@@ -57,11 +57,11 @@ kick_message_data = {
     "emailAll": "true"
 }
 
-invite_message = "Welcome back to OTH for our tenth season! A few notes:\n" + \
+invite_message = "Welcome back to OTH for our eleventh season! A few notes:\n" + \
           "- Draft date/time is final. League assignments were made based on availability on the registration form." + \
           " If your availability has changed tag @mods on discord and we'll try to help, but no guarantees we'll be able to facilitate a swap.\n" + \
           "- Draft order will be randomized one everyone has joined. We will post here when the final order is generated.\n" + \
-          "- The fantasy schedule will likely change as Fleaflicker has not accounted for the olympic break yet. We're in touch with them about this.\n\n" + \
+          "- The fantasy schedule will likely change as Fleaflicker sets that not us. We're in touch with them about this.\n\n" + \
           "Good luck this season!"
 invite_message_data = {
     "parentId": "",

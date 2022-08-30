@@ -3,7 +3,7 @@ import datetime
 import sys
 
 # My libraries
-sys.path.insert(0, "../Emailer")
+sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
 import Emailer
 
 # Failsafe 1
@@ -19,10 +19,6 @@ month = int(d.strftime("%m"))
 if month >= 10 or month <= 6:
     print ("Why are we sending regisration pings during the season? Please be sure you want to do this.")
     quit()
-
-# Create bcc list from all emails in last year's sheet but NOT this year's sheet
-# Hard-code email body
-# Send Message
 
 # IDs for this year's and last year's google sheets
 reg_sheet_2021_2022 = "1jC3zHsRuB6IawR-AM5ZtAOl360pCdjqUk230NiWPYbo"

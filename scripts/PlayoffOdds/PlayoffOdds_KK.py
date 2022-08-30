@@ -6,9 +6,9 @@ from yahoo_oauth import OAuth2
 import yahoo_fantasy_api as yfa
 
 # My libraries
-sys.path.insert(0, "../")
+sys.path.insert(0, "/var/www/OldTimeHockey/scripts")
 import Config
-sys.path.insert(0, "../Emailer")
+sys.path.insert(0, "/var/www/OldTimeHockey/scripts/Emailer")
 import Emailer
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
