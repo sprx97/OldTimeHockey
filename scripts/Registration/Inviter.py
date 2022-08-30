@@ -67,4 +67,5 @@ for league in leagues:
 
     # Invite to league
     print(f"Inviting to {league_name}")
-    session.post(invite_url.format(league_id), invite_message_data)
+    print("Actual invites not sent -- uncomment to proceed")
+    # session.post(invite_url.format(league_id), invite_message_data)
