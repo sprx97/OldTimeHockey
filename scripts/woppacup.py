@@ -1,8 +1,6 @@
 import challonge
 import Config
-config = Config.config
 import pymysql
-import sys
 
 # Grabs the current score and opponent's current score for the given username
 # This is a direct copy from the one in DiscordBot/Shared.py
@@ -35,7 +33,7 @@ def get_user_matchup_from_database(user, division=None):
     return matchup
 
 challonge.set_credentials(Config.config["challonge_username"], Config.config["challonge_api_key"])
-wc_id = 10521685 # TODO: hard-coded to test league for now. Need a way to update annually easily. Can be found in the URL of the "report" button on the tourney page
+wc_id = Config.config["woppa_cup_challonge_id"]
 
 particpants = challonge.participants.index(wc_id)
 played = []

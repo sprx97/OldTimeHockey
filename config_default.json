@@ -24,6 +24,7 @@
 	// Challonge username and API key for woppacup bracket
 	"challonge_username": "",
 	"challonge_api_key": "",
+	"woppa_cup_challonge_id": "",
 
 	// GSheet IDs for registration data
 	"prev_season_reg_sheet_id": "",
