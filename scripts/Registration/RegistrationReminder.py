@@ -32,18 +32,18 @@ this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_she
 values = last_year.get("values", [])
 emails = []
 for row in values:
-    emails.append(row[0].strip())
+    emails.append(row[0].strip().lower())
 
 # Remove the ones who have already registered this year
 values = this_year.get("values", [])
 for row in values:
-    email = row[0].strip()
+    email = row[0].strip().lower()
     if email in emails:
         emails.remove(email)
 
 # Construct the email -- TODO Update the form link each offseason
 to = "roldtimehockey@gmail.com"
-subject = "Old Time Hockey 2022-23 Registration"
+subject = "FINAL CALL: Old Time Hockey 2022-23 Registration"
 body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you played in the Old Time Hockey fantasy league last year. " + \
@@ -54,9 +54,9 @@ body = \
 
 gmail_service = Emailer.get_gmail_service()
 
-# Slice into chunks of < 100 to send -- that's the gmail API limit
-for n in range(0, len(emails), 90):
-    emails_slice = emails[n:n+90]
+NUM_PER_SLICE = 97 # 97 emails plus two admins in the bcc, and this account in the to line equals 100, the gmail API sending limit
+for n in range(0, len(emails), NUM_PER_SLICE):
+    emails_slice = emails[n:n+NUM_PER_SLICE]
 
     # Add the admins to ensure this gets sent
     emails_slice.append("jeremy.vercillo@gmail.com")
