@@ -34,12 +34,12 @@ for league in leagues:
     emails = []
     sheets_service = Emailer.get_sheets_service()
     sheets = sheets_service.spreadsheets()
-    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:M").execute()
+    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="A:N").execute()
     values = rows.get("values", [])
 
-    EMAIL_ADDRESS_COL = 0
-    FF_ID_COL = 2
-    LEAGUE_ASSIGN_COL = 11
+    EMAIL_ADDRESS_COL = 1
+    FF_ID_COL = 3
+    LEAGUE_ASSIGN_COL = 13
     for row in values[1:]:
         # Skip managers not assigned to a league yet
         if len(row) <= LEAGUE_ASSIGN_COL:
