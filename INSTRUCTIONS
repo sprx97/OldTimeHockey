@@ -1,3 +1,4 @@
+TODO: Update this list based on 2022-23 (add registration automation stuff)
 Things to do at the beginning of a year:
 - Update scripts/WeekVars.txt
 - Add rows to the "Leagues" table for each of the new leagues (scrips/SqlQueries/newleagues.sql)
@@ -16,16 +17,22 @@ Things to do at the beginning of a year:
 
 Commands to start/restart things (SPRX only)
 - pm2 restart commands can use the process ID, found from sudo pm2 list
+- sudo pm2 save
+- sudo pm2 resurrect
+- sudo pm2 startup
 
 Restart website NodeJS:
 - sudo pm2 (re)start /var/www/OldTimeHockey/node/db_connection.js
 
 Restart web server:
-- sudo /etc/init.d/apache2 start/stop/restart
+- sudo service apache2 start/stop/restart
 
 Web config location:
 - /etc/apache2/sites-enabled/roldtimehockey.conf (http redirect)
 - /etc/apache2/sites-enabled/roldtimehockey-le-ssl.conf (https)
+
+modsecurity config location (self-created rules should be near the top):
+- /etc/modsecurity/modsecurity.conf
 
 Restart mysql:
 - sudo service mysql start/stop/restart
@@ -39,7 +46,3 @@ Redeploy react site:
 OR
 - sudo serve -s build -l 42426 & (from react folder) -- main site
 - sudo serve -s build -l 33353 & (from react folder) -- test site
-
-Save current processes for startup (if things change):
-- sudo pm2 save
-- (pm2 startup must be initialized, which it is currently)
