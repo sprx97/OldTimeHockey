@@ -13,7 +13,7 @@ scripts/Emailer/tokens/*
 
 # dependencies
 react/node_modules
-/node_modules
+node/node_modules
 react/.pnp
 /.pnp
 .pnp.js
