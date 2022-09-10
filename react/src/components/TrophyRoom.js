@@ -16,10 +16,10 @@ const TrophyRoom = () => {
             {years.map(year => (
               <Grid.Column>
                 {
-                  (year === 2013) ? <div><br/><br/><br/><br/><br/><br/><br/>"2013 Inaugural Season. No tiers yet!"</div> : <Image src={"/images/banners/D1/" + year + ".png"} alt={"Division 1 champion " + year} />
+                  (year === "2013") ? <div><br/><br/><br/><br/><br/><br/><br/><br/><b>2013 Inaugural Season. No tiers yet!</b></div> : <Image src={"/images/banners/D1/" + year + ".png"} alt={"Division 1 champion " + year} />
                 }
                 {
-                  (year === 2020) ? "*Regular Season Champion, Playoffs Cancelled Due To Shortened Season" : ""
+                  (year === "2020") ? "*Regular Season Champion, Playoffs Cancelled Due To Shortened Season" : ""
                 }
               </Grid.Column>
             ))}
