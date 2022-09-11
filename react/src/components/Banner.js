@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { Grid, Image, Segment } from 'semantic-ui-react';
 

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Table, Loader } from 'semantic-ui-react';

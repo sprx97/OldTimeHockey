@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { Container, Segment, Tab, Header, Grid } from 'semantic-ui-react';
 import Banner from './Banner';

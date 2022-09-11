@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import { Container, Divider, Dropdown, Grid, Header, Segment } from 'semantic-ui-react';
 import ADPTable from "./ADPTable"

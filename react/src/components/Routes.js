@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import Standings from './Standings';

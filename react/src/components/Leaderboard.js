@@ -1,4 +1,3 @@
-/* eslint-disable */
 import _ from 'lodash';
 import React, { Component, Fragment } from 'react';
 import {
