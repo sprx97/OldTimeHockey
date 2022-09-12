@@ -1,9 +1,6 @@
 # /etc/crontab: system-wide crontab
 # Unlike any other crontab you don't have to run the `crontab'
 # command to install the new version when you edit this file
-# /etc/crontab: system-wide crontab
-# Unlike any other crontab you don't have to run the `crontab'
-# command to install the new version when you edit this file
 # and files in /etc/cron.d. These files also have username fields,
 # that none of the other crontabs do.
 
@@ -16,6 +13,15 @@ MAILTO=jeremy.vercillo@gmail.com
 25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
 47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
 52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+
+#################################################################
+#                                                               #
+#                        RotateLogs                             #
+#                                                               #
+#################################################################
+
+# Delete the apache2 logs every few hours
+10 * * * *  root  rm /var/log/apache2/* & service apache2 restart
 
 #################################################################
 #                                                               #
@@ -59,4 +65,4 @@ MAILTO=jeremy.vercillo@gmail.com
 #################################################################
 
 # Check for scores each night
-00  15  * * *   root    python3 /var/www/html/JCSrankings/DatabaseGeneration/CFBstats_sportsref.py daily
+# 00  15  * * *   root    python3 /var/www/html/JCSrankings/DatabaseGeneration/CFBstats_sportsref.py daily
