@@ -28,5 +28,8 @@
 
 	// GSheet IDs for registration data
 	"prev_season_reg_sheet_id": "",
-	"this_season_reg_sheet_id": ""
+	"this_season_reg_sheet_id": "",
+
+	// Output location for the roles file for the DiscordBot to be able to read it
+	"roles_file_out_location": ""
 }

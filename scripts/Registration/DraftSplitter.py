@@ -52,7 +52,7 @@ for row in values[1:]:
 num_leagues = math.ceil(len(all_users) / NUM_TEAMS_PER_LEAGUE)
 
 # Find all possible combinations of draft slots
-draft_combinations = list(combinations(all_draft_times.keys(), num_leagues))
+draft_combinations = list(combinations(all_draft_times.keys(), num_leagues)) # TODO: Allow for "combinations" that have duplicate draft times
 ranked_combinations = {}
 for combo in draft_combinations:
     draft_users = {}
@@ -134,12 +134,10 @@ for combo, ranking in list(ranked_combinations.items()):
     elif num_successfully_assigned == best_num_assigned:
         best_combinations.append(leagues)
 
-print(best_num_assigned)
+print(f"{best_num_assigned}/{len(all_users)}")
 if best_num_assigned != len(all_users):
     print("COULD NOT ASSIGN ALL USERS TO A DRAFT")
     quit()
-
-# "Print" the combinations to the spreadsheet
 
 def transpose(list):
     result = []
@@ -150,6 +148,7 @@ def transpose(list):
         result.append(row)
     return result
 
+# "Print" the combinations to the spreadsheet
 for combo in best_combinations:
     values = []
     for draft_time, users in combo.items():
