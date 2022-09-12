@@ -16,7 +16,7 @@ if len(sys.argv) != 2:
     print("Please provide a division.")
     quit()
 
-division = sys.argv[1] 
+division = sys.argv[1]
 if division != "D2" and division != "D3" and division != "D4":
     print("Division must be D2, D3, or D4.")
     quit()
@@ -37,13 +37,13 @@ for row in values[1:]:
 
     # Extract values
     email = row[0]
-    user = row[1]
+    user_name = row[1].strip()
     user_id = row[2]
     drafts = row[7].split(" EST, ")
     drafts[-1] = drafts[-1][:-4] # trim the last one
 
     # Assign data to our maps of user->drafs and drafts->num_users
-    all_users[user_id] = {"email":email, "user":user, "drafts":drafts}
+    all_users[user_id] = {"email":email, "name":user_name, "drafts":drafts}
     for draft in drafts:
         if draft not in all_draft_times:
             all_draft_times[draft] = []
@@ -67,19 +67,38 @@ for combo in draft_combinations:
     ranked_combinations[combo] = sum(draft_users.values())
 
 # Sort based on the most combined availability
-ranked_combinations = dict(sorted(ranked_combinations.items(), key=lambda item:item[1], reverse=True))
+def getNumZeroes(combo):
+    count = 0
+    for id in all_users:
+        found = False
+        for draft in drafts:
+            if draft in all_users[id]["drafts"]:
+                found = True
+                break
+        if not found:
+            count += 1
 
-# Try out the first ten combinations
-for combo, ranking in list(ranked_combinations.items())[:20]:
+    return count
+ranked_combinations = dict(sorted(ranked_combinations.items(), key=lambda item:getNumZeroes(item), reverse=True))
+
+best_combinations = []
+best_num_assigned = 0
+
+# Try out each combination
+for combo, ranking in list(ranked_combinations.items()):
+    # We're done if our best number assigned is greater than the non-zero users in this set
+    # because we ordered our list by fewest number of zero-users
+    if best_num_assigned > len(all_users)-getNumZeroes(combo):
+        break
+
     user_drafts = {}
     for id in all_users:
         user_drafts[id] = []
         for draft in combo:
             if draft in all_users[id]["drafts"]:
                 user_drafts[id].append(draft)
-    
+
     user_drafts = dict(sorted(user_drafts.items(), key=lambda item:len(item[1])))
-    print(ranking, combo)
 
     # Create empty leagues
     leagues = {}
@@ -97,105 +116,48 @@ for combo, ranking in list(ranked_combinations.items())[:20]:
                 best_draft = draft
             elif league_size < len(leagues[best_draft]):
                 best_draft = draft
-        
-        # Assign the user to their best match. In some cases we may not be able to do this
-        if best_draft == None:
-            print(f"Could not assign user {id}")
-        else:
-            leagues[best_draft].append(id)
 
+        # Assign the user to their best match. In some cases we may not be able to do this
+        if best_draft != None:
+            leagues[best_draft].append(all_users[id]["name"])
+
+    # Count the number of users successfully assigned to a league in this scenario
     num_successfully_assigned = 0
     for draft in leagues:
         users = leagues[draft]
         num_successfully_assigned += len(leagues[draft])
-        print(len(users), draft, users)
-        
-    print(num_successfully_assigned, "\n")
 
+    # Compare this scenario to our current best(s)
+    if num_successfully_assigned > best_num_assigned:
+        best_combinations = [leagues]
+        best_num_assigned = num_successfully_assigned
+    elif num_successfully_assigned == best_num_assigned:
+        best_combinations.append(leagues)
 
-##################################################################################################################
-# # Remove all drafts that don't work for at least NUM_TEAMS_PER_LEAGUE people
-# valid_draft_times = {}
-# for draft in draft_times:
-#     if len(draft_times[draft]) >= NUM_TEAMS_PER_LEAGUE:
-#         valid_draft_times[draft] = draft_times[draft]
-# draft_times = valid_draft_times
+print(best_num_assigned)
+if best_num_assigned != len(all_users):
+    print("COULD NOT ASSIGN ALL USERS TO A DRAFT")
+    quit()
 
-# # Remove invalid draft times from each user to optimize
-# for id in users:
-#     for draft in users[id]["drafts"]:
-#         if draft not in draft_times:
-#             users[id]["drafts"].remove(draft)
+# "Print" the combinations to the spreadsheet
 
-# # sort by least-flexible users
-# users = dict(sorted(users.items(), key=lambda user:len(user[1]["drafts"])))
-# for user in users:
-#     print(user, len(users[user]["drafts"]))
-# quit()
+def transpose(list):
+    result = []
+    for i in range(len(list[0])):
+        row = []
+        for item in list:
+            row.append(item[i])
+        result.append(row)
+    return result
 
-# possible_solutions = []
-# # Recursive method to find the best possible draft times and league assignments
-# def assign_next(remaining_users, remaining_draft_times, league_assignments):
-#     if len(remaining_users) == 0:
-#         possible_solutions.append(copy.deepcopy(league_assignments))
-#         for draft_time in league_assignments:
-#             print(draft_time)
-#             for user in league_assignments[draft_time]:
-#                 print("\t", user)
+for combo in best_combinations:
+    values = []
+    for draft_time, users in combo.items():
+        row = []
+        row.append(draft_time)
+        row.extend(users)
+        values.append(row)
 
-#         return
+    values = transpose(values)
 
-#     # Grab the next user from the queue
-#     next_user_id = list(remaining_users.keys())[0]
-#     next_user = remaining_users.pop(next_user_id)
-
-#     # Update remaining draft times with this user removed
-#     drafts = next_user["drafts"]
-#     for draft in drafts:
-#         remaining_draft_times[draft].remove(next_user_id)
-
-#     # Sort the user's drafts by most popular choice
-#     # Try to pick the most-popular ones early on, and the least-popular ones later
-#     drafts = sorted(drafts, key=lambda draft:len(remaining_draft_times[draft]), reverse=(len(league_assignments) == num_leagues))
-
-#     for draft in drafts:
-#         # If the number of leagues is maxed and this draft is not one of them, skip it
-#         if draft not in league_assignments and len(league_assignments) == num_leagues:
-#             drafts.remove(draft)
-#             continue
-
-#         # If there is a league with the draft at this time and it's full, continue
-#         if draft in league_assignments and len(league_assignments[draft]) == NUM_TEAMS_PER_LEAGUE:
-#             drafts.remove(draft)
-#             continue
-
-#         # If there is a league with the draft at this time and it's open, assign the user and move on
-#         if draft in league_assignments:
-#             league_assignments[draft].append(next_user_id)
-#             assign_next(copy.deepcopy(remaining_users), copy.deepcopy(remaining_draft_times), copy.deepcopy(league_assignments))
-#             league_assignments[draft].remove(next_user_id)
-
-#             drafts.remove(draft)
-#             continue
-
-#     # If there's room to add another league, make one using that draft time
-#     if len(league_assignments) < num_leagues:
-#         for draft in drafts:
-#             league_assignments[draft] = [next_user_id]
-#             assign_next(copy.deepcopy(remaining_users), copy.deepcopy(remaining_draft_times), copy.deepcopy(league_assignments))
-#             league_assignments.pop(draft)
-
-#             drafts.remove(draft)
-
-# league_assignments = {}
-# while not assign_next(copy.deepcopy(users), copy.deepcopy(draft_times), copy.deepcopy(league_assignments)):
-#     print(len(possible_solutions))
-
-#     if len(users) == 0:
-#         assert False, "Problem may be unsolvable"
-
-#     # Remove the least flexible user before trying again
-#     next_user_id = list(users.keys())[0]
-#     next_user = users.pop(next_user_id)
-
-#     print(f"User {next_user_id} removed.")
+    result = sheets.values().append(spreadsheetId=Config.config["this_season_reg_sheet_id"], range=f"{division}!A1", valueInputOption="RAW", body={"values": values}).execute()

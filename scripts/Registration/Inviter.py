@@ -15,7 +15,7 @@ session.post("https://www.fleaflicker.com/nhl/login", data={"email":Config.confi
 
 # Get all of the league IDs
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
-year = int(f.readline().strip())
+year = int(f.readline().strip()) + 1
 leagues = Shared.get_leagues_from_database(year)
 
 invite_url = "https://www.fleaflicker.com/nhl/leagues/{}/invite"
@@ -25,7 +25,7 @@ for league in leagues:
 
     # Get the list of managers already in the league
     already_registered = []
-    standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year+1}")
+    standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year}")
     for team in standings["divisions"][0]["teams"]:
         if "owners" in team:
             already_registered.append(team["owners"][0]["id"])
@@ -37,9 +37,9 @@ for league in leagues:
     rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="A:N").execute()
     values = rows.get("values", [])
 
-    EMAIL_ADDRESS_COL = 1
-    FF_ID_COL = 3
-    LEAGUE_ASSIGN_COL = 13
+    EMAIL_ADDRESS_COL = 1 # B
+    FF_ID_COL = 3 # D
+    LEAGUE_ASSIGN_COL = 13 # N
     for row in values[1:]:
         # Skip managers not assigned to a league yet
         if len(row) <= LEAGUE_ASSIGN_COL:
@@ -66,6 +66,6 @@ for league in leagues:
         continue
 
     # Invite to league
-    print(f"Inviting to {league_name}")
+    print(f"{len(emails)} sent to {league_name}")
     print("Actual invites not sent -- uncomment to proceed")
-    # session.post(invite_url.format(league_id), invite_message_data)
+#    session.post(invite_url.format(league_id), invite_message_data)

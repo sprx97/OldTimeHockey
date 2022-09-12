@@ -41,7 +41,7 @@ def get_gmail_service():
     return build("gmail", "v1", credentials=creds)
 
 def get_sheets_service():
-    creds = obtain_creds("sheets_token.json", ["https://www.googleapis.com/auth/spreadsheets.readonly"])
+    creds = obtain_creds("sheets_token.json", ["https://www.googleapis.com/auth/spreadsheets"])
     return build("sheets", "v4", credentials=creds)
 
 def send_message(service, subject, body, to, cc=None, bcc=None):
