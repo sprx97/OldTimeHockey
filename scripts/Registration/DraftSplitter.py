@@ -17,7 +17,7 @@ if len(sys.argv) != 2:
     quit()
 
 division = sys.argv[1]
-if division != "D2" and division != "D3" and division != "D4":
+if division not in ["D2", "D3", "D4"]:
     print("Division must be D2, D3, or D4.")
     quit()
 

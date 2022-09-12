@@ -9,14 +9,24 @@ import Config
 import Shared
 from Emailer import Emailer
 
+# Only allow sending of invites for one division at a time
+if len(sys.argv) != 2:
+    print("Please provide a division.")
+    quit()
+
+division = sys.argv[1]
+if division not in ["D1", "D2", "D3", "D4"]:
+    print("Division must be D1, D2, D3, or D4.")
+    quit()
+
 # Get the login session for OTHAdmin
 session = requests.session()
 session.post("https://www.fleaflicker.com/nhl/login", data={"email":Config.config["fleaflicker_email"], "password":Config.config["fleaflicker_password"], "keepMe":"true"})
 
 # Get all of the league IDs
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
-year = int(f.readline().strip()) + 1
-leagues = Shared.get_leagues_from_database(year)
+year = int(f.readline().strip()) + 1 # Must be done AFTER adding the new leagues to the sql table
+leagues = Shared.get_leagues_from_database(year, division[-1])
 
 invite_url = "https://www.fleaflicker.com/nhl/leagues/{}/invite"
 for league in leagues:
@@ -62,10 +72,12 @@ for league in leagues:
 
     # Skip inviting if there's no new managers in this league
     if len(emails) == 0:
-        print(f"No invites to send to {league_name}")
+        print(f"No invites to send for {league_name}.")
         continue
 
     # Invite to league
-    print(f"{len(emails)} sent to {league_name}")
-    print("Actual invites not sent -- uncomment to proceed")
+    print(f"{len(emails)} invites to send for {league_name}.")
+    print("Actual invites not sent -- uncomment to proceed.")
 #    session.post(invite_url.format(league_id), invite_message_data)
+
+# TODO: Also email all invitees from the roldtimehockey account that an invite has been sent via fleaflicker
