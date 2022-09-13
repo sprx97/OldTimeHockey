@@ -77,7 +77,12 @@ for league in leagues:
 
     # Invite to league
     print(f"{len(emails)} invites to send for {league_name}.")
-    print("Actual invites not sent -- uncomment to proceed.")
-#    session.post(invite_url.format(league_id), invite_message_data)
+    send_invites = False
+    # send_invites = True
+    if send_invites:
+        session.post(invite_url.format(league_id), invite_message_data)
+    else:
+        print("Actual invites not sent -- uncomment to proceed.")
 
 # TODO: Also email all invitees from the roldtimehockey account that an invite has been sent via fleaflicker
+# TODO: Also add reddit post verifying invites have been sent?
