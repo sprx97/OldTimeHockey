@@ -18,10 +18,10 @@ conn.connect(function(err) {
 	console.log("Connected!");
 });
 
-const options = {
-	key: fs.readFileSync("/etc/letsencrypt/live/roldtimehockey.com-0001/privkey.pem"),
-	cert: fs.readFileSync("/etc/letsencrypt/live/roldtimehockey.com-0001/fullchain.pem")
-}
+// const options = {
+// 	key: fs.readFileSync("/etc/letsencrypt/live/roldtimehockey.com-0001/privkey.pem"),
+// 	cert: fs.readFileSync("/etc/letsencrypt/live/roldtimehockey.com-0001/fullchain.pem")
+// }
 
 http.createServer(function(request, response) {
 	path = url.parse(request.url).pathname;
