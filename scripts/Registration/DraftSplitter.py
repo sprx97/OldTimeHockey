@@ -32,7 +32,7 @@ values = values[1:] # Chop off the header row
 
 all_draft_times = {}
 all_users = {}
-max_in_division = 96 if division == "D4" else 70 if division == "D3" else 42
+max_in_division = 98 if division == "D4" else 70 if division == "D3" else 42
 count = 0
 for row in values:
     # Only look for the chosen division
