@@ -28,9 +28,13 @@ rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id
 
 # Get all of last year's registrants
 values = rows.get("values", [])
+values = values[1:] # Chop off the header row
+
 all_draft_times = {}
 all_users = {}
-for row in values[1:]:
+max_in_division = 96 if division == "D4" else 70 if division == "D3" else 42
+count = 0
+for row in values:
     # Only look for the chosen division
     if row[6] != division:
         continue
@@ -49,10 +53,24 @@ for row in values[1:]:
             all_draft_times[draft] = []
         all_draft_times[draft].append(user_id)
 
+    count += 1
+    if count == max_in_division:
+        break
+
 num_leagues = math.ceil(len(all_users) / NUM_TEAMS_PER_LEAGUE)
 
+# # Duplicate the 3 most popular draft times
+# all_draft_times = dict(sorted(all_draft_times.items(), key=lambda item:len(item[1]), reverse=True))
+# draft_times_copy = copy.deepcopy(all_draft_times)
+# for time, users in list(draft_times_copy.items())[:3]:
+#     dupe_time = time + " (2)"
+#     for user_id in users:
+#         all_users[user_id]["drafts"].append(dupe_time)
+#     all_draft_times[dupe_time] = users
+
 # Find all possible combinations of draft slots
-draft_combinations = list(combinations(all_draft_times.keys(), num_leagues)) # TODO: Allow for "combinations" that have duplicate draft times
+draft_combinations = list(combinations(all_draft_times.keys(), num_leagues))
+print(len(draft_combinations), "total combinations.")
 ranked_combinations = {}
 for combo in draft_combinations:
     draft_users = {}
@@ -67,7 +85,7 @@ for combo in draft_combinations:
     ranked_combinations[combo] = sum(draft_users.values())
 
 # Sort based on the most combined availability
-def getNumZeroes(combo):
+def getNumZeroes(drafts):
     count = 0
     for id in all_users:
         found = False
@@ -79,10 +97,13 @@ def getNumZeroes(combo):
             count += 1
 
     return count
-ranked_combinations = dict(sorted(ranked_combinations.items(), key=lambda item:getNumZeroes(item), reverse=True))
+ranked_combinations = dict(sorted(ranked_combinations.items(), key=lambda item:getNumZeroes(item[0])))
 
 best_combinations = []
 best_num_assigned = 0
+
+# for combo, ranking in list(ranked_combinations.items())[:10]:
+#     print(ranking, getNumZeroes(combo), combo)
 
 # Try out each combination
 for combo, ranking in list(ranked_combinations.items()):
@@ -101,7 +122,7 @@ for combo, ranking in list(ranked_combinations.items()):
     user_drafts = dict(sorted(user_drafts.items(), key=lambda item:len(item[1])))
 
     # Create empty leagues
-    leagues = {}
+    leagues = {"UNASSIGNED":[]}
     for draft in combo:
         leagues[draft] = []
 
@@ -120,10 +141,14 @@ for combo, ranking in list(ranked_combinations.items()):
         # Assign the user to their best match. In some cases we may not be able to do this
         if best_draft != None:
             leagues[best_draft].append(all_users[id]["name"])
+        else:
+            leagues["UNASSIGNED"].append(all_users[id]["name"])
 
     # Count the number of users successfully assigned to a league in this scenario
     num_successfully_assigned = 0
     for draft in leagues:
+        if draft == "UNASSIGNED":
+            continue
         users = leagues[draft]
         num_successfully_assigned += len(leagues[draft])
 
@@ -134,29 +159,40 @@ for combo, ranking in list(ranked_combinations.items()):
     elif num_successfully_assigned == best_num_assigned:
         best_combinations.append(leagues)
 
-print(f"{best_num_assigned}/{len(all_users)}")
+print(f"{best_num_assigned}/{len(all_users)} users assigned in {len(best_combinations)} different possibilities.")
 if best_num_assigned != len(all_users):
     print("COULD NOT ASSIGN ALL USERS TO A DRAFT")
-    quit()
 
 def transpose(list):
     result = []
-    for i in range(len(list[0])):
+    for i in range(NUM_TEAMS_PER_LEAGUE+1):
         row = []
         for item in list:
-            row.append(item[i])
+            try:
+                row.append(item[i])
+            except IndexError:
+                row.append("")
         result.append(row)
     return result
 
 # "Print" the combinations to the spreadsheet
+print("Post to spreadsheet (Y/N)?")
+response = input()
+if response == "Y":
+    for combo in best_combinations:
+        values = []
+        for draft_time, users in combo.items():
+            row = []
+            row.append(draft_time)
+            row.extend(users)
+            values.append(row)
+
+        values = transpose(values)
+
+        result = sheets.values().append(spreadsheetId=Config.config["this_season_reg_sheet_id"], range=f"{division}!A1", valueInputOption="RAW", body={"values": values}).execute()
+
+# Print to console
 for combo in best_combinations:
-    values = []
-    for draft_time, users in combo.items():
-        row = []
-        row.append(draft_time)
-        row.extend(users)
-        values.append(row)
-
-    values = transpose(values)
-
-    result = sheets.values().append(spreadsheetId=Config.config["this_season_reg_sheet_id"], range=f"{division}!A1", valueInputOption="RAW", body={"values": values}).execute()
+    for draft, users in combo.items():
+        print(draft, users)
+    print()
