@@ -92,7 +92,7 @@ export default class LeagueStandingsTable extends Component {
               {_.map(
                 data,
                 (
-                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties },
+                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties, is_replacement },
                   index,
                 ) => (
                   <Table.Row
@@ -115,7 +115,10 @@ export default class LeagueStandingsTable extends Component {
                         {name}
                       </a>
                     </Table.Cell>
-                    <Table.Cell textAlign="center">{FFname}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {FFname}
+                      {is_replacement ? "*" : ""}
+                    </Table.Cell>
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
                     {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
@@ -124,6 +127,7 @@ export default class LeagueStandingsTable extends Component {
               )}
             </Table.Body>
           </Table>
+          <p>{"* = midseason replacement manager"}</p>
         </center>
       )}
     </div>
