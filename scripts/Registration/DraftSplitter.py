@@ -1,5 +1,4 @@
 # Standard Python libaries
-import copy
 from itertools import combinations
 import math
 import os

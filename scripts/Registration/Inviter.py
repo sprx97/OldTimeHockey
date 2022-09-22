@@ -9,6 +9,12 @@ import Config
 import Shared
 from Emailer import Emailer
 
+send_invites = False
+send_emails = False
+# send_invites = True
+# send_emails = True
+all_emails = []
+
 # Only allow sending of invites for one division at a time
 if len(sys.argv) != 2:
     print("Please provide a division.")
@@ -77,12 +83,35 @@ for league in leagues:
 
     # Invite to league
     print(f"{len(emails)} invites to send for {league_name}.")
-    send_invites = False
-    # send_invites = True
     if send_invites:
         session.post(invite_url.format(league_id), invite_message_data)
     else:
         print("Actual invites not sent -- uncomment to proceed.")
 
-# TODO: Also email all invitees from the roldtimehockey account that an invite has been sent via fleaflicker
+    all_emails.extend(emails)
+
+# Construct the email
+to = "roldtimehockey@gmail.com"
+subject = "OldTimeHockey Invite -- Accept by 9/25"
+body = \
+"Hello -- \n\n" + \
+"You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
+"We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
+"If you can't find it, reach out to an admin via Discord or Reddit. " + \
+"The deadline to accept your invite is Sunday September 25th. After that your spot is no longer guaranteed.\n\n" + \
+"-- Admins"
+
+# Add the admins to ensure this gets sent
+all_emails.append("jeremy.vercillo@gmail.com")
+all_emails.append("morgan.t.adams.fromer@gmail.com")
+
+gmail_service = Emailer.get_gmail_service()
+
+print(f"Sending {len(all_emails)} emails to {all_emails}.")
+if send_emails:
+    bcc = ",".join(all_emails)
+    Emailer.send_message(gmail_service, subject, body, to, None, bcc)
+else:
+    print("Emails not sent. Uncomment to send.")
+
 # TODO: Also add reddit post verifying invites have been sent?
