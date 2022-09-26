@@ -92,14 +92,13 @@ for league in leagues:
 
 # Construct the email
 to = "roldtimehockey@gmail.com"
-subject = "OldTimeHockey Invite -- LAST CALL"
+subject = "OldTimeHockey Invite"
 body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
 "If you can't find it, reach out to an admin via Discord or Reddit. " + \
-"The deadline to accept your invite is Sunday September 25th at midnight EST. " + \
-"After that your spot is no longer guaranteed and replacements will be invited.\n\n" + \
+"Your invite is valid for 24 hours before waitlisted managers will be invited. We need to fill these leagues fast.\n\n" + \
 "-- Admins"
 
 # Add the admins to ensure this gets sent
