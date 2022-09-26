@@ -102,8 +102,7 @@ body = \
 "-- Admins"
 
 # Add the admins to ensure this gets sent
-all_emails.append("jeremy.vercillo@gmail.com")
-all_emails.append("morgan.t.adams.fromer@gmail.com")
+all_emails.extend(Config.config["admin_email_ccs"].split(","))
 
 gmail_service = Emailer.get_gmail_service()
 

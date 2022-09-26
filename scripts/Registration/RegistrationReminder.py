@@ -59,8 +59,7 @@ for n in range(0, len(emails), NUM_PER_SLICE):
     emails_slice = emails[n:n+NUM_PER_SLICE]
 
     # Add the admins to ensure this gets sent
-    emails_slice.append("jeremy.vercillo@gmail.com")
-    emails_slice.append("morgan.t.adams.fromer@gmail.com")
+    emails_slice.extend(Config.config["admin_email_ccs"].split(","))
 
     # Failsafe 3
     print("Stopped before sending. Comment out the failsafe lines to continue.")
