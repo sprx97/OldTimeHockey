@@ -48,6 +48,7 @@ activate_url = "https://www.fleaflicker.com/nhl/leagues/{}/activate"
 message_url = "https://www.fleaflicker.com/nhl/leagues/{}/messages/new"
 kick_url = 'https://www.fleaflicker.com/nhl/leagues/{}/settings/owners/remove'
 
+# TODO: Include link to invite form next year
 kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly, so if you're receiving this and haven't signed up," + \
                "be sure to check your email or the subreddit for the registration form. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
 kick_message_data = {
