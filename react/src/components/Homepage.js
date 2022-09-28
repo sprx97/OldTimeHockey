@@ -7,7 +7,7 @@ const panes = [
     menuItem: '2022-2023',
     render: () => (
       <Tab.Pane>
-        ??? teams, ?? leagues, 4 divisions
+        238 teams, 17 leagues, 4 divisions
         <ul>
           <li>
             <b>Division 1 Champion: </b>
@@ -25,6 +25,8 @@ const panes = [
             <b>Woppa Cup Champion: </b>
             <a href=""></a>
           </li>
+          <u>Rule Changes</u>
+          <p>None</p>
         </ul>
       </Tab.Pane>
     ),
@@ -343,17 +345,18 @@ const Homepage = () => {
   return (
     <div>
       <Banner />
+      <Segment basic />
       <Container>
         <Segment basic>
           <Grid centered>
             <Grid.Row columns={1}>
               <Grid.Column textAlign="center">
                 <Header as="h1">About</Header>
-                OldTimeHockey is a fantasy hockey super league run by redditors
+                OldTimeHockey is a fantasy hockey superleague run by redditors
                 using <a href="http://www.fleaflicker.com/nhl">
                   Fleaflicker
                 </a>{' '}
-                featuring 224 teams sorted into 16 leagues across 4 divisions.
+                featuring 238 teams sorted into 17 leagues across 4 divisions.
                 English Premier League style relegation dictates movement
                 between divisions each season.
               </Grid.Column>
@@ -486,6 +489,7 @@ const Homepage = () => {
           If a D1-D3 team goes inactive, the current highest season-long PF team in the division below will be offered the team. This manager is now responsible for BOTH of their teams,
           and the higher one will be revoked of the lower one goes inactive. For the sake of promotion/relegation next season, they receive the higher slot of the two those teams earn.
         </Segment>
+        <Segment basic />
       </Container>
     </div>
   );

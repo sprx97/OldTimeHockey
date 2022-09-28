@@ -1,22 +1,16 @@
 import React from 'react';
-import { Grid, Image, Segment } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
+
+const year = "2022";
 
 const Header = () => (
-  <Segment basic>
-    <Grid centered>
-      <Grid.Row columns={3}>
-        <Grid.Column width={3}>
-          <Image src="/images/logos/alien1.png" alt="alien 1" centered />
-        </Grid.Column>
-        <Grid.Column width={10}>
-          <Image src="/images/logos/banner.png" alt="banner" centered />
-        </Grid.Column>
-        <Grid.Column width={3}>
-          <Image src="/images/logos/alien2.png" alt="alien 2" centered />
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  </Segment>
+  <div alt="Banner" style={{width:"100%", height:"200px", backgroundImage:"url('/images/logos/banner.png')", backgroundRepeat:"no-repeat", backgroundPosition:"center top"}}>
+    <div centered style={{height:"160px", left:"50%", top:"20px", position:"relative"}}>
+      <Image src={"/images/banners/D1/" + year + ".png"} alt="D1 Champion" style={{height:"100%", paddingLeft:"200px", display:"inline-block"}}/>
+      <Image src={"/images/banners/PF/" + year + ".png"} alt="Points For Champion" style={{height:"100%", paddingLeft:"20px", display:"inline-block"}}/>
+      <Image src={"/images/banners/WC/" + year + ".png"} alt="Woppa Cup Champion" style={{height:"100%", paddingLeft:"20px", display:"inline-block"}}/>
+    </div>
+  </div>
 );
 
 export default Header;
