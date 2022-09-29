@@ -31,7 +31,7 @@ for row in values[1:]:
     name, discrim = row[DISCORD_NAME_COL].split("#")
     name = name.strip()
     discrim = discrim.strip()
-    
+
     out_line = f"{name}\t{discrim}\t{row[DIV_ASSIGN_COL]}\t{row[LEAGUE_ASSIGN_COL]}\n"
     f.write(out_line)
 

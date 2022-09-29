@@ -59,6 +59,7 @@ kick_message_data = {
     "emailAll": "true"
 }
 
+# TODO: Fix the spacing on this post
 invite_message = "Welcome back to OTH for our eleventh season! A few notes:\n" + \
           "- Draft date/time is final. League assignments were made based on availability on the registration form." + \
           " If your availability has changed tag @mods on discord and we'll try to help, but no guarantees we'll be able to facilitate a swap.\n" + \

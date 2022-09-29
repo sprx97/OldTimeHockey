@@ -11,8 +11,8 @@ from Emailer import Emailer
 
 send_invites = False
 send_emails = False
-# send_invites = True
-# send_emails = True
+#send_invites = True
+#send_emails = True
 all_emails = []
 
 # Only allow sending of invites for one division at a time
@@ -42,9 +42,10 @@ for league in leagues:
     # Get the list of managers already in the league
     already_registered = []
     standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year}")
-    for team in standings["divisions"][0]["teams"]:
-        if "owners" in team:
-            already_registered.append(team["owners"][0]["id"])
+    if "teams" in standings["divisions"][0]:
+        for team in standings["divisions"][0]["teams"]:
+            if "owners" in team:
+                already_registered.append(team["owners"][0]["id"])
 
     # Get the email addresses for this league from the registration spreadsheet
     emails = []
