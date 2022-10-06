@@ -50,6 +50,8 @@ def floatP(str):
 
 # Checks the standings pages of the given league and updates the datafile
 def getStandings(leagueID, year):
+    print(leagueID, year)
+
     standingsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "?season=" + str(year)
     response = requests.get(standingsURL)
     root = html.document_fromstring(response.text)
@@ -122,8 +124,8 @@ def getStandings(leagueID, year):
         ties = record["ties"] if "ties" in record else 0
         # gamesBack? -- don't really need this IIRC
         streak = team["streak"]["value"] if "value" in team["streak"] else 0
-        points_for = team["pointsFor"]["value"]
-        points_against = team["pointsAgainst"]["value"]
+        points_for = team["pointsFor"]["value"] if "value" in "pointsFor" else 0
+        points_against = team["pointsAgainst"]["value"] if "value" in "pointsAgainst" else 0
 
         # I don't think these values are necessary anymore,
         # but I'll have to disentangle some things to fully remove them
@@ -218,6 +220,7 @@ if __name__ == "__main__":
                 next[1] = next[1].replace(";", "") # prevent sql injection
                 next[1] = next[1].replace("'", "''") # correct quote escaping
                 next[1] = next[1].replace(u"\u2019", "''") # another type of quote?
+                next[1] = next[1].replace("í", "i").replace("ř", "r") # non-english characters
                 next[1] = demojify(next[1])
                 next[3] = next[3].replace(";", "") # prevent sql injection
                 next[3] = next[3].replace("'", "''") # correct quote escaping
@@ -235,10 +238,9 @@ if __name__ == "__main__":
                 cursor.execute("SELECT * from Teams where teamID = " + next[0] + " AND year=" + str(year))
                 data = cursor.fetchall()
                 if len(data) == 0: # insert new team into table (should only happen once)
-                    # print(next[1])
                     cursor.execute("INSERT into Teams values (" + str(next[0]) + ", " + str(league[0]) + ", " + str(next[2]) + ", '" + \
                     next[1] + "', " + str(next[5]) + ", " + str(next[6]) + ", " + str(next[7]) + ", " + str(next[8]) + ", " + \
-                    str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ", " + str(next[13]))
+                    str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ", " + str(next[13]) + ")")
 
                 elif len(data) == 1:
                     if intP(data[0][2]) != intP(next[2]) and intP(next[2]) != 0:
