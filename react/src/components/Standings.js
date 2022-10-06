@@ -1,33 +1,24 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import {
-  Container,
-  Segment,
-  Dropdown,
-  Header,
-  Divider,
-  Grid,
-} from 'semantic-ui-react';
+import { Container, Segment, Dropdown, Header, Divider, Grid } from 'semantic-ui-react';
 import LeagueRanksTable from './LeagueRanksTable';
 import LeagueStandingsTable from './LeagueStandingsTable';
+import { getCurrentYear, getFirstYear } from './Helpers';
 
 export default class Standings extends Component {
+  generateDropdownOptions() {
+    var options = []
+    for(let year = getFirstYear(); year <= getCurrentYear(); year++) {
+      options.push({ key: `${year}`, text: `${year}-${year+1}`, value: `${year}`})
+    }
+
+    return options;
+  }
+  
   state = {
     data: null,
-    query: '2022',
-    dropdownOptions: [
-      { key: '2022', text: '2022-2023', value: '2022' },
-      { key: '2021', text: '2021-2022', value: '2021' },
-      { key: '2020', text: '2020-2021', value: '2020' },
-      { key: '2019', text: '2019-2020', value: '2019' },
-      { key: '2018', text: '2018-2019', value: '2018' },
-      { key: '2017', text: '2017-2018', value: '2017' },
-      { key: '2016', text: '2016-2017', value: '2016' },
-      { key: '2015', text: '2015-2016', value: '2015' },
-      { key: '2014', text: '2014-2015', value: '2014' },
-      { key: '2013', text: '2013-2014', value: '2013' },
-      { key: '2012', text: '2012-2013', value: '2012' },
-    ],
+    query: String(getCurrentYear()),
+    dropdownOptions: this.generateDropdownOptions(),
     leagues: {},
   };
 

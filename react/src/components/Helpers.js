@@ -1,4 +1,13 @@
 import React from 'react';
+import config from 'config.json' // Symbolic link in node_modules from the one in the root of this project
+
+export function getCurrentYear() {
+  return Number(config["year"]);
+}
+
+export function getFirstYear() {
+  return 2012;
+}
 
 // Most seasons playoffs start in week 24, but some are special cases.
 export function isPlayoffWeek(week, year) {
@@ -12,7 +21,7 @@ export function isPlayoffWeek(week, year) {
       return week > 13;
     case 2021:
       return week > 25;
-    case year == 2022:
+    case 2022:
       return week > 22
     default:
       return week > 23;

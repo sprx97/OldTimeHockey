@@ -1,37 +1,14 @@
 import _ from 'lodash';
 import React, { Component, Fragment } from 'react';
-import {
-  Container,
-  Segment,
-  Dropdown,
-  Grid,
-  Checkbox,
-  Divider,
-  Input,
-} from 'semantic-ui-react';
+import { Container, Segment, Dropdown, Grid, Checkbox, Divider, Input } from 'semantic-ui-react';
 import RegularSeasonTable from './RegularSeasonTable';
 import PlayoffsTable from './PlayoffsTable';
 import CareerRegularSeasonTable from './CareerRegularSeasonTable';
 import CareerPlayoffsTable from './CareerPlayoffsTable';
 import LiveTable from './LiveTable';
-import { isPlayoffWeek } from './Helpers';
+import { getCurrentYear, getFirstYear, isPlayoffWeek } from './Helpers';
 
 export default class Leaderboard extends Component {
-  numSeasonsOptions = [
-    { key: 0, text: '0', value: 0 },
-    { key: 1, text: '1', value: 1 },
-    { key: 2, text: '2', value: 2 },
-    { key: 3, text: '3', value: 3 },
-    { key: 4, text: '4', value: 4 },
-    { key: 5, text: '5', value: 5 },
-    { key: 6, text: '6', value: 6 },
-    { key: 7, text: '7', value: 7 },
-    { key: 8, text: '8', value: 8 },
-    { key: 9, text: '9', value: 9 },
-    { key: 10, text: '10', value: 10 },
-    { key: 11, text: '11', value: 11 },
-  ];
-
   tierOptions = [
     { key: '1', text: 'D1', value: '1' },
     { key: '2', text: 'D2', value: '2' },
@@ -39,45 +16,48 @@ export default class Leaderboard extends Component {
     { key: '4', text: 'D4', value: '4' },
   ];
 
-  dropdownOptions = [
-    { key: '2012', text: '2012-2013 Regular Season', value: '2012' },
-    { key: '2012p', text: '2012-2013 Playoffs', value: '2012p' },
-    { key: '2013', text: '2013-2014 Regular Season', value: '2013' },
-    { key: '2013p', text: '2013-2014 Playoffs', value: '2013p' },
-    { key: '2014', text: '2014-2015 Regular Season', value: '2014' },
-    { key: '2014p', text: '2014-2015 Playoffs', value: '2014p' },
-    { key: '2015', text: '2015-2016 Regular Season', value: '2015' },
-    { key: '2015p', text: '2015-2016 Playoffs', value: '2015p' },
-    { key: '2016', text: '2016-2017 Regular Season', value: '2016' },
-    { key: '2016p', text: '2016-2017 Playoffs', value: '2016p' },
-    { key: '2017', text: '2017-2018 Regular Season', value: '2017' },
-    { key: '2017p', text: '2017-2018 Playoffs', value: '2017p' },
-    { key: '2018', text: '2018-2019 Regular Season', value: '2018' },
-    { key: '2018p', text: '2018-2019 Playoffs', value: '2018p' },
-    { key: '2019', text: '2019-2020 Regular Season', value: '2019' },
-    { key: '2020', text: '2020-2021 Regular Season', value: '2020' },
-    { key: '2020p', text: '2020-2021 Playoffs', value: '2020p' },
-    { key: '2021', text: '2021-2022 Regular Season', value: '2021' },
-    { key: '2021p', text: '2021-2022 Playoffs', value: '2021p' },
-    { key: '2022', text: '2022-2023 Regular Season', value: '2022' },
-    { key: 'career', text: 'Career Regular Season', value: 'career' },
-    { key: 'careerp', text: 'Career Playoffs', value: 'careerp' },
-    { key: 'week', text: 'This Week (Live)', value: 'week' },
-  ];
+  generateNumSeasonsOptions() {
+    var options = [];
+    for (let n = 1; n <= (getCurrentYear() - getFirstYear() + 1); n++) {
+      options.push({ key: n, text: `${n}`, value: n });
+    }
 
-  seasonOptions = [
-    { key: '2012', text: '2012-2013', value: '2012' },
-    { key: '2013', text: '2013-2014', value: '2013' },
-    { key: '2014', text: '2014-2015', value: '2014' },
-    { key: '2015', text: '2015-2016', value: '2015' },
-    { key: '2016', text: '2016-2017', value: '2016' },
-    { key: '2017', text: '2017-2018', value: '2017' },
-    { key: '2018', text: '2018-2019', value: '2018' },
-    { key: '2019', text: '2019-2020', value: '2019' },
-    { key: '2020', text: '2020-2021', value: '2020' },
-    { key: '2021', text: '2021-2022', value: '2021' },
-    { key: '2022', text: '2022-2023', value: '2022' },
-  ];
+    return options;
+  }
+  numSeasonsOptions = this.generateNumSeasonsOptions();
+
+  generateDropdownOptions() {
+    var options = []
+    var currentYear = getCurrentYear();
+
+    for(let year = getFirstYear(); year < currentYear; year++) {
+      options.push({ key: `${year}`, text: `${year}-${year+1} Regular Season`, value: `${year}`})
+
+      // No playoffs in 2019 -- COVID year
+      if (year != 2019)
+        options.push({ key: `${year}p`, text: `${year}-${year+1} Playoffs`, value: `${year}p`})
+    }
+
+    options.push({ key: `${currentYear}`, text: `${currentYear}-${currentYear+1} Regular Season`, value: `${currentYear}`})
+    options.push({ key: `${currentYear}p`, text: `${currentYear}-${currentYear+1} Playoffs`, value: `${currentYear}p`})
+
+    options.push({ key: 'career', text: 'Career Regular Season', value: 'career' })
+    options.push({ key: 'careerp', text: 'Career Playoffs', value: 'careerp' })
+    options.push({ key: 'week', text: 'This Week (Live)', value: 'week' })
+
+    return options;
+  }
+  dropdownOptions = this.generateDropdownOptions();
+  
+  generateSeasonsOptions() {
+    var options = []
+    for(let year = getFirstYear(); year <= getCurrentYear(); year++) {
+      options.push({ key: `${year}`, text: `${year}-${year+1}`, value: `${year}`})
+    }
+
+    return options;
+  }
+  seasonOptions = this.generateSeasonsOptions();
 
   state = {
     column: null,

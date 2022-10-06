@@ -8,24 +8,22 @@ export default class ADPTable extends Component {
   CheckPositionFilters(position) {
     if (this.props.positionFilters === null || this.props.positionFilters === "") return true; // empty filters just means everything
 
-    if (position.includes('C') || position === 'F')
-      return this.props.positionFilters.includes('C')
+    if ((position.includes('C') || position === 'F') && this.props.positionFilters.includes('C'))
+      return true;
 
-    if (position.includes("C") || position === "F")
-      return this.props.positionFilters.includes("C")
+    if ((position.includes("LW") || position === "F" || position === "W") && this.props.positionFilters.includes("LW"))
+      return true;
 
-    if (position.includes("LW") || position === "F" || position === "W")
-      return this.props.positionFilters.includes("LW")
+    if ((position.includes("RW") || position === "F" || position === "W") && this.props.positionFilters.includes("RW"))
+      return true;
 
-    if (position.includes("RW") || position === "F" || position === "W")
-      return this.props.positionFilters.includes("RW")
+    if ((position.includes("D")) && this.props.positionFilters.includes("D"))
+      return true;
 
-    if (position.includes("D"))
-      return this.props.positionFilters.includes("D")
+    if ((position.includes('G')) && this.props.positionFilters.includes('G'))
+      return true;
 
-    if (position.includes('G')) return this.props.positionFilters.includes('G');
-
-    return false; // Should not reach this
+    return false;
   }
 
   render() {
