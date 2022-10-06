@@ -11,9 +11,13 @@ f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 years_to_update.append(int(f.readline().strip()))
 week = int(f.readline().strip()) # Set to None if manually seeding
 
-#if week != 1:
-#    week = (week-1)*7 - 1
-week = week*7 - 1
+# "Week" should always be the Monday of a matchup week.
+# It's really "Day", but FF is really weird.
+# This changes each season.
+if week == 1:
+    week = 1
+else:
+    week = week*7 + 4
 
 def updateCurrentPF(league, year):
     url = f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}"

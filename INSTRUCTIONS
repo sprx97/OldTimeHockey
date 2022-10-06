@@ -11,7 +11,7 @@ Things to do at the beginning of a year:
 - Uncomment the /etc/crontab lines for OTH (only do this the day the season starts)
 - Clear/update the standings for the OT Challenge
 - Update the year variable in DiscordBot/Config.json and OldTimeHockey/Config.json file
-- Fix the "scoring_period = week*7-1" line in UpdateCurrentPF.py to account for the current season (the correct formuala to find the scoring_period for each week depends on what day of week the season starts on)
+- Fix the "week" variable line in UpdateCurrentPF.py to account for the current season (the correct formuala to find the scoring_period for each week depends on what day of week the season starts on)
 - Update the result of the IsPlayoffWeek method in react Helpers.js and is_playoff_week in scrips/Shared.py if necessary
 
 Commands to start/restart things (SPRX only)
