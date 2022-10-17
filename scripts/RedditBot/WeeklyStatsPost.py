@@ -35,7 +35,7 @@ s += "###LEAGUE LEADERS - Who's in first place?\n"
 s += "**League**|**Team**|**User**|**Record**|**Games Ahead**\n"
 s += ":-:|:-:|:-:|:-:|:-:\n"
 
-cursor.execute("SELECT L.id, L.name, T.name, U.FFname, T.wins FROM Leagues L INNER JOIN (SELECT leagueID, MAX(wins) wins, year FROM Teams GROUP BY leagueID) tmp ON (L.id = tmp.leagueID AND L.year = tmp.year) " + \
+cursor.execute("SELECT L.id, L.name, T.name, U.FFname, T.wins FROM Leagues L INNER JOIN (SELECT leagueID, MAX(wins) wins, year FROM Teams GROUP BY leagueID, year) tmp ON (L.id = tmp.leagueID AND L.year = tmp.year) " + \
                "INNER JOIN Teams T ON tmp.wins = T.wins AND (tmp.leagueID = T.leagueID AND tmp.year = T.year) INNER JOIN Users U ON T.ownerID = U.FFid " + \
                "WHERE L.year=" + str(year) + " ORDER BY T.wins DESC, L.name DESC")
 
@@ -118,7 +118,7 @@ s += "**League**|**Team**|**Owner**|**Weekly Points**|**Weekly Rank**\n"
 s += ":-:|:-:|:-:|:-:|:-:\n"
 
 cursor.execute("SELECT L.name, T.name, U.FFname, T.currentWeekPF FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID AND L.year=T.year) INNER JOIN Users U ON T.ownerID = U.FFid " + \
-               "INNER JOIN (SELECT leagueID, MAX(currentWeekPF) AS leader FROM Teams GROUP BY leagueID) maxpf ON T.currentWeekPF = maxpf.leader " + \
+               "INNER JOIN (SELECT leagueID, MAX(currentWeekPF) AS leader FROM Teams GROUP BY leagueID, year) maxpf ON T.currentWeekPF = maxpf.leader " + \
                "WHERE L.year=" + str(year) + " and maxpf.leader != 0.0 ORDER BY T.currentWeekPF DESC")
 
 teams = cursor.fetchall()

@@ -123,9 +123,10 @@ def getStandings(leagueID, year):
         losses = record["losses"] if "losses" in record else 0
         ties = record["ties"] if "ties" in record else 0
         # gamesBack? -- don't really need this IIRC
+
         streak = team["streak"]["value"] if "value" in team["streak"] else 0
-        points_for = team["pointsFor"]["value"] if "value" in "pointsFor" else 0
-        points_against = team["pointsAgainst"]["value"] if "value" in "pointsAgainst" else 0
+        points_for = team["pointsFor"]["value"] if "value" in team["pointsFor"] else 0
+        points_against = team["pointsAgainst"]["value"] if "value" in team["pointsAgainst"] else 0
 
         # I don't think these values are necessary anymore,
         # but I'll have to disentangle some things to fully remove them

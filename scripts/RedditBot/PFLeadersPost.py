@@ -21,7 +21,7 @@ cursor = db.cursor()
 cursor.execute("SELECT L.name, T.name, T.pointsFor, U.FFname FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID and L.year = T.year) " + \
                "INNER JOIN Users U on T.ownerID = U.FFid WHERE L.year=" + str(year) + " ORDER BY T.pointsFor DESC")
 teams = cursor.fetchall()
-s = "###OVERALL POINTS LEADERS - Who has scored hte most points this season?\n"
+s = "###OVERALL POINTS LEADERS - Who has scored the most points this season?\n"
 s += "**Rank**|**League**|**Team**|**User**|**PF**\n"
 s += ":-:|:-:|:-:|:-:|:--\n"
 
