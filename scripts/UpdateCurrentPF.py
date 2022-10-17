@@ -13,11 +13,11 @@ week = int(f.readline().strip()) # Set to None if manually seeding
 
 # "Week" should always be the Monday of a matchup week.
 # It's really "Day", but FF is really weird.
-# This changes each season.
+# The constant in the else changes each season.
 if week == 1:
     week = 1
 else:
-    week = week*7 + 4
+    week = week*7 - 3 # for 2022
 
 def updateCurrentPF(league, year):
     url = f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}"
