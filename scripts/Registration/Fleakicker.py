@@ -74,6 +74,8 @@ invite_message_data = {
     "emailAll": "false"
 }
 
+# TODO: Also set the trade deadline (and other settings if necessary)
+
 def boot_teams(league_id):
     response = requests.get(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year+1}")
     teams = response.json()["divisions"][0]["teams"]
