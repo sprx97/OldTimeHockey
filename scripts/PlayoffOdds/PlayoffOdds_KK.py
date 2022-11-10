@@ -14,11 +14,11 @@ from Emailer import Emailer
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 
-BBUPFL_LEAGUE_ID = "411.l.73833"
-leagues = [ "411.l.19172", "411.l.19179", "411.l.19183", "411.l.24112", "411.l.24120", "411.l.24125", "411.l.24135", "411.l.24137", "411.l.24142", \
-            "411.l.24147", "411.l.24158", "411.l.24159", "411.l.24160", "411.l.24162", "411.l.24167", "411.l.24187", "411.l.24190", "411.l.24193", \
-            "411.l.24194", "411.l.26239", "411.l.24195", "411.l.25450", "411.l.24211", "411.l.24207", "411.l.24210", "411.l.24201", "411.l.24204", \
-            "411.l.24205", "411.l.24202", "411.l.24209", "411.l.24748", "411.l.73532", BBUPFL_LEAGUE_ID]
+leagues = [ "7679", "10743", "72052", "72056", "72066", "72106", "72543", "72550", "72569", \
+            "72580", "72587", "73419", "73420", "73421", "73422", "73423", "73424", "73467", \
+            "73468", "73469", "73470", "73472", "73473", "73474", "75406", "75429", "75430", \
+            "75431", "75678", "75679", "75681", "75682", "75685", "75695", "75703", "75712", \
+            "75918", "75930", "75931", "75932", "75933", "75985"]
 
 oauth_file = Config.config["srcroot"] + "scripts/PlayoffOdds/yahoo_auth.json"
 conn = OAuth2(None, None, from_file=oauth_file)
@@ -26,6 +26,7 @@ if not conn.token_is_valid():
     conn.refresh_access_token()
 
 game = yfa.Game(conn, "nhl")
+game_id = game.game_id()
 
 def sanitize(name):
     name = name.replace("(", "")
@@ -33,6 +34,7 @@ def sanitize(name):
     return name
 
 def updatePlayoffOdds(league_id):
+    league_id = game_id + ".l." + league_id
     league = game.to_league(league_id)
     settings = league.settings()
 
@@ -40,8 +42,7 @@ def updatePlayoffOdds(league_id):
 
     body += "LeagueBegin\n"
 
-    playoff_teams = 8 if league_id == BBUPFL_LEAGUE_ID else 6
-    body += f"\tLeague: {settings['name']} {year} (Sort: League) (Playoffs: {playoff_teams})\n"
+    body += f"\tLeague: {settings['name']} {year} (Sort: League) (Playoffs: 6)\n"
 
     print(league_id, settings["name"])
 
