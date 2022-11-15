@@ -65,13 +65,9 @@ for m in challonge.matches.index(wc_id):
     # Get the name and division (unique keys) for the two players
     p1_name = p1["name"].split(".")[-1]
     p1_div = p1["name"].split(".")[0]
-    if p1_div == "Luuuuu":
-        p1_div = "Luuuuuuu"
 
     p2_name = p2["name"].split(".")[-1]
     p2_div = p2["name"].split(".")[0]
-    if p2_div == "Luuuuu":
-        p2_div = "Luuuuuuu"
 
     # If we encounter a player for the second time, it means we've moved onto the next round so we're done
     if [p1_name, p1_div] in played or [p2_name, p2_div] in played:
