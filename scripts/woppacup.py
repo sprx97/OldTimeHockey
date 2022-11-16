@@ -38,15 +38,18 @@ wc_id = Config.config["woppa_cup_challonge_id"]
 particpants = challonge.participants.index(wc_id)
 played = []
 
-# Find number of open matches. This will help us figure out what round it is.
-open_matches = 0
-for m in challonge.matches.index(wc_id):
-    if m["state"] == "open":
-        open_matches += 1
-
+curr_round = None
 for m in challonge.matches.index(wc_id):
     # Skip completed matches, because we only want the current one
     if m["state"] != "open":
+        continue
+
+    # Assume the first open match has the correct round, and set for entire bracket
+    if curr_round == None:
+        curr_round = m["round"]
+
+    # Skip matches for other rounds
+    if m["round"] != curr_round:
         continue
 
     p1id = m["player1_id"]
@@ -87,10 +90,10 @@ for m in challonge.matches.index(wc_id):
     played.append([p2_name, p2_div])
 
     # Don't mark a winnner in the first week of a two-week matchup
-    # Currently this is only semifinals and finals, but subject to change each year
+    # Currently this is only quarterfinals, semifinals, and finals, but subject to change each year
     current_scores = m["scores_csv"]
     finalize = True
-    if open_matches <= 2:
+    if m["group_id"] == None and m["round"] >= 5:
         if current_scores == "":
             challonge.matches.mark_as_underway(wc_id, m["id"])
             finalize = False
