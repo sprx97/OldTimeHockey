@@ -38,7 +38,7 @@ wc_id = Config.config["woppa_cup_challonge_id"]
 particpants = challonge.participants.index(wc_id)
 played = []
 
-curr_round = None
+curr_round = None # Set this if you want to do a specific round
 for m in challonge.matches.index(wc_id):
     # Skip completed matches, because we only want the current one
     if m["state"] != "open":
