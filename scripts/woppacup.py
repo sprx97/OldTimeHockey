@@ -1,6 +1,12 @@
 import challonge
 import Config
 import pymysql
+import sys
+
+sys.stdout = open("/var/www/OldTimeHockey/scripts/wc.log", "w")
+sys.stderr = open("/var/www/OldTimeHockey/scripts/wc.err", "w")
+week = "currentWeekPF"
+# week = "prevWeekPF"
 
 # Grabs the current score and opponent's current score for the given username
 # This is a direct copy from the one in DiscordBot/Shared.py
@@ -10,7 +16,7 @@ def get_user_matchup_from_database(user, division=None):
 
     cursor = DB.cursor()
 
-    query = "SELECT me_u.FFname as name, me.currentWeekPF as PF, opp_u.FFname as opp_name, opp.currentWeekPF as opp_PF, me.leagueID as league_id, me.matchupID as matchup_id, " + \
+    query = f"SELECT me_u.FFname as name, me.{week} as PF, opp_u.FFname as opp_name, opp.{week} as opp_PF, me.leagueID as league_id, me.matchupID as matchup_id, " + \
                           "me.wins as wins, me.losses as losses, opp.wins as opp_wins, opp.losses as opp_losses, me.year as year " + \
                           "FROM Teams AS me " + \
                           "LEFT JOIN Teams AS opp ON (me.CurrOpp=opp.teamID AND me.year=opp.year) " + \
@@ -110,4 +116,5 @@ for m in challonge.matches.index(wc_id):
             winner_id = m["player2_id"]
 
     print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
-    challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id)
+    if len(sys.argv) > 1 and sys.argv[1] == "true":
+        challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id)

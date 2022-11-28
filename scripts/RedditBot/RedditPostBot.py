@@ -24,4 +24,4 @@ weekly = open(Config.config["srcroot"] + "scripts/RedditBot/weeks/" + str(year) 
 r.subreddit("OldTimeHockey").submit(str(year) + " Week " + str(week) + " Stats and Analysis", selftext=weekly.read())
 
 # Woppa Cup Tournament (needs to be updated each year)
-r.subreddit("OldTimeHockey").submit("Woppa Cup " + str(year) + " Update", "https://challonge.com/woppacup23x")
+r.subreddit("OldTimeHockey").submit("Woppa Cup " + str(year) + " Update", "https://challonge.com/woppacup23")
