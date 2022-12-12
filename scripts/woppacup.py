@@ -111,7 +111,9 @@ for m in challonge.matches.index(wc_id):
 
     winner_id = None
     if finalize:
-        winner_id = m["player1_id"]
+        winner_id = None # account for ties
+        if p1_pf > p2_pf:
+            winner_id = m["player1_id"]
         if p2_pf > p1_pf:
             winner_id = m["player2_id"]
 
