@@ -17,9 +17,9 @@ export default class LeagueRanksTable extends Component {
   getSortedData(data, clickedColumn) {
     var sortedData = _.sortBy(data, [
       function(datum) {
-        if (typeof datum[clickedColumn] === 'string')
-          return datum[clickedColumn].toLowerCase();
-        else return datum[clickedColumn];
+        var val = datum[clickedColumn.toLowerCase()];
+        if (typeof val === 'string') return val.toLowerCase();
+        else return val;
       },
     ]);
 
