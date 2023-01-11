@@ -1,0 +1,1 @@
+SELECT t.name, SUM(points) as pf FROM `Scoring` s INNER JOIN `Teams` t ON (s.team_id = t.teamID and s.year = t.year) WHERE (s.year = 2021 and s.is_playoff_week = 0) GROUP BY s.team_id ORDER BY pf DESC
