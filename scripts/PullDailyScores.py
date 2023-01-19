@@ -11,7 +11,6 @@ def GetScores(league_id, year, week=None):
     base_scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
     for period in base_scoreboard["eligibleSchedulePeriods"]:
         week_id = int(period["ordinal"])
-        playoff_week = Shared.is_playoff_week(week_id, year)
 
         # If we requested a specific week, skip until we get to it
         if week != None and week != week_id:
@@ -22,11 +21,21 @@ def GetScores(league_id, year, week=None):
 
         # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
         scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
-        if "isFinalScore" not in scoreboard["games"][0]:
-            print("Week is not final. Ending.")
-            return
+        if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
+            print(f"Week {week_id} does not have final results. Skipping.")
+            continue
 
         for game in scoreboard["games"]:
+            # Skip consolation bracket games
+            if "isThirdPlaceGame" in game and game["isThirdPlaceGame"]:
+                print("Skipping 3rd place game.")
+                continue
+            if "isConsolation" in game and game["isConsolation"]:
+                print("Skipping consolation bracket matchup.")
+                continue
+
+            is_playoffs = "isPlayoffs" in game and game["isPlayoffs"]
+
             game_id = game["id"]
             away_id = game["away"]["id"]
             home_id = game["home"]["id"]
@@ -34,12 +43,13 @@ def GetScores(league_id, year, week=None):
             # Finally, this call gets the actual boxscore of the game.
             # Unfortunately this has to be done day by day and will be really slow.
             for day in range(start, end+1):
+#                print(game_id, day)
                 boxscore = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id={league_id}&fantasy_game_id={game_id}&scoring_period={day}")
 
                 points_away = float(boxscore["pointsAway"]["scoringPeriod"]["value"]["formatted"])
                 points_home = float(boxscore["pointsHome"]["scoringPeriod"]["value"]["formatted"])
-                optimum_away = float(boxscore["pointsAway"]["scoringPeriod"]["optimum"]["formatted"])
-                optimum_home = float(boxscore["pointsHome"]["scoringPeriod"]["optimum"]["formatted"])
+                optimum_away = float(boxscore["pointsAway"]["scoringPeriod"]["optimum"]["formatted"]) if "optimum" in boxscore["pointsAway"]["scoringPeriod"] else 0.0
+                optimum_home = float(boxscore["pointsHome"]["scoringPeriod"]["optimum"]["formatted"]) if "optimum" in boxscore["pointsHome"]["scoringPeriod"] else 0.0
 
                 # Helper function to count the number of players given a lineup object
                 def count_num_players(lineup):
@@ -60,8 +70,8 @@ def GetScores(league_id, year, week=None):
 
                 num_players_away = count_num_players(away_lineup)
                 num_players_home = count_num_players(home_lineup)
-                optimum_num_players_away = count_num_players(boxscore["pointsAway"]["scoringPeriod"]["optimumLineup"])
-                optimum_num_players_home = count_num_players(boxscore["pointsHome"]["scoringPeriod"]["optimumLineup"])
+                optimum_num_players_away = count_num_players(boxscore["pointsAway"]["scoringPeriod"]["optimumLineup"]) if "optimumLineup" in boxscore["pointsAway"]["scoringPeriod"] else 0
+                optimum_num_players_home = count_num_players(boxscore["pointsHome"]["scoringPeriod"]["optimumLineup"]) if "optimumLineup" in boxscore["pointsHome"]["scoringPeriod"] else 0
 
                 # TODO: Found an interesting flea bug that miscalculates OptimumPF/Lineup. 
                 # Can be seen in the home team here: https://www.fleaflicker.com/nhl/leagues/12086/scores/2854898?week=82
@@ -82,7 +92,7 @@ def GetScores(league_id, year, week=None):
                              "game_id": game_id, 
                              "opponent_team_id": away_id,
                              "week": week_id,
-                             "is_playoff_week": playoff_week,
+                             "is_playoffs": is_playoffs,
                              "points": points_home,
                              "optimum_points": optimum_home,
                              "num_players": num_players_home,
@@ -93,7 +103,7 @@ def GetScores(league_id, year, week=None):
                              "game_id": game_id, 
                              "opponent_team_id": home_id,
                              "week": week_id,
-                             "is_playoff_week": playoff_week,
+                             "is_playoffs": is_playoffs,
                              "points": points_away,
                              "optimum_points": optimum_away,
                              "num_players": num_players_away,
@@ -126,12 +136,12 @@ def GetScores(league_id, year, week=None):
 
                 # TODO: Set up method take arguments for specific year, league, week, etc. Should be able to use weeksVars.txt to run this constantly
 
-            print(f"Finished {league_id} {year} week {week_id}")
+            print(f"Finished {league_id} {year} week {week_id} game_id {game_id}")
 
 # Default uses the previous week from the WeekVars file
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
-week = int(f.readline().strip()) - 1
+week = int(f.readline().strip())
 
 # If arguments are given, override the defaults
 if len(sys.argv) >= 2:
