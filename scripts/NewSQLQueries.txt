@@ -1,1 +1,30 @@
-SELECT t.name, SUM(points) as pf FROM `Scoring` s INNER JOIN `Teams` t ON (s.team_id = t.teamID and s.year = t.year) WHERE (s.year = 2021 and s.is_playoff_week = 0) GROUP BY s.team_id ORDER BY pf DESC
+
+# Get total PF and CR for regular season 2021 ordered
+SELECT t.name, SUM(points) as pf, 100*SUM(points)/SUM(optimum_points) as cr FROM `Scoring` s INNER JOIN `Teams` t ON (s.team_id = t.teamID and s.year = t.year) WHERE (s.year = 2021 and s.is_playoffs = 0) GROUP BY s.team_id ORDER BY pf DESC
+
+# Sanity check the number of playoff matchups in each year (should be 5x the number of divisions)
+SELECT year, COUNT(DISTINCT game_id) FROM `Scoring` WHERE is_playoffs GROUP BY year
+
+# Top-5 daily scores
+SELECT team_id, year, week, points FROM `Scoring` ORDER BY points DESC LIMIT 5
+
+# Top-5 daily scores (modern era)
+SELECT team_id, year, week, points FROM `Scoring` WHERE year >= 2014 ORDER BY points DESC LIMIT 5
+
+# Top-5 weekly scores (7-day week only)
+SELECT team_id, year, week, SUM(points) as points, COUNT(*) as num_days FROM `Scoring` GROUP BY team_id, year, week HAVING num_days <= 7 ORDER BY points DESC LIMIT 5
+
+# Top-5 weekly scores (modern era, 7-day week only)
+SELECT team_id, year, week, SUM(points) as points, COUNT(*) as num_days FROM `Scoring` WHERE year >= 2014 GROUP BY team_id, year, week HAVING num_days <= 7 ORDER BY points DESC LIMIT 5
+
+# Top-5 coach rating all-time
+SELECT team_id, year, 100*SUM(points)/SUM(optimum_points) as cr FROM `Scoring` GROUP BY team_id, year ORDER BY cr DESC LIMIT 5
+
+# Scoreboard from generic past week
+SELECT team_id, year, week, SUM(points) as points FROM `Scoring` WHERE year=2022 AND week=14 GROUP BY team_id, year, week ORDER BY points DESC
+
+# Career CR
+SELECT u.FFid, u.FFname, 100*SUM(s.points)/SUM(s.optimum_points) as cr FROM `Scoring` s INNER JOIN `Teams` t ON s.team_id=t.teamID INNER JOIN `Users` u ON t.ownerID=u.FFid WHERE t.replacement=0 GROUP BY u.FFid ORDER BY cr DESC
+
+# TODO: Playoff queries, career queries
+# TODO: INNER JOIN these with Leagues, Users, and Teams to get display names

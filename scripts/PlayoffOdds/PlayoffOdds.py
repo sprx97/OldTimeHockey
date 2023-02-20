@@ -91,13 +91,6 @@ def updatePlayoffOdds(league):
             awayscore = round(float(away.cssselect(".right")[0].text_content())*100)
             homescore = round(float(home.cssselect(".right")[0].text_content())*100)
 
-            # Hackhackhackhackhack for 2021
-            # https://www.fleaflicker.com/nhl/leagues/12087/scores/2751953
-            if awayscore == 18515 and homescore == 18515:
-                print("Found the fake tie")
-                awayscore += 1
-
-
             is_over = len(weekroot.cssselect("strong")) > 0 # <strong>Final</strong> exists in weeks that are completed
 
             if is_over:
