@@ -14,6 +14,13 @@ Things to do at the beginning of a year:
 - Fix the "week" variable line in UpdateCurrentPF.py to account for the current season (the correct formuala to find the scoring_period for each week depends on what day of week the season starts on)
 - Update the result of the IsPlayoffWeek method in react Helpers.js and is_playoff_week in scrips/Shared.py if necessary
 
+Things to do at the end of a year:
+- Turn off all cron scripts (except weekly backups)
+- Turn off bot inactive reporting
+- Update homepage.js with champions
+- Update TrophyRoom.js with banners
+- Update blacklist with quitters and team-droppers
+
 Commands to start/restart things (SPRX only)
 - pm2 restart commands can use the process ID, found from sudo pm2 list
 - sudo pm2 save
