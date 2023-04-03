@@ -135,7 +135,7 @@ http.createServer(function(request, response) {
 			year = mysql.escape(query.year.slice(0, -1));
 			sql = "SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses, \
 			       Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid, Leagues.year \
-			       from Teams_post INNER JOIN Teams on Teams_post.teamID=Teams.teamID INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams_post.year=Leagues.year) INNER JOIN Users on Teams.ownerID=Users.FFid \
+			       from Teams_post INNER JOIN Teams on (Teams_post.teamID=Teams.teamID and Teams.year=Teams_post.year) INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams_post.year=Leagues.year) INNER JOIN Users on Teams.ownerID=Users.FFid \
 			       where Leagues.year=" + mysql.escape(query.year) + tierfilter + " order by Teams_post.pointsFor DESC";
 		}
 		else { // just a single-year
