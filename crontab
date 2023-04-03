@@ -35,7 +35,8 @@ MAILTO=jeremy.vercillo@gmail.com
 
 # Update the Woppa Cup standings (weekly)
 # Enable after week 5 (when Woppa Cup starts)
- 00 3  * * 1   root    python3 /var/www/OldTimeHockey/scripts/woppacup.py true
+# Disable when WC ends
+# 00 3  * * 1   root    python3 /var/www/OldTimeHockey/scripts/woppacup.py true
 
 # Update the sql table from fleaflicker (weekly)
 # Enable before the end of the first week of the season
@@ -53,7 +54,8 @@ MAILTO=jeremy.vercillo@gmail.com
 
 # Update league playoff odds on SportsClubStats (weekly)
 # Enable after week 4 or so
- 15 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/PlayoffOdds/PlayoffOdds.py
+# Disable when playoffs start
+# 15 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/PlayoffOdds/PlayoffOdds.py
 # 15 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/PlayoffOdds/PlayoffOdds_KK.py
 
 # Copy Database and Crontab (weekly)
