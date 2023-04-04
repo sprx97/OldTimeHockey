@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Image, Header, Segment } from 'semantic-ui-react';
 
-const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022']
+const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023']
 
 const TrophyRoom = () => {
   return (
@@ -15,7 +15,7 @@ const TrophyRoom = () => {
             {years.map(year => (
               <Grid.Column>
                 {
-                  (year === "2013") ? <div><br/><br/><br/><br/><br/><br/><br/><br/><b>2013 Inaugural Season. No tiers yet!</b></div> : <Image src={"/images/banners/D1/" + year + ".png"} alt={"Division 1 champion " + year} />
+                  (year === "2013") ? <div Style={"text-align: center; font-size: 36px; line-height: 1.5em"}><br/><b>2013 Inaugural Season. No tiers yet!</b></div> : <Image src={"/images/banners/D1/" + year + ".png"} alt={"Division 1 champion " + year} />
                 }
                 {
                   (year === "2020") ? "*Regular Season Champion, Playoffs Cancelled Due To Shortened Season" : ""
@@ -53,7 +53,7 @@ const TrophyRoom = () => {
               </Grid.Column>
             ))}
           </Grid.Row>
-          <Grid.Row columns={4}>Last Updated 6/6/22</Grid.Row>
+          <Grid.Row columns={4}>Last Updated 4/3/23</Grid.Row>
         </Grid>
       </Segment>
     </Container>

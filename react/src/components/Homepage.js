@@ -4,6 +4,14 @@ import Banner from './Banner';
 
 const panes = [
   {
+    menuItem: '2023-2024',
+    render: () => (
+      <Tab.Pane>
+        Coming Soon
+      </Tab.Pane>
+    ),
+  },
+  {
     menuItem: '2022-2023',
     render: () => (
       <Tab.Pane>
@@ -11,19 +19,19 @@ const panes = [
         <ul>
           <li>
             <b>Division 1 Champion: </b>
-            <a href=""></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62748?season=2022">SPRX97</a>
           </li>
           <li>
             <b>Points For Champion: </b>
-            <a href=""></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12092/teams/63347?season=2022">christhrowrocks</a> - 5446.5
           </li>
           <li>
             <b>Coaches Rating Champion: </b>
-            <a href=""></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12089/teams/63214?season=2022">GusZ</a> - 99.36%
           </li>
           <li>
             <b>Woppa Cup Champion: </b>
-            <a href=""></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12092/teams/63347?season=2022">christhrowrocks</a>
           </li>
           <u>Rule Changes</u>
           <p>None</p>
@@ -43,11 +51,11 @@ const panes = [
           </li>
           <li>
             <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12088/teams/63153?season=2021">akacesfan</a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12088/teams/63153?season=2021">akacesfan</a> - 5547.2
           </li>
           <li>
             <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12087/teams/63169?season=2021">ovorc</a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12087/teams/63169?season=2021">ovorc</a> - 99.29%
           </li>
           <li>
             <b>Woppa Cup Champion: </b>
@@ -73,11 +81,11 @@ const panes = [
           </li>
           <li>
             <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12096/teams/63385?season=2020">MWHazard</a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12096/teams/63385?season=2020">MWHazard</a> 3172.7
           </li>
           <li>
             <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62750?season=2020">Kovellen</a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62750?season=2020">Kovellen</a> - 99.32%
           </li>
           <li>
             <b>Woppa Cup Champion: </b>
@@ -104,11 +112,11 @@ const panes = [
           </li>
           <li>
             <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12091/teams/63199?season=2019">tooproforyou</a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12091/teams/63199?season=2019">tooproforyou</a> - 5446.35
           </li>
           <li>
             <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019">ch1zzle</a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019">ch1zzle</a> - 99.11%
           </li>
           <li>
             <b>Woppa Cup Champion: </b>
@@ -390,6 +398,7 @@ const Homepage = () => {
             History
           </Header>
           <Tab
+            defaultActiveIndex={1}
             panes={panes}
             menu={{
               vertical: true,
@@ -450,7 +459,7 @@ const Homepage = () => {
               </Grid.Column>
               <Grid.Column>
                 <Header as="h3" textAlign="center">D2</Header>
-                <ul> 
+                <ul>
                   <li>(6)  D1 ranks 7-12</li>
                   <li>(12) D2 ranks 3-6</li>
                   <li>(20) D3 ranks 1-4 (semifinalists)</li>
