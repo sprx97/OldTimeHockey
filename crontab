@@ -20,7 +20,7 @@ MAILTO=jeremy.vercillo@gmail.com
 #                                                               #
 #################################################################
 
-# Delete the apache2 logs every few hours
+# Delete the apache2 logs every hour
 10 * * * *  root  rm /var/log/apache2/* & service apache2 restart
 
 #################################################################
