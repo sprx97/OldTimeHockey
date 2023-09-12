@@ -514,7 +514,7 @@ const Homepage = () => {
             <Grid.Row columns={1}>
               <Grid.Column>
                 <Header as="h2" textAlign="center">Tenure</Header>
-                In order to prevent unfair advantages in D4 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs since the 4-division format was introduced in 2016-17 is ineligible for D4 and will say in D3. This also applies to managers returning from a hiatus.</b>
+                In order to prevent unfair advantages in D4 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs since the 4-division format was introduced in 2016-17 is ineligible for D4 and will say in D3. This also applies to managers returning from a hiatus. The year threshold for this is subject to change in the future in order to maintain relevance.</b>
               </Grid.Column>
             </Grid.Row>
           </Grid>
