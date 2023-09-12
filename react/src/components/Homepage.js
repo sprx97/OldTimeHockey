@@ -7,7 +7,29 @@ const panes = [
     menuItem: '2023-2024',
     render: () => (
       <Tab.Pane>
-        Coming Soon
+        ??? teams, ?? leagues, 4 divisions
+        <ul>
+          <li>
+            <b>Division 1 Champion: </b>
+            <a href="#"></a>
+          </li>
+          <li>
+            <b>Points For Champion: </b>
+            <a href="#"></a>
+          </li>
+          <li>
+            <b>Coaches Rating Champion: </b>
+            <a href="#"></a>
+          </li>
+          <li>
+            <b>Woppa Cup Champion: </b>
+            <a href="#"></a>
+          </li>
+          <u>Rule Changes</u>
+          <ul>
+            <li>Tenure policy added (see Promotion and Relegation section below)</li>
+          </ul>
+        </ul>
       </Tab.Pane>
     ),
   },
@@ -483,10 +505,16 @@ const Homepage = () => {
               <Grid.Column>
                 <Header as="h3" textAlign="center">D4</Header>
                 <ul>
-                  <li>All other returning D3 teams</li>
+                  <li>All other returning D3 teams*</li>
                   <li>All other returning D4 teams</li>
-                  <li>Newcomers</li>
+                  <li>Newcomers*</li>
                 </ul>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={1}>
+              <Grid.Column>
+                <Header as="h2" textAlign="center">Tenure</Header>
+                In order to prevent unfair advantages in D4 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs since the 4-division format was introduced in 2016-17 is ineligible for D4 and will say in D3. This also applies to managers returning from a hiatus.</b>
               </Grid.Column>
             </Grid.Row>
           </Grid>

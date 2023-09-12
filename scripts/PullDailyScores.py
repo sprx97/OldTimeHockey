@@ -73,7 +73,7 @@ def GetScores(league_id, year, week=None):
                 optimum_num_players_away = count_num_players(boxscore["pointsAway"]["scoringPeriod"]["optimumLineup"]) if "optimumLineup" in boxscore["pointsAway"]["scoringPeriod"] else 0
                 optimum_num_players_home = count_num_players(boxscore["pointsHome"]["scoringPeriod"]["optimumLineup"]) if "optimumLineup" in boxscore["pointsHome"]["scoringPeriod"] else 0
 
-                # TODO: Found an interesting flea bug that miscalculates OptimumPF/Lineup. 
+                # TODO: Found an interesting flea bug that miscalculates OptimumPF/Lineup.
                 # Can be seen in the home team here: https://www.fleaflicker.com/nhl/leagues/12086/scores/2854898?week=82
                 # I think it just isn't handling multi-position eligibility well
                 # Because of this, let's assume the optimum score can't be less than the actual score
@@ -86,10 +86,10 @@ def GetScores(league_id, year, week=None):
                     optimum_num_players_away = num_players_away
 
                 # Insert this data into our table
-                home_data = {"team_id": home_id, 
-                             "year": year, 
-                             "scoring_period": day, 
-                             "game_id": game_id, 
+                home_data = {"team_id": home_id,
+                             "year": year,
+                             "scoring_period": day,
+                             "game_id": game_id,
                              "opponent_team_id": away_id,
                              "week": week_id,
                              "is_playoffs": is_playoffs,
@@ -97,10 +97,10 @@ def GetScores(league_id, year, week=None):
                              "optimum_points": optimum_home,
                              "num_players": num_players_home,
                              "optimum_num_players": optimum_num_players_home}
-                away_data = {"team_id": away_id, 
-                             "year": year, 
-                             "scoring_period": day, 
-                             "game_id": game_id, 
+                away_data = {"team_id": away_id,
+                             "year": year,
+                             "scoring_period": day,
+                             "game_id": game_id,
                              "opponent_team_id": home_id,
                              "week": week_id,
                              "is_playoffs": is_playoffs,
