@@ -1,0 +1,1 @@
+INSERT INTO Leagues(id, year, name, commish, tier) SELECT id, year+1, name, commish, tier FROM Leagues WHERE year=2022
