@@ -48,24 +48,24 @@ activate_url = "https://www.fleaflicker.com/nhl/leagues/{}/activate"
 message_url = "https://www.fleaflicker.com/nhl/leagues/{}/messages/new"
 kick_url = 'https://www.fleaflicker.com/nhl/leagues/{}/settings/owners/remove'
 
-# TODO: Include link to invite form next year
 kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly, so if you're receiving this and haven't signed up," + \
-               "be sure to check your email or the subreddit for the registration form. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
+               "be sure to check your email or the subreddit for the registration form here: https://forms.gle/u3T3gH6285ues75b6. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
 kick_message_data = {
     "parentId": "",
     "editId": "",
-    "title": "Clearing divisions in preparation for next season",
+    "title": "Clearing divisions in preparation for next season (CORRECT FORM LINK)",
     "contents": kick_message,
     "emailAll": "true"
 }
 
-# TODO: Fix the spacing on this post
-invite_message = "Welcome back to OTH for our eleventh season! A few notes:\n" + \
-          "- Draft date/time is final. League assignments were made based on availability on the registration form." + \
-          " If your availability has changed tag @mods on discord and we'll try to help, but no guarantees we'll be able to facilitate a swap.\n" + \
-          "- Draft order will be randomized one everyone has joined. We will post here when the final order is generated.\n" + \
-          "- The fantasy schedule will likely change as Fleaflicker sets that not us. We're in touch with them about this.\n\n" + \
-          "Good luck this season!"
+# TODO: The POST request is not respecting any sort of \n or returns here. It's kinda shit formatting so maybe just rework the info to be a paragraph instead of bullets?
+invite_message = """
+Welcome back to OTH for our twelfth season! A few notes:
+- Draft date/time is final. League assignments were made based on availability on the registration form. If your availability has changed tag @mods on discord and we'll try to help, but no guarantees we'll be able to facilitate a swap.
+- DRAFT ORDER IS NOT FINAL. Draft order will be randomized one everyone has joined. We will post here when the final order is generated.
+
+Good luck this season!
+"""
 invite_message_data = {
     "parentId": "",
     "editId": "",
@@ -74,7 +74,8 @@ invite_message_data = {
     "emailAll": "false"
 }
 
-# TODO: Also set the trade deadline (and other settings if necessary)
+# TODO: Also set the trade deadline, playoff schedule, and other settings if necessary
+#       I'm not sure if this is automatable, but it's a pain to do manually.
 
 def boot_teams(league_id):
     response = requests.get(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year+1}")

@@ -11,6 +11,17 @@ from google.oauth2.credentials import Credentials
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
 
+############################
+# HEY YOU!
+# If you're doing this for the first time in ~6 months, your refresh token probably expired
+# In order to get a new one, you'll have to run the obtain_creds code from a local machine (IE not this server)
+# It's super annoying, and I should probably just write code to maintain the token ever month or two
+# But for now this is a hacky solution.
+# For now, assuming SPRX hasn't lost or given up his work laptop yet, he has a minimized local copy that will
+# regenerate those two token files for you. Just get those and replace the contents of Emailer/tokens/*token.json
+# and pray that nothing else goes wrong.
+############################
+
 def obtain_creds(file, scopes):
     creds = None
     file = Config.config["srcroot"] + "scripts/Emailer/tokens/" + file # Use special tokens directory
@@ -23,10 +34,12 @@ def obtain_creds(file, scopes):
     if not creds or not creds.valid:
         # Refresh expired, but existing, creds
         if creds and creds.expired and creds.refresh_token:
+            print("Refreshing gmail credentials")
             creds.refresh(Request())
 
         # Otherwise create new creds from a login
         else:
+            print("Requesting new gmail credentials")
             flow = InstalledAppFlow.from_client_secrets_file(Config.config["srcroot"] + "scripts/Emailer/auth.json", scopes)
             creds = flow.run_local_server(port=0)
 

@@ -99,7 +99,6 @@ body = \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
 "If you can't find it, reach out to an admin via Discord or Reddit. " + \
-"Your invite is valid for 24 hours before waitlisted managers will be invited. We need to fill these leagues fast.\n\n" + \
 "-- Admins"
 
 # Add the admins to ensure this gets sent

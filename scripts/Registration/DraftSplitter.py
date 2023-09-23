@@ -1,7 +1,8 @@
 # Standard Python libaries
-from itertools import combinations
+import itertools
 import math
 import os
+import random
 import sys
 
 # My libraries
@@ -23,7 +24,7 @@ if division not in ["D2", "D3", "D4"]:
 # Get the registration spreadsheets
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
-rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:I").execute()
+rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:M").execute()
 
 # Get all of last year's registrants
 values = rows.get("values", [])
@@ -35,14 +36,14 @@ max_in_division = 98 if division == "D4" else 70 if division == "D3" else 42
 count = 0
 for row in values:
     # Only look for the chosen division
-    if row[6] != division:
+    if row[11] != division:
         continue
 
     # Extract values
     email = row[0]
     user_name = row[1].strip()
     user_id = row[2]
-    drafts = row[7].split(" EST, ")
+    drafts = row[8].split(" EST, ")
     drafts[-1] = drafts[-1][:-4] # trim the last one
 
     # Assign data to our maps of user->drafs and drafts->num_users
@@ -58,7 +59,7 @@ for row in values:
 
 num_leagues = math.ceil(len(all_users) / NUM_TEAMS_PER_LEAGUE)
 
-# # Duplicate the 3 most popular draft times
+# Duplicate the 3 most popular draft times (D3/4 only)
 # all_draft_times = dict(sorted(all_draft_times.items(), key=lambda item:len(item[1]), reverse=True))
 # draft_times_copy = copy.deepcopy(all_draft_times)
 # for time, users in list(draft_times_copy.items())[:3]:
@@ -68,7 +69,7 @@ num_leagues = math.ceil(len(all_users) / NUM_TEAMS_PER_LEAGUE)
 #     all_draft_times[dupe_time] = users
 
 # Find all possible combinations of draft slots
-draft_combinations = list(combinations(all_draft_times.keys(), num_leagues))
+draft_combinations = list(itertools.combinations(all_draft_times.keys(), num_leagues))
 print(len(draft_combinations), "total combinations.")
 ranked_combinations = {}
 for combo in draft_combinations:
@@ -118,7 +119,8 @@ for combo, ranking in list(ranked_combinations.items()):
             if draft in all_users[id]["drafts"]:
                 user_drafts[id].append(draft)
 
-    user_drafts = dict(sorted(user_drafts.items(), key=lambda item:len(item[1])))
+    # The second sort parameter, random.randrange, is so we get different possibilities every time we run the script
+    user_drafts = dict(sorted(user_drafts.items(), key=lambda item:(len(item[1]), random.randrange(100))))
 
     # Create empty leagues
     leagues = {"UNASSIGNED":[]}

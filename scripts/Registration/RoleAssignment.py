@@ -21,18 +21,17 @@ DIV_ASSIGN_COL = 12 # M
 LEAGUE_ASSIGN_COL = 13 # N
 for row in values[1:]:
     # Skip managers not assigned to a league yet
-    if len(row) <= LEAGUE_ASSIGN_COL:
+    if len(row) <= LEAGUE_ASSIGN_COL or row[DIV_ASSIGN_COL] == "D1":
         continue
 
     # Skip managers without a discord account
     if row[DISCORD_NAME_COL] == "":
         continue
 
-    name, discrim = row[DISCORD_NAME_COL].split("#")
+    name = row[DISCORD_NAME_COL]
     name = name.strip()
-    discrim = discrim.strip()
 
-    out_line = f"{name}\t{discrim}\t{row[DIV_ASSIGN_COL]}\t{row[LEAGUE_ASSIGN_COL]}\n"
+    out_line = f"{name}\t{row[DIV_ASSIGN_COL]}\t{row[LEAGUE_ASSIGN_COL]}\n"
     f.write(out_line)
 
 f.close()

@@ -25,31 +25,38 @@ if month >= 10 or month <= 6:
 # Get the registration spreadsheets
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
+
 last_year = sheets.values().get(spreadsheetId=Config.config["prev_season_reg_sheet_id"], range="B:B").execute()
 this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:B").execute()
+retirees = ["davitavi@yahoo.com", "chrisquitasol@gmail.com", "anthonyliu89@gmail.com", "steven.janssens@protonmail.com", "tweedledunn@gmail.com", "jakezwiebach@gmail.com"]
 
 # Get all of last year's registrants
 values = last_year.get("values", [])
 emails = []
-for row in values:
+for row in values[1:]: # Skip the header
     emails.append(row[0].strip().lower())
 
 # Remove the ones who have already registered this year
 values = this_year.get("values", [])
-for row in values:
+for row in values[1:]: # Skip the header
     email = row[0].strip().lower()
+    if email in emails:
+        emails.remove(email)
+
+# Remove the retirees
+for email in retirees:
     if email in emails:
         emails.remove(email)
 
 # Construct the email -- TODO Update the form link each offseason
 to = "roldtimehockey@gmail.com"
-subject = "FINAL CALL: Old Time Hockey 2022-23 Registration"
+subject = "Old Time Hockey 2023-24 Registration: Second Reminder"
 body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you played in the Old Time Hockey fantasy league last year. " + \
-"If you are interested in playing again, the registration form can be found here: https://forms.gle/V8VBqUVKe1kMJM6C6\n\n" + \
-"The deadline for returning members to keep their upper division slot is 11:59pm on Sunday, September 11th. After that your slot may be given to a fill team and you'll start back in D4.\n\n" + \
-"Drafts this year will take place between September 29th and October 3rd. Hope to see you back!\n\n" + \
+"If you are interested in playing again, the registration form can be found here: https://forms.gle/tgygLWPKi2XrtRD19\n\n" + \
+"Some time next week we will start replacing no-shows in D3 and D4.\n\n" + \
+"Drafts this year will take place between October 6th and October 9th. Hope to see you back!\n\n" + \
 "-- Admins"
 
 gmail_service = Emailer.get_gmail_service()
@@ -62,8 +69,9 @@ for n in range(0, len(emails), NUM_PER_SLICE):
     emails_slice.extend(Config.config["admin_email_ccs"].split(","))
 
     # Failsafe 3
-    print("Stopped before sending. Comment out the failsafe lines to continue.")
-    print(len(emails_slice), emails_slice)
+    print(subject, "\n", body, "\n")
+    print(len(emails_slice), emails_slice, "\n")
+    print("Stopped before sending. Comment out the failsafe lines to continue.\n")
     continue
 
     # Send the email
