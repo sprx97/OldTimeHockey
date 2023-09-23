@@ -5,7 +5,6 @@ import sys
 # OTH includes
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
-import Shared
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -14,10 +13,16 @@ f.close()
 DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
 cursor = DB.cursor()
 
+d1 = []
+d2 = []
+d3 = []
+d1_fill = []
+d2_fill = []
+d3_fill = []
+tenure = []
+
 # D1 Assignments
 def GenerateD1List():
-    d1 = []
-
     # Ask for WoppaCup champ
     wc_champ = input("Who won the woppa cup? ").lower()
     d1.append(wc_champ)
@@ -46,13 +51,8 @@ def GenerateD1List():
     for team in d2_finalists:
         d1.append(team["FFname"])
 
-    print(len(d1), d1)
-    return d1
-
 # D2 Assignments
 def GenerateD2List():
-    d2 = []
-
     # Ask for WC Runner Up
     wc_runnerup = input("Who was the woppa cup runner up? ").lower()
     d2.append(wc_runnerup)
@@ -92,13 +92,8 @@ def GenerateD2List():
     for team in d3_semifinalists:
         d2.append(team["FFname"])
 
-    print(len(d2), d2)
-    return d2
-
 # D3 Assignments
 def GenerateD3List():
-    d3 = []
-
     # Get D1 ranks 13 and 14
     query = f"SELECT U.FFname from Teams as T INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) " + \
             f"WHERE T.year={year} AND L.tier=1 " + \
@@ -146,67 +141,75 @@ def GenerateD3List():
     for team in d4_semifinalists:
         d3.append(team["FFname"])
 
-    print(len(d3), d3)
-    return d3
-
 # Generate Fill lists for each div
 # Order matters in these
 def GenerateD1FillOrder():
-    fill = []
-
     # Get PF ranks of just D1 and D2 managers
     query = f"SELECT U.FFname from Teams as T INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) " + \
             f"WHERE T.year={year} AND (L.tier=1 OR L.tier=2) ORDER BY T.pointsFor DESC"
     cursor.execute(query)
     ranks = cursor.fetchall()
     for team in ranks:
-        fill.append(team["FFname"])
-
-    print(fill)
-    return fill
+        d1_fill.append(team["FFname"])
 
 def GenerateD2FillOrder():
-    fill = []
-
     # Get PF ranks of just D1 and D2 managers
     query = f"SELECT U.FFname from Teams as T INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) " + \
             f"WHERE T.year={year} AND (L.tier=1 OR L.tier=2 OR L.tier=3) ORDER BY T.pointsFor DESC"
     cursor.execute(query)
     ranks = cursor.fetchall()
     for team in ranks:
-        fill.append(team["FFname"])
-
-    print(fill)
-    return fill
+        d2_fill.append(team["FFname"])
 
 def GenerateD3FillOrder():
-    fill = []
-
     # Get PF ranks of just D1 and D2 managers
     query = f"SELECT U.FFname from Teams as T INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) " + \
             f"WHERE T.year={year} ORDER BY T.pointsFor DESC"
     cursor.execute(query)
     ranks = cursor.fetchall()
     for team in ranks:
-        fill.append(team["FFname"])
-
-    print(fill)
-    return fill
+        d3_fill.append(team["FFname"])
 
 # Generate Tenure list
-TENURE_NUM_YEARS = 7 # Currently back to 16-17. Needs to be adjusted.
+TENURE_NUM_YEARS = 5 # Currently back to 16-17. Needs to be adjusted.
 def GenerateTenureList():
-    return
+    # Get all the D1 members from the past TENURE_NUM_YEARS years
+    query = f"SELECT DISTINCT U.FFname from Teams as T INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) " + \
+            f"WHERE T.year>{year-TENURE_NUM_YEARS} AND L.tier=1"
+    cursor.execute(query)
+    d1_teams = cursor.fetchall()
+    for team in d1_teams:
+        tenure.append(team["FFname"].lower())
+
+    # Get all the D2 playoff teams from the past TENURE_NUM_YEARS years
+    query = f"SELECT DISTINCT U.FFname from Teams as T INNER JOIN Teams_post as P ON (T.teamID=P.teamID AND T.year=P.year) " + \
+            f"INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) " + \
+            f"WHERE T.year>{year-TENURE_NUM_YEARS} AND L.tier=2"
+    cursor.execute(query)
+    d2_playoff_teams = cursor.fetchall()
+    for team in d2_playoff_teams:
+        tenure.append(team["FFname"].lower())
 
 GenerateD1List()
+d1 = sorted(set(d1), key=lambda x: d1.index(x)) # Remove duplicates
+
 GenerateD2List()
+d2 = sorted(set(d2), key=lambda x: d2.index(x)) # Remove duplicates
+d2 = [i for i in d2 if i not in d1] # Remove users already in D1
+
 GenerateD3List()
-# Remove duplicates from each list
+d3 = sorted(set(d3), key=lambda x: d3.index(x)) # Remove duplicates
+d3 = [i for i in d3 if i not in d1 and i not in d2] # Remove users already in D1 or D2
 
 GenerateD1FillOrder()
+d1_fill = [i for i in d1_fill if i not in d1] # Remove users already in D1
+
 GenerateD2FillOrder()
+d2_fill = [i for i in d2_fill if i not in d1 and i not in d2] # Remove users already in D1 or D2
+
 GenerateD3FillOrder()
-# Remove duplicates from each list
+d3_fill = [i for i in d3_fill if i not in d1 and i not in d2 and i not in d3] # Remove users already in D1 or D2 or D3
 
 GenerateTenureList()
-
+tenure = list(set(tenure)) # Remove duplicates
+tenure.sort()
