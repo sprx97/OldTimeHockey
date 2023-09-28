@@ -24,7 +24,7 @@ if division not in ["D2", "D3", "D4"]:
 # Get the registration spreadsheets
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
-rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:M").execute()
+rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:N").execute()
 
 # Get all of last year's registrants
 values = rows.get("values", [])
@@ -32,11 +32,15 @@ values = values[1:] # Chop off the header row
 
 all_draft_times = {}
 all_users = {}
-max_in_division = 98 if division == "D4" else 70 if division == "D3" else 42
+max_in_division = 98 if division == "D4" else 56 if division == "D3" else 42
 count = 0
 for row in values:
-    # Only look for the chosen division
-    if row[11] != division:
+    # Only look for the chosen division, but count NEW as D4
+    if row[11] != division and not (row[11] == "NEW" and division == "D4"):
+        continue
+
+    # Skip the waitlist -- the bottom of the reg form without a division
+    if len(row) >= 13 and row[12] == "WAITLIST":
         continue
 
     # Extract values
@@ -163,6 +167,18 @@ for combo, ranking in list(ranked_combinations.items()):
 print(f"{best_num_assigned}/{len(all_users)} users assigned in {len(best_combinations)} different possibilities.")
 if best_num_assigned != len(all_users):
     print("COULD NOT ASSIGN ALL USERS TO A DRAFT")
+
+# Sort by day of week
+sorted_combinations = []
+for combo in best_combinations:
+    def sortfunc(item):
+        if item[0] == "UNASSIGNED":
+            return "UNASSIGNED"
+        
+        return "".join(item[0].split(" ")[1:]) # Trim off the day of week, and then just compare the strings
+
+    sorted_combinations.append(dict(sorted(combo.items(), key=sortfunc)))
+best_combinations = sorted_combinations
 
 def transpose(list):
     result = []

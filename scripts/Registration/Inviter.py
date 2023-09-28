@@ -1,7 +1,8 @@
 # Python includes
-import requests
 import os
 import sys
+
+import requests
 
 # OTH includes
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,8 +12,8 @@ from Emailer import Emailer
 
 send_invites = False
 send_emails = False
-#send_invites = True
-#send_emails = True
+send_invites = True
+send_emails = True
 all_emails = []
 
 # Only allow sending of invites for one division at a time
@@ -98,7 +99,8 @@ body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
-"If you can't find it, reach out to an admin via Discord or Reddit. " + \
+"If you can't find it, reach out to an admin via Discord or Reddit. You have 48 hours to accept before we may start inviting replacements.\n\n" + \
+"Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
 "-- Admins"
 
 # Add the admins to ensure this gets sent
@@ -114,3 +116,4 @@ else:
     print("Emails not sent. Uncomment to send.")
 
 # TODO: Also add reddit post verifying invites have been sent?
+# TODO: Add script to monitor leagues for when they fill, and randomize when they do
