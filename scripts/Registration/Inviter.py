@@ -99,8 +99,10 @@ body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
-"If you can't find it, reach out to an admin via Discord or Reddit. You have 48 hours to accept before we may start inviting replacements.\n\n" + \
-"Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
+"If you can't find it, reach out to an admin via Discord or respond to this email. \n\n" + \
+"Once you find the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " +\
+"You have 48 hours to accept before we may start inviting replacements.\n\n" + \
+"Draft order and matchup schedule are NOT finalized and will be randomized after the league fills.\n\n" + \
 "-- Admins"
 
 # Add the admins to ensure this gets sent
