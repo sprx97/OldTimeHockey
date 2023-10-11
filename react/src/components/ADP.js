@@ -80,15 +80,16 @@ export default class ADP extends Component {
         return (
             <Container>
                 <Segment basic textAlign="center">
-                    <Dropdown
-                        compact
-                        search
-                        selection
-                        options={this.dropdownOptions}
-                        defaultValue={this.state.query}
-                        wrapSelection={false}
-                        onChange={this.onChange}
-                    />
+                    <div style={{ width: '120px', margin: '0 auto' }}>
+                        <Dropdown
+                            fluid
+                            selection
+                            options={this.dropdownOptions}
+                            defaultValue={this.state.query}
+                            wrapSelection={false}
+                            onChange={this.onChange}
+                        />
+                    </div>
                     <Divider hidden />
                     <Grid centered>
                         <Grid.Row columns="equal">
