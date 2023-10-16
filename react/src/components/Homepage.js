@@ -7,7 +7,7 @@ const panes = [
     menuItem: '2023-2024',
     render: () => (
       <Tab.Pane>
-        ??? teams, ?? leagues, 4 divisions
+        182 teams, 13 leagues, 4 divisions
         <ul>
           <li>
             <b>Division 1 Champion: </b>
@@ -420,7 +420,7 @@ const Homepage = () => {
             History
           </Header>
           <Tab
-            defaultActiveIndex={1}
+            defaultActiveIndex={0}
             panes={panes}
             menu={{
               vertical: true,
