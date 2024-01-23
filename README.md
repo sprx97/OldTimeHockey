@@ -10,7 +10,7 @@ OldTimeHockey is a fantasy hockey superleague that was started via Reddit in 201
 **OldTimeHockey/*:** Instructions and scripts for setup and running parts of the project  
 
 ## Check out my Discord Bot, Wes McCauley
-- https://github.com/Spartan97/WesBot
+- https://github.com/Sprx97/WesBot
 
 ## Other Notes
 - Python 3 is required for all scripts
