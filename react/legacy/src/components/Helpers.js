@@ -1,5 +1,5 @@
 import React from 'react';
-import config from 'config.json' // Symbolic link in node_modules from the one in the root of this project
+import config from './config.json' // Symbolic link of the config in the root of this git repo to the components folder
 
 export function getCurrentYear() {
   return Number(config["year"]);
@@ -22,7 +22,7 @@ export function isPlayoffWeek(week, year) {
     case 2021:
       return week > 25;
     case 2022:
-      return week > 22
+      return week > 22;
     default:
       return week > 23;
   }
