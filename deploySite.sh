@@ -1,3 +1,2 @@
 echo "Starting OldTimeHockey react site"
-cd /var/www/OldTimeHockey/react
-serve -s build -l 42426
+serve -s /var/www/OldTimeHockey/react/legacy/build -l 42426
