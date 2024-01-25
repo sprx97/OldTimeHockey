@@ -99,3 +99,38 @@ The `tsconfig.json` file in our project is used to configure various aspects of 
 
 This configuration ensures a strict and modern development environment, leveraging the latest JavaScript features and providing a robust linting setup.
 
+## Prettier Configuration (.prettierrc) Explanation
+
+The `.prettierrc` file configures the Prettier code formatter for our project. Below is an overview of the settings used:
+
+- **`semi`: false**  
+  This setting disables the automatic insertion of semicolons at the ends of statements.
+
+- **`singleQuote`: true**  
+  Enforces the use of single quotes instead of double quotes, wherever possible.
+
+- **`jsxSingleQuote`: true**  
+  Similar to `singleQuote`, but specific to JSX. It enforces the use of single quotes in JSX attributes.
+
+- **`trailingComma`: "es5"**  
+  This option adds trailing commas to multi-line object literals, array literals, and function parameters lists compatible with ES5 syntax.
+
+- **`bracketSpacing`: true**  
+  Ensures that there is space between the brackets in object literals. For example, `{ foo: bar }` instead of `{foo: bar}`.
+
+- **`jsxBracketSameLine`: false**  
+  Configures JSX tags to have the closing bracket on a new line for multi-line elements, enhancing readability.
+
+- **`arrowParens`: "always"**  
+  Requires parentheses around the arguments of arrow functions, regardless of their arity. For example, `(x) => x`.
+
+- **`printWidth`: 80**  
+  Sets the desired line width at which Prettier will wrap lines. Here, it's set to 80 characters.
+
+- **`tabWidth`: 2**  
+  Specifies the number of spaces per indentation-level.
+
+- **`useTabs`: false**  
+  Indicates that spaces are used for indentation instead of tabs.
+
+This Prettier configuration ensures a consistent coding style across the project, focusing on readability and adhering to common JavaScript and JSX conventions.
