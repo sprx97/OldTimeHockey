@@ -1,10 +1,14 @@
 import copy
 import os
+import pymysql
 import random
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import Config
 from Shared import *
+
+# TODO: Consider adding a constant random.seed so it's reproducible
 
 stddev = 30
 def project_winner(teams, away, home):
@@ -26,6 +30,8 @@ def project_winner(teams, away, home):
     return away if away_random_pf > home_random_pf else home
 
 def calculate_playoff_odds(league, year):
+    print(f"Calculating playoff odds for league {league} in {year}")
+
     teams = {}
     matches = []
 
@@ -33,12 +39,12 @@ def calculate_playoff_odds(league, year):
     standings = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league}&season={year}")
     for team in standings["divisions"][0]["teams"]:
         id = str(team["id"])
-        teams[id] = {"wins": team["recordOverall"]["wins"], 
-                     "losses": team["recordOverall"]["losses"], 
-                     "PF": team["pointsFor"]["value"], 
-                     "playoff_odds": 0, 
-                     "seeds": [0]*14, 
-                     "records": {}, 
+        teams[id] = {"wins": team["recordOverall"]["wins"] if "wins" in team["recordOverall"] else 0,
+                     "losses": team["recordOverall"]["losses"] if "losses" in team["recordOverall"] else 0,
+                     "PF": team["pointsFor"]["value"],
+                     "playoff_odds": 0,
+                     "seeds": [0]*14,
+                     "records": {},
                      "current_week": {"win": {"make_playoffs": 0, "total": 0}, "loss": {"make_playoffs": 0, "total": 0}}}
 
     # Get remaining weeks
@@ -117,4 +123,11 @@ def calculate_playoff_odds(league, year):
     directory = f"scripts/PlayoffOdds/data/{year}/{league}"
     WriteJsonFile(f"{directory}/{current_week}.json", teams)
 
-calculate_playoff_odds(12086, 2023)
+f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+year = int(f.readline().strip())
+
+db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
+cursor = db.cursor()
+
+for league in get_leagues_from_database(year):
+    calculate_playoff_odds(league["id"], league["year"])

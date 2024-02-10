@@ -7,10 +7,15 @@
 # Disable when WC ends
 55 7  * * 1   root    python3 /var/www/OldTimeHockey/scripts/woppacup.py true
 
-# Update the sql table from fleaflicker (weekly)
+# Update the sql tables from fleaflicker (weekly)
 # Enable before the end of the first week of the season
 00 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/UpdateTables.py
 00 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/PullDailyScores.py
+
+# Update the playoff odds json from fleaflicker (weekly)
+# Enable at some reasonable time into the season... no harm in doing it week 1,
+# but not really meaningful until midseason
+02 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/PlayoffOdds/PlayoffOdds_OTH.py
 
 # Generate text for reddit posts and post to reddit (weekly)
 # Enable before the end of the first week of the season
