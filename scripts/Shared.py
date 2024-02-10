@@ -1,4 +1,5 @@
 # Python Libraries
+import json
 import pymysql
 import requests
 
@@ -43,3 +44,10 @@ def make_api_call(link):
         return {}
 
     return data
+
+def WriteJsonFile(file, data):
+    try:
+        with open(f"{Config.config['srcroot']}/{file}", "w") as f:
+            json.dump(data, f, indent=4)
+    except:
+        print(f"Error writing to {file}")
