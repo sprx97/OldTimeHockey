@@ -106,11 +106,15 @@ def calculate_playoff_odds(league, year):
         teams[team]["playoff_odds"] /= simulations / 100
         teams[team]["seeds"] = [round(x / simulations * 100, 2) for x in teams[team]["seeds"]]
         teams[team]["records"] = dict(sorted(teams[team]["records"].items(), key=lambda item: int(item[0].split("-")[0]), reverse=True))
+
         for record in teams[team]["records"]:
             teams[team]["records"][record]["odds"] = round(teams[team]["records"][record]["made_playoffs"] / teams[team]["records"][record]["total"] * 100, 2)
-        print(team, teams[team]["playoff_odds"], "\n", teams[team]["current_week"], "\n", teams[team]["seeds"], "\n", teams[team]["records"], "\n")
+
+        teams[team]["current_week"]["win"]["odds"] = round(teams[team]["current_week"]["win"]["make_playoffs"] / teams[team]["current_week"]["win"]["total"] * 100, 2)
+        teams[team]["current_week"]["loss"]["odds"] = round(teams[team]["current_week"]["loss"]["make_playoffs"] / teams[team]["current_week"]["loss"]["total"] * 100, 2)
 
     # Write to JSON
-#    WriteJsonFile(f"{year}/{current_week}/{league}.json", teams)
+    directory = f"scripts/PlayoffOdds/data/{year}/{league}"
+    WriteJsonFile(f"{directory}/{current_week}.json", teams)
 
 calculate_playoff_odds(12086, 2023)

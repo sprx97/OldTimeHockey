@@ -1,5 +1,6 @@
 # Python Libraries
 import json
+import os
 import pymysql
 import requests
 
@@ -45,9 +46,18 @@ def make_api_call(link):
 
     return data
 
+# TODO: This differs from the other Shared.py but is better
 def WriteJsonFile(file, data):
+    file = f"{Config.config['srcroot']}{file}"
     try:
-        with open(f"{Config.config['srcroot']}/{file}", "w") as f:
+        directory = "/".join(file.split("/")[:-1])
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            print(f"Made new directory {directory}")
+
+        # TODO: This differs from the other Shared.py version in that Config.config['srcroot'] has a trailing slash
+        with open(file, "w") as f:
             json.dump(data, f, indent=4)
-    except:
-        print(f"Error writing to {file}")
+
+    except Exception as e:
+        print(f"Error writing to {file}. {e}")
