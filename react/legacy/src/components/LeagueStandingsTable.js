@@ -56,6 +56,7 @@ export default class LeagueStandingsTable extends Component {
               {this.props.leagueName}
             </a>{' '}
             <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />
+            { this.props.years < 2023 ?
             <Header.Subheader>
               <a
                 href={`http://www.sportsclubstats.com/You/${this.props.leagueName.replace(/-/g, '')}${this.props.year.toString().substring(2,4)}${parseInt(this.props.year.toString().substring(2,4))+1}2.html`}
@@ -64,6 +65,8 @@ export default class LeagueStandingsTable extends Component {
                 {'Playoff Odds'}
               </a>
             </Header.Subheader>
+            : ''
+            }
           </Header>
           <Table definition celled compact unstackable>
             <Table.Header>
@@ -86,6 +89,9 @@ export default class LeagueStandingsTable extends Component {
                   Ties
                 </Table.HeaderCell>
                 ) : ''}
+                <Table.HeaderCell width={1} textAlign="center">
+                  Playoff %
+                </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -122,6 +128,7 @@ export default class LeagueStandingsTable extends Component {
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
                     {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
+                    <Table.Cell textAlign="center">0.00</Table.Cell>
                   </Table.Row>
                 ),
               )}
