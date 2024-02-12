@@ -16,11 +16,16 @@ export default class LeagueStandingsTable extends Component {
     const res = await fetch('https://roldtimehockey.com/node/leagueteams?id=' + this.props.leagueID + "&year=" + this.props.year);
     const leaders = await res.json();
 
+    const res2 = await fetch(`https://roldtimehockey.com/node/v2/standings/playoff_odds?league=${this.props.leagueID}&year=${this.props.year}`) // (And week defaults to current week)
+    const playoff_odds = await res2.json();
+
     var has_ties = false;
     for (const team in leaders) {
       if (leaders[team]["ties"] != "0") {
         has_ties = true;
       }
+
+      leaders[team]["playoff_odds"] = playoff_odds[leaders[team]["teamID"].toString()]["playoff_odds"];
     }
 
     this.setState({
@@ -98,7 +103,7 @@ export default class LeagueStandingsTable extends Component {
               {_.map(
                 data,
                 (
-                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties, is_replacement },
+                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties, is_replacement, playoff_odds },
                   index,
                 ) => (
                   <Table.Row
@@ -128,7 +133,7 @@ export default class LeagueStandingsTable extends Component {
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
                     {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
-                    <Table.Cell textAlign="center">0.00</Table.Cell>
+                    <Table.Cell textAlign="center">{playoff_odds}</Table.Cell>
                   </Table.Row>
                 ),
               )}
