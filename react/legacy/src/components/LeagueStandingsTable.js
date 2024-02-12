@@ -25,7 +25,8 @@ export default class LeagueStandingsTable extends Component {
         has_ties = true;
       }
 
-      leaders[team]["playoff_odds"] = playoff_odds[leaders[team]["teamID"].toString()]["playoff_odds"];
+      if (playoff_odds[leaders[team]["teamID"].toString()] !== undefined)
+        leaders[team]["playoff_odds"] = playoff_odds[leaders[team]["teamID"].toString()]["playoff_odds"];
     }
 
     this.setState({
@@ -133,7 +134,7 @@ export default class LeagueStandingsTable extends Component {
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
                     {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
-                    <Table.Cell textAlign="center">{playoff_odds}</Table.Cell>
+                    <Table.Cell textAlign="center">{playoff_odds !== undefined ? playoff_odds : '-'}</Table.Cell>
                   </Table.Row>
                 ),
               )}

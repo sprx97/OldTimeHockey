@@ -34,7 +34,11 @@ function handleV2(request, response) {
 	if (path == "/standings/playoff_odds") {
 		if (query.year === undefined) query.year = current_year;
 		if (query.week === undefined) query.week = current_week;
-		content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}/${query.week - 1}.json`);
+		try {
+			content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}/${query.week - 1}.json`);
+		} catch {
+			content = "{}";
+		}
 	}
 	else {
 		content = path;
