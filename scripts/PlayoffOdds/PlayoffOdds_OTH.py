@@ -1,8 +1,8 @@
-import copy
 import os
 import pymysql
 import random
 import sys
+import ujson
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Config
@@ -12,11 +12,8 @@ from Shared import *
 
 stddev = 30
 def project_winner(teams, away, home):
-    away_pf_avg = teams[away]["PF"] / (teams[away]["wins"] + teams[away]["losses"])
-    home_pf_avg = teams[home]["PF"] / (teams[home]["wins"] + teams[home]["losses"])
-
-    away_random_pf = random.gauss(away_pf_avg, stddev)
-    home_random_pf = random.gauss(home_pf_avg, stddev)
+    away_random_pf = random.gauss(teams[away]["PF_avg"], stddev)
+    home_random_pf = random.gauss(teams[home]["PF_avg"], stddev)
 
     teams[away]["PF"] += away_random_pf
     teams[home]["PF"] += home_random_pf
@@ -46,6 +43,7 @@ def calculate_playoff_odds(league, year):
                      "seeds": [0]*14,
                      "records": {},
                      "current_week": {"win": {"make_playoffs": 0, "total": 0}, "loss": {"make_playoffs": 0, "total": 0}}}
+        teams[id]["PF_avg"] = teams[id]["PF"] / (teams[id]["wins"] + teams[id]["losses"])
 
     # Get remaining weeks
     schedule = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
@@ -66,12 +64,12 @@ def calculate_playoff_odds(league, year):
             id2 = str(game["home"]["id"])
 
             matches.append((id1, id2))
-    print("All API calls complete")
+    print("All API calls completed. Starting simulations.")
 
     # Monte Carlo Simulation of remaining schedule
-    simulations = 10000
+    simulations = 100000
     for _ in range(simulations):
-        copy_teams = copy.deepcopy(teams)
+        copy_teams = ujson.loads(ujson.dumps(teams))
 
         for n in range(len(matches)):
             away, home = matches[n]
@@ -106,10 +104,11 @@ def calculate_playoff_odds(league, year):
                 teams[team]["current_week"]["loss"]["total"] += 1
                 if rank < 6:
                     teams[team]["current_week"]["loss"]["make_playoffs"] += 1
+    print("Simulations completed.")
 
     # Tidy up, sort, and format all the data to store
     for team in teams:
-        teams[team]["playoff_odds"] /= simulations / 100
+        teams[team]["playoff_odds"] = round(teams[team]["playoff_odds"] / (simulations / 100), 2)
         teams[team]["seeds"] = [round(x / simulations * 100, 2) for x in teams[team]["seeds"]]
         teams[team]["records"] = dict(sorted(teams[team]["records"].items(), key=lambda item: int(item[0].split("-")[0]), reverse=True))
 
