@@ -67,7 +67,8 @@ export default class Standings extends Component {
         </Grid.Column>
       );
 
-      if ((i + 1) % 3 == 0) {
+      let MAX_LEAGUES_PER_ROW = 2;
+      if ((i + 1) % MAX_LEAGUES_PER_ROW == 0) {
         grid.push(<Grid.Row key={i}>{row}</Grid.Row>);
         row = [];
       }
