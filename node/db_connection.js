@@ -23,8 +23,35 @@ conn.connect(function(err) {
 // 	cert: fs.readFileSync("/etc/letsencrypt/live/roldtimehockey.com-0001/fullchain.pem")
 // }
 
+function handleV2(request, response) {
+	path = url.parse(request.url).pathname.substring(3);
+	query = url.parse(request.url, true).query;
+	content = ""
+
+	current_year = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
+	current_week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
+
+	if (path == "/standings/playoff_odds") {
+		if (query.year === undefined) query.year = current_year;
+		if (query.week === undefined) query.week = current_week;
+		content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}/${query.week - 1}.json`);
+	}
+	else {
+		content = path;
+	}
+
+	response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
+	response.write(content);
+	response.end();
+}
+
 http.createServer(function(request, response) {
 	path = url.parse(request.url).pathname;
+	if (path.startsWith("/v2/")) {
+		handleV2(request, response);
+		return;
+	}
+
 	query = url.parse(request.url, true).query;
 	year = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
 	week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
