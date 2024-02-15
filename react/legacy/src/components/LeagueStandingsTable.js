@@ -16,7 +16,7 @@ export default class LeagueStandingsTable extends Component {
     const res = await fetch('https://roldtimehockey.com/node/leagueteams?id=' + this.props.leagueID + "&year=" + this.props.year);
     const leaders = await res.json();
 
-    const res2 = await fetch(`https://roldtimehockey.com/node/v2/standings/playoff_odds?league=${this.props.leagueID}&year=${this.props.year}`) // (And week defaults to current week)
+    const res2 = await fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${this.props.leagueID}&year=${this.props.year}`) // (And week defaults to current week)
     const playoff_odds = await res2.json();
 
     var has_ties = false;
@@ -96,7 +96,7 @@ export default class LeagueStandingsTable extends Component {
                 </Table.HeaderCell>
                 ) : ''}
                 <Table.HeaderCell width={1} textAlign="center">
-                  Playoff %
+                  Playoff%
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>

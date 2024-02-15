@@ -4,7 +4,8 @@ var http = require("http"),
     mysqlEscapeArray = require("mysql-escape-array"),
     fs = require("fs"),
     config = require("../config.json"),
-    PythonShell = require("python-shell")
+    PythonShell = require("python-shell"),
+	util = require("util")
 
 var conn = mysql.createConnection({
 	host: config.sql_hostname,
@@ -18,30 +19,47 @@ conn.connect(function(err) {
 	console.log("Connected!");
 });
 
-// const options = {
-// 	key: fs.readFileSync("/etc/letsencrypt/live/roldtimehockey.com-0001/privkey.pem"),
-// 	cert: fs.readFileSync("/etc/letsencrypt/live/roldtimehockey.com-0001/fullchain.pem")
-// }
+// TODO: Only required until I upgrade node and use mysql2 package
+// Replaces conn.query with an async-safe version that returns the value.
+const async_query = util.promisify(conn.query).bind(conn);
+async function makeSqlQuery(query) {
+	const rows = await async_query(query);
+	return `${JSON.stringify(rows)}`;
+}
 
-function handleV2(request, response) {
-	path = url.parse(request.url).pathname.substring(3);
-	query = url.parse(request.url, true).query;
-	content = ""
+async function handleV2(request, response) {
+	request_url = url.parse(request.url, true);
+	path = request_url.pathname.substring(3); // trim /v2 off the front
+	query = request_url.query;
+	content = "{}"
 
 	current_year = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
 	current_week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
 
-	if (path == "/standings/playoff_odds") {
-		if (query.year === undefined) query.year = current_year;
-		if (query.week === undefined) query.week = current_week;
-		try {
-			content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}/${query.week - 1}.json`);
-		} catch {
-			content = "{}";
+	switch (path) {
+		case "/standings/advanced/playoff_odds":
+		{
+			if (query.year === undefined) query.year = current_year;
+			if (query.week === undefined) query.week = current_week;
+			try {
+				content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}/${query.week - 1}.json`);
+			} catch {
+				console.log("Error reading Playoff Odds file.");
+			}
 		}
-	}
-	else {
-		content = path;
+		break;
+
+		case "/standings/advanced/xWins":
+		{
+			content = await makeSqlQuery("SELECT * FROM Teams limit 10");
+		}
+		break;
+
+		default:
+		{
+			content = path; // Just echo the path for debugging purposes
+		}
+		break;
 	}
 
 	response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
@@ -49,10 +67,10 @@ function handleV2(request, response) {
 	response.end();
 }
 
-http.createServer(function(request, response) {
+http.createServer(async function(request, response) {
 	path = url.parse(request.url).pathname;
 	if (path.startsWith("/v2/")) {
-		handleV2(request, response);
+		await handleV2(request, response);
 		return;
 	}
 
