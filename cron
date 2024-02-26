@@ -19,12 +19,12 @@
 
 # Generate text for reddit posts and post to reddit (weekly)
 # Enable before the end of the first week of the season
-02 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditBot/WeeklyStatsPost.py
-02 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditBot/PFLeadersPost.py
-04 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditBot/RedditPostBot.py
+13 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditBot/WeeklyStatsPost.py
+13 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditBot/PFLeadersPost.py
+14 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/RedditBot/RedditPostBot.py
 
 # Increment week variable (weekly)
-09 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/IncrementWeek.py
+15 8  * * 1   root    python3 /var/www/OldTimeHockey/scripts/IncrementWeek.py
 
 # Copy Database (weekly)
 20 8  * * 1   jeremy  python3 /var/www/OldTimeHockey/scripts/backupdata.py
