@@ -1,5 +1,5 @@
 # Welcome to OldTimeHockey
-OldTimeHockey is a fantasy hockey superleague that was started via Reddit in 2013. It has since expanded to include its own [website](www.roldtimehockey.com) and [Discord server](https://discord.gg/47KRYxA) with bots and scripts in support. All of the code for these lives in this repository and is deployed by SPRX97. If you are interested in contributing or re-purposing, feel free to contact me on Discord (SPRX97#9662), [Reddit](www.reddit.com/u/sprx97), or [Github](www.github.com/Spartan97).
+OldTimeHockey is a fantasy hockey superleague that was started via Reddit in 2013. It has since expanded to include its own [website](www.roldtimehockey.com) and [Discord server](https://discord.gg/47KRYxA) with bots and scripts in support. All of the code for these lives in this repository and is deployed by SPRX97. If you are interested in contributing or re-purposing, feel free to contact me on Discord (sprx97), [Reddit](www.reddit.com/u/sprx97), or [Github](www.github.com/sprx97).
 
 ## List of Things That Exist in This Repository
 **OldTimeHockey/react/&ast;:** Frontend code and markup for the website www.roldtimehockey.com  
@@ -10,7 +10,7 @@ OldTimeHockey is a fantasy hockey superleague that was started via Reddit in 201
 **OldTimeHockey/*:** Instructions and scripts for setup and running parts of the project  
 
 ## Check out my Discord Bot, Wes McCauley
-- https://github.com/Sprx97/WesBot
+- https://github.com/sprx97/WesBot
 
 ## Other Notes
 - Python 3 is required for all scripts
