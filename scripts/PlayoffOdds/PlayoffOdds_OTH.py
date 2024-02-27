@@ -20,11 +20,11 @@ def project_winner(teams, away, home):
     if away_random_pf > home_random_pf:
         teams[away]["wins"] += 1
         teams[home]["losses"] += 1
+	return away
     else:
         teams[away]["losses"] += 1
         teams[home]["wins"] += 1
-
-    return away if away_random_pf > home_random_pf else home
+	return home
 
 def calculate_playoff_odds(league, year):
     print(f"Calculating playoff odds for league {league} in {year}")
