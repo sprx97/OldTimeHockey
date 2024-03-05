@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Table, Header, Image } from 'semantic-ui-react';
-import { GetTrophy } from './Helpers'
+import { getCurrentYear, GetTrophy } from './Helpers'
 
 export default class LeagueStandingsTable extends Component {
   constructor(props) {
@@ -25,10 +25,11 @@ export default class LeagueStandingsTable extends Component {
         has_ties = true;
       }
 
-      if (playoff_odds[leaders[team]["teamID"].toString()] !== undefined)
+      if (Object.keys(playoff_odds).length != 0) {
         leaders[team]["playoff_odds"] = playoff_odds[leaders[team]["teamID"].toString()]["playoff_odds"];
         leaders[team]["bye_odds"] = (playoff_odds[leaders[team]["teamID"].toString()]["seeds"][0] + playoff_odds[leaders[team]["teamID"].toString()]["seeds"][1]).toFixed(2);
         leaders[team]["d3_odds"] = (playoff_odds[leaders[team]["teamID"].toString()]["seeds"][12] + playoff_odds[leaders[team]["teamID"].toString()]["seeds"][13]).toFixed(2);
+      }
     }
 
     this.setState({
@@ -85,9 +86,9 @@ export default class LeagueStandingsTable extends Component {
                 <Table.HeaderCell width={1} textAlign="center">Wins</Table.HeaderCell>
                 <Table.HeaderCell width={1} textAlign="center">Losses</Table.HeaderCell>
                 {has_ties ? (<Table.HeaderCell width={1} textAlign="center">Ties</Table.HeaderCell>) : ''}
-                <Table.HeaderCell width={1} textAlign="center">Playoff%</Table.HeaderCell>
-                <Table.HeaderCell width={1} textAlign="center">Bye%</Table.HeaderCell>
-                {data[0]["tier"] == 1 ?<Table.HeaderCell width={1} textAlign="center">D3%</Table.HeaderCell> : ''}
+                {this.props.year == getCurrentYear() ? <Table.HeaderCell width={1} textAlign="center">Playoff%</Table.HeaderCell> : ''}
+                {this.props.year == getCurrentYear() ? <Table.HeaderCell width={1} textAlign="center">Bye%</Table.HeaderCell> : ''}
+                {this.props.year == getCurrentYear() && data[0] && "tier" in data[0] && data[0]["tier"] == 1 ? <Table.HeaderCell width={1} textAlign="center">D3%</Table.HeaderCell> : ''}
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -124,9 +125,9 @@ export default class LeagueStandingsTable extends Component {
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
                     {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
-                    <Table.Cell textAlign="center">{playoff_odds !== undefined ? playoff_odds : '-'}</Table.Cell>
-                    <Table.Cell textAlign="center">{bye_odds !== undefined ? bye_odds : '-'}</Table.Cell>
-                    {tier == 1 ? (<Table.Cell textAlign="center">{d3_odds !== undefined ? d3_odds : '-'}</Table.Cell>) : ''}
+                    {this.props.year == getCurrentYear() ? (<Table.Cell textAlign="center">{playoff_odds !== undefined ? playoff_odds : '-'}</Table.Cell>) : ''}
+                    {this.props.year == getCurrentYear() ? (<Table.Cell textAlign="center">{bye_odds !== undefined ? bye_odds : '-'}</Table.Cell>) : ''}
+                    {this.props.year == getCurrentYear() && tier == 1 ? (<Table.Cell textAlign="center">{d3_odds !== undefined ? d3_odds : '-'}</Table.Cell>) : ''}
                   </Table.Row>
                 ),
               )}
