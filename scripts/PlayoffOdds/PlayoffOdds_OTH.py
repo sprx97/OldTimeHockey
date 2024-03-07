@@ -67,7 +67,7 @@ def calculate_playoff_odds(league, year):
     print("All API calls completed. Starting simulations.")
 
     # Monte Carlo Simulation of remaining schedule
-    simulations = 100000
+    simulations = 10000 # TODO: Update to 100k
     for _ in range(simulations):
         copy_teams = ujson.loads(ujson.dumps(teams))
 
