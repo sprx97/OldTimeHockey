@@ -25,6 +25,9 @@ def updateCurrentPF(league, year):
             week = schedule_period["low"]["ordinal"]
             break
 
+    # Call it again for the week based on our current week
+    scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={week}")
+
     for game in scores["games"]:
         matchup_id = game["id"]
         away_id = game["away"]["id"]

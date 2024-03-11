@@ -4,7 +4,7 @@
 
 # Run weekly scripts to update data stores
 # Enable the day the season starts
-0 8 * * 1   root    python3 /var/www/OldTimeHockey/scripts/Weekly.sh
+0 8 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh
 
 # Update the Woppa Cup standings (weekly)
 # Enable after week 5 (when Woppa Cup starts)
