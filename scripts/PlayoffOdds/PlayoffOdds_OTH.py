@@ -26,7 +26,7 @@ def project_winner(teams, away, home):
         teams[home]["wins"] += 1
         return home
 
-def calculate_playoff_odds(league, year):
+def calculate_playoff_odds(league, year, current_week = None):
     print(f"Calculating playoff odds for league {league} in {year}")
 
     teams = {}
@@ -47,13 +47,16 @@ def calculate_playoff_odds(league, year):
 
     # Get remaining weeks
     schedule = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
-    current_week = schedule["schedulePeriod"]["ordinal"]
+    if current_week == None:
+        current_week = schedule["schedulePeriod"]["ordinal"]
     remaining_weeks = []
     for schedule_period in schedule["eligibleSchedulePeriods"]:
         if schedule_period["ordinal"] > current_week:
             remaining_weeks.append(schedule_period["low"]["ordinal"])
 
     # Trim off playoff weeks. This may be too simple of a solution but it works for now.
+    if remaining_weeks < 3:
+        return
     remaining_weeks = remaining_weeks[:-3]
 
     # Get matches in remaining weeks
@@ -115,8 +118,12 @@ def calculate_playoff_odds(league, year):
         for record in teams[team]["records"]:
             teams[team]["records"][record]["odds"] = round(teams[team]["records"][record]["made_playoffs"] / teams[team]["records"][record]["total"] * 100, 2)
 
-        teams[team]["current_week"]["win"]["odds"] = round(teams[team]["current_week"]["win"]["make_playoffs"] / teams[team]["current_week"]["win"]["total"] * 100, 2)
-        teams[team]["current_week"]["loss"]["odds"] = round(teams[team]["current_week"]["loss"]["make_playoffs"] / teams[team]["current_week"]["loss"]["total"] * 100, 2)
+        try:
+            teams[team]["current_week"]["win"]["odds"] = round(teams[team]["current_week"]["win"]["make_playoffs"] / teams[team]["current_week"]["win"]["total"] * 100, 2)
+            teams[team]["current_week"]["loss"]["odds"] = round(teams[team]["current_week"]["loss"]["make_playoffs"] / teams[team]["current_week"]["loss"]["total"] * 100, 2)
+        except:
+            teams[team]["current_week"]["win"] = {"make_playoffs": "-", "total": "-", "odds": "-"}
+            teams[team]["current_week"]["loss"] = {"make_playoffs": "-", "total": "-", "odds": "-"}
 
     # Write to JSON
     directory = f"scripts/PlayoffOdds/data/{year}/{league}"
@@ -124,9 +131,10 @@ def calculate_playoff_odds(league, year):
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
+week = int(f.readline().strip())
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
 cursor = db.cursor()
 
-for league in get_leagues_from_database(year):
+for league in get_leagues_from_database(year, week):
     calculate_playoff_odds(league["id"], league["year"])
