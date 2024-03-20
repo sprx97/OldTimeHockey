@@ -16,7 +16,7 @@ def is_playoff_week(week, year):
         return week > 13
     elif year == 2021:
         return week > 25
-    elif year == 2022:
+    elif year == 2022 or year == 2023:
         return week > 22
     else:
         return week > 23
