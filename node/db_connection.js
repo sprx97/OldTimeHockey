@@ -37,6 +37,14 @@ async function handleV2(request, response) {
 	current_week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
 
 	switch (path) {
+		case "/getLeagues":
+		{
+			year_where = "";
+			if (query.year !== undefined) year_where = `WHERE year=${query.year}`
+			content = await makeSqlQuery(`SELECT id, year, tier, name FROM Leagues ${year_where}`)
+		}
+		break;
+
 		case "/standings/advanced/playoff_odds":
 		{
 			if (query.year === undefined) query.year = current_year;
