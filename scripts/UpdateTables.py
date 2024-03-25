@@ -144,58 +144,56 @@ def getStandings(leagueID, year):
 
     return all_teams
 
-def getPlayoffs(leagueID, year):
-    playoffsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "/playoffs?season=" + str(year)
-    response = requests.get(playoffsURL)
-    root = html.document_fromstring(response.text)
-    bracket = root.cssselect(".playoff-bracket")[0]
+def getPlayoffs(league_id, year):
+    base_scoreboard = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
+    for period in base_scoreboard["eligibleSchedulePeriods"]:
+        # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
+        start = period["low"]["ordinal"]
+        scoreboard = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
 
-    teams = {}
-    brackets = bracket.cssselect(".league-name")
-    for n in range(0, len(brackets)):
-        team = brackets[n]
-        teamID = team.findall("a")[0].get("href")
-        if "?season" in teamID:
-            teamID = teamID[(teamID.find("/teams/") + 7):teamID.find("?season")]
-        else:
-            teamID = teamID[(teamID.find("/teams/") + 7):]
-        points = team.getnext()
+        if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
+            print(f"Week {start} does not have final results. Skipping.")
+            continue
 
-        if points != None:
-            if teamID in teams:
-                teams[teamID][2] += floatP(points.text_content())
+        if not "isPlayoffs" in scoreboard["games"][0] or not scoreboard["games"][0]["isPlayoffs"]:
+            continue
+        
+        teams = {}
+        for game in scoreboard["games"]:
+            # Skip consolation bracket games
+            if "isThirdPlaceGame" in game and game["isThirdPlaceGame"]:
+                print("Skipping 3rd place game.")
+                continue
+            if "isConsolation" in game and game["isConsolation"]:
+                print("Skipping consolation bracket matchup.")
+                continue
+
+            away_id = str(game["away"]["id"])
+            home_id = str(game["home"]["id"])
+
+            away_wins = 0 if "wins" not in game["away"]["recordPostseason"] else game["away"]["recordPostseason"]["wins"]
+            home_wins = 0 if "wins" not in game["home"]["recordPostseason"] else game["home"]["recordPostseason"]["wins"]
+
+            away_losses = 0 if "losses" not in game["away"]["recordPostseason"] else game["away"]["recordPostseason"]["losses"]
+            home_losses = 0 if "losses" not in game["home"]["recordPostseason"] else game["home"]["recordPostseason"]["losses"]
+
+            away_score = game["awayScore"]["score"]["value"]
+            home_score = game["homeScore"]["score"]["value"]
+
+            away_seed = game["away"]["recordPostseason"]["rank"]
+            home_seed = game["home"]["recordPostseason"]["rank"]
+
+            if away_id not in teams:
+                teams[away_id] = [away_wins, away_losses, away_score, home_score, away_seed]
             else:
-                teams[teamID] = [0, 0, floatP(points.text_content()), 0.0, 0]
-            teams[teamID][0] += len(points.cssselect(".scoreboard-win"))
-            teams[teamID][1] += 1-len(points.cssselect(".scoreboard-win"))
+                teams[away_id][2] += away_score
+                teams[away_id][3] += home_score
 
-        # points against... kinda hacky
-        if n == 0:
-            teams[teamID][3] += floatP(brackets[3].getnext().text_content())
-            teams[teamID][4] = 1
-        if n == 1:
-            teams[teamID][3] += floatP(brackets[9].getnext().text_content())
-        if n == 2:
-            teams[teamID][3] += floatP(brackets[4].getnext().text_content())
-            teams[teamID][4] = 4
-        if n == 3:
-            teams[teamID][3] += floatP(brackets[0].getnext().text_content())
-        if n == 4:
-            teams[teamID][3] += floatP(brackets[2].getnext().text_content())
-            teams[teamID][4] = 5
-        if n == 6:
-            teams[teamID][3] += floatP(brackets[8].getnext().text_content())
-            teams[teamID][4] = 3
-        if n == 7:
-            teams[teamID][3] += floatP(brackets[10].getnext().text_content())
-        if n == 8:
-            teams[teamID][3] += floatP(brackets[6].getnext().text_content())
-            teams[teamID][4] = 6
-        if n == 9:
-            teams[teamID][3] += floatP(brackets[1].getnext().text_content())
-        if n == 10:
-            teams[teamID][3] += floatP(brackets[7].getnext().text_content())
-            teams[teamID][4] = 2
+            if home_id not in teams:
+                teams[home_id] = [home_wins, home_losses, home_score, away_score, home_seed]
+            else:
+                teams[home_id][2] += home_score
+                teams[home_id][3] += away_score
 
     return teams
 
