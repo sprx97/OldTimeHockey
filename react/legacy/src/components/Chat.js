@@ -8,7 +8,7 @@ const Chat = () => {
         <Image
           src="/images/logos/discord.png"
           as="a"
-          href="https://discord.gg/47KRYxA"
+          href="https://discord.gg/oldtimehockey"
           target="_blank"
           alt="OTH discord"
         />
