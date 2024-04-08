@@ -9,7 +9,7 @@ years_to_update = [] # Can manually seed if necessary
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 years_to_update.append(int(f.readline().strip()))
-week = int(f.readline().strip()) # Set to None if manually seeding
+week = int(f.readline().strip())
 
 def updateCurrentPF(league, year):
     global week
@@ -20,10 +20,17 @@ def updateCurrentPF(league, year):
     # "Week" is really "Day" for the scoreboard, but FF is really weird.
     # Using the Monday of each matchup week works for this.
     scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
+    found = False
     for schedule_period in scores["eligibleSchedulePeriods"]:
         if schedule_period["ordinal"] == week:
+            found = True
             week = schedule_period["low"]["ordinal"]
             break
+
+    # Season over, or this week doesn't exist. Exit and zero out this league
+    if not found:
+        cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID={league} and year={year}")
+        return
 
     # Call it again for the week based on our current week
     scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={week}")

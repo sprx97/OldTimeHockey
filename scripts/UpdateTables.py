@@ -145,6 +145,8 @@ def getStandings(leagueID, year):
     return all_teams
 
 def getPlayoffs(league_id, year):
+    teams = {}
+
     base_scoreboard = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
     for period in base_scoreboard["eligibleSchedulePeriods"]:
         # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
@@ -157,8 +159,8 @@ def getPlayoffs(league_id, year):
 
         if not "isPlayoffs" in scoreboard["games"][0] or not scoreboard["games"][0]["isPlayoffs"]:
             continue
-        
-        teams = {}
+
+
         for game in scoreboard["games"]:
             # Skip consolation bracket games
             if "isThirdPlaceGame" in game and game["isThirdPlaceGame"]:
@@ -171,14 +173,20 @@ def getPlayoffs(league_id, year):
             away_id = str(game["away"]["id"])
             home_id = str(game["home"]["id"])
 
-            away_wins = 0 if "wins" not in game["away"]["recordPostseason"] else game["away"]["recordPostseason"]["wins"]
-            home_wins = 0 if "wins" not in game["home"]["recordPostseason"] else game["home"]["recordPostseason"]["wins"]
+            if "homeResult" in game:
+                if game["homeResult"] == "WIN":
+                    away_wins = 0
+                    away_losses = 1
+                    home_wins = 1
+                    home_losses = 0
+                else:
+                    away_wins = 1
+                    away_losses = 0
+                    home_wins = 0
+                    home_losses = 1
 
-            away_losses = 0 if "losses" not in game["away"]["recordPostseason"] else game["away"]["recordPostseason"]["losses"]
-            home_losses = 0 if "losses" not in game["home"]["recordPostseason"] else game["home"]["recordPostseason"]["losses"]
-
-            away_score = game["awayScore"]["score"]["value"]
-            home_score = game["homeScore"]["score"]["value"]
+            away_score = round(game["awayScore"]["score"]["value"], 2)
+            home_score = round(game["homeScore"]["score"]["value"], 2)
 
             away_seed = game["away"]["recordPostseason"]["rank"]
             home_seed = game["home"]["recordPostseason"]["rank"]
@@ -186,12 +194,16 @@ def getPlayoffs(league_id, year):
             if away_id not in teams:
                 teams[away_id] = [away_wins, away_losses, away_score, home_score, away_seed]
             else:
+                teams[away_id][0] += away_wins
+                teams[away_id][1] += away_losses
                 teams[away_id][2] += away_score
                 teams[away_id][3] += home_score
 
             if home_id not in teams:
                 teams[home_id] = [home_wins, home_losses, home_score, away_score, home_seed]
             else:
+                teams[home_id][0] += home_wins
+                teams[home_id][1] += home_losses
                 teams[home_id][2] += home_score
                 teams[home_id][3] += away_score
 
