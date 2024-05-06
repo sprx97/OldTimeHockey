@@ -4,9 +4,10 @@ import random
 import sys
 import ujson
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-from Shared import *
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared.Shared import *
+from shared import Config
 
 # TODO: Consider adding a constant random.seed so it's reproducible
 
@@ -55,7 +56,7 @@ def calculate_playoff_odds(league, year, current_week = None):
             remaining_weeks.append(schedule_period["low"]["ordinal"])
 
     # Trim off playoff weeks. This may be too simple of a solution but it works for now.
-    if remaining_weeks < 3:
+    if len(remaining_weeks) < 3:
         return
     remaining_weeks = remaining_weeks[:-3]
 
@@ -131,10 +132,7 @@ def calculate_playoff_odds(league, year, current_week = None):
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
-week = int(f.readline().strip())
+# week = int(f.readline().strip())
 
-db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
-cursor = db.cursor()
-
-for league in get_leagues_from_database(year, week):
-    calculate_playoff_odds(league["id"], league["year"])
+for league in get_leagues_from_database(year, None):
+    calculate_playoff_odds(league["id"], league["year"], week)

@@ -1,11 +1,14 @@
-import requests
 from lxml import html # xml parsing
+import os
 import pymysql # sql queries
-import sys
-import Config
 import re
+import requests
+import sys
 
-from Shared import *
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Shared
+from shared import Config
 
 years_to_update = [] # can manually seed if necessary
 playoffs_to_update = []
@@ -16,7 +19,7 @@ if len(sys.argv) == 1: # no arguments
     week = int(f.readline().strip())
 
     years_to_update.append(year)
-    if is_playoff_week(week, year):
+    if Shared.is_playoff_week(week, year):
         playoffs_to_update.append(year)
     f.close()
 else:
@@ -103,7 +106,7 @@ def getStandings(leagueID, year):
 
     all_teams = []
 
-    standings = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={leagueID}&season={year}")
+    standings = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={leagueID}&season={year}")
     for team in standings["divisions"][0]["teams"]:
         team_id = str(team["id"])
         team_name = team["name"]
@@ -147,11 +150,11 @@ def getStandings(leagueID, year):
 def getPlayoffs(league_id, year):
     teams = {}
 
-    base_scoreboard = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
+    base_scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
     for period in base_scoreboard["eligibleSchedulePeriods"]:
         # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
         start = period["low"]["ordinal"]
-        scoreboard = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
+        scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
 
         if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
             print(f"Week {start} does not have final results. Skipping.")

@@ -8,7 +8,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.realpath(__file__))) # ./
 import Config
 
 ############################
@@ -24,7 +24,7 @@ import Config
 
 def obtain_creds(file, scopes):
     creds = None
-    file = Config.config["srcroot"] + "scripts/Emailer/tokens/" + file # Use special tokens directory
+    file = Config.config["srcroot"] + "shared/Emailer/tokens/" + file # Use special tokens directory
 
     # Read a stored credentials file if it exists
     if os.path.exists(file):

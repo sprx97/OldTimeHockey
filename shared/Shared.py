@@ -3,8 +3,10 @@ import json
 import os
 import pymysql
 import requests
+import sys
 
 # Local Includes
+sys.path.append(os.path.dirname(os.path.realpath(__file__))) # ./
 import Config
 
 def is_playoff_week(week, year):

@@ -3,9 +3,9 @@ import os
 import sys
 
 # OTH includes
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-from Emailer import Emailer
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Config
+from shared.Emailer import Emailer
 
 # Get all the registrants from the sheet
 sheets_service = Emailer.get_sheets_service()

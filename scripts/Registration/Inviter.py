@@ -1,14 +1,12 @@
 # Python includes
 import os
+import requests
 import sys
 
-import requests
-
 # OTH includes
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-import Shared
-from Emailer import Emailer
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Shared
+from shared.Emailer import Emailer
 
 send_invites = False
 send_emails = False

@@ -5,9 +5,9 @@ import requests
 import sys
 
 # OTH includes
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-import Shared
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Shared
+from shared import Config
 
 # Comment this out to actually run the script.
 # This script is scary so leave this on in case of a fatfinger python command

@@ -5,10 +5,10 @@ import os
 import random
 import sys
 
-# My libraries
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-from Emailer import Emailer
+# Import our config file
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Config
+from shared.Emailer import Emailer
 
 NUM_TEAMS_PER_LEAGUE = 14
 

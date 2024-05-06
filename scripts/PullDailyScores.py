@@ -1,7 +1,11 @@
-import Config
+import os
 import pymysql
-import Shared
 import sys
+
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
+from shared import Shared
+from shared import Config
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor(pymysql.cursors.DictCursor)

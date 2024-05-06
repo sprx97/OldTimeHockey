@@ -1,9 +1,12 @@
-# Local Includes
-import Config
-from Shared import *
-
 # Python Includes
+import os
 import pymysql # sql queries
+import sys
+
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
+from shared.Shared import *
+from shared import Config
 
 years_to_update = [] # Can manually seed if necessary
 

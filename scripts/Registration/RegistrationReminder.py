@@ -3,10 +3,10 @@ import datetime
 import os
 import sys
 
-# My libraries
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-from Emailer import Emailer
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared.Shared import *
+from shared.Emailer import Emailer
 
 # Failsafe 1
 print("Are you sure you want to run the registraton script? This will email more than 200 people. (yes/no)")

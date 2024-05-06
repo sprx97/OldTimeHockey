@@ -3,9 +3,10 @@ import os
 import pymysql
 import sys
 
-# My libaries
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Shared
+from shared import Config
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())

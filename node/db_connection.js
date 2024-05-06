@@ -3,7 +3,7 @@ var http = require("http"),
     mysql = require("mysql"),
     mysqlEscapeArray = require("mysql-escape-array"),
     fs = require("fs"),
-    config = require("../config.json"),
+    config = require("../shared/config.json"),
     PythonShell = require("python-shell"),
 	util = require("util")
 
