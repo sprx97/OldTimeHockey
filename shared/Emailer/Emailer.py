@@ -8,7 +8,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__))) # ./
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./..
 import Config
 
 ############################
