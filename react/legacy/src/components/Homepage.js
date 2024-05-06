@@ -11,19 +11,19 @@ const panes = [
         <ul>
           <li>
             <b>Division 1 Champion: </b>
-            <a href="#"></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62768?season=2023">GusZ</a>
           </li>
           <li>
             <b>Points For Champion: </b>
-            <a href="#"></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12098/teams/63291?season=2023">costcostan</a> - 5404.45
           </li>
           <li>
             <b>Coaches Rating Champion: </b>
-            <a href="#"></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62752?season=2023">benzene96</a> - 99.44%
           </li>
           <li>
             <b>Woppa Cup Champion: </b>
-            <a href="#"></a>
+            <a href="https://www.fleaflicker.com/nhl/leagues/12093/teams/63316?season=2023">akacesfan</a>
           </li>
           <u>Rule Changes</u>
           <ul>
