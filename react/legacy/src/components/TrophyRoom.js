@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container, Grid, Image, Segment } from 'semantic-ui-react';
+import { Container, Image, Segment } from 'semantic-ui-react';
 
 const TrophyRoom = () => {
   return (
-    <Container>
-      <Segment basic>
+    <Container fluid>
+      <div style={{textAlign: 'center'}}>
         <Image.Group>
           <Image src={"/images/banners/D1_Banner.webp"} />
           <Image src={"/images/banners/PF_Banner.webp"} />
@@ -12,7 +12,7 @@ const TrophyRoom = () => {
           <Image src={"/images/banners/Pres_Banner.webp"} />
           <Image src={"/images/banners/PP_Banner.webp"} />
         </Image.Group>
-      </Segment>
+      </div>
     </Container>
   );
 };
