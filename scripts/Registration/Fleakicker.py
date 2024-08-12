@@ -32,7 +32,7 @@ if confirm != "yes":
 d = datetime.datetime.now()
 month = int(d.strftime("%m"))
 if month >= 10 or month <= 6:
-    print ("Why are we running fleakicker during the season? Please be sure you want to do this.")
+    print("Why are we running fleakicker during the season? Please be sure you want to do this.")
     quit()
 
 # Get the login session for OTHAdmin
@@ -41,31 +41,37 @@ session.post("https://www.fleaflicker.com/nhl/login", data={"email":Config.confi
 
 # Get all of the league IDs
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
-year = int(f.readline().strip())
+year = int(f.readline().strip()) # Will be previous season's year
 leagues = Shared.get_leagues_from_database(year)
+if len(leagues) == 0:
+    print(f"No leagues for {year} in database. Ensure WeekVars and DB are correct.")
+    return
 
 activate_url = "https://www.fleaflicker.com/nhl/leagues/{}/activate"
 message_url = "https://www.fleaflicker.com/nhl/leagues/{}/messages/new"
 kick_url = 'https://www.fleaflicker.com/nhl/leagues/{}/settings/owners/remove'
 
-kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly, so if you're receiving this and haven't signed up," + \
-               "be sure to check your email or the subreddit for the registration form here: https://forms.gle/u3T3gH6285ues75b6. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
+form = "https://forms.gle/DAn53vF5JTsU1W8L6"
+form_year = 2024
+if form_year != year+1:
+    print(f"Form in registration post has not been updated.")
+    return
+kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly, so if you're receiving this and haven't signed up, " + \
+               "please fill out the registration form here and check the discord/subreddit for more info: {form}. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
 kick_message_data = {
     "parentId": "",
     "editId": "",
-    "title": "Clearing divisions in preparation for next season (CORRECT FORM LINK)",
+    "title": "Clearing divisions in preparation for next season",
     "contents": kick_message,
     "emailAll": "true"
 }
 
-# TODO: The POST request is not respecting any sort of \n or returns here. It's kinda shit formatting so maybe just rework the info to be a paragraph instead of bullets?
-invite_message = """
-Welcome back to OTH for our twelfth season! A few notes:
-- Draft date/time is final. League assignments were made based on availability on the registration form. If your availability has changed tag @mods on discord and we'll try to help, but no guarantees we'll be able to facilitate a swap.
-- DRAFT ORDER IS NOT FINAL. Draft order will be randomized one everyone has joined. We will post here when the final order is generated.
+season_num = year-2010
+invite_message = f"Welcome back to OTH for our {season_num}th season! Draft date/time is FINAL, but " + \
+"draft order is NOT FINAL. Draft order will be randomized once everyone has joined. " + \
+"League assignments were made based on availability on the registration form. " + \
+"If your availability has changed tag @mods on https://discord.com/invite/zXTUtj9 and we'll try to help."
 
-Good luck this season!
-"""
 invite_message_data = {
     "parentId": "",
     "editId": "",
@@ -76,7 +82,7 @@ invite_message_data = {
 
 # TODO: Also set the trade deadline, playoff schedule, and other settings if necessary
 #       I'm not sure if this is automatable, but it's a pain to do manually.
-
+#	Also may not be able to do it because flea drags their feet on schedule stuff.
 def boot_teams(league_id):
     response = requests.get(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year+1}")
     teams = response.json()["divisions"][0]["teams"]

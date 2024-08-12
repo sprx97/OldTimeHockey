@@ -101,6 +101,7 @@ body = \
 "Once you find the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " +\
 "You have 48 hours to accept before we may start inviting replacements.\n\n" + \
 "Draft order and matchup schedule are NOT finalized and will be randomized after the league fills.\n\n" + \
+"Also, join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
 "-- Admins"
 
 # Add the admins to ensure this gets sent
