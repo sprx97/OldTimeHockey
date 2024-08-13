@@ -213,3 +213,6 @@ d3_fill = [i for i in d3_fill if i not in d1 and i not in d2 and i not in d3] # 
 GenerateTenureList()
 tenure = list(set(tenure)) # Remove duplicates
 tenure.sort()
+
+for manager in d1:
+    print(manager)
