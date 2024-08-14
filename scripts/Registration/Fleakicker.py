@@ -9,6 +9,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath
 from shared import Shared
 from shared import Config
 
+DEBUG = True
+
 # Comment this out to actually run the script.
 # This script is scary so leave this on in case of a fatfinger python command
 print("Aborting due to failsafe")
@@ -45,7 +47,7 @@ year = int(f.readline().strip()) # Will be previous season's year
 leagues = Shared.get_leagues_from_database(year)
 if len(leagues) == 0:
     print(f"No leagues for {year} in database. Ensure WeekVars and DB are correct.")
-    return
+    quit()
 
 activate_url = "https://www.fleaflicker.com/nhl/leagues/{}/activate"
 message_url = "https://www.fleaflicker.com/nhl/leagues/{}/messages/new"
@@ -55,9 +57,9 @@ form = "https://forms.gle/DAn53vF5JTsU1W8L6"
 form_year = 2024
 if form_year != year+1:
     print(f"Form in registration post has not been updated.")
-    return
-kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly, so if you're receiving this and haven't signed up, " + \
-               "please fill out the registration form here and check the discord/subreddit for more info: {form}. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
+    quit()
+kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly. If you're receiving this and haven't signed up, " + \
+               f"please fill out the registration form ({form}) and check the discord/subreddit for more info. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
 kick_message_data = {
     "parentId": "",
     "editId": "",
@@ -65,13 +67,13 @@ kick_message_data = {
     "contents": kick_message,
     "emailAll": "true"
 }
+print(kick_message_data)
 
 season_num = year-2010
-invite_message = f"Welcome back to OTH for our {season_num}th season! Draft date/time is FINAL, but " + \
-"draft order is NOT FINAL. Draft order will be randomized once everyone has joined. " + \
-"League assignments were made based on availability on the registration form. " + \
-"If your availability has changed tag @mods on https://discord.com/invite/zXTUtj9 and we'll try to help."
-
+invite_message = f"Welcome back to OTH for season number {season_num}! Draft date/time is FINAL, but " + \
+                 "draft order is NOT FINAL. Draft order will be randomized once everyone has joined. " + \
+                 "League assignments were made based on availability on the registration form. " + \
+                 "If your availability has changed, tag @mods on https://discord.com/invite/zXTUtj9 and we'll try to help."
 invite_message_data = {
     "parentId": "",
     "editId": "",
@@ -79,6 +81,7 @@ invite_message_data = {
     "contents": invite_message,
     "emailAll": "false"
 }
+print(invite_message_data)
 
 # TODO: Also set the trade deadline, playoff schedule, and other settings if necessary
 #       I'm not sure if this is automatable, but it's a pain to do manually.
@@ -97,18 +100,19 @@ for league in leagues:
     if id == 12086:
         continue
 
-    # Activate league
-    print(f"Activating {name}")
-    session.post(activate_url.format(id))
+    if not DEBUG:
+        # Activate league
+        print(f"Activating {name}")
+        session.post(activate_url.format(id))
 
-    # Post kick message board message
-    print(f"Messaging {name}")
-    session.post(message_url.format(id), kick_message_data)
+        # Post kick message board message
+        print(f"Messaging {name}")
+        session.post(message_url.format(id), kick_message_data)
 
-    # Kick all managers
-    print(f"Removing owners from {name}")
-    boot_teams(id)
+        # Kick all managers
+        print(f"Removing owners from {name}")
+        boot_teams(id)
 
-    # Post invite message board message
-    print(f"Messaging {name}\n")
-    session.post(message_url.format(id), invite_message_data)
+        # Post invite message board message
+        print(f"Messaging {name}\n")
+        session.post(message_url.format(id), invite_message_data)
