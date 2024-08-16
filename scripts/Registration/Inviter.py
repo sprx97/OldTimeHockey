@@ -1,19 +1,16 @@
 # Python includes
 import os
+import requests
 import sys
 
-import requests
-
 # OTH includes
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-import Shared
-from Emailer import Emailer
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Shared
+from shared import Config
+from shared.Emailer import Emailer
 
-send_invites = False
-send_emails = False
-send_invites = True
-send_emails = True
+DEBUG = True
+send_emails = False # last resort, change if needed
 all_emails = []
 
 # Only allow sending of invites for one division at a time
@@ -35,6 +32,10 @@ f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip()) + 1 # Must be done AFTER adding the new leagues to the sql table
 leagues = Shared.get_leagues_from_database(year, division[-1])
 
+if len(leagues) == 0:
+    print(f"No leagues found for year {year}")
+    quit()
+
 invite_url = "https://www.fleaflicker.com/nhl/leagues/{}/invite"
 for league in leagues:
     league_id = league["id"]
@@ -52,12 +53,12 @@ for league in leagues:
     emails = []
     sheets_service = Emailer.get_sheets_service()
     sheets = sheets_service.spreadsheets()
-    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="A:N").execute()
+    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:Y").execute()
     values = rows.get("values", [])
 
-    EMAIL_ADDRESS_COL = 1 # B
-    FF_ID_COL = 3 # D
-    LEAGUE_ASSIGN_COL = 13 # N
+    EMAIL_ADDRESS_COL = 0 # A
+    FF_ID_COL = 2 # C
+    LEAGUE_ASSIGN_COL = 24 # Y
     for row in values[1:]:
         # Skip managers not assigned to a league yet
         if len(row) <= LEAGUE_ASSIGN_COL:
@@ -85,7 +86,7 @@ for league in leagues:
 
     # Invite to league
     print(f"{len(emails)} invites to send for {league_name}.")
-    if send_invites:
+    if not DEBUG:
         session.post(invite_url.format(league_id), invite_message_data)
     else:
         print("Actual invites not sent -- uncomment to proceed.")
@@ -102,7 +103,8 @@ body = \
 "If you can't find it, reach out to an admin via Discord or respond to this email. \n\n" + \
 "Once you find the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " +\
 "You have 48 hours to accept before we may start inviting replacements.\n\n" + \
-"Draft order and matchup schedule are NOT finalized and will be randomized after the league fills.\n\n" + \
+"Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
+"Also, join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
 "-- Admins"
 
 # Add the admins to ensure this gets sent
@@ -111,11 +113,10 @@ all_emails.extend(Config.config["admin_email_ccs"].split(","))
 gmail_service = Emailer.get_gmail_service()
 
 print(f"Sending {len(all_emails)} emails to {all_emails}.")
-if send_emails:
+if not DEBUG and send_emails:
     bcc = ",".join(all_emails)
     Emailer.send_message(gmail_service, subject, body, to, None, bcc)
 else:
-    print("Emails not sent. Uncomment to send.")
+    print("Emails not sent. Edit script to enable.")
 
 # TODO: Also add reddit post verifying invites have been sent?
-# TODO: Add script to monitor leagues for when they fill, and randomize when they do

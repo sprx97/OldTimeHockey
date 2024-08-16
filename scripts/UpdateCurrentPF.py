@@ -1,33 +1,43 @@
-# Local Includes
-import Config
-from Shared import *
-
 # Python Includes
+import os
 import pymysql # sql queries
+import sys
+
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
+from shared.Shared import *
+from shared import Config
 
 years_to_update = [] # Can manually seed if necessary
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 years_to_update.append(int(f.readline().strip()))
-week = int(f.readline().strip()) # Set to None if manually seeding
-
-# "Week" should always be the Monday of a matchup week.
-# It's really "Day", but FF is really weird.
-# The constant in the else changes each season.
-if week == 1:
-    week = 1
-else:
-    week = week*7 - 3 # for 2022
+week = int(f.readline().strip())
 
 def updateCurrentPF(league, year):
-    url = f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}"
-    if week != None:
-        url += f"&scoring_period={week}"
+    global week
 
     # Track which teams in this division we've updated, because for playoffs, teams on bye don't show up in FetchLeagueScoreboard
     tracked = []
 
-    scores = make_api_call(url)
+    # "Week" is really "Day" for the scoreboard, but FF is really weird.
+    # Using the Monday of each matchup week works for this.
+    scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
+    found = False
+    for schedule_period in scores["eligibleSchedulePeriods"]:
+        if schedule_period["ordinal"] == week:
+            found = True
+            week = schedule_period["low"]["ordinal"]
+            break
+
+    # Season over, or this week doesn't exist. Exit and zero out this league
+    if not found:
+        cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID={league} and year={year}")
+        return
+
+    # Call it again for the week based on our current week
+    scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={week}")
+
     for game in scores["games"]:
         matchup_id = game["id"]
         away_id = game["away"]["id"]

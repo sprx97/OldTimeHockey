@@ -1,7 +1,11 @@
 import challonge
-import Config
+import os
 import pymysql
 import sys
+
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
+from shared import Config
 
 sys.stdout = open("/var/www/OldTimeHockey/scripts/wc.log", "w")
 sys.stderr = open("/var/www/OldTimeHockey/scripts/wc.err", "w")

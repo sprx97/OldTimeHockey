@@ -1,8 +1,12 @@
-import Config
+import json
+import os
 import pymysql
 import requests
 import sys
-import json
+
+# Import our config file
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ../../
+from shared import Config
 
 YEAR = sys.argv[1]
 if len(sys.argv) > 2:

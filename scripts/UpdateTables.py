@@ -1,11 +1,14 @@
-import requests
 from lxml import html # xml parsing
+import os
 import pymysql # sql queries
-import sys
-import Config
 import re
+import requests
+import sys
 
-from Shared import *
+# OTH includes
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Shared
+from shared import Config
 
 years_to_update = [] # can manually seed if necessary
 playoffs_to_update = []
@@ -16,7 +19,7 @@ if len(sys.argv) == 1: # no arguments
     week = int(f.readline().strip())
 
     years_to_update.append(year)
-    if is_playoff_week(week, year):
+    if Shared.is_playoff_week(week, year):
         playoffs_to_update.append(year)
     f.close()
 else:
@@ -103,7 +106,7 @@ def getStandings(leagueID, year):
 
     all_teams = []
 
-    standings = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={leagueID}&season={year}")
+    standings = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={leagueID}&season={year}")
     for team in standings["divisions"][0]["teams"]:
         team_id = str(team["id"])
         team_name = team["name"]
@@ -144,58 +147,68 @@ def getStandings(leagueID, year):
 
     return all_teams
 
-def getPlayoffs(leagueID, year):
-    playoffsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "/playoffs?season=" + str(year)
-    response = requests.get(playoffsURL)
-    root = html.document_fromstring(response.text)
-    bracket = root.cssselect(".playoff-bracket")[0]
-
+def getPlayoffs(league_id, year):
     teams = {}
-    brackets = bracket.cssselect(".league-name")
-    for n in range(0, len(brackets)):
-        team = brackets[n]
-        teamID = team.findall("a")[0].get("href")
-        if "?season" in teamID:
-            teamID = teamID[(teamID.find("/teams/") + 7):teamID.find("?season")]
-        else:
-            teamID = teamID[(teamID.find("/teams/") + 7):]
-        points = team.getnext()
 
-        if points != None:
-            if teamID in teams:
-                teams[teamID][2] += floatP(points.text_content())
+    base_scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
+    for period in base_scoreboard["eligibleSchedulePeriods"]:
+        # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
+        start = period["low"]["ordinal"]
+        scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
+
+        if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
+            print(f"Week {start} does not have final results. Skipping.")
+            continue
+
+        if not "isPlayoffs" in scoreboard["games"][0] or not scoreboard["games"][0]["isPlayoffs"]:
+            continue
+
+
+        for game in scoreboard["games"]:
+            # Skip consolation bracket games
+            if "isThirdPlaceGame" in game and game["isThirdPlaceGame"]:
+                print("Skipping 3rd place game.")
+                continue
+            if "isConsolation" in game and game["isConsolation"]:
+                print("Skipping consolation bracket matchup.")
+                continue
+
+            away_id = str(game["away"]["id"])
+            home_id = str(game["home"]["id"])
+
+            if "homeResult" in game:
+                if game["homeResult"] == "WIN":
+                    away_wins = 0
+                    away_losses = 1
+                    home_wins = 1
+                    home_losses = 0
+                else:
+                    away_wins = 1
+                    away_losses = 0
+                    home_wins = 0
+                    home_losses = 1
+
+            away_score = round(game["awayScore"]["score"]["value"], 2)
+            home_score = round(game["homeScore"]["score"]["value"], 2)
+
+            away_seed = game["away"]["recordPostseason"]["rank"]
+            home_seed = game["home"]["recordPostseason"]["rank"]
+
+            if away_id not in teams:
+                teams[away_id] = [away_wins, away_losses, away_score, home_score, away_seed]
             else:
-                teams[teamID] = [0, 0, floatP(points.text_content()), 0.0, 0]
-            teams[teamID][0] += len(points.cssselect(".scoreboard-win"))
-            teams[teamID][1] += 1-len(points.cssselect(".scoreboard-win"))
+                teams[away_id][0] += away_wins
+                teams[away_id][1] += away_losses
+                teams[away_id][2] += away_score
+                teams[away_id][3] += home_score
 
-        # points against... kinda hacky
-        if n == 0:
-            teams[teamID][3] += floatP(brackets[3].getnext().text_content())
-            teams[teamID][4] = 1
-        if n == 1:
-            teams[teamID][3] += floatP(brackets[9].getnext().text_content())
-        if n == 2:
-            teams[teamID][3] += floatP(brackets[4].getnext().text_content())
-            teams[teamID][4] = 4
-        if n == 3:
-            teams[teamID][3] += floatP(brackets[0].getnext().text_content())
-        if n == 4:
-            teams[teamID][3] += floatP(brackets[2].getnext().text_content())
-            teams[teamID][4] = 5
-        if n == 6:
-            teams[teamID][3] += floatP(brackets[8].getnext().text_content())
-            teams[teamID][4] = 3
-        if n == 7:
-            teams[teamID][3] += floatP(brackets[10].getnext().text_content())
-        if n == 8:
-            teams[teamID][3] += floatP(brackets[6].getnext().text_content())
-            teams[teamID][4] = 6
-        if n == 9:
-            teams[teamID][3] += floatP(brackets[1].getnext().text_content())
-        if n == 10:
-            teams[teamID][3] += floatP(brackets[7].getnext().text_content())
-            teams[teamID][4] = 2
+            if home_id not in teams:
+                teams[home_id] = [home_wins, home_losses, home_score, away_score, home_seed]
+            else:
+                teams[home_id][0] += home_wins
+                teams[home_id][1] += home_losses
+                teams[home_id][2] += home_score
+                teams[home_id][3] += away_score
 
     return teams
 

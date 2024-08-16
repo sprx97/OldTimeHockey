@@ -1,26 +1,125 @@
 # Python libraries
+import json
 import os
+import random
 import sys
+import ujson
 
 # Yahoo sports libraries
 from yahoo_oauth import OAuth2
 import yahoo_fantasy_api as yfa
 
-# My libraries
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
-from Emailer import Emailer
+leagues = ["81712"]
 
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
-year = int(f.readline().strip())
+stddev = 50 # Educated guess
+def project_winner(teams, away, home):
+	away_random_pf = random.gauss(teams[away]["PF_avg"], stddev)
+	home_random_pf = random.gauss(teams[home]["PF_avg"], stddev)
 
-leagues = [ "7679", "10743", "72052", "72056", "72066", "72106", "72543", "72550", "72569", \
-            "72580", "72587", "73419", "73420", "73421", "73422", "73423", "73424", "73467", \
-            "73468", "73469", "73470", "73472", "73473", "73474", "75406", "75429", "75430", \
-            "75431", "75678", "75679", "75681", "75682", "75685", "75695", "75703", "75712", \
-            "75918", "75930", "75931", "75932", "75933", "75985"]
+	teams[away]["PF"] += away_random_pf
+	teams[home]["PF"] += home_random_pf
+	if away_random_pf > home_random_pf:
+		teams[away]["wins"] += 1
+		teams[home]["losses"] += 1
+		return away
+	else:
+		teams[away]["losses"] += 1
+		teams[home]["wins"] += 1
+		return home
 
-oauth_file = Config.config["srcroot"] + "scripts/PlayoffOdds/yahoo_auth.json"
+def calc_playoff_odds(league):
+	settings = league.settings()
+	print(settings["name"])
+
+	# Get the current standings and extract the relevant information
+	standings = league.standings()
+	teams = {}
+	for team in standings:
+		id = team["team_key"]
+		wins = int(team["outcome_totals"]["wins"])
+		losses = int(team["outcome_totals"]["losses"])
+		pf = float(team["points_for"])
+		pf_avg = pf/(wins+losses)
+
+		teams[id] = {"wins": wins,
+			     "losses": losses,
+			     "PF": pf,
+			     "PF_avg": pf_avg,
+			     "playoff_odds": 0,
+			     "seeds": [0]*14,
+			     "records": {},
+			     "current_week": {"win": {"make_playoffs": 0, "total": 0}, "loss": {"make_playoffs": 0, "total": 0}}}
+
+	# Get the schedule for all remaining weeks
+	weeks = ";week="
+	for week in range(int(league.current_week()), int(settings["playoff_start_week"])):
+		weeks += str(week) + ","
+	weeks = weeks[:-1]
+	matchups = game.yhandler.get(f"league/{league.league_id}/scoreboard{weeks}")["fantasy_content"]["league"][1]["scoreboard"]["0"]["matchups"]
+	del matchups["count"]
+
+	# Simulate all remaining matchups a set number of times.
+	# Needs to be at least on the order of 10000. Ideally 100000 but that can be very slow (up to a minute per league or longer)
+	num_simulations = 10000
+	for _ in range(num_simulations):
+		copy_teams = ujson.loads(ujson.dumps(teams)) # This is a hack that's faster than traditional python copy.deepcopy
+
+		for n, matchup in matchups.items():
+			away = matchup["matchup"]["0"]["teams"]["0"]["team"][0][0]["team_key"]
+			home = matchup["matchup"]["0"]["teams"]["1"]["team"][0][0]["team_key"]
+
+			winner = project_winner(copy_teams, away, home)
+
+			if int(n) < 7: # Current week (ie first matchup for each team)
+				copy_teams[winner]["win_current_week"] = True
+
+		# After each simulation, update the running totals in the orignal "teams" dict
+		# for various playoff/seeding odds
+		copy_teams = dict(sorted(copy_teams.items(), key=lambda item: (item[1]["wins"], item[1]["PF"]), reverse=True))
+		team_keys = list(copy_teams.keys())
+		for rank in range(len(team_keys)):
+			team = team_keys[rank]
+
+			# Basic playoff odds counter (gets divided by num_simulations after all the loops)
+			teams[team]["seeds"][rank] += 1
+			if rank < 6:
+				teams[team]["playoff_odds"] += 1
+
+			# Odds by record in remaining games
+			record = f"{copy_teams[team]['wins'] - teams[team]['wins']}-{copy_teams[team]['losses'] - teams[team]['losses']}"
+			if record not in teams[team]["records"]:
+				teams[team]["records"][record] = {"made_playoffs": 0, "total": 0}
+			teams[team]["records"][record]["total"] += 1
+			if rank < 6:
+				teams[team]["records"][record]["made_playoffs"] += 1
+
+			# Odds by current week results
+			if "win_current_week" in copy_teams[team]:
+				teams[team]["current_week"]["win"]["total"] += 1
+				if rank < 6:
+					teams[team]["current_week"]["win"]["make_playoffs"] += 1
+			else:
+				teams[team]["current_week"]["loss"]["total"] += 1
+				if rank < 6:
+					teams[team]["current_week"]["loss"]["make_playoffs"] += 1
+	print("Simulations completed")
+
+	# Tidy up, sort, and format all the data to print/store
+	for team in teams:
+		teams[team]["playoff_odds"] = round(teams[team]["playoff_odds"] / (num_simulations/100), 2)
+		teams[team]["seeds"] = [round(x / num_simulations * 100, 2) for x in teams[team]["seeds"]]
+		teams[team]["records"] = dict(sorted(teams[team]["records"].items(), key=lambda item: int(item[0].split("-")[0]), reverse=True))
+
+		for record in teams[team]["records"]:
+			teams[team]["records"][record]["odds"] = round(teams[team]["records"][record]["made_playoffs"] / teams[team]["records"][record]["total"] * 100, 2)
+
+		teams[team]["current_week"]["win"]["odds"] = round(teams[team]["current_week"]["win"]["make_playoffs"] / teams[team]["current_week"]["win"]["total"] * 100, 2)
+		teams[team]["current_week"]["loss"]["odds"] = round(teams[team]["current_week"]["loss"]["make_playoffs"] / teams[team]["current_week"]["loss"]["total"] * 100, 2)
+
+	print(json.dumps(teams, indent=4))
+
+# MAIN
+oauth_file = "/var/www/OldTimeHockey/scripts/PlayoffOdds/yahoo_auth.json"
 conn = OAuth2(None, None, from_file=oauth_file)
 if not conn.token_is_valid():
     conn.refresh_access_token()
@@ -28,99 +127,7 @@ if not conn.token_is_valid():
 game = yfa.Game(conn, "nhl")
 game_id = game.game_id()
 
-def sanitize(name):
-    name = name.replace("(", "")
-    name = name.replace(")", "")
-    return name
-
-def updatePlayoffOdds(league_id):
-    league_id = game_id + ".l." + league_id
-    league = game.to_league(league_id)
-    settings = league.settings()
-
-    body = ""
-
-    body += "LeagueBegin\n"
-
-    body += f"\tLeague: {settings['name']} {year} (Sort: League) (Playoffs: 6)\n"
-
-    print(league_id, settings["name"])
-
-    teams = league.teams().values()
-    for team in teams:
-        body += f"\t\tTeam: {sanitize(team['name'])}\n"
-
-    body += "\tKind: fantasy\n"
-    body += "\tSport: hockey\n"
-    body += "\tSeason: {year} (current: True)\n"
-    body += "\tAuthor: JeremyV\n"
-    body += "LeagueEnd\n"
-
-    body += "SortBegin\n"
-    body += "League: Wins, GoalsFor\n"
-    body += "SortEnd\n"
-
-    body += "RulesBegin\n"
-    body += "\tPointsForWinInRegulation: 1\n"
-    body += "\tPointsForWinInOvertime: 1\n"
-    body += "\tPointsForWinInShootout: 1\n"
-    body += "\tPointsForLossInRegulation: 0\n"
-    body += "\tPointsForLossInOvertime: 0\n"
-    body += "\tPointsForLossInShootout: 0\n"
-    body += "\tPointsForTie: 0.5\n"
-    body += "\tPercentOfGamesThatEndInTie: 0\n"
-    body += "\tPercentOfGamesThatEndInOvertimeWin: 0\n"
-    body += "\tPercentOfGamesThatEndInShootoutWin: 0\n"
-    body += "\tHomeFieldAdvantage: 0.5\n"
-    body += "\tWeightType: PythagenPat\n" # This calculates based on record. Use 50/50 for random odds.
-    body += "\tWeightExponent: 0.0\n" # This is ignored by PercentageOfPointsWon
-    body += "\tWhatDoYouCallATie: tie\n"
-    body += "\tWhatDoYouCallALottery: lottery\n"
-    body += "\tWhatDoYouCallPromoted: promoted\n"
-    body += "\tPromote: 0\n"
-    body += "\tPromotePlus: 0\n"
-    body += "\tPromotePlusPercent: 0\n"
-    body += "\tWhatDoYouCallDemoted: relegated\n"
-    body += "\tDemote: 0\n"
-    body += "\tDemotePlus: 0\n"
-    body += "\tDemotePlusPercent: 0\n"
-    body += "RulesEnd\n"
-
-    body += "GamesBegin\n"
-    body += "TeamListedFirst: home\n"
-
-    weeks = ";week="
-    for week in range(1, int(settings["playoff_start_week"])):
-        weeks += str(week) + ","
-    weeks = weeks[:-1]
-
-    all_matchups = game.yhandler.get(f"league/{league_id}/scoreboard{weeks}")
-    all_matchups = all_matchups["fantasy_content"]["league"][1]["scoreboard"]["0"]["matchups"]
-
-    for m in range(all_matchups["count"]):
-        matchup = all_matchups[str(m)]["matchup"]
-        week = matchup["week"]
-        is_over = matchup["status"] == "postevent"
-
-        matchup = matchup["0"]["teams"]
-        away_name = sanitize(matchup["0"]["team"][0][2]["name"])
-        away_score = round(float(matchup["0"]["team"][1]["team_points"]["total"])*100)
-        home_name = sanitize(matchup["1"]["team"][0][2]["name"])
-        home_score = round(float(matchup["1"]["team"][1]["team_points"]["total"])*100)
-
-        if is_over:
-            body += f"1/{week}/21\t{home_name}\t{home_score}-{away_score}\t{away_name}\n"
-        else:
-            body += f"1/{week}/21\t{home_name}\t\t\t{away_name}\n"
-
-    body += "GamesEnd\n"
-
-    gmail_service = Emailer.get_gmail_service()
-    Emailer.send_message(gmail_service, "playoff odds update", body, "import@sportsclubstats.com", None, None)
-    print("Email sent.")
-
 for league in leagues:
-    try:
-        updatePlayoffOdds(league)
-    except RuntimeError as e:
-        print(f"Hit runtime error on league {league}.")
+	league_id = f"{game_id}.l.{league}"
+	league = game.to_league(league_id)
+	calc_playoff_odds(league)

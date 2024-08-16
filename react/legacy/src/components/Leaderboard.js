@@ -48,7 +48,7 @@ export default class Leaderboard extends Component {
     return options;
   }
   dropdownOptions = this.generateDropdownOptions();
-  
+
   generateSeasonsOptions() {
     var options = []
     for(let year = getFirstYear(); year <= getCurrentYear(); year++) {
@@ -82,9 +82,10 @@ export default class Leaderboard extends Component {
           return datum[clickedColumn].toLowerCase();
         else return datum[clickedColumn];
       },
+      'postTotal',
       'regTotal',
       'pointsFor',
-    ]); // regTotal and pointsFor are secondary sorts depending on view
+    ]); // postTotal, regTotal, and pointsFor are secondary sorts depending on view
 
     if (this.reversedColumns.indexOf(clickedColumn) > -1) {
       return sortedData;

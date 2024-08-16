@@ -10,7 +10,7 @@ Things to do at the beginning of a year:
 - Add the new year as an option in ADP.js
 - Uncomment the /etc/crontab lines for OTH (only do this the day the season starts)
 - Clear/update the standings for the OT Challenge
-- Update the year variable in DiscordBot/Config.json and OldTimeHockey/Config.json file
+- Update the year variable in shared/Config.json
 - Fix the "week" variable line in UpdateCurrentPF.py to account for the current season (the correct formuala to find the scoring_period for each week depends on what day of week the season starts on)
 - Update the result of the IsPlayoffWeek method in react Helpers.js and is_playoff_week in scrips/Shared.py if necessary
 
@@ -44,7 +44,8 @@ Restart mysql:
 - sudo service mysql start/stop/restart
 
 Rebuild react site:
-- cd /var/www/OldTimeHockey/react
+- cd /var/www/OldTimeHockey/react/legacy
+- nvm use v17.9.1 (Until I upgrade Ubuntu)
 - npm run-script build (DON'T USE SUDO)
 
 Redeploy react site:

@@ -3,8 +3,8 @@ import pymysql
 import sys
 
 # OTH includes
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import Config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+from shared import Config
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
@@ -16,6 +16,7 @@ cursor = DB.cursor()
 d1 = []
 d2 = []
 d3 = []
+d4 = []
 d1_fill = []
 d2_fill = []
 d3_fill = []
@@ -141,6 +142,14 @@ def GenerateD3List():
     for team in d4_semifinalists:
         d3.append(team["FFname"])
 
+def GenerateD4List():
+    # Get all players from last year
+    query = f"SELECT U.FFname from Teams as T INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) WHERE T.year={year}"
+    cursor.execute(query)
+    all_teams = cursor.fetchall()
+    for team in all_teams:
+        d4.append(team["FFname"])
+
 # Generate Fill lists for each div
 # Order matters in these
 def GenerateD1FillOrder():
@@ -210,6 +219,12 @@ d2_fill = [i for i in d2_fill if i not in d1 and i not in d2] # Remove users alr
 GenerateD3FillOrder()
 d3_fill = [i for i in d3_fill if i not in d1 and i not in d2 and i not in d3] # Remove users already in D1 or D2 or D3
 
+GenerateD4List()
+d4 = [i for i in d4 if (i not in d1 and i not in d2 and i not in d3)] # Remove users already in D1 or D2 or D3
+
 GenerateTenureList()
 tenure = list(set(tenure)) # Remove duplicates
 tenure.sort()
+
+for manager in tenure:
+    print(manager)

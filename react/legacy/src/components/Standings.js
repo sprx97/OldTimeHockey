@@ -56,7 +56,7 @@ export default class Standings extends Component {
     let row = [];
     for (let i = 0; i < leaguelist.length; i++) {
       row.push(
-        <Grid.Column width={5} key={leaguelist[i].id}>
+        <Grid.Column width={8} key={leaguelist[i].id}>
           <LeagueStandingsTable
             leagueName={leaguelist[i].name}
             leagueID={leaguelist[i].id}
@@ -67,7 +67,8 @@ export default class Standings extends Component {
         </Grid.Column>
       );
 
-      if ((i + 1) % 3 == 0) {
+      let MAX_LEAGUES_PER_ROW = 1;
+      if ((i + 1) % MAX_LEAGUES_PER_ROW == 0) {
         grid.push(<Grid.Row key={i}>{row}</Grid.Row>);
         row = [];
       }
@@ -98,7 +99,7 @@ export default class Standings extends Component {
           </Header>
           <Grid centered stackable>
             <Grid.Row>
-              <Grid.Column width={5}>
+              <Grid.Column width={8}>
                 <LeagueRanksTable year={query} />
               </Grid.Column>
             </Grid.Row>
