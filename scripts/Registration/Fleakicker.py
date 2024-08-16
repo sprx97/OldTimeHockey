@@ -58,6 +58,7 @@ form_year = 2024
 if form_year != year+1:
     print(f"Form in registration post has not been updated.")
     quit()
+# NB: If you want to put spaces into this, use <br> instead of \n
 kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly. If you're receiving this and haven't signed up, " + \
                f"please fill out the registration form ({form}) and check the discord/subreddit for more info. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
 kick_message_data = {
