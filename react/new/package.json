@@ -10,13 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mantine/core": "^7.4.2",
-    "@mantine/hooks": "^7.4.2",
+    "@mantine/core": "^7.7.0",
+    "@mantine/hooks": "^7.7.0",
+    "@tabler/icons-react": "^3.1.0",
+    "icons-react": "^3.7.1",
     "postcss": "^8.4.33",
     "postcss-preset-mantine": "^1.12.3",
     "postcss-simple-vars": "^7.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -30,6 +33,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "prettier": "^3.2.4",
+    "sass": "^1.72.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   }

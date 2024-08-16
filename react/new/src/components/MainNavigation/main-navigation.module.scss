@@ -1,0 +1,27 @@
+.header {
+  height: 3.5rem; /* 56px / 16px */
+  margin-bottom: 7.5rem; /* 120px / 16px */
+  background-color: var(--mantine-color-body);
+}
+
+.inner {
+  height: 3.5rem; /* Same calculation */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  display: block;
+  line-height: 1;
+  padding: 0.5rem 0.75rem; /* 8px/16px and 12px/16px */
+  border-radius: var(--mantine-radius-sm);
+  text-decoration: none;
+  color: var(--mantine-color-gray-7); /* Simplified for the example */
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+}
+
+.linkLabel {
+  margin-right: 0.3125rem; /* 5px / 16px */
+}
