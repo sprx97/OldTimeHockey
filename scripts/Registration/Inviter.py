@@ -89,7 +89,7 @@ for league in leagues:
     if not DEBUG:
         session.post(invite_url.format(league_id), invite_message_data)
     else:
-        print("Actual invites not sent -- uncomment to proceed.")
+        print("Actual invites not sent -- set DEBUG to false to proceed.")
 
     all_emails.extend(emails)
 
@@ -117,6 +117,6 @@ if not DEBUG and send_emails:
     bcc = ",".join(all_emails)
     Emailer.send_message(gmail_service, subject, body, to, None, bcc)
 else:
-    print("Emails not sent. Edit script to enable.")
+    print("Emails not sent. Edit script to enable. (Last Resort)")
 
 # TODO: Also add reddit post verifying invites have been sent?

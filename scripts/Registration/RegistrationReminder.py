@@ -8,7 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath
 from shared.Shared import *
 from shared.Emailer import Emailer
 
-DEBUG = False
+DEBUG = True
 
 # Failsafe 1
 print("Are you sure you want to run the registraton script? This will email more than 200 people. (yes/no)")
@@ -30,7 +30,7 @@ sheets = sheets_service.spreadsheets()
 
 last_year = sheets.values().get(spreadsheetId=Config.config["prev_season_reg_sheet_id"], range="B:B").execute()
 this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:B").execute()
-retirees = ["joanna.teng14@gmail.com", "baseballstuff@tutanota.com", "rdknott@gmail.com"]
+retirees = ["joanna.teng14@gmail.com", "baseballstuff@tutanota.com", "rdknott@gmail.com", "boboombang@gmail.com", "jeremy.jl.liu@gmail.com", "nxt13a@acu.edu", "zcromer9@gmail.com", "hholysheet@gmail.com"]
 
 # Get all of last year's registrants
 values = last_year.get("values", [])
@@ -50,17 +50,17 @@ for email in retirees:
     if email in emails:
         emails.remove(email)
 
-print("Remember to update the subject and body, and any retirees, then uncomment these lines.")
-quit()
+#print("Remember to update the subject and body, and any retirees, then uncomment these lines.")
+#quit()
 
 # Construct the email -- TODO Update the form link each offseason
 to = "roldtimehockey@gmail.com"
-subject = "Old Time Hockey 2024-25 Registration"
+subject = "Old Time Hockey 2025-26 Registration (Reminder 1/3)"
 body = "Hello -- \n\n" + \
 "You are receiving this email because you played in the Old Time Hockey fantasy league last year. " + \
-"If you are interested in playing again, the registration form can be found here: https://forms.gle/DAn53vF5JTsU1W8L6\n\n" + \
-"The deadline to register and keep your slot is Tuesday 9/24 at 9am PST. After that you can still register but you are no longer guaranteed a spot.\n\n" + \
-"Drafts this year will take place between September 27th and September 30th. Hope to see you back!\n\n" + \
+"If you are interested in playing again, the registration form can be found here: ADD FORM HERE\n\n" + \
+"SET REGISTRATION DEADLINE.\n\n" + \
+"Drafts this year will take place between SET CORRECT DATES. Hope to see you back!\n\n" + \
 "-- Admins"
 
 gmail_service = Emailer.get_gmail_service()

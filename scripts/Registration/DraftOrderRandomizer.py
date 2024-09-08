@@ -11,24 +11,24 @@ from shared import Config
 
 DEBUG = True
 
-# # Comment this out to actually run the script.
-# # This script is scary so leave this on in case of a fatfinger python command
-# print("Aborting due to failsafe")
-# quit()
+# Comment this out to actually run the script.
+# This script is scary so leave this on in case of a fatfinger python command
+print("Aborting due to failsafe")
+quit()
 
-# # Failsafe 1
-# print("Are you sure you want to randomize draft orders? (yes/no)")
-# confirm = input()
-# if confirm != "yes":
-#     print("Aborting.")
-#     quit()
+# Failsafe 1
+print("Are you sure you want to randomize draft orders? (yes/no)")
+confirm = input()
+if confirm != "yes":
+    print("Aborting.")
+    quit()
 
-# # Failsafe 2
-# print("Are you REALLY sure you want to randomize draft orders? This should only be done once per league. (yes/no)")
-# confirm = input()
-# if confirm != "yes":
-#     print("Aborting.")
-#     quit()
+# Failsafe 2
+print("Are you REALLY sure you want to randomize draft orders? This should only be done once per league. (yes/no)")
+confirm = input()
+if confirm != "yes":
+    print("Aborting.")
+    quit()
 
 # Failsafe 3
 d = datetime.datetime.now()
@@ -58,7 +58,7 @@ def try_randomize_league(id):
     # If any team is unclaimed, don't randomize yet
     teams = requests.get(league_standings_url.format(id)).json()["divisions"][0]["teams"]
     for team in teams:
-        if "owners" not in teams:
+        if "owners" not in team:
             print(f"{id} is not full.")
             return
 
@@ -111,5 +111,3 @@ for league in leagues:
 
     print(f"Randomizing {name}")
     try_randomize_league(id)
-
-    quit() # so that we only process D1 for now
