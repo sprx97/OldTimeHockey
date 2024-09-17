@@ -38,7 +38,7 @@ values = values[1:] # Chop off the header row
 
 all_draft_times = {}
 all_users = {}
-max_in_division = 98 if division == "D4" else 56 if division == "D3" else 42
+max_in_division = 112 if division == "D4" else 56 if division == "D3" else 42
 count = 0
 for row in values:
     # Only look for the chosen division, but count NEW as D4
@@ -68,6 +68,9 @@ for row in values:
 
     if len(drafts) == 0:
         print(f"User {user_name} is being difficult.")
+
+    if user_id in all_users:
+        print(f"User {user_name} has duplicate entry.")
 
     # Assign data to our maps of user->drafs and drafts->num_users
     all_users[user_id] = {"email":email, "name":user_name, "drafts":drafts}

@@ -37,4 +37,6 @@ for row in values[1:]:
     out_line = f"{name}\t{row[DIV_ASSIGN_COL]}\t{row[LEAGUE_ASSIGN_COL]}\n"
     f.write(out_line)
 
+print(f"Roles written to {Config.config['roles_file_out_location']}")
+
 f.close()
