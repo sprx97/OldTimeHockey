@@ -28,15 +28,21 @@ if month >= 10 or month <= 6:
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
 
-last_year = sheets.values().get(spreadsheetId=Config.config["prev_season_reg_sheet_id"], range="B:B").execute()
-this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:B").execute()
-retirees = ["joanna.teng14@gmail.com", "baseballstuff@tutanota.com", "rdknott@gmail.com", "boboombang@gmail.com", "jeremy.jl.liu@gmail.com", "nxt13a@acu.edu", "zcromer9@gmail.com", "hholysheet@gmail.com"]
+last_year = sheets.values().get(spreadsheetId=Config.config["prev_season_reg_sheet_id"], range="Responses!A:Y").execute()
+this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:Y").execute()
+retirees = []
 
 # Get all of last year's registrants
 values = last_year.get("values", [])
 emails = []
 for row in values[1:]: # Skip the header
+    if row[24] == "DECLINED" or row[24] == "NO RESPONSE":
+        print(f"Skipping manager who didn't play last year: {row[1]}")
+        continue
     emails.append(row[0].strip().lower())
+
+print("Be sure to check that the DECLINED/NO RESPONSE code works")
+quit()
 
 # Remove the ones who have already registered this year
 values = this_year.get("values", [])

@@ -9,8 +9,8 @@ from shared import Shared
 from shared import Config
 from shared.Emailer import Emailer
 
-DEBUG = True
-send_emails = False # last resort, change if needed
+DEBUG = False
+send_emails = True # last resort, change if needed
 all_emails = []
 
 # Only allow sending of invites for one division at a time
@@ -95,14 +95,15 @@ for league in leagues:
 
 # Construct the email
 to = "roldtimehockey@gmail.com"
-subject = "OldTimeHockey Invite"
+subject = "OldTimeHockey Invite -- DRAFTS NEXT WEEKEND!"
 body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
 "If you can't find it, reach out to an admin via Discord or respond to this email. \n\n" + \
-"Once you find the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " +\
-"You have until Thursday morning 9/19 before we start inviting replacements.\n\n" + \
+"Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
+"If the league is full when you click on the link, **please respond to this email** and we'll get you into a different league. " + \
+"Replacement invites are being sent every 24 hours.\n\n" + \
 "Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
 "Also, join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
 "-- Admins"
@@ -119,4 +120,4 @@ if not DEBUG and send_emails:
 else:
     print("Emails not sent. Edit script to enable. (Last Resort)")
 
-# TODO: Also add reddit post verifying invites have been sent?
+# TODO: Add "preferred contact" and send either via reddit, discord, or email

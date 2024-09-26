@@ -21,7 +21,7 @@ DIV_ASSIGN_COL = 23 # X
 LEAGUE_ASSIGN_COL = 24 # Y
 for row in values[1:]:
     # Skip managers not assigned to a league yet
-    if len(row) <= LEAGUE_ASSIGN_COL or row[LEAGUE_ASSIGN_COL] == "WAITLIST": # or row[DIV_ASSIGN_COL] == "D1" or row[DIV_ASSIGN_COL] == "D3" or row[DIV_ASSIGN_COL] == "D4" or row[DIV_ASSIGN_COL] == "NEW":
+    if len(row) <= LEAGUE_ASSIGN_COL or row[LEAGUE_ASSIGN_COL] == "WAITLIST" or row[LEAGUE_ASSIGN_COL] == "NO RESPONSE": # or row[DIV_ASSIGN_COL] == "D1" or row[DIV_ASSIGN_COL] == "D3" or row[DIV_ASSIGN_COL] == "D4" or row[DIV_ASSIGN_COL] == "NEW":
         continue
 
     # Skip managers without a discord account
