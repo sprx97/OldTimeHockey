@@ -36,7 +36,7 @@ retirees = []
 values = last_year.get("values", [])
 emails = []
 for row in values[1:]: # Skip the header
-    if row[24] == "DECLINED" or row[24] == "NO RESPONSE":
+    if row[24] == "DECLINED" or row[24] == "NO RESPONSE" or row[24] == "REJECTED":
         print(f"Skipping manager who didn't play last year: {row[1]}")
         continue
     emails.append(row[0].strip().lower())

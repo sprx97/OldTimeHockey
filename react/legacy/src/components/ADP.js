@@ -9,7 +9,7 @@ export default class ADP extends Component {
         for(let year = getFirstYear(); year <= getCurrentYear(); year++) {
           options.push({ key: `${year}`, text: `${year}-${year+1}`, value: `${year}`})
         }
-    
+
         return options;
       }
 

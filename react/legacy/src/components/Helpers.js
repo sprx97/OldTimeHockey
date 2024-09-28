@@ -23,6 +23,7 @@ export function isPlayoffWeek(week, year) {
       return week > 25;
     case 2022:
     case 2023:
+    case 2024:
       return week > 22;
     default:
       return week > 23;
