@@ -61,6 +61,7 @@ cursor = db.cursor()
 
 for year in years_to_update:
     for league in get_leagues_from_database(year):
+        print(f"Updating {league}")
         updateCurrentPF(league["id"], league["year"])
 
 db.commit()

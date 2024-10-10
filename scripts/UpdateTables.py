@@ -6,7 +6,7 @@ import requests
 import sys
 
 # OTH includes
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
 from shared import Shared
 from shared import Config
 
@@ -235,6 +235,7 @@ if __name__ == "__main__":
                 next[1] = next[1].replace("'", "''") # correct quote escaping
                 next[1] = next[1].replace(u"\u2019", "''") # another type of quote?
                 next[1] = next[1].replace("í", "i").replace("ř", "r") # non-english characters
+                next[1] = next[1].replace("á", "a").replace("č", "c").replace("Š", "S") # more non-english characters
                 next[1] = demojify(next[1])
                 next[3] = next[3].replace(";", "") # prevent sql injection
                 next[3] = next[3].replace("'", "''") # correct quote escaping
