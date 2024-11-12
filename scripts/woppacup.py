@@ -48,8 +48,13 @@ wc_id = Config.config["woppa_cup_id"]
 particpants = challonge.participants.index(wc_id)
 played = []
 
-curr_round = None # Set this if you want to do a specific round
-for m in challonge.matches.index(wc_id):
+# Sort the matches by round. This is how the group stage used to sort,
+# but now it sorts by group, which broke the below for loop.
+all_matches = challonge.matches.index(wc_id)
+all_matches = sorted(all_matches, key=lambda x: x["round"])
+
+curr_round = None
+for m in all_matches:
     # Skip completed matches, because we only want the current one
     if m["state"] != "open":
         continue
