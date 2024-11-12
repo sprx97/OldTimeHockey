@@ -43,7 +43,7 @@ def get_user_matchup_from_database(user, division=None):
     return matchup
 
 challonge.set_credentials(Config.config["challonge_username"], Config.config["challonge_api_key"])
-wc_id = Config.config["woppa_cup_challonge_id"]
+wc_id = Config.config["woppa_cup_id"]
 
 particpants = challonge.participants.index(wc_id)
 played = []
