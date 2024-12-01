@@ -4,6 +4,30 @@ import Banner from './Banner';
 
 const panes = [
   {
+    menuItem: '2024-2025',
+    render: () => (
+      <Tab.Pane>
+        224 teams, 16 leagues, 4 divisions
+        <ul>
+          <li>
+            <b>Division 1 Champion: </b>
+          </li>
+          <li>
+            <b>Points For Champion: </b>
+          </li>
+          <li>
+            <b>Coaches Rating Champion: </b>
+          </li>
+          <li>
+            <b>Woppa Cup Champion: </b>
+          </li>
+          <u>Rule Changes</u>
+          <p>None</p>
+        </ul>
+      </Tab.Pane>
+    ),
+  },
+  {
     menuItem: '2023-2024',
     render: () => (
       <Tab.Pane>

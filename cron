@@ -1,10 +1,10 @@
 # Update current weekly PF from fleaflicker (every minute)
 # Enable the day the season starts
-# * * * * *   root    python3 /var/www/OldTimeHockey/scripts/UpdateCurrentPF.py
+*/2 * * * *   root    python3 /var/www/OldTimeHockey/scripts/UpdateCurrentPF.py
 
 # Run weekly scripts to update data stores
 # Enable the day the season starts
-# 0 8 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh
+0 8 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh
 
 ##########################################################################
 #                                                                        #

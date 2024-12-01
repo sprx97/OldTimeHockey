@@ -15,28 +15,26 @@ years_to_update.append(int(f.readline().strip()))
 week = int(f.readline().strip())
 
 def updateCurrentPF(league, year):
-    global week
-
     # Track which teams in this division we've updated, because for playoffs, teams on bye don't show up in FetchLeagueScoreboard
     tracked = []
 
     # "Week" is really "Day" for the scoreboard, but FF is really weird.
     # Using the Monday of each matchup week works for this.
     scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
-    found = False
+    day = 0
     for schedule_period in scores["eligibleSchedulePeriods"]:
         if schedule_period["ordinal"] == week:
-            found = True
-            week = schedule_period["low"]["ordinal"]
+            day = schedule_period["low"]["ordinal"]
             break
 
     # Season over, or this week doesn't exist. Exit and zero out this league
-    if not found:
+    if day == 0:
+        print(f"Week {week} does not exist in {league}")
         cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID={league} and year={year}")
         return
 
     # Call it again for the week based on our current week
-    scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={week}")
+    scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={day}")
 
     for game in scores["games"]:
         matchup_id = game["id"]
@@ -61,6 +59,7 @@ cursor = db.cursor()
 
 for year in years_to_update:
     for league in get_leagues_from_database(year):
+        print(f"Updating {league}")
         updateCurrentPF(league["id"], league["year"])
 
 db.commit()

@@ -12,8 +12,8 @@ from shared.Emailer import Emailer
 
 NUM_TEAMS_PER_LEAGUE = 14
 
-if len(sys.argv) != 2:
-    print("Please provide a division.")
+if len(sys.argv) != 3:
+    print("Please provide a division (D2-D4) and a star threshold (1-5).")
     quit()
 
 division = sys.argv[1]
@@ -21,10 +21,16 @@ if division not in ["D2", "D3", "D4"]:
     print("Division must be D2, D3, or D4.")
     quit()
 
+star_threshold = sys.argv[2]
+if star_threshold not in ["2", "3", "4", "5"]:
+    print("Star threshold must be between 2 and 5.")
+    quit()
+star_threshold = int(star_threshold)   
+
 # Get the registration spreadsheets
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
-rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="B:N").execute()
+rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:X").execute()
 
 # Get all of last year's registrants
 values = rows.get("values", [])
@@ -32,23 +38,39 @@ values = values[1:] # Chop off the header row
 
 all_draft_times = {}
 all_users = {}
-max_in_division = 98 if division == "D4" else 56 if division == "D3" else 42
+max_in_division = 112 if division == "D4" else 56 if division == "D3" else 42
 count = 0
 for row in values:
     # Only look for the chosen division, but count NEW as D4
-    if row[11] != division and not (row[11] == "NEW" and division == "D4"):
+    if row[23] != division and not (row[23] == "NEW" and division == "D4"):
         continue
 
     # Skip the waitlist -- the bottom of the reg form without a division
-    if len(row) >= 13 and row[12] == "WAITLIST":
+    if len(row) >= 24 and row[23] == "WAITLIST":
         continue
 
     # Extract values
     email = row[0]
     user_name = row[1].strip()
     user_id = row[2]
-    drafts = row[8].split(" EST, ")
-    drafts[-1] = drafts[-1][:-4] # trim the last one
+
+    temp_threshold = 5
+    drafts = []
+    while len(drafts) == 0 or temp_threshold >= star_threshold:
+        more_drafts = row[22-temp_threshold].split(" EST, ")
+        more_drafts[-1] = more_drafts[-1][:-4] # trim the last one
+        if more_drafts[0] != "":
+            drafts.extend(more_drafts)
+
+        temp_threshold -= 1
+        if temp_threshold == 1:
+            break
+
+    if len(drafts) == 0:
+        print(f"User {user_name} is being difficult.")
+
+    if user_id in all_users:
+        print(f"User {user_name} has duplicate entry.")
 
     # Assign data to our maps of user->drafs and drafts->num_users
     all_users[user_id] = {"email":email, "name":user_name, "drafts":drafts}
@@ -136,7 +158,7 @@ for combo, ranking in list(ranked_combinations.items()):
         best_draft = None
         for draft in user_drafts[id]:
             league_size = len(leagues[draft])
-            if league_size > NUM_TEAMS_PER_LEAGUE:
+            if league_size >= NUM_TEAMS_PER_LEAGUE:
                 continue
             elif best_draft == None:
                 best_draft = draft
@@ -211,5 +233,5 @@ if response == "Y":
 # Print to console
 for combo in best_combinations:
     for draft, users in combo.items():
-        print(draft, users)
+        print(draft, len(users), users)
     print()
