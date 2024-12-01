@@ -1,6 +1,14 @@
-import { Menu, Group, Center, Burger, Container } from '@mantine/core'
+import {
+  Menu,
+  Group,
+  Center,
+  Burger,
+  Container,
+  Switch,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconChevronDown } from '@tabler/icons-react'
+import { IconChevronDown, IconSettings } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 import classes from './main-navigation.module.scss'
 import routes from '../../routes'
@@ -13,6 +21,11 @@ interface RouteWithAnchors {
 
 function MainNavigation() {
   const [opened, { toggle }] = useDisclosure(false)
+  const { colorScheme, setColorScheme } = useMantineColorScheme()
+
+  const handleThemeToggle = (checked: boolean) => {
+    setColorScheme(checked ? 'dark' : 'light')
+  }
 
   const renderMenuItem = (route: RouteWithAnchors) => {
     if (route.anchors) {
@@ -63,7 +76,38 @@ function MainNavigation() {
           <Group gap={5} visibleFrom='sm'>
             {navigationItems}
           </Group>
-          <Burger opened={opened} onClick={toggle} size='sm' hiddenFrom='sm' />
+          <Group gap={5}>
+            <Menu
+              trigger='hover'
+              transitionProps={{ exitDuration: 0 }}
+              withinPortal
+              position='bottom-end'
+            >
+              <Menu.Target>
+                <Center className={classes.link} style={{ cursor: 'pointer' }}>
+                  <IconSettings size='1.2rem' stroke={1.5} />
+                </Center>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Label>Theme Settings</Menu.Label>
+                <div className={classes.themeControls}>
+                  <Switch
+                    checked={colorScheme === 'dark'}
+                    onChange={(event) =>
+                      handleThemeToggle(event.currentTarget.checked)
+                    }
+                    label='Dark mode'
+                  />
+                </div>
+              </Menu.Dropdown>
+            </Menu>
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              size='sm'
+              hiddenFrom='sm'
+            />
+          </Group>
         </div>
       </Container>
     </header>
