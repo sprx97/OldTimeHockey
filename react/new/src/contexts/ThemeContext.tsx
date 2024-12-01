@@ -9,7 +9,6 @@ import {
   MantineProvider,
   createTheme,
   type MantineColorsTuple,
-  MantineTheme,
 } from '@mantine/core'
 import { NHL_TEAM_COLORS } from '../constants/nhlColors'
 import { ThemeConfig, ThemeMode, NHLTeam } from '../types/theme'
@@ -120,14 +119,15 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       },
       primaryShade: { light: 6, dark: 8 },
       components: {
-        Header: {
-          styles: (theme: MantineTheme) => ({
-            root: {
-              backgroundColor: theme.colors.team
-                ? `var(--mantine-color-team-6)`
-                : `var(--mantine-color-blue-6)`,
+        AppShell: {
+          styles: {
+            header: {
+              backgroundColor: theme.team
+                ? NHL_TEAM_COLORS[theme.team].primary
+                : 'var(--mantine-color-blue-6)',
+              borderBottom: 'none',
             },
-          }),
+          },
         },
       },
     })

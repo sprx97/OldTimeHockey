@@ -1,12 +1,4 @@
-import {
-  Menu,
-  Group,
-  Center,
-  Burger,
-  Container,
-  Switch,
-  useMantineColorScheme,
-} from '@mantine/core'
+import { Menu, Group, Center, Burger, Container } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import {
   IconChevronDown,
@@ -17,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import classes from './main-navigation.module.scss'
 import routes from '../../routes'
+import { ThemeControls } from '../ThemeControls'
 
 interface RouteWithAnchors {
   path: string
@@ -26,13 +19,7 @@ interface RouteWithAnchors {
 
 function MainNavigation() {
   const [opened, { toggle, close }] = useDisclosure(false)
-  const { colorScheme, setColorScheme } = useMantineColorScheme()
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
-
-  const handleThemeToggle = (checked: boolean) => {
-    setColorScheme(checked ? 'dark' : 'light')
-    close()
-  }
 
   const toggleSubmenu = (path: string) => {
     setOpenSubmenuIds((prev) =>
@@ -164,13 +151,7 @@ function MainNavigation() {
                 <Menu.Dropdown>
                   <Menu.Label>Theme Settings</Menu.Label>
                   <div className={classes.themeControls}>
-                    <Switch
-                      checked={colorScheme === 'dark'}
-                      onChange={(event) =>
-                        handleThemeToggle(event.currentTarget.checked)
-                      }
-                      label='Dark mode'
-                    />
+                    <ThemeControls />
                   </div>
                 </Menu.Dropdown>
               </Menu>
@@ -199,14 +180,7 @@ function MainNavigation() {
             <span>Theme Settings</span>
           </div>
           <div className={classes.settingsContent}>
-            <Switch
-              checked={colorScheme === 'dark'}
-              onChange={(event) =>
-                handleThemeToggle(event.currentTarget.checked)
-              }
-              size='md'
-            />
-            <span>Dark Mode</span>
+            <ThemeControls />
           </div>
         </div>
       </div>
