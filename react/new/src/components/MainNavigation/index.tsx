@@ -8,8 +8,13 @@ import {
   useMantineColorScheme,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconChevronDown, IconSettings } from '@tabler/icons-react'
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconSettings,
+} from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import classes from './main-navigation.module.scss'
 import routes from '../../routes'
 
@@ -20,11 +25,18 @@ interface RouteWithAnchors {
 }
 
 function MainNavigation() {
-  const [opened, { toggle }] = useDisclosure(false)
+  const [opened, { toggle, close }] = useDisclosure(false)
   const { colorScheme, setColorScheme } = useMantineColorScheme()
+  const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
 
   const handleThemeToggle = (checked: boolean) => {
     setColorScheme(checked ? 'dark' : 'light')
+  }
+
+  const toggleSubmenu = (path: string) => {
+    setOpenSubmenuIds((prev) =>
+      prev.includes(path) ? prev.filter((id) => id !== path) : [...prev, path]
+    )
   }
 
   const renderMenuItem = (route: RouteWithAnchors) => {
@@ -64,8 +76,64 @@ function MainNavigation() {
     }
   }
 
+  const renderMobileMenuItem = (route: RouteWithAnchors) => {
+    const isSubmenuOpen = openSubmenuIds.includes(route.path)
+
+    if (route.anchors) {
+      return (
+        <div key={route.path}>
+          <div
+            className={`${classes.mobileLink} ${classes.hasChildren}`}
+            onClick={() => toggleSubmenu(route.path)}
+          >
+            <span>{route.name}</span>
+            {isSubmenuOpen ? (
+              <IconChevronDown size='1.2rem' stroke={1.5} />
+            ) : (
+              <IconChevronRight size='1.2rem' stroke={1.5} />
+            )}
+          </div>
+          <div
+            className={`${classes.mobileSubmenu} ${isSubmenuOpen ? classes.opened : ''}`}
+          >
+            {route.anchors.map((anchor) => (
+              <Link
+                key={`${route.path}${anchor.path}`}
+                to={route.path + anchor.path}
+                className={classes.mobileLink}
+                onClick={() => {
+                  close()
+                  setOpenSubmenuIds([])
+                }}
+              >
+                {anchor.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )
+    }
+    return (
+      <Link
+        key={route.path}
+        to={route.path}
+        className={classes.mobileLink}
+        onClick={() => {
+          close()
+          setOpenSubmenuIds([])
+        }}
+      >
+        {route.name}
+      </Link>
+    )
+  }
+
   const navigationItems = routes.map((route) =>
     renderMenuItem(route as RouteWithAnchors)
+  )
+
+  const mobileNavigationItems = routes.map((route) =>
+    renderMobileMenuItem(route as RouteWithAnchors)
   )
 
   return (
@@ -76,40 +144,54 @@ function MainNavigation() {
           <Group gap={5} visibleFrom='sm'>
             {navigationItems}
           </Group>
-          <Group gap={5}>
-            <Menu
-              trigger='hover'
-              transitionProps={{ exitDuration: 0 }}
-              withinPortal
-              position='bottom-end'
-            >
-              <Menu.Target>
-                <Center className={classes.link} style={{ cursor: 'pointer' }}>
-                  <IconSettings size='1.2rem' stroke={1.5} />
-                </Center>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Label>Theme Settings</Menu.Label>
-                <div className={classes.themeControls}>
-                  <Switch
-                    checked={colorScheme === 'dark'}
-                    onChange={(event) =>
-                      handleThemeToggle(event.currentTarget.checked)
-                    }
-                    label='Dark mode'
-                  />
-                </div>
-              </Menu.Dropdown>
-            </Menu>
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              size='sm'
-              hiddenFrom='sm'
-            />
-          </Group>
+          <div className={classes.rightGroup}>
+            <div className={classes.settingsMenu}>
+              <Menu
+                trigger='hover'
+                transitionProps={{ exitDuration: 0 }}
+                withinPortal
+                position='bottom-end'
+              >
+                <Menu.Target>
+                  <Center
+                    className={classes.link}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <IconSettings size='1.2rem' stroke={1.5} />
+                  </Center>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>Theme Settings</Menu.Label>
+                  <div className={classes.themeControls}>
+                    <Switch
+                      checked={colorScheme === 'dark'}
+                      onChange={(event) =>
+                        handleThemeToggle(event.currentTarget.checked)
+                      }
+                      label='Dark mode'
+                    />
+                  </div>
+                </Menu.Dropdown>
+              </Menu>
+            </div>
+            <div className={classes.burgerWrapper}>
+              <Burger
+                opened={opened}
+                onClick={() => {
+                  toggle()
+                  setOpenSubmenuIds([])
+                }}
+                size='sm'
+                hiddenFrom='sm'
+                className={classes.burger}
+              />
+            </div>
+          </div>
         </div>
       </Container>
+      <div className={`${classes.mobileMenu} ${opened ? classes.opened : ''}`}>
+        {mobileNavigationItems}
+      </div>
     </header>
   )
 }

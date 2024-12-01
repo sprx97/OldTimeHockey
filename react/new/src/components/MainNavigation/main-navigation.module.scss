@@ -39,3 +39,96 @@
   padding: 0.75rem;
   min-width: 200px;
 }
+
+.mobileMenu {
+  display: none;
+  position: fixed;
+  top: 3.5rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--mantine-primary-color-6);
+  padding: 1rem;
+  z-index: 99;
+  overflow-y: auto;
+
+  @media (max-width: 768px) {
+    &.opened {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  .mobileLink {
+    color: white;
+    text-decoration: none;
+    font-size: 1.25rem;
+    padding: 0.75rem;
+    border-radius: var(--mantine-radius-sm);
+    transition: background-color 150ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:hover {
+      background-color: var(--mantine-primary-color-7);
+    }
+
+    &.hasChildren {
+      cursor: pointer;
+    }
+  }
+
+  .mobileSubmenu {
+    display: none;
+    padding-left: 1rem;
+    
+    &.opened {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 0.5rem;
+    }
+
+    .mobileLink {
+      font-size: 1.1rem;
+      padding: 0.5rem 0.75rem;
+    }
+  }
+}
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
+}
+
+.settingsMenu {
+  @media (max-width: 768px) {
+    position: relative;
+    z-index: 101;
+  }
+}
+
+.burgerWrapper {
+  @media (max-width: 768px) {
+    position: relative;
+    z-index: 102;
+    width: 40px;
+    height: 40px;
+    margin: -10px -10px -10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .burger {
+      cursor: pointer;
+    }
+  }
+}
