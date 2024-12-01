@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <MantineProvider>
-        <AppShell header={{ height: 60 }} padding='sm'>
+        <AppShell header={{ height: 60 }} padding='sm' withBorder={false}>
           <AppShell.Header>
             <MainNavigation />
           </AppShell.Header>
