@@ -105,13 +105,24 @@
   .mobileSettings {
     padding: 0.75rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 1rem;
     color: white;
-    font-size: 1.25rem;
 
-    .settingsLabel {
-      flex: 1;
+    .settingsHeader {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .settingsContent {
+      padding-left: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
     }
   }
 }
@@ -119,7 +130,7 @@
 .rightGroup {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
   position: relative;
 }
 

@@ -31,6 +31,7 @@ function MainNavigation() {
 
   const handleThemeToggle = (checked: boolean) => {
     setColorScheme(checked ? 'dark' : 'light')
+    close()
   }
 
   const toggleSubmenu = (path: string) => {
@@ -193,13 +194,20 @@ function MainNavigation() {
         {mobileNavigationItems}
         <div className={classes.mobileDivider} />
         <div className={classes.mobileSettings}>
-          <IconSettings size='1.2rem' stroke={1.5} />
-          <span className={classes.settingsLabel}>Theme Settings</span>
-          <Switch
-            checked={colorScheme === 'dark'}
-            onChange={(event) => handleThemeToggle(event.currentTarget.checked)}
-            size='md'
-          />
+          <div className={classes.settingsHeader}>
+            <IconSettings size='1.5rem' stroke={1.5} />
+            <span>Theme Settings</span>
+          </div>
+          <div className={classes.settingsContent}>
+            <Switch
+              checked={colorScheme === 'dark'}
+              onChange={(event) =>
+                handleThemeToggle(event.currentTarget.checked)
+              }
+              size='md'
+            />
+            <span>Dark Mode</span>
+          </div>
         </div>
       </div>
     </header>
