@@ -191,6 +191,16 @@ function MainNavigation() {
       </Container>
       <div className={`${classes.mobileMenu} ${opened ? classes.opened : ''}`}>
         {mobileNavigationItems}
+        <div className={classes.mobileDivider} />
+        <div className={classes.mobileSettings}>
+          <IconSettings size='1.2rem' stroke={1.5} />
+          <span className={classes.settingsLabel}>Theme Settings</span>
+          <Switch
+            checked={colorScheme === 'dark'}
+            onChange={(event) => handleThemeToggle(event.currentTarget.checked)}
+            size='md'
+          />
+        </div>
       </div>
     </header>
   )

@@ -56,7 +56,6 @@
     &.opened {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
     }
   }
 
@@ -96,30 +95,43 @@
       padding: 0.5rem 0.75rem;
     }
   }
+
+  .mobileDivider {
+    height: 1px;
+    background-color: var(--mantine-primary-color-7);
+    margin: 1rem 0;
+  }
+
+  .mobileSettings {
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    font-size: 1.25rem;
+
+    .settingsLabel {
+      flex: 1;
+    }
+  }
 }
 
 .rightGroup {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   position: relative;
-
-  @media (max-width: 768px) {
-    gap: 1rem;
-  }
 }
 
 .settingsMenu {
   @media (max-width: 768px) {
-    position: relative;
-    z-index: 101;
+    display: none;
   }
 }
 
 .burgerWrapper {
   @media (max-width: 768px) {
     position: relative;
-    z-index: 102;
     width: 40px;
     height: 40px;
     margin: -10px -10px -10px 0;
