@@ -8,8 +8,8 @@ import {
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import classes from './main-navigation.module.scss'
-import routes from '../../routes'
-import { ThemeControls } from '../ThemeControls'
+import routes from '@/routes'
+import { ThemeControls } from '@components/ThemeControls'
 
 interface RouteWithAnchors {
   path: string
