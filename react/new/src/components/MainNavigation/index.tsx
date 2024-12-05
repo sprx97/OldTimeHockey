@@ -139,6 +139,10 @@ function MainNavigation() {
                 transitionProps={{ exitDuration: 0 }}
                 withinPortal
                 position='bottom-end'
+                closeOnItemClick={false}
+                closeOnClickOutside={false}
+                trapFocus={false}
+                zIndex={300}
               >
                 <Menu.Target>
                   <Center
