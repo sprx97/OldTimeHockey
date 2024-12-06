@@ -1,0 +1,20 @@
+.input {
+  &:focus {
+    border-color: var(--team-primary);
+  }
+}
+
+.option {
+  &[data-selected] {
+    background-color: var(--team-primary) !important;
+    color: #fff !important;
+
+    &:hover {
+      background-color: var(--team-primary) !important;
+    }
+  }
+
+  &[data-hovered] {
+    background-color: var(--team-primary-light) !important;
+  }
+}

@@ -1,9 +1,15 @@
 import { Menu, Group, Center, Burger, Container } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconChevronDown } from '@tabler/icons-react'
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconSettings,
+} from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import classes from './main-navigation.module.scss'
-import routes from '../../routes'
+import routes from '@/routes'
+import { ThemeControls } from '@components/ThemeControls'
 
 interface RouteWithAnchors {
   path: string
@@ -12,7 +18,14 @@ interface RouteWithAnchors {
 }
 
 function MainNavigation() {
-  const [opened, { toggle }] = useDisclosure(false)
+  const [opened, { toggle, close }] = useDisclosure(false)
+  const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
+
+  const toggleSubmenu = (path: string) => {
+    setOpenSubmenuIds((prev) =>
+      prev.includes(path) ? prev.filter((id) => id !== path) : [...prev, path]
+    )
+  }
 
   const renderMenuItem = (route: RouteWithAnchors) => {
     if (route.anchors) {
@@ -51,8 +64,64 @@ function MainNavigation() {
     }
   }
 
+  const renderMobileMenuItem = (route: RouteWithAnchors) => {
+    const isSubmenuOpen = openSubmenuIds.includes(route.path)
+
+    if (route.anchors) {
+      return (
+        <div key={route.path}>
+          <div
+            className={`${classes.mobileLink} ${classes.hasChildren}`}
+            onClick={() => toggleSubmenu(route.path)}
+          >
+            <span>{route.name}</span>
+            {isSubmenuOpen ? (
+              <IconChevronDown size='1.2rem' stroke={1.5} />
+            ) : (
+              <IconChevronRight size='1.2rem' stroke={1.5} />
+            )}
+          </div>
+          <div
+            className={`${classes.mobileSubmenu} ${isSubmenuOpen ? classes.opened : ''}`}
+          >
+            {route.anchors.map((anchor) => (
+              <Link
+                key={`${route.path}${anchor.path}`}
+                to={route.path + anchor.path}
+                className={classes.mobileLink}
+                onClick={() => {
+                  close()
+                  setOpenSubmenuIds([])
+                }}
+              >
+                {anchor.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )
+    }
+    return (
+      <Link
+        key={route.path}
+        to={route.path}
+        className={classes.mobileLink}
+        onClick={() => {
+          close()
+          setOpenSubmenuIds([])
+        }}
+      >
+        {route.name}
+      </Link>
+    )
+  }
+
   const navigationItems = routes.map((route) =>
     renderMenuItem(route as RouteWithAnchors)
+  )
+
+  const mobileNavigationItems = routes.map((route) =>
+    renderMobileMenuItem(route as RouteWithAnchors)
   )
 
   return (
@@ -63,9 +132,62 @@ function MainNavigation() {
           <Group gap={5} visibleFrom='sm'>
             {navigationItems}
           </Group>
-          <Burger opened={opened} onClick={toggle} size='sm' hiddenFrom='sm' />
+          <div className={classes.rightGroup}>
+            <div className={classes.settingsMenu}>
+              <Menu
+                trigger='hover'
+                transitionProps={{ exitDuration: 0 }}
+                withinPortal
+                position='bottom-end'
+                closeOnItemClick={false}
+                closeOnClickOutside={false}
+                trapFocus={false}
+                zIndex={300}
+              >
+                <Menu.Target>
+                  <Center
+                    className={classes.link}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <IconSettings size='1.2rem' stroke={1.5} />
+                  </Center>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>Theme Settings</Menu.Label>
+                  <div className={classes.themeControls}>
+                    <ThemeControls />
+                  </div>
+                </Menu.Dropdown>
+              </Menu>
+            </div>
+            <div className={classes.burgerWrapper}>
+              <Burger
+                opened={opened}
+                onClick={() => {
+                  toggle()
+                  setOpenSubmenuIds([])
+                }}
+                size='sm'
+                hiddenFrom='sm'
+                className={classes.burger}
+              />
+            </div>
+          </div>
         </div>
       </Container>
+      <div className={`${classes.mobileMenu} ${opened ? classes.opened : ''}`}>
+        {mobileNavigationItems}
+        <div className={classes.mobileDivider} />
+        <div className={classes.mobileSettings}>
+          <div className={classes.settingsHeader}>
+            <IconSettings size='1.5rem' stroke={1.5} />
+            <span>Theme Settings</span>
+          </div>
+          <div className={classes.settingsContent}>
+            <ThemeControls />
+          </div>
+        </div>
+      </div>
     </header>
   )
 }
