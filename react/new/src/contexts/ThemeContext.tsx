@@ -84,6 +84,8 @@ const colorSchemeManager = localStorageColorSchemeManager({
   key: 'oth-color-scheme',
 })
 
+const TEAM_STORAGE_KEY = 'oth-team-theme'
+
 interface ThemeProviderProps {
   children: ReactNode
 }
@@ -93,7 +95,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     mode: (colorSchemeManager.get('light') === 'dark'
       ? 'dark'
       : 'light') as ThemeMode,
-    team: undefined,
+    team: localStorage.getItem(TEAM_STORAGE_KEY) as NHLTeam | undefined,
   })
 
   const setThemeMode = useCallback((mode: ThemeMode) => {
@@ -103,6 +105,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
   const setTeamTheme = useCallback((team: NHLTeam | undefined) => {
     setTheme((prev) => ({ ...prev, team }))
+    if (team) {
+      localStorage.setItem(TEAM_STORAGE_KEY, team)
+    } else {
+      localStorage.removeItem(TEAM_STORAGE_KEY)
+    }
   }, [])
 
   const getMantineTheme = useCallback((): MantineThemeOverride => {
