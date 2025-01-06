@@ -11,7 +11,7 @@ from shared import Config
 
 # TODO: Consider adding a constant random.seed so it's reproducible
 
-stddev = 30
+stddev = 40
 def project_winner(teams, away, home):
     away_random_pf = random.gauss(teams[away]["PF_avg"], stddev)
     home_random_pf = random.gauss(teams[home]["PF_avg"], stddev)
@@ -53,6 +53,13 @@ def calculate_playoff_odds(league, year, current_week = None):
     remaining_weeks = []
     for schedule_period in schedule["eligibleSchedulePeriods"]:
         if schedule_period["ordinal"] > current_week:
+
+            # HACKHACKHACKHACK
+            # Week 19 of 2024 is a phantom week. There are no games and it won't count towards wins and losses (we hope)
+            if schedule_period["ordinal"] == 19 and year == 2024:
+                continue
+            # HACKHACKHACKHACK
+            print(schedule_period["ordinal"])
             remaining_weeks.append(schedule_period["low"]["ordinal"])
 
     # Trim off playoff weeks. This may be too simple of a solution but it works for now.
@@ -71,7 +78,7 @@ def calculate_playoff_odds(league, year, current_week = None):
     print("All API calls completed. Starting simulations.")
 
     # Monte Carlo Simulation of remaining schedule
-    simulations = 10000 # TODO: Update to 100k
+    simulations = 100000
     for _ in range(simulations):
         copy_teams = ujson.loads(ujson.dumps(teams))
 
@@ -132,7 +139,7 @@ def calculate_playoff_odds(league, year, current_week = None):
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
-# week = int(f.readline().strip())
+week = int(f.readline().strip())
 
 for league in get_leagues_from_database(year, None):
     calculate_playoff_odds(league["id"], league["year"], week)
