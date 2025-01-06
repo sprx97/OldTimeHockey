@@ -1,0 +1,1235 @@
+{
+    "63444": {
+        "wins": 10,
+        "losses": 2,
+        "PF": 2684.9,
+        "playoff_odds": 100.0,
+        "seeds": [
+            51.08,
+            36.97,
+            9.93,
+            1.8,
+            0.21,
+            0.01,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 8721,
+                "total": 8721,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 25463,
+                "total": 25463,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 31121,
+                "total": 31121,
+                "odds": 100.0
+            },
+            "7-3": {
+                "made_playoffs": 21730,
+                "total": 21730,
+                "odds": 100.0
+            },
+            "6-4": {
+                "made_playoffs": 9606,
+                "total": 9606,
+                "odds": 100.0
+            },
+            "5-5": {
+                "made_playoffs": 2756,
+                "total": 2756,
+                "odds": 100.0
+            },
+            "4-6": {
+                "made_playoffs": 526,
+                "total": 526,
+                "odds": 100.0
+            },
+            "3-7": {
+                "made_playoffs": 74,
+                "total": 74,
+                "odds": 100.0
+            },
+            "2-8": {
+                "made_playoffs": 3,
+                "total": 3,
+                "odds": 100.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 88100,
+                "total": 88100,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 11900,
+                "total": 11900,
+                "odds": 100.0
+            }
+        },
+        "PF_avg": 223.74166666666667
+    },
+    "63351": {
+        "wins": 10,
+        "losses": 2,
+        "PF": 2629.0,
+        "playoff_odds": 100.0,
+        "seeds": [
+            43.96,
+            44.68,
+            9.97,
+            1.28,
+            0.1,
+            0.01,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 8891,
+                "total": 8891,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 26691,
+                "total": 26691,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 32200,
+                "total": 32200,
+                "odds": 100.0
+            },
+            "7-3": {
+                "made_playoffs": 21364,
+                "total": 21364,
+                "odds": 100.0
+            },
+            "6-4": {
+                "made_playoffs": 8422,
+                "total": 8422,
+                "odds": 100.0
+            },
+            "5-5": {
+                "made_playoffs": 2085,
+                "total": 2085,
+                "odds": 100.0
+            },
+            "4-6": {
+                "made_playoffs": 315,
+                "total": 315,
+                "odds": 100.0
+            },
+            "3-7": {
+                "made_playoffs": 32,
+                "total": 32,
+                "odds": 100.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 79705,
+                "total": 79705,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 20295,
+                "total": 20295,
+                "odds": 100.0
+            }
+        },
+        "PF_avg": 219.08333333333334
+    },
+    "63470": {
+        "wins": 10,
+        "losses": 2,
+        "PF": 2345.85,
+        "playoff_odds": 99.86,
+        "seeds": [
+            4.56,
+            14.66,
+            53.73,
+            20.37,
+            5.77,
+            0.76,
+            0.11,
+            0.03,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 472,
+                "total": 472,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 3668,
+                "total": 3668,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 12243,
+                "total": 12243,
+                "odds": 100.0
+            },
+            "7-3": {
+                "made_playoffs": 23143,
+                "total": 23143,
+                "odds": 100.0
+            },
+            "6-4": {
+                "made_playoffs": 26372,
+                "total": 26372,
+                "odds": 100.0
+            },
+            "5-5": {
+                "made_playoffs": 20052,
+                "total": 20052,
+                "odds": 100.0
+            },
+            "4-6": {
+                "made_playoffs": 9994,
+                "total": 9994,
+                "odds": 100.0
+            },
+            "3-7": {
+                "made_playoffs": 3263,
+                "total": 3270,
+                "odds": 99.79
+            },
+            "2-8": {
+                "made_playoffs": 620,
+                "total": 695,
+                "odds": 89.21
+            },
+            "1-9": {
+                "made_playoffs": 32,
+                "total": 83,
+                "odds": 38.55
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 8,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 76065,
+                "total": 76096,
+                "odds": 99.96
+            },
+            "loss": {
+                "make_playoffs": 23794,
+                "total": 23904,
+                "odds": 99.54
+            }
+        },
+        "PF_avg": 195.48749999999998
+    },
+    "63250": {
+        "wins": 9,
+        "losses": 3,
+        "PF": 2133.25,
+        "playoff_odds": 96.97,
+        "seeds": [
+            0.34,
+            2.78,
+            16.18,
+            38.84,
+            30.96,
+            7.87,
+            2.14,
+            0.67,
+            0.19,
+            0.03,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 296,
+                "total": 296,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 2427,
+                "total": 2427,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 9121,
+                "total": 9121,
+                "odds": 100.0
+            },
+            "7-3": {
+                "made_playoffs": 19215,
+                "total": 19215,
+                "odds": 100.0
+            },
+            "6-4": {
+                "made_playoffs": 25730,
+                "total": 25730,
+                "odds": 100.0
+            },
+            "5-5": {
+                "made_playoffs": 23114,
+                "total": 23121,
+                "odds": 99.97
+            },
+            "4-6": {
+                "made_playoffs": 13243,
+                "total": 13595,
+                "odds": 97.41
+            },
+            "3-7": {
+                "made_playoffs": 3581,
+                "total": 5123,
+                "odds": 69.9
+            },
+            "2-8": {
+                "made_playoffs": 248,
+                "total": 1205,
+                "odds": 20.58
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 157,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 10,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 44220,
+                "total": 44679,
+                "odds": 98.97
+            },
+            "loss": {
+                "make_playoffs": 52755,
+                "total": 55321,
+                "odds": 95.36
+            }
+        },
+        "PF_avg": 177.77083333333334
+    },
+    "63265": {
+        "wins": 8,
+        "losses": 4,
+        "PF": 2224.95,
+        "playoff_odds": 94.64,
+        "seeds": [
+            0.07,
+            0.9,
+            9.78,
+            33.03,
+            39.28,
+            11.58,
+            3.7,
+            1.2,
+            0.37,
+            0.08,
+            0.01,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 290,
+                "total": 290,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 2649,
+                "total": 2649,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 9982,
+                "total": 9982,
+                "odds": 100.0
+            },
+            "7-3": {
+                "made_playoffs": 20603,
+                "total": 20603,
+                "odds": 100.0
+            },
+            "6-4": {
+                "made_playoffs": 26727,
+                "total": 26729,
+                "odds": 99.99
+            },
+            "5-5": {
+                "made_playoffs": 21974,
+                "total": 22119,
+                "odds": 99.34
+            },
+            "4-6": {
+                "made_playoffs": 10707,
+                "total": 12319,
+                "odds": 86.91
+            },
+            "3-7": {
+                "made_playoffs": 1669,
+                "total": 4267,
+                "odds": 39.11
+            },
+            "2-8": {
+                "made_playoffs": 41,
+                "total": 923,
+                "odds": 4.44
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 108,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 11,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 53880,
+                "total": 55321,
+                "odds": 97.4
+            },
+            "loss": {
+                "make_playoffs": 40762,
+                "total": 44679,
+                "odds": 91.23
+            }
+        },
+        "PF_avg": 185.4125
+    },
+    "63309": {
+        "wins": 7,
+        "losses": 5,
+        "PF": 1994.35,
+        "playoff_odds": 35.93,
+        "seeds": [
+            0.0,
+            0.01,
+            0.15,
+            1.83,
+            8.66,
+            25.29,
+            25.13,
+            18.23,
+            12.06,
+            6.3,
+            1.97,
+            0.37,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 14,
+                "total": 14,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 184,
+                "total": 184,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 1524,
+                "total": 1524,
+                "odds": 100.0
+            },
+            "7-3": {
+                "made_playoffs": 6267,
+                "total": 6315,
+                "odds": 99.24
+            },
+            "6-4": {
+                "made_playoffs": 13890,
+                "total": 15627,
+                "odds": 88.88
+            },
+            "5-5": {
+                "made_playoffs": 11792,
+                "total": 24955,
+                "odds": 47.25
+            },
+            "4-6": {
+                "made_playoffs": 2218,
+                "total": 25893,
+                "odds": 8.57
+            },
+            "3-7": {
+                "made_playoffs": 42,
+                "total": 17125,
+                "odds": 0.25
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 6792,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 1454,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 117,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 23830,
+                "total": 45710,
+                "odds": 52.13
+            },
+            "loss": {
+                "make_playoffs": 12101,
+                "total": 54290,
+                "odds": 22.29
+            }
+        },
+        "PF_avg": 166.19583333333333
+    },
+    "63259": {
+        "wins": 6,
+        "losses": 6,
+        "PF": 2070.6,
+        "playoff_odds": 42.83,
+        "seeds": [
+            0.0,
+            0.0,
+            0.22,
+            2.37,
+            10.53,
+            29.69,
+            21.68,
+            15.87,
+            11.22,
+            6.58,
+            1.56,
+            0.26,
+            0.01,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 135,
+                "total": 135,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 1399,
+                "total": 1399,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 6149,
+                "total": 6158,
+                "odds": 99.85
+            },
+            "7-3": {
+                "made_playoffs": 14502,
+                "total": 15255,
+                "odds": 95.06
+            },
+            "6-4": {
+                "made_playoffs": 15689,
+                "total": 24046,
+                "odds": 65.25
+            },
+            "5-5": {
+                "made_playoffs": 4740,
+                "total": 25165,
+                "odds": 18.84
+            },
+            "4-6": {
+                "made_playoffs": 211,
+                "total": 17190,
+                "odds": 1.23
+            },
+            "3-7": {
+                "made_playoffs": 1,
+                "total": 7961,
+                "odds": 0.01
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 2321,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 348,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 22,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 30360,
+                "total": 54290,
+                "odds": 55.92
+            },
+            "loss": {
+                "make_playoffs": 12466,
+                "total": 45710,
+                "odds": 27.27
+            }
+        },
+        "PF_avg": 172.54999999999998
+    },
+    "63466": {
+        "wins": 5,
+        "losses": 7,
+        "PF": 2065.8,
+        "playoff_odds": 6.87,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.07,
+            0.91,
+            5.89,
+            11.42,
+            15.81,
+            20.64,
+            25.08,
+            13.95,
+            5.78,
+            0.45,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 2,
+                "total": 2,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 120,
+                "total": 120,
+                "odds": 100.0
+            },
+            "8-2": {
+                "made_playoffs": 1003,
+                "total": 1052,
+                "odds": 95.34
+            },
+            "7-3": {
+                "made_playoffs": 3147,
+                "total": 4947,
+                "odds": 63.61
+            },
+            "6-4": {
+                "made_playoffs": 2354,
+                "total": 13430,
+                "odds": 17.53
+            },
+            "5-5": {
+                "made_playoffs": 244,
+                "total": 23010,
+                "odds": 1.06
+            },
+            "4-6": {
+                "made_playoffs": 1,
+                "total": 26320,
+                "odds": 0.0
+            },
+            "3-7": {
+                "made_playoffs": 0,
+                "total": 19409,
+                "odds": 0.0
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 8977,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 2447,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 286,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 2806,
+                "total": 20295,
+                "odds": 13.83
+            },
+            "loss": {
+                "make_playoffs": 4065,
+                "total": 79705,
+                "odds": 5.1
+            }
+        },
+        "PF_avg": 172.15
+    },
+    "63305": {
+        "wins": 5,
+        "losses": 7,
+        "PF": 2037.0,
+        "playoff_odds": 10.4,
+        "seeds": [
+            0.0,
+            0.0,
+            0.01,
+            0.18,
+            1.52,
+            8.7,
+            16.15,
+            21.05,
+            23.04,
+            19.23,
+            7.64,
+            2.22,
+            0.26,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 29,
+                "total": 29,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 449,
+                "total": 454,
+                "odds": 98.9
+            },
+            "8-2": {
+                "made_playoffs": 2566,
+                "total": 2917,
+                "odds": 87.97
+            },
+            "7-3": {
+                "made_playoffs": 4992,
+                "total": 10159,
+                "odds": 49.14
+            },
+            "6-4": {
+                "made_playoffs": 2261,
+                "total": 21289,
+                "odds": 10.62
+            },
+            "5-5": {
+                "made_playoffs": 107,
+                "total": 27573,
+                "odds": 0.39
+            },
+            "4-6": {
+                "made_playoffs": 0,
+                "total": 22222,
+                "odds": 0.0
+            },
+            "3-7": {
+                "made_playoffs": 0,
+                "total": 11391,
+                "odds": 0.0
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 3396,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 529,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 41,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 9137,
+                "total": 70641,
+                "odds": 12.93
+            },
+            "loss": {
+                "make_playoffs": 1267,
+                "total": 29359,
+                "odds": 4.32
+            }
+        },
+        "PF_avg": 169.75
+    },
+    "63286": {
+        "wins": 4,
+        "losses": 8,
+        "PF": 2131.35,
+        "playoff_odds": 12.13,
+        "seeds": [
+            0.0,
+            0.0,
+            0.01,
+            0.23,
+            2.04,
+            9.85,
+            18.07,
+            22.56,
+            21.57,
+            16.06,
+            7.13,
+            2.27,
+            0.22,
+            0.0
+        ],
+        "records": {
+            "10-0": {
+                "made_playoffs": 194,
+                "total": 194,
+                "odds": 100.0
+            },
+            "9-1": {
+                "made_playoffs": 1902,
+                "total": 1994,
+                "odds": 95.39
+            },
+            "8-2": {
+                "made_playoffs": 5645,
+                "total": 8479,
+                "odds": 66.58
+            },
+            "7-3": {
+                "made_playoffs": 3981,
+                "total": 19548,
+                "odds": 20.37
+            },
+            "6-4": {
+                "made_playoffs": 404,
+                "total": 27375,
+                "odds": 1.48
+            },
+            "5-5": {
+                "made_playoffs": 0,
+                "total": 23928,
+                "odds": 0.0
+            },
+            "4-6": {
+                "made_playoffs": 0,
+                "total": 12989,
+                "odds": 0.0
+            },
+            "3-7": {
+                "made_playoffs": 0,
+                "total": 4587,
+                "odds": 0.0
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 811,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 92,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 3,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 11680,
+                "total": 88664,
+                "odds": 13.17
+            },
+            "loss": {
+                "make_playoffs": 446,
+                "total": 11336,
+                "odds": 3.93
+            }
+        },
+        "PF_avg": 177.61249999999998
+    },
+    "63396": {
+        "wins": 4,
+        "losses": 8,
+        "PF": 1886.35,
+        "playoff_odds": 0.18,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.01,
+            0.18,
+            0.71,
+            2.15,
+            4.86,
+            11.91,
+            30.71,
+            41.23,
+            8.23,
+            0.01
+        ],
+        "records": {
+            "9-1": {
+                "made_playoffs": 14,
+                "total": 16,
+                "odds": 87.5
+            },
+            "8-2": {
+                "made_playoffs": 71,
+                "total": 176,
+                "odds": 40.34
+            },
+            "7-3": {
+                "made_playoffs": 87,
+                "total": 1215,
+                "odds": 7.16
+            },
+            "6-4": {
+                "made_playoffs": 13,
+                "total": 5096,
+                "odds": 0.26
+            },
+            "5-5": {
+                "made_playoffs": 0,
+                "total": 14180,
+                "odds": 0.0
+            },
+            "4-6": {
+                "made_playoffs": 0,
+                "total": 24807,
+                "odds": 0.0
+            },
+            "3-7": {
+                "made_playoffs": 0,
+                "total": 27318,
+                "odds": 0.0
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 19012,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 7015,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 1165,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 85,
+                "total": 11900,
+                "odds": 0.71
+            },
+            "loss": {
+                "make_playoffs": 100,
+                "total": 88100,
+                "odds": 0.11
+            }
+        },
+        "PF_avg": 157.19583333333333
+    },
+    "63317": {
+        "wins": 4,
+        "losses": 8,
+        "PF": 1858.95,
+        "playoff_odds": 0.18,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.01,
+            0.17,
+            0.88,
+            2.38,
+            5.85,
+            14.06,
+            34.09,
+            36.44,
+            6.12,
+            0.01
+        ],
+        "records": {
+            "9-1": {
+                "made_playoffs": 17,
+                "total": 23,
+                "odds": 73.91
+            },
+            "8-2": {
+                "made_playoffs": 92,
+                "total": 336,
+                "odds": 27.38
+            },
+            "7-3": {
+                "made_playoffs": 64,
+                "total": 2012,
+                "odds": 3.18
+            },
+            "6-4": {
+                "made_playoffs": 7,
+                "total": 7613,
+                "odds": 0.09
+            },
+            "5-5": {
+                "made_playoffs": 0,
+                "total": 18355,
+                "odds": 0.0
+            },
+            "4-6": {
+                "made_playoffs": 0,
+                "total": 27424,
+                "odds": 0.0
+            },
+            "3-7": {
+                "made_playoffs": 0,
+                "total": 25489,
+                "odds": 0.0
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 14121,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 4126,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 501,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 115,
+                "total": 23904,
+                "odds": 0.48
+            },
+            "loss": {
+                "make_playoffs": 65,
+                "total": 76096,
+                "odds": 0.09
+            }
+        },
+        "PF_avg": 154.9125
+    },
+    "63596": {
+        "wins": 2,
+        "losses": 10,
+        "PF": 1675.55,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.01,
+            0.05,
+            0.21,
+            0.67,
+            2.94,
+            11.41,
+            83.46,
+            1.25
+        ],
+        "records": {
+            "9-1": {
+                "made_playoffs": 0,
+                "total": 6,
+                "odds": 0.0
+            },
+            "8-2": {
+                "made_playoffs": 1,
+                "total": 121,
+                "odds": 0.83
+            },
+            "7-3": {
+                "made_playoffs": 0,
+                "total": 824,
+                "odds": 0.0
+            },
+            "6-4": {
+                "made_playoffs": 0,
+                "total": 3770,
+                "odds": 0.0
+            },
+            "5-5": {
+                "made_playoffs": 0,
+                "total": 11414,
+                "odds": 0.0
+            },
+            "4-6": {
+                "made_playoffs": 0,
+                "total": 22082,
+                "odds": 0.0
+            },
+            "3-7": {
+                "made_playoffs": 0,
+                "total": 28075,
+                "odds": 0.0
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 22335,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 9676,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 1697,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 1,
+                "total": 29359,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 70641,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 139.62916666666666
+    },
+    "63597": {
+        "wins": 0,
+        "losses": 12,
+        "PF": 1313.5,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.01,
+            1.26,
+            98.73
+        ],
+        "records": {
+            "7-3": {
+                "made_playoffs": 0,
+                "total": 3,
+                "odds": 0.0
+            },
+            "6-4": {
+                "made_playoffs": 0,
+                "total": 73,
+                "odds": 0.0
+            },
+            "5-5": {
+                "made_playoffs": 0,
+                "total": 509,
+                "odds": 0.0
+            },
+            "4-6": {
+                "made_playoffs": 0,
+                "total": 3014,
+                "odds": 0.0
+            },
+            "3-7": {
+                "made_playoffs": 0,
+                "total": 11313,
+                "odds": 0.0
+            },
+            "2-8": {
+                "made_playoffs": 0,
+                "total": 26964,
+                "odds": 0.0
+            },
+            "1-9": {
+                "made_playoffs": 0,
+                "total": 36558,
+                "odds": 0.0
+            },
+            "0-10": {
+                "made_playoffs": 0,
+                "total": 21566,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 11336,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 88664,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 109.45833333333333
+    }
+}
