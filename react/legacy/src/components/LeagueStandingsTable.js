@@ -28,7 +28,7 @@ export default class LeagueStandingsTable extends Component {
       if (Object.keys(playoff_odds).length != 0) {
         leaders[team]["playoff_odds"] = playoff_odds[leaders[team]["teamID"].toString()]["playoff_odds"];
         leaders[team]["bye_odds"] = (playoff_odds[leaders[team]["teamID"].toString()]["seeds"][0] + playoff_odds[leaders[team]["teamID"].toString()]["seeds"][1]).toFixed(2);
-        leaders[team]["d3_odds"] = (playoff_odds[leaders[team]["teamID"].toString()]["seeds"][12] + playoff_odds[leaders[team]["teamID"].toString()]["seeds"][13]).toFixed(2);
+        leaders[team]["double_demo_odds"] = (playoff_odds[leaders[team]["teamID"].toString()]["seeds"][12] + playoff_odds[leaders[team]["teamID"].toString()]["seeds"][13]).toFixed(2);
       }
     }
 
@@ -89,13 +89,14 @@ export default class LeagueStandingsTable extends Component {
                 {this.props.year == getCurrentYear() ? <Table.HeaderCell width={1} textAlign="center">Playoff%</Table.HeaderCell> : ''}
                 {this.props.year == getCurrentYear() ? <Table.HeaderCell width={1} textAlign="center">Bye%</Table.HeaderCell> : ''}
                 {this.props.year == getCurrentYear() && data[0] && "tier" in data[0] && data[0]["tier"] == 1 ? <Table.HeaderCell width={1} textAlign="center">D3%</Table.HeaderCell> : ''}
+                {this.props.year == getCurrentYear() && data[0] && "tier" in data[0] && data[0]["tier"] == 2 ? <Table.HeaderCell width={1} textAlign="center">D4%</Table.HeaderCell> : ''}
               </Table.Row>
             </Table.Header>
             <Table.Body>
               {_.map(
                 data,
                 (
-                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties, is_replacement, playoff_odds, bye_odds, d3_odds },
+                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties, is_replacement, playoff_odds, bye_odds, double_demo_odds },
                   index,
                 ) => (
                   <Table.Row
@@ -127,7 +128,7 @@ export default class LeagueStandingsTable extends Component {
                     {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
                     {this.props.year == getCurrentYear() ? (<Table.Cell textAlign="center">{playoff_odds !== undefined ? playoff_odds : '-'}</Table.Cell>) : ''}
                     {this.props.year == getCurrentYear() ? (<Table.Cell textAlign="center">{bye_odds !== undefined ? bye_odds : '-'}</Table.Cell>) : ''}
-                    {this.props.year == getCurrentYear() && tier == 1 ? (<Table.Cell textAlign="center">{d3_odds !== undefined ? d3_odds : '-'}</Table.Cell>) : ''}
+                    {this.props.year == getCurrentYear() && tier <= 2 ? (<Table.Cell textAlign="center">{double_demo_odds !== undefined ? double_demo_odds : '-'}</Table.Cell>) : ''}
                   </Table.Row>
                 ),
               )}

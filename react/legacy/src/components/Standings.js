@@ -124,7 +124,7 @@ export default class Standings extends Component {
                 Division 2
               </Header>
               <Grid centered stackable>
-                {this.layoutGrid(this.state.leagues[2], false)}
+                {this.layoutGrid(this.state.leagues[2], true)}
               </Grid>
             </React.Fragment>
           ) : (
