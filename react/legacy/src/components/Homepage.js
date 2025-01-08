@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Segment, Tab, Header, Grid } from 'semantic-ui-react';
+import { Container, Grid, Header, Image, Segment, Tab } from 'semantic-ui-react';
 import Banner from './Banner';
 
 const panes = [
@@ -492,47 +492,9 @@ const Homepage = () => {
             Promotion and Relegation
           </Header>
           <Grid>
-            <Grid.Row columns={2}>
+            <Grid.Row columns={1}>
               <Grid.Column>
-                <Header as="h3" textAlign="center">D1</Header>
-                <ul>
-                  <li>(6) D1 ranks 1-6 (all playoff teams)</li>
-                  <li>(6) D2 ranks 1-2 (all finalists)</li>
-                  <li>(1) PF Champion</li>
-                  <li>(1) Woppa Cup Champion</li>
-                  <li><i>Extra slots filled from highest regular season PF out of D1 and D2 teams</i></li>
-                </ul>
-              </Grid.Column>
-              <Grid.Column>
-                <Header as="h3" textAlign="center">D2</Header>
-                <ul>
-                  <li>(6)  D1 ranks 7-12</li>
-                  <li>(12) D2 ranks 3-6</li>
-                  <li>(20) D3 ranks 1-4 (semifinalists)</li>
-                  <li>(3)  D4 top-3 PF teams</li>
-                  <li>(1)  Woppa Cup Runner Up</li>
-                  <li><i>Extra slots filled from highest regular season PF out of D1, D2, and D3 teams</i></li>
-                </ul>
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={2}>
-              <Grid.Column>
-                <Header as="h3" textAlign="center">D3</Header>
-                <ul>
-                  <li>(2)  D1 ranks 13-14</li>
-                  <li>(24) D2 ranks 7-14</li>
-                  <li>(15) D3 ranks 5-7 (regular season)</li>
-                  <li>(28) D4 ranks 1-4 (semifinalists)</li>
-                  <li><i>Extra spots filled from highest PF out of D3 and D4 teams</i></li>
-                </ul>
-              </Grid.Column>
-              <Grid.Column>
-                <Header as="h3" textAlign="center">D4</Header>
-                <ul>
-                  <li>All other returning D3 teams*</li>
-                  <li>All other returning D4 teams</li>
-                  <li>Newcomers*</li>
-                </ul>
+                <Image src={"/images/PromoRele.png"} />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={1}>
