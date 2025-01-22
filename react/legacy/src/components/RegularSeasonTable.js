@@ -58,6 +58,14 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
               <Table.HeaderCell
                 width={2}
                 textAlign="center"
+                sorted={column === 'Ties' ? direction : null}
+                onClick={handleSort('Ties')}
+              >
+                Ties
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                width={2}
+                textAlign="center"
                 sorted={column === 'pointsFor' ? direction : null}
                 onClick={handleSort('pointsFor')}
               >
@@ -92,6 +100,7 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
                   FFname,
                   Wins,
                   Losses,
+                  Ties,
                   pointsFor,
                   pointsAgainst,
                   coachRating,
@@ -128,6 +137,7 @@ const RegularSeasonTable = ({ column, data, isLoaded, direction, handleSort }) =
                   </Table.Cell>
                   <Table.Cell textAlign="center">{Wins}</Table.Cell>
                   <Table.Cell textAlign="center">{Losses}</Table.Cell>
+                  <Table.Cell textAlign="center">{Ties}</Table.Cell>
                   <Table.Cell textAlign="center">{pointsFor}</Table.Cell>
                   <Table.Cell textAlign="center">{pointsAgainst}</Table.Cell>
                   <Table.Cell textAlign="center">{coachRating}%</Table.Cell>

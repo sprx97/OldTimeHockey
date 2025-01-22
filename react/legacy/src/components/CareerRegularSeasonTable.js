@@ -50,6 +50,14 @@ const CareerRegularSeasonTable = ({ column, data, isLoaded, direction, handleSor
             <Table.HeaderCell
               width={2}
               textAlign="center"
+              sorted={column === 'ties' ? direction : null}
+              onClick={handleSort('ties')}
+            >
+              Ties
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              width={2}
+              textAlign="center"
               sorted={column === 'pct' ? direction : null}
               onClick={handleSort('pct')}
             >
@@ -106,6 +114,7 @@ const CareerRegularSeasonTable = ({ column, data, isLoaded, direction, handleSor
                 seasons,
                 wins,
                 losses,
+                ties,
                 pct,
                 PF,
                 avgPF,
@@ -124,6 +133,7 @@ const CareerRegularSeasonTable = ({ column, data, isLoaded, direction, handleSor
                 <Table.Cell textAlign="center">{seasons}</Table.Cell>
                 <Table.Cell textAlign="center">{wins}</Table.Cell>
                 <Table.Cell textAlign="center">{losses}</Table.Cell>
+                <Table.Cell textAlign="center">{ties}</Table.Cell>
                 <Table.Cell textAlign="center">{pct}</Table.Cell>
                 <Table.Cell textAlign="center">{PF}</Table.Cell>
                 <Table.Cell textAlign="center">{avgPF}</Table.Cell>
