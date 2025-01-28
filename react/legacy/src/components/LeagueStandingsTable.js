@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Table, Header, Image } from 'semantic-ui-react';
-import { getCurrentYear, GetTrophy } from './Helpers'
+import { Table, Header, Image, Icon } from 'semantic-ui-react';
+import { getCurrentYear, GetTrophy } from './Helpers';
+import { Link } from 'react-router-dom';
 
 export default class LeagueStandingsTable extends Component {
   constructor(props) {
@@ -64,6 +65,12 @@ export default class LeagueStandingsTable extends Component {
             >
               {this.props.leagueName}
             </a>{' '}
+            <Link to={`/league/${this.props.leagueID}`}>
+              <Icon 
+                name="info circle" 
+                style={{ marginLeft: '5px', cursor: 'pointer' }}
+              />
+            </Link>
             <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />
             { this.props.years < 2023 ?
             <Header.Subheader>
