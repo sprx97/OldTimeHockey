@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Header, Grid, Dropdown } from 'semantic-ui-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis, ResponsiveContainer } from 'recharts';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -111,31 +111,36 @@ const LeaguePlayoffOdds = (props) => {
             <Grid.Row>
               <Grid.Column>
                 <Header as="h3">Playoff Seed Probabilities</Header>
-                <BarChart width={400} height={300} data={formatSeedData(selectedTeam.seeds)}>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={formatSeedData(selectedTeam.seeds)}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="seed" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
                   <Bar dataKey="probability" fill="#8884d8" name="Probability %" />
-                </BarChart>
+                  </BarChart>
+                </ResponsiveContainer>
               </Grid.Column>
               <Grid.Column>
                 <Header as="h3">Record-Based Playoff Odds</Header>
-                <BarChart width={400} height={300} data={formatRecordData(selectedTeam.records)}>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={formatRecordData(selectedTeam.records)}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="record" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
                   <Bar dataKey="odds" fill="#82ca9d" name="Playoff Odds %" />
-                </BarChart>
+                  </BarChart>
+                </ResponsiveContainer>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
                 <Header as="h3">Current Week Impact on Playoff Odds</Header>
-                <ScatterChart width={400} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                <ResponsiveContainer width="100%" height={300}>
+                  <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
                     type="category"
@@ -182,7 +187,8 @@ const LeaguePlayoffOdds = (props) => {
                     shape="circle"
                     legendType="circle"
                   />
-                </ScatterChart>
+                  </ScatterChart>
+                </ResponsiveContainer>
               </Grid.Column>
             </Grid.Row>
           </Grid>
