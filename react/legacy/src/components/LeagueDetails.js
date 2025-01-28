@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Header, Grid, Dropdown } from 'semantic-ui-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis } from 'recharts';
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const value = payload[0].value;
+    return (
+      <div style={{ backgroundColor: 'white', padding: '5px', border: '1px solid #ccc' }}>
+        {typeof value === 'number' ? `${value.toFixed(1)}%` : 'N/A'}
+      </div>
+    );
+  }
+  return null;
+};
 
 const LeaguePlayoffOdds = (props) => {
   const leagueId = props.match.params.leagueId;
@@ -33,7 +45,7 @@ const LeaguePlayoffOdds = (props) => {
   const formatSeedData = (seeds) => {
     if (!seeds) return [];
     return seeds.map((probability, index) => ({
-      seed: `Seed ${index + 1}`,
+      seed: `${index + 1}`,
       probability: probability
     }));
   };
@@ -122,25 +134,55 @@ const LeaguePlayoffOdds = (props) => {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <Header as="h3">Current Week Playoff Odds</Header>
-                <PieChart width={400} height={300}>
-                  <Pie
-                    data={formatCurrentWeekData(selectedTeam.current_week)}
-                    cx={200}
-                    cy={150}
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value.toFixed(1)}%`}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {formatCurrentWeekData(selectedTeam.current_week).map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
+                <Header as="h3">Current Week Impact on Playoff Odds</Header>
+                <ScatterChart width={400} height={300} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    type="category"
+                    dataKey="scenario" 
+                    allowDuplicatedCategory={false}
+                  />
+                  <YAxis 
+                    type="number"
+                    dataKey="odds"
+                    domain={[0, 100]} 
+                    ticks={[0, 20, 40, 60, 80, 100]}
+                    label={{ value: 'Playoff Odds %', angle: -90, position: 'insideLeft' }}
+                  />
+                  <ZAxis range={[400, 400]} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
                   <Legend />
-                </PieChart>
+                  <Scatter 
+                    name="Current" 
+                    data={[{
+                      scenario: 'Current',
+                      odds: selectedTeam.playoff_odds || 0
+                    }]} 
+                    fill="#8884d8"
+                    shape="circle" 
+                    legendType="circle"
+                  />
+                  <Scatter 
+                    name="Win" 
+                    data={[{
+                      scenario: 'If Win',
+                      odds: selectedTeam.current_week?.win?.odds || 0
+                    }]} 
+                    fill="#2ECC40"
+                    shape="circle"
+                    legendType="circle"
+                  />
+                  <Scatter 
+                    name="Loss" 
+                    data={[{
+                      scenario: 'If Loss',
+                      odds: selectedTeam.current_week?.loss?.odds || 0
+                    }]} 
+                    fill="#FF4136"
+                    shape="circle"
+                    legendType="circle"
+                  />
+                </ScatterChart>
               </Grid.Column>
             </Grid.Row>
           </Grid>
