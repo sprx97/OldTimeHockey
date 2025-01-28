@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Container, Header, Grid, Dropdown } from 'semantic-ui-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
 
-const LeagueDetails = (props) => {
+const LeaguePlayoffOdds = (props) => {
   const leagueId = props.match.params.leagueId;
+  const location = useLocation();
+  const leagueName = location.state?.leagueName || 'League';
   const [playoffOdds, setPlayoffOdds] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
 
@@ -71,8 +74,8 @@ const LeagueDetails = (props) => {
   };
 
   return (
-    <Container>
-      <Header as="h1">League Details - {leagueId}</Header>
+    <Container style={{ marginTop: '2rem' }}>
+      <Header as="h1">{leagueName} - League Playoff Odds</Header>
       {playoffOdds && (
         <Dropdown
           placeholder="Select Team"
@@ -86,14 +89,13 @@ const LeagueDetails = (props) => {
       )}
       {selectedTeam && (
         <div>
-          <Header as="h2">{selectedTeam.name}</Header>
-          <p>Owner: {selectedTeam.owner}</p>
-          <p>Record: {selectedTeam.wins}-{selectedTeam.losses}</p>
-          <p>Points For: {selectedTeam.PF}</p>
-          <p>Points For Per Week: {selectedTeam.PF_avg}</p>
+
+          <p>Current Record: {selectedTeam.wins}-{selectedTeam.losses}</p>
+          <p>Total PF: {selectedTeam.PF}</p>
+          <p>PF per week average: {selectedTeam.PF_avg}</p>
           <p>Playoff Odds: {selectedTeam.playoff_odds}%</p>
 
-          <Grid columns={2} stackable>
+          <Grid columns={2} stackable style={{paddingTop: 25}}>
             <Grid.Row>
               <Grid.Column>
                 <Header as="h3">Playoff Seed Probabilities</Header>
@@ -148,4 +150,4 @@ const LeagueDetails = (props) => {
   );
 };
 
-export default LeagueDetails;
+export default LeaguePlayoffOdds;

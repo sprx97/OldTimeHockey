@@ -65,7 +65,10 @@ export default class LeagueStandingsTable extends Component {
             >
               {this.props.leagueName}
             </a>{' '}
-            <Link to={`/league/${this.props.leagueID}`}>
+            <Link to={{
+              pathname: `/league/${this.props.leagueID}`,
+              state: { leagueName: this.props.leagueName }
+            }}>
               <Icon 
                 name="info circle" 
                 style={{ marginLeft: '5px', cursor: 'pointer' }}
