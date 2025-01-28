@@ -37,7 +37,10 @@ def calculate_playoff_odds(league, year, current_week = None):
     standings = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league}&season={year}")
     for team in standings["divisions"][0]["teams"]:
         id = str(team["id"])
-        teams[id] = {"wins": team["recordOverall"]["wins"] if "wins" in team["recordOverall"] else 0,
+
+        teams[id] = {"name": team["name"],
+                     "owner": team["owners"][0]["displayName"] if "owners" in team else "No Owner",
+                     "wins": team["recordOverall"]["wins"] if "wins" in team["recordOverall"] else 0,
                      "losses": team["recordOverall"]["losses"] if "losses" in team["recordOverall"] else 0,
                      "PF": team["pointsFor"]["value"],
                      "playoff_odds": 0,
@@ -59,7 +62,6 @@ def calculate_playoff_odds(league, year, current_week = None):
             if schedule_period["ordinal"] == 19 and year == 2024:
                 continue
             # HACKHACKHACKHACK
-            print(schedule_period["ordinal"])
             remaining_weeks.append(schedule_period["low"]["ordinal"])
 
     # Trim off playoff weeks. This may be too simple of a solution but it works for now.
