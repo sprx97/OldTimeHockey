@@ -22,7 +22,7 @@ const LeaguePlayoffOdds = (props) => {
   const [playoffOdds, setPlayoffOdds] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
+  const COLORS = ['#99D9D9', '#355464', '#001628', '#E9072B', '#99D9D9', '#355464'];
 
   useEffect(() => {
     const fetchPlayoffOdds = async () => {
@@ -118,7 +118,7 @@ const LeaguePlayoffOdds = (props) => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="probability" fill="#8884d8" name="Probability %" />
+                  <Bar dataKey="probability" fill="#99D9D9" name="Probability %" />
                   </BarChart>
                 </ResponsiveContainer>
               </Grid.Column>
@@ -131,7 +131,7 @@ const LeaguePlayoffOdds = (props) => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="odds" fill="#82ca9d" name="Playoff Odds %" />
+                  <Bar dataKey="odds" fill="#355464" name="Playoff Odds %" />
                   </BarChart>
                 </ResponsiveContainer>
               </Grid.Column>
@@ -163,7 +163,7 @@ const LeaguePlayoffOdds = (props) => {
                       scenario: 'Current',
                       odds: selectedTeam.playoff_odds || 0
                     }]} 
-                    fill="#8884d8"
+                    fill="#99D9D9"
                     shape="circle" 
                     legendType="circle"
                   />
@@ -173,7 +173,7 @@ const LeaguePlayoffOdds = (props) => {
                       scenario: 'If Win',
                       odds: selectedTeam.current_week?.win?.odds || 0
                     }]} 
-                    fill="#2ECC40"
+                    fill="#355464"
                     shape="circle"
                     legendType="circle"
                   />
@@ -183,7 +183,7 @@ const LeaguePlayoffOdds = (props) => {
                       scenario: 'If Loss',
                       odds: selectedTeam.current_week?.loss?.odds || 0
                     }]} 
-                    fill="#FF4136"
+                    fill="#E9072B"
                     shape="circle"
                     legendType="circle"
                   />
