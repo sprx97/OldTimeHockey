@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Header, Grid, Dropdown } from 'semantic-ui-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, ScatterChart, Scatter, ZAxis, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis, ResponsiveContainer } from 'recharts';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -19,28 +19,27 @@ const LeaguePlayoffOdds = (props) => {
   const leagueId = props.match.params.leagueId;
   const location = useLocation();
   const leagueName = location.state?.leagueName || 'League';
-  const [playoffOdds, setPlayoffOdds] = useState(null);
-  const [selectedTeam, setSelectedTeam] = useState(null);
 
-  const COLORS = ['#99D9D9', '#355464', '#001628', '#E9072B', '#99D9D9', '#355464'];
-
-  useEffect(() => {
-    const fetchPlayoffOdds = async () => {
-      try {
-        const response = await fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}`);
-        const data = await response.json();
-        setPlayoffOdds(data);
-        // Set the first team as selected by default
-        if (data && Object.keys(data).length > 0) {
-          setSelectedTeam(Object.values(data)[0]);
-        }
-      } catch (error) {
-        console.error('Error fetching playoff odds:', error);
+  const fetchPlayoffOdds = async () => {
+    try {
+      const response = await fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}`);
+      const data = await response.json();
+      setPlayoffOdds(data);
+      // Set the first team as selected by default
+      if (data && Object.keys(data).length > 0) {
+        setSelectedTeam(Object.values(data)[0]);
       }
-    };
-    
+    } catch (error) {
+      console.error('Error fetching playoff odds:', error);
+    }
+  };
+
+  const [playoffOdds, setPlayoffOdds] = useState(() => {
+    // Start the fetch when component mounts
     fetchPlayoffOdds();
-  }, [leagueId]);
+    return null;
+  });
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   const formatSeedData = (seeds) => {
     if (!seeds) return [];
@@ -61,14 +60,6 @@ const LeaguePlayoffOdds = (props) => {
       const bWins = parseInt(b.record.split('-')[0]);
       return bWins - aWins;
     });
-  };
-
-  const formatCurrentWeekData = (currentWeek) => {
-    if (!currentWeek) return [];
-    return [
-      { name: 'Win', value: currentWeek.win.odds },
-      { name: 'Loss', value: currentWeek.loss.odds }
-    ];
   };
 
   const formatTeamOptions = (teams) => {
