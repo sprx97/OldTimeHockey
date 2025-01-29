@@ -10,7 +10,7 @@ import Login from "./Login";
 import CreateAccount from "./CreateAccount";
 import NotFound from './NotFound';
 import UserProfile from "./UserProfile";
-import LeagueDetails from "./LeagueDetails";
+import LeaguePlayoffOdds from "./LeaguePlayoffOdds";
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -27,7 +27,7 @@ const Routes = () => {
       <Route exact path="/login" component={Login} />
       <Route exact path="/createAccount" component={CreateAccount} />
       <Route path="/profile" component={() => (<UserProfile username={query.get('username')}/>)} />
-      <Route path="/league/:leagueId" component={LeagueDetails} />
+      <Route path="/league/:leagueId" component={LeaguePlayoffOdds} />
       <Route component={NotFound} />
     </Switch>
   );
