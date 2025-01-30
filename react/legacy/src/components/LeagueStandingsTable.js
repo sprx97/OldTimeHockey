@@ -135,7 +135,23 @@ export default class LeagueStandingsTable extends Component {
                     <Table.Cell textAlign="center">{wins}</Table.Cell>
                     <Table.Cell textAlign="center">{losses}</Table.Cell>
                     {has_ties ? (<Table.Cell textAlign="center">{ties == 0 ? '' : ties}</Table.Cell>) : ''}
-                    {this.props.year == getCurrentYear() ? (<Table.Cell textAlign="center">{playoff_odds !== undefined ? playoff_odds : '-'}</Table.Cell>) : ''}
+                    {this.props.year == getCurrentYear() ? (
+                      <Table.Cell textAlign="center">
+                        <Link 
+                          to={{
+                            pathname: `/league/${leagueID}/playoffs`,
+                            state: { 
+                              leagueName: this.props.leagueName,
+                              selectedTeam: name,
+                              selectedOwner: FFname
+                            }
+                          }}
+                          style={{ color: 'inherit', textDecoration: 'underline' }}
+                        >
+                          {playoff_odds !== undefined ? playoff_odds : '-'}
+                        </Link>
+                      </Table.Cell>
+                    ) : ''}
                     {this.props.year == getCurrentYear() ? (<Table.Cell textAlign="center">{bye_odds !== undefined ? bye_odds : '-'}</Table.Cell>) : ''}
                     {this.props.year == getCurrentYear() && tier == 1 ? (<Table.Cell textAlign="center">{d3_odds !== undefined ? d3_odds : '-'}</Table.Cell>) : ''}
                   </Table.Row>

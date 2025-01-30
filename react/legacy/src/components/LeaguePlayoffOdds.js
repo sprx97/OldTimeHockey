@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Header, Grid, Dropdown, Tab } from 'semantic-ui-react';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, LineChart, Cell } from 'recharts';
@@ -22,6 +22,8 @@ const LeaguePlayoffOdds = (props) => {
   const leagueId = props.match.params.leagueId;
   const location = useLocation();
   const leagueName = location.state?.leagueName || 'League';
+  const passedTeamName = location.state?.selectedTeam;
+  const passedOwnerName = location.state?.selectedOwner;
 
   const fetchPlayoffOdds = async () => {
     try {
@@ -30,21 +32,55 @@ const LeaguePlayoffOdds = (props) => {
 
       console.log('data', data)
       setPlayoffOdds(data);
-      // Set the first team as selected by default
+      // If a team was passed via navigation, select it, otherwise select first team
       if (data && Object.keys(data).length > 0) {
-        setSelectedTeam(Object.values(data)[0]);
+        if (passedTeamName) {
+          const team = Object.values(data).find(t => t.name === passedTeamName && t.owner === passedOwnerName);
+          if (team) {
+            setSelectedTeam(team);
+          } else {
+            setSelectedTeam(Object.values(data)[0]);
+          }
+        } else {
+          setSelectedTeam(Object.values(data)[0]);
+        }
       }
     } catch (error) {
       console.error('Error fetching playoff odds:', error);
     }
   };
 
-  const [playoffOdds, setPlayoffOdds] = useState(() => {
-    // Start the fetch when component mounts
-    fetchPlayoffOdds();
-    return null;
-  });
+  const [playoffOdds, setPlayoffOdds] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [historicalOdds, setHistoricalOdds] = useState(null);
+
+  useEffect(() => {
+    fetchPlayoffOdds();
+    fetchHistoricalOdds();
+  }, [leagueId]);
+
+  const fetchHistoricalOdds = async () => {
+    try {
+      const weeklyData = {};
+      // Fetch data for weeks 1-22
+      const promises = Array.from({ length: 22 }, (_, i) => i + 1).map(week =>
+        fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}&week=${week}`)
+          .then(res => res.json())
+          .then(data => {
+            weeklyData[week] = data;
+          })
+          .catch(error => {
+            console.error(`Error fetching week ${week}:`, error);
+          })
+      );
+      
+      await Promise.all(promises);
+      console.log('weeklyData', weeklyData)
+      setHistoricalOdds(weeklyData);
+    } catch (error) {
+      console.error('Error fetching historical odds:', error);
+    }
+  };
 
   const formatSeedData = (seeds) => {
     if (!seeds) return [];
@@ -81,9 +117,49 @@ const LeaguePlayoffOdds = (props) => {
     setSelectedTeam(team);
   };
 
+  const formatHistoricalData = () => {
+    if (!historicalOdds || !playoffOdds) return { data: [], lines: [] };
+    
+    // Get current team IDs and names
+    const teams = Object.entries(playoffOdds).map(([teamId, team]) => ({
+      id: teamId,
+      name: team.name
+    }));
+    
+    // Create data points for each week
+    const data = [];
+    for (let week = 12; week <= 17; week++) {
+      const weekData = historicalOdds[week];
+      if (weekData) {
+        const weekPoint = { week };
+        teams.forEach(team => {
+          if (weekData[team.id]) {
+            weekPoint[team.name] = weekData[team.id].playoff_odds;
+          }
+        });
+        data.push(weekPoint);
+      }
+    }
+    
+    // Create line configurations
+    const lines = teams.map((team, index) => ({
+      name: team.name,
+      dataKey: team.name,
+      type: "monotone",
+      stroke: `hsl(${(index * 360) / teams.length}, 70%, 50%)`,
+      dot: { r: 3, fill: `hsl(${(index * 360) / teams.length}, 70%, 50%)` },
+      strokeWidth: 2,
+      connectNulls: true,
+      isAnimationActive: false
+    }));
+    
+    console.log('Formatted data:', data);
+    return { data, lines };
+  };
+
   const renderLeagueWideTab = () => (
     <div>
-      <Header as="h2">League-Wide Playoff Odds</Header>
+      <Header as="h2" style={{fontSize: "1.25rem", paddingLeft: 5, paddingTop: 15}}>Current Playoff Odds</Header>
       <ResponsiveContainer width="100%" height={500}>
         <BarChart
           data={Object.values(playoffOdds)
@@ -137,8 +213,8 @@ const LeaguePlayoffOdds = (props) => {
                   fill={
                     entry.playoff_odds >= 90 ? '#2ecc71' :
                     entry.playoff_odds >= 70 ? '#3498db' :
-                    entry.playoff_odds >= 40 ? '#f1c40f' :
-                    entry.playoff_odds >= 10 ? '#e67e22' :
+                    entry.playoff_odds >= 40 ? '#e67e22' :
+                    entry.playoff_odds >= 10 ? '#ff0000' :
                     '#e74c3c'
                   }
                 />
@@ -146,12 +222,53 @@ const LeaguePlayoffOdds = (props) => {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+
+      <Header as="h2" style={{fontSize: "1.25rem", paddingLeft: 5, paddingTop: 15}}>Historical Playoff Odds</Header>
+      <ResponsiveContainer width="100%" height={500}>
+        <LineChart
+          margin={{ top: 20, right: 30, bottom: 60, left: 30 }}
+          data={formatHistoricalData().data}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="week"
+            type="number"
+            domain={[12, 17]}
+            label={{ value: 'Week', position: 'bottom', offset: 0 }}
+            allowDecimals={false}
+            ticks={[12, 13, 14, 15, 16, 17]}
+          />
+          <YAxis
+            label={{ value: 'Playoff Odds %', angle: -90, position: 'insideLeft' }}
+            domain={[0, 100]}
+          />
+          <Tooltip
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div style={{ backgroundColor: 'white', padding: '10px', border: '1px solid #ccc' }}>
+                    {payload.map((entry, index) => (
+                      <div key={index} style={{ color: entry.color }}>
+                        <strong>{entry.name}</strong>: {entry.value?.toFixed(1)}%
+                      </div>
+                    ))}
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+          <Legend />
+          {formatHistoricalData().lines.map(line => (
+            <Line key={line.name} {...line} />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 
   const renderIndividualTab = () => (
     <div>
-      <Header as="h2">Individual Manager Odds</Header>
       <Dropdown
         placeholder="Select Team"
         fluid
@@ -295,7 +412,7 @@ const LeaguePlayoffOdds = (props) => {
   return (
     <Container style={{ marginTop: '2rem', padding: '0 1rem' }}>
       <Header as="h1">{leagueName} - Playoff Odds</Header>
-      <Tab panes={panes} defaultActiveIndex={0} />
+      <Tab panes={panes} defaultActiveIndex={passedTeamName ? 1 : 0} />
     </Container>
   );
 };
