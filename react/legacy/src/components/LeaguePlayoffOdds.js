@@ -353,7 +353,7 @@ const LeaguePlayoffOdds = (props) => {
                 key={line.name} 
                 {...line}
                 stroke={isActive ? line.stroke : '#999'}
-                strokeWidth={isActive ? 3 : 1}
+                strokeWidth={isActive ? 2 : 1}
                 dot={{ ...line.dot, fill: isActive ? line.dot.fill : '#999', r: isActive ? 3 : 2 }}
                 opacity={isActive ? 1 : 0.3}
               />
