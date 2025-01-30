@@ -30,7 +30,6 @@ const LeaguePlayoffOdds = (props) => {
       const response = await fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}`);
       const data = await response.json();
 
-      console.log('data', data)
       setPlayoffOdds(data);
       // If a team was passed via navigation, select it, otherwise select first team
       if (data && Object.keys(data).length > 0) {
@@ -64,12 +63,14 @@ const LeaguePlayoffOdds = (props) => {
     setSelectedTeams(prev => {
       const newSelected = new Set(prev);
       if (newSelected.has(entry.dataKey)) {
+        // If team is already selected, remove it
         newSelected.delete(entry.dataKey);
-        // If no teams are selected after deletion, clear the set to show all teams in full color
+        // If removing the last selected team, clear selection to show all
         if (newSelected.size === 0) {
           return new Set();
         }
       } else {
+        // Add the team to the selected set
         newSelected.add(entry.dataKey);
       }
       return newSelected;
@@ -130,7 +131,6 @@ const LeaguePlayoffOdds = (props) => {
       );
       
       await Promise.all(promises);
-      console.log('weeklyData', weeklyData)
       setHistoricalOdds(weeklyData);
     } catch (error) {
       console.error('Error fetching historical odds:', error);
@@ -514,7 +514,7 @@ const LeaguePlayoffOdds = (props) => {
   ];
 
   return (
-    <Container style={{ marginTop: '2rem', padding: '0 1rem' }}>
+    <Container style={{ marginTop: '2rem', padding: '0' }}>
       <Header as="h1">{leagueName} - Playoff Odds</Header>
       <Tab panes={panes} defaultActiveIndex={passedTeamName ? 1 : 0} />
     </Container>
