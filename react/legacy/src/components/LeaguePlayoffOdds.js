@@ -53,11 +53,66 @@ const LeaguePlayoffOdds = (props) => {
   const [playoffOdds, setPlayoffOdds] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [historicalOdds, setHistoricalOdds] = useState(null);
+  const [selectedTeams, setSelectedTeams] = useState(new Set());
 
   useEffect(() => {
     fetchPlayoffOdds();
     fetchHistoricalOdds();
   }, [leagueId]);
+
+  const handleLegendClick = (entry) => {
+    setSelectedTeams(prev => {
+      const newSelected = new Set(prev);
+      if (newSelected.has(entry.dataKey)) {
+        newSelected.delete(entry.dataKey);
+        // If no teams are selected after deletion, clear the set to show all teams in full color
+        if (newSelected.size === 0) {
+          return new Set();
+        }
+      } else {
+        newSelected.add(entry.dataKey);
+      }
+      return newSelected;
+    });
+  };
+
+  // Custom legend that shows selected/unselected states
+  const CustomLegend = ({ payload }) => {
+    const hasSelections = selectedTeams.size > 0;
+    return (
+      <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        {payload.map((entry, index) => {
+          const isSelected = selectedTeams.has(entry.dataKey);
+          const isActive = !hasSelections || isSelected;
+          return (
+            <li
+              key={`item-${index}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                marginRight: 20,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onClick={() => handleLegendClick(entry)}
+            >
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: 10,
+                  height: 10,
+                  backgroundColor: isActive ? entry.color : '#999',
+                  marginRight: 5,
+                  transition: 'background-color 0.2s ease'
+                }}
+              />
+              <span style={{ color: isActive ? '#000' : '#666' }}>{entry.value}</span>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
 
   const fetchHistoricalOdds = async () => {
     try {
@@ -245,7 +300,7 @@ const LeaguePlayoffOdds = (props) => {
                     entry.playoff_odds >= 70 ? '#0038A8' : // NY Rangers Blue
                     entry.playoff_odds >= 40 ? '#F47A38' : // Anaheim Ducks Orange
                     entry.playoff_odds >= 10 ? '#C8102E' : // Calgary Flames Red
-                    '#C8102E' // Calgary Flames Red for very low odds
+                    '#C8102E' // Calgary Flames Red for very low odds lmao
                   }
                 />
               ))}
@@ -288,10 +343,22 @@ const LeaguePlayoffOdds = (props) => {
               return null;
             }}
           />
-          <Legend />
-          {formatHistoricalData().lines.map(line => (
-            <Line key={line.name} {...line} />
-          ))}
+          <Legend content={<CustomLegend />} />
+          {formatHistoricalData().lines.map(line => {
+            const hasSelections = selectedTeams.size > 0;
+            const isSelected = selectedTeams.has(line.name);
+            const isActive = !hasSelections || isSelected;
+            return (
+              <Line 
+                key={line.name} 
+                {...line}
+                stroke={isActive ? line.stroke : '#999'}
+                strokeWidth={isActive ? 3 : 1}
+                dot={{ ...line.dot, fill: isActive ? line.dot.fill : '#999', r: isActive ? 3 : 2 }}
+                opacity={isActive ? 1 : 0.3}
+              />
+            );
+          })}
         </LineChart>
       </ResponsiveContainer>
     </div>
