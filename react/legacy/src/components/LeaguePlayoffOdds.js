@@ -146,8 +146,38 @@ const LeaguePlayoffOdds = (props) => {
       name: team.name,
       dataKey: team.name,
       type: "monotone",
-      stroke: `hsl(${(index * 360) / teams.length}, 70%, 50%)`,
-      dot: { r: 3, fill: `hsl(${(index * 360) / teams.length}, 70%, 50%)` },
+      stroke: [
+        '#F47A38', // ANA Orange
+        '#002654', // BUF Navy
+        '#C8102E', // CGY Red
+        '#006847', // DAL Green
+        '#041E42', // EDM Dark Blue
+        '#024930', // MIN Forest Green
+        '#00539B', // NYI Blue
+        '#0038A8', // NYR Royal Blue
+        '#F74902', // PHI Orange
+        '#006D75', // SJS Teal
+        '#99D9D9', // SEA Light Blue
+        '#002F87', // STL Blue
+        '#B4975A', // VGK Gold
+        '#C8102E'  // WSH Red
+      ][index % 14],
+      dot: { r: 3, fill: [
+        '#F47A38', // ANA Orange
+        '#002654', // BUF Navy
+        '#C8102E', // CGY Red
+        '#006847', // DAL Green
+        '#041E42', // EDM Dark Blue
+        '#024930', // MIN Forest Green
+        '#00539B', // NYI Blue
+        '#0038A8', // NYR Royal Blue
+        '#F74902', // PHI Orange
+        '#006D75', // SJS Teal
+        '#99D9D9', // SEA Light Blue
+        '#002F87', // STL Blue
+        '#B4975A', // VGK Gold
+        '#C8102E'  // WSH Red
+      ][index % 14] },
       strokeWidth: 2,
       connectNulls: true,
       isAnimationActive: false
@@ -211,11 +241,11 @@ const LeaguePlayoffOdds = (props) => {
                 <Cell
                   key={`cell-${index}`}
                   fill={
-                    entry.playoff_odds >= 90 ? '#2ecc71' :
-                    entry.playoff_odds >= 70 ? '#3498db' :
-                    entry.playoff_odds >= 40 ? '#e67e22' :
-                    entry.playoff_odds >= 10 ? '#ff0000' :
-                    '#e74c3c'
+                    entry.playoff_odds >= 90 ? '#006847' : // Dallas Stars Green
+                    entry.playoff_odds >= 70 ? '#0038A8' : // NY Rangers Blue
+                    entry.playoff_odds >= 40 ? '#F47A38' : // Anaheim Ducks Orange
+                    entry.playoff_odds >= 10 ? '#C8102E' : // Calgary Flames Red
+                    '#C8102E' // Calgary Flames Red for very low odds
                   }
                 />
               ))}
@@ -224,7 +254,7 @@ const LeaguePlayoffOdds = (props) => {
       </ResponsiveContainer>
 
       <Header as="h2" style={{fontSize: "1.25rem", paddingLeft: 5, paddingTop: 15}}>Historical Playoff Odds</Header>
-      <ResponsiveContainer width="100%" height={500}>
+      <ResponsiveContainer width="100%" height={600}>
         <LineChart
           margin={{ top: 20, right: 30, bottom: 60, left: 30 }}
           data={formatHistoricalData().data}
