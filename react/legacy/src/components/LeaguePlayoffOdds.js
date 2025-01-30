@@ -181,20 +181,23 @@ const LeaguePlayoffOdds = (props) => {
       name: team.name
     }));
     
-    // Create data points for each week
+    // Create data points for each week where we have data
     const data = [];
-    for (let week = 12; week <= 17; week++) {
+    const availableWeeks = Object.entries(historicalOdds)
+      .filter(([_, weekData]) => weekData && Object.keys(weekData).length > 0)
+      .map(([week]) => Number(week))
+      .sort((a, b) => a - b);
+
+    availableWeeks.forEach(week => {
       const weekData = historicalOdds[week];
-      if (weekData) {
-        const weekPoint = { week };
-        teams.forEach(team => {
-          if (weekData[team.id]) {
-            weekPoint[team.name] = weekData[team.id].playoff_odds;
-          }
-        });
-        data.push(weekPoint);
-      }
-    }
+      const weekPoint = { week };
+      teams.forEach(team => {
+        if (weekData[team.id]) {
+          weekPoint[team.name] = weekData[team.id].playoff_odds;
+        }
+      });
+      data.push(weekPoint);
+    });
     
     // Create line configurations
     const lines = teams.map((team, index) => ({
@@ -318,10 +321,14 @@ const LeaguePlayoffOdds = (props) => {
           <XAxis
             dataKey="week"
             type="number"
-            domain={[12, 17]}
+            domain={['dataMin', 'dataMax']}
             label={{ value: 'Week', position: 'bottom', offset: 0 }}
             allowDecimals={false}
-            ticks={[12, 13, 14, 15, 16, 17]}
+            ticks={(() => {
+              const data = formatHistoricalData().data;
+              // Only use weeks where we actually have data
+              return data.map(d => d.week);
+            })()}
           />
           <YAxis
             label={{ value: 'Playoff Odds %', angle: -90, position: 'insideLeft' }}
