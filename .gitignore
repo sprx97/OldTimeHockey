@@ -12,8 +12,7 @@ scripts/PlayoffOdds/yahoo_auth.json
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/react/legacy/node_modules/
-/react/new/node_modules/
+node_modules/
 /.pnp
 .pnp.js
 
