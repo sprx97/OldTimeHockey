@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, Header, Grid, Dropdown } from 'semantic-ui-react';
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, LineChart } from 'recharts';
+import { Container, Header, Grid, Dropdown, Tab } from 'semantic-ui-react';
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, LineChart, Cell } from 'recharts';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -81,23 +81,88 @@ const LeaguePlayoffOdds = (props) => {
     setSelectedTeam(team);
   };
 
-  return (
-    <Container style={{ marginTop: '2rem', padding: '0 1rem' }}>
-      <Header as="h1">{leagueName} - Playoff Odds</Header>
-      {playoffOdds && (
-        <Dropdown
-          placeholder="Select Team"
-          fluid
-          selection
-          options={formatTeamOptions(playoffOdds)}
-          value={selectedTeam?.name}
-          onChange={handleTeamChange}
-          style={{ marginBottom: '20px' }}
-        />
-      )}
+  const renderLeagueWideTab = () => (
+    <div>
+      <Header as="h2">League-Wide Playoff Odds</Header>
+      <ResponsiveContainer width="100%" height={500}>
+        <BarChart
+          data={Object.values(playoffOdds)
+            .sort((a, b) => b.playoff_odds - a.playoff_odds)
+            .map(team => ({
+              name: team.name,
+              odds: team.playoff_odds,
+              owner: team.owner
+            }))}
+          margin={{ top: 20, right: 30, bottom: 60, left: 30 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="name"
+            angle={-45}
+            textAnchor="end"
+            height={60}
+            interval={0}
+            label={{ value: 'Team Name', position: 'bottom', offset: 50 }}
+          />
+          <YAxis
+            label={{ value: 'Playoff Odds %', angle: -90, position: 'insideLeft' }}
+            domain={[0, 100]}
+          />
+          <Tooltip
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                const data = payload[0].payload;
+                return (
+                  <div style={{ backgroundColor: 'white', padding: '10px', border: '1px solid #ccc' }}>
+                    <p><strong>{data.name}</strong></p>
+                    <p>Owner: {data.owner}</p>
+                    <p>Playoff Odds: {data.odds.toFixed(2)}%</p>
+                  </div>
+                );
+              }
+              return null;
+            }}
+          />
+          <Bar
+            dataKey="odds"
+            fill="#355464"
+            name="Playoff Odds"
+            barSize={30}
+          >
+            {Object.values(playoffOdds)
+              .sort((a, b) => b.playoff_odds - a.playoff_odds)
+              .map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    entry.playoff_odds >= 90 ? '#2ecc71' :
+                    entry.playoff_odds >= 70 ? '#3498db' :
+                    entry.playoff_odds >= 40 ? '#f1c40f' :
+                    entry.playoff_odds >= 10 ? '#e67e22' :
+                    '#e74c3c'
+                  }
+                />
+              ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+
+  const renderIndividualTab = () => (
+    <div>
+      <Header as="h2">Individual Manager Odds</Header>
+      <Dropdown
+        placeholder="Select Team"
+        fluid
+        selection
+        options={formatTeamOptions(playoffOdds)}
+        value={selectedTeam?.name}
+        onChange={handleTeamChange}
+        style={{ marginBottom: '20px' }}
+      />
       {selectedTeam && (
-       
-        <>
+        <div>
           <Grid columns={4} style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '15px', width: '100%', maxWidth: '1200px', boxSizing: 'border-box', margin: '0 auto'}} stackable>
             <Grid.Column>
               <p style={{textAlign: 'center'}}><strong>Current Record</strong><br/>{selectedTeam.wins}-{selectedTeam.losses}</p>
@@ -122,17 +187,17 @@ const LeaguePlayoffOdds = (props) => {
                     data={formatSeedData(selectedTeam.seeds)}
                     margin={{ top: 30, right: 30, bottom: 30, left: 30 }}
                   >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="seed"
-                    label={{ value: 'Playoff Seed', position: 'bottom', offset: 0 }}
-                  />
-                  <YAxis 
-                    label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
-                  />
-                  <Tooltip />
-                  <Legend verticalAlign="top" height={36} align="right" />
-                  <Bar dataKey="probability" fill="#99D9D9" name="Probability %" barSize={30} />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="seed"
+                      label={{ value: 'Playoff Seed', position: 'bottom', offset: 0 }}
+                    />
+                    <YAxis 
+                      label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
+                    />
+                    <Tooltip />
+                    <Legend verticalAlign="top" height={36} align="right" />
+                    <Bar dataKey="probability" fill="#99D9D9" name="Probability %" barSize={30} />
                   </BarChart>
                 </ResponsiveContainer>
               </Grid.Column>
@@ -143,17 +208,17 @@ const LeaguePlayoffOdds = (props) => {
                     data={formatRecordData(selectedTeam.records)}
                     margin={{ top: 30, right: 30, bottom: 30, left: 30 }}
                   >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="record"
-                    label={{ value: 'Record', position: 'bottom', offset: 0 }}
-                  />
-                  <YAxis 
-                    label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
-                  />
-                  <Tooltip />
-                  <Legend verticalAlign="top" height={36} align="right" />
-                  <Bar dataKey="odds" fill="#355464" name="Playoff Odds %" barSize={30} />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="record"
+                      label={{ value: 'Record', position: 'bottom', offset: 0 }}
+                    />
+                    <YAxis 
+                      label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
+                    />
+                    <Tooltip />
+                    <Legend verticalAlign="top" height={36} align="right" />
+                    <Bar dataKey="odds" fill="#355464" name="Playoff Odds %" barSize={30} />
                   </BarChart>
                 </ResponsiveContainer>
               </Grid.Column>
@@ -203,8 +268,34 @@ const LeaguePlayoffOdds = (props) => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-     </>
+        </div>
       )}
+    </div>
+  );
+
+  const panes = [
+    {
+      menuItem: 'League Wide Odds',
+      render: () => (
+        <Tab.Pane>
+          {playoffOdds && renderLeagueWideTab()}
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: 'Individual Manager Odds',
+      render: () => (
+        <Tab.Pane>
+          {playoffOdds && renderIndividualTab()}
+        </Tab.Pane>
+      )
+    }
+  ];
+
+  return (
+    <Container style={{ marginTop: '2rem', padding: '0 1rem' }}>
+      <Header as="h1">{leagueName} - Playoff Odds</Header>
+      <Tab panes={panes} defaultActiveIndex={0} />
     </Container>
   );
 };
