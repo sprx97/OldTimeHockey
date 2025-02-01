@@ -51,68 +51,61 @@ export default class NavBar extends Component {
             attached
             compact
           >
-            <Link
+            <Menu.Item
+              as={Link}
               to="/standings"
+              name="standings"
+              active={activeItem === '/standings'}
               onClick={() => this.handleItemClick('/standings')}
             >
-              <Menu.Item
-                name="standings"
-                active={activeItem === '/standings'}
-                link={false}
-              >
-                Standings
-              </Menu.Item>
-            </Link>
-            <Link
+              Standings
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
               to="/leaderboard"
+              name="leaderboard"
+              active={activeItem === '/leaderboard'}
               onClick={() => this.handleItemClick('/leaderboard')}
             >
-              <Menu.Item
-                name="leaderboard"
-                active={activeItem === '/leaderboard'}
-                link={false}
-              >
-                Leaderboard
-              </Menu.Item>
-            </Link>
-            <Link to="/adp" onClick={() => this.handleItemClick('/adp')}>
-              <Menu.Item name="ADP" active={activeItem === '/adp'} link={false}>
-                ADP
-              </Menu.Item>
-            </Link>
-            <Link
+              Leaderboard
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
+              to="/adp"
+              name="ADP"
+              active={activeItem === '/adp'}
+              onClick={() => this.handleItemClick('/adp')}
+            >
+              ADP
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
               to="/trophyroom"
+              name="trophyRoom"
+              active={activeItem === '/trophyroom'}
               onClick={() => this.handleItemClick('/trophyroom')}
             >
-              <Menu.Item
-                name="trophyRoom"
-                active={activeItem === '/trophyroom'}
-                link={false}
-              >
-                Trophy Room
-              </Menu.Item>
-            </Link>
-            <Link
+              Trophy Room
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
               to="/halloffame"
+              name="hallOfFame"
+              active={activeItem === '/halloffame'}
               onClick={() => this.handleItemClick('/halloffame')}
             >
-              <Menu.Item
-                name="hallOfFame"
-                active={activeItem === '/halloffame'}
-                link={false}
-              >
-                Hall of Fame
-              </Menu.Item>
-            </Link>
-            <a href="https://discord.com/invite/zXTUtj9" target="_blank" rel="noopener noreferrer">
-              <Menu.Item
-                name="chat"
-                active={activeItem === '/chat'}
-                link={false}
-              >
-                <i className="fab fa-discord" aria-label="Join Discord Server"></i>
-              </Menu.Item>
-            </a>
+              Hall of Fame
+            </Menu.Item>
+            <Menu.Item
+              as="a"
+              href="https://discord.com/invite/zXTUtj9"
+              target="_blank"
+              rel="noopener noreferrer"
+              name="chat"
+              onClick={() => this.handleItemClick('/chat')}
+            >
+              <i className="fab fa-discord" aria-label="Join Discord Server"></i>
+            </Menu.Item>
           </Menu>
           {config.features.enableLogin && (
             <Menu
@@ -123,15 +116,15 @@ export default class NavBar extends Component {
               attached
               compact
             >
-              <Link to="/login" onClick={() => this.handleItemClick('/login')}>
-                <Menu.Item
-                  name="login"
-                  active={activeItem === '/login'}
-                  link={false}
-                >
-                  Login/Register
-                </Menu.Item>
-              </Link>
+              <Menu.Item
+                as={Link}
+                to="/login"
+                name="login"
+                active={activeItem === '/login'}
+                onClick={() => this.handleItemClick('/login')}
+              >
+                Login/Register
+              </Menu.Item>
             </Menu>
           )}
         </div>
