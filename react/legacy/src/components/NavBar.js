@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 import config from './config.json';
+import logo from '../oth-wordmark-white.svg';
 import './NavBar.css';
 
 export default class NavBar extends Component {
@@ -29,7 +30,9 @@ export default class NavBar extends Component {
     return (
       <Fragment>
         <div className="navbar-container">
-          <Link to="/" onClick={() => this.handleItemClick('/')} className="navbar-brand">OTH</Link>
+          <Link to="/" onClick={() => this.handleItemClick('/')} className="navbar-brand">
+            <img src={logo} alt="OTH" className="navbar-logo" />
+          </Link>
           <button 
             className={`menu-toggle ${this.state.isMobileMenuOpen ? 'open' : ''}`} 
             onClick={this.toggleMobileMenu}

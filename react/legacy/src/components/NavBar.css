@@ -8,18 +8,22 @@
 }
 
 .navbar-brand {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
-  text-decoration: none !important;
-  transition: color 0.2s ease-in-out;
+  text-decoration: none;
+  transition: opacity 0.2s ease-in-out;
 }
 
-.navbar-brand:hover {
-  color: #99D9D9;
+.navbar-logo {
+  height: 1.75rem;
+  width: auto;
+  display: block;
+  transition: filter 0.2s ease-in-out;
+}
+
+.navbar-brand:hover .navbar-logo {
+  filter: invert(80%) sepia(19%) saturate(297%) hue-rotate(134deg) brightness(95%) contrast(87%);
 }
 
 .menu-toggle {
@@ -27,12 +31,13 @@
   background: none;
   border: none;
   color: white;
-  padding: 10px;
+  margin: 1rem;
   cursor: pointer;
   margin-left: auto;
   position: relative;
   width: 30px;
   height: 30px;
+  align-self: center;
 }
 
 .menu-toggle span {
@@ -86,30 +91,29 @@
 
 /* Menu item styles */
 #main-menu .item {
-  font-size: 1rem !important;
+  font-size: 1.15rem;
 }
 
 #main-menu .item .fa-discord {
-  font-size: 1.5rem !important;
+  font-size: 1.55rem;
 }
 
 #main-menu .item {
-  transition: all 0.2s ease-in-out !important;
-  border-radius: 0 !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 1rem 1.5rem !important;
-  display: flex !important;
-  align-items: center !important;
-  border: none !important;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0;
+  height: 100%;
+  margin: 0;
+  padding: 1.15rem;
+  display: flex;
+  align-items: center;
+  border: none;
 }
 
 #main-menu .item:hover,
 #main-menu .item.active {
-  background-color: #99D9D9 !important;
-  color: #355464 !important;
-  border: none !important;
-  border-bottom: none !important;
+  background-color: #99D9D9;
+  color: #355464;
+  border: none;
 }
 
 @media screen and (min-width: 769px) {
@@ -124,7 +128,9 @@
 
 @media screen and (max-width: 768px) {
   .menu-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   #main-menu {
@@ -133,8 +139,8 @@
     left: 0;
     right: 0;
     background-color: #1b1c1d;
-    display: none !important;
-    width: 100% !important;
+    display: none;
+    width: 100%;
     margin-left: 0;
     padding: 0;
     min-height: calc(100vh - 100%);
@@ -143,8 +149,8 @@
   }
 
   #main-menu.mobile-open {
-    display: flex !important;
-    flex-direction: column !important;
+    display: flex;
+    flex-direction: column;
   }
 
   #main-menu a {
@@ -152,8 +158,8 @@
   }
 
   #main-menu .item {
-    width: 100% !important;
-    text-align: left !important;
-    padding: 1rem 1.5rem !important;
+    width: 100%;
+    text-align: left;
+    padding: 1rem 1.5rem;
   }
 }
