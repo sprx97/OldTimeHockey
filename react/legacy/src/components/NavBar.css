@@ -92,13 +92,6 @@
 /* Menu item styles */
 #main-menu .item {
   font-size: 1.15rem;
-}
-
-#main-menu .item .fa-discord {
-  font-size: 1.55rem;
-}
-
-#main-menu .item {
   transition: all 0.2s ease-in-out;
   border-radius: 0;
   height: 100%;
@@ -107,6 +100,15 @@
   display: flex;
   align-items: center;
   border: none;
+}
+
+#main-menu .item::before,
+#main-menu a.item::before {
+  display: none !important;
+}
+
+#main-menu .item .fa-discord {
+  font-size: 1.55rem;
 }
 
 #main-menu .item:hover,
