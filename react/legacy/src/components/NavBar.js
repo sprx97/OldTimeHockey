@@ -29,7 +29,7 @@ export default class NavBar extends Component {
     return (
       <Fragment>
         <div className="navbar-container">
-          <div className="navbar-brand">OTH</div>
+          <Link to="/" onClick={() => this.handleItemClick('/')} className="navbar-brand">OTH</Link>
           <button 
             className={`menu-toggle ${this.state.isMobileMenuOpen ? 'open' : ''}`} 
             onClick={this.toggleMobileMenu}
@@ -48,11 +48,6 @@ export default class NavBar extends Component {
             attached
             compact
           >
-            <Link to="/" onClick={() => this.handleItemClick('/')}>
-              <Menu.Item name="home" active={activeItem === '/'} link={false}>
-                Home
-              </Menu.Item>
-            </Link>
             <Link
               to="/standings"
               onClick={() => this.handleItemClick('/standings')}
@@ -106,15 +101,15 @@ export default class NavBar extends Component {
                 Hall of Fame
               </Menu.Item>
             </Link>
-            <Link to="/chat" onClick={() => this.handleItemClick('/chat')}>
+            <a href="https://discord.com/invite/zXTUtj9" target="_blank" rel="noopener noreferrer">
               <Menu.Item
                 name="chat"
                 active={activeItem === '/chat'}
                 link={false}
               >
-                Chat
+                <i className="fab fa-discord" aria-label="Join Discord Server"></i>
               </Menu.Item>
-            </Link>
+            </a>
           </Menu>
           {config.features.enableLogin && (
             <Menu
