@@ -1,20 +1,45 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
+import './NavBar.css';
 
 export default class NavBar extends Component {
-  state = { activeItem: location.pathname };
+  state = { 
+    activeItem: location.pathname,
+    isMobileMenuOpen: false
+  };
 
-  handleItemClick = (name) => this.setState({ activeItem: name });
+  handleItemClick = (name) => {
+    this.setState({ 
+      activeItem: name,
+      isMobileMenuOpen: false 
+    });
+  };
+
+  toggleMobileMenu = () => {
+    this.setState(prevState => ({
+      isMobileMenuOpen: !prevState.isMobileMenuOpen
+    }));
+  };
 
   render() {
     const { activeItem } = this.state;
 
     return (
-      // Probably should wrap this all in a hamburger button at mobile resolutions...
       <Fragment>
-        <div style={{ display: 'flex' }}>
+        <div className="navbar-container">
+          <div className="navbar-brand">OTH</div>
+          <button 
+            className={`menu-toggle ${this.state.isMobileMenuOpen ? 'open' : ''}`} 
+            onClick={this.toggleMobileMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
           <Menu
+            id="main-menu"
+            className={`navbar-menu ${this.state.isMobileMenuOpen ? 'mobile-open' : ''}`}
             style={{ flexGrow: '1' }}
             size="large"
             inverted
@@ -90,7 +115,7 @@ export default class NavBar extends Component {
               </Menu.Item>
             </Link>
           </Menu>
-          <Menu
+          {/*<Menu
             style={{ width: 'fit-content' }}
             size="large"
             inverted
@@ -107,7 +132,7 @@ export default class NavBar extends Component {
                 Login/Register
               </Menu.Item>
             </Link>
-          </Menu>
+          </Menu>*/}
         </div>
       </Fragment>
     );
