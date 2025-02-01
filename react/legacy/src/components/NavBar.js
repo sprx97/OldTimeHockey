@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
+import config from './config.json';
 import './NavBar.css';
 
 export default class NavBar extends Component {
@@ -115,24 +116,26 @@ export default class NavBar extends Component {
               </Menu.Item>
             </Link>
           </Menu>
-          {/*<Menu
-            style={{ width: 'fit-content' }}
-            size="large"
-            inverted
-            stackable
-            attached
-            compact
-          >
-            <Link to="/login" onClick={() => this.handleItemClick('/login')}>
-              <Menu.Item
-                name="login"
-                active={activeItem === '/login'}
-                link={false}
-              >
-                Login/Register
-              </Menu.Item>
-            </Link>
-          </Menu>*/}
+          {config.features.enableLogin && (
+            <Menu
+              style={{ width: 'fit-content' }}
+              size="large"
+              inverted
+              stackable
+              attached
+              compact
+            >
+              <Link to="/login" onClick={() => this.handleItemClick('/login')}>
+                <Menu.Item
+                  name="login"
+                  active={activeItem === '/login'}
+                  link={false}
+                >
+                  Login/Register
+                </Menu.Item>
+              </Link>
+            </Menu>
+          )}
         </div>
       </Fragment>
     );
