@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Table, Header, Image, Icon } from 'semantic-ui-react';
+import './LeagueStandingsTable.css';
 import { getCurrentYear, GetTrophy } from './Helpers';
 import { Link } from 'react-router-dom';
 
@@ -57,7 +58,7 @@ export default class LeagueStandingsTable extends Component {
           ''
         ) : (
         <center>
-          <Header as="h2" style={{ margin: '1em 0' }}>
+          <Header as="h2" style={{ margin: '1em 0 0 0' }}>
             <div
               style={{
                 display: 'flex',
@@ -75,27 +76,23 @@ export default class LeagueStandingsTable extends Component {
                   href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ textDecoration: 'none', color: 'inherit' }}
+                  className="header-link"
                 >
                   {this.props.leagueName}
                 </a>
               </div>
               <div>
-                <a
-                  href={`http://www.sportsclubstats.com/You/${this.props.leagueName.replace(
-                    /-/g,
-                    ''
-                  )}${this.props.year.toString().substring(2, 4)}${parseInt(
-                    this.props.year.toString().substring(2, 4),
-                    10
-                  ) + 1}2.html`}
-                  target="_blank"
+                <Link
+                   to={{
+                   pathname: `/league/${this.props.leagueID}`,
+                    state: { leagueName: this.props.leagueName }
+                  }}
                   rel="noopener noreferrer"
-                  style={{ textDecoration: 'none', color: 'inherit', fontSize: "1.25rem"}}
+                  className="playoff-odds-link"
                 >
                   <i class="fa-solid fa-chart-simple" style={{marginRight: "0.5rem"}}></i>
                   Playoff Odds
-                </a>
+                </Link>
               </div>
             </div>
           </Header>
@@ -137,6 +134,7 @@ export default class LeagueStandingsTable extends Component {
                       <a
                         href={`https://www.fleaflicker.com/nhl/leagues/${leagueID}/teams/${teamID}?season=${this.props.year}`}
                         target="_blank"
+                        className="team-link"
                       >
                         {name}
                       </a>

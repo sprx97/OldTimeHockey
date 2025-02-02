@@ -162,7 +162,7 @@ const LeaguePlayoffOdds = (props) => {
     if (!teams) return [];
     return Object.values(teams).map(team => ({
       key: team.name,
-      text: `${team.name} (${team.owner})`,
+      text: `${team.owner} (${team.name})`,
       value: team.name
     }));
   };
@@ -175,10 +175,11 @@ const LeaguePlayoffOdds = (props) => {
   const formatHistoricalData = () => {
     if (!historicalOdds || !playoffOdds) return { data: [], lines: [] };
     
-    // Get current team IDs and names
+    // Get current team IDs, names, and owners
     const teams = Object.entries(playoffOdds).map(([teamId, team]) => ({
       id: teamId,
-      name: team.name
+      name: team.name,
+      owner: team.owner
     }));
     
     // Create data points for each week where we have data
@@ -193,7 +194,7 @@ const LeaguePlayoffOdds = (props) => {
       const weekPoint = { week };
       teams.forEach(team => {
         if (weekData[team.id]) {
-          weekPoint[team.name] = weekData[team.id].playoff_odds;
+          weekPoint[team.owner] = weekData[team.id].playoff_odds;
         }
       });
       data.push(weekPoint);
@@ -201,8 +202,8 @@ const LeaguePlayoffOdds = (props) => {
     
     // Create line configurations
     const lines = teams.map((team, index) => ({
-      name: team.name,
-      dataKey: team.name,
+      name: team.owner,
+      dataKey: team.owner,
       type: "monotone",
       stroke: [
         '#F47A38', // ANA Orange
@@ -261,12 +262,12 @@ const LeaguePlayoffOdds = (props) => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
-            dataKey="name"
+            dataKey="owner"
             angle={-45}
             textAnchor="end"
             height={60}
             interval={0}
-            label={{ value: 'Team Name', position: 'bottom', offset: 50 }}
+            label={{ value: 'Manager Name', position: 'bottom', offset: 50 }}
           />
           <YAxis
             label={{ value: 'Playoff Odds %', angle: -90, position: 'insideLeft' }}
@@ -278,8 +279,8 @@ const LeaguePlayoffOdds = (props) => {
                 const data = payload[0].payload;
                 return (
                   <div style={{ backgroundColor: 'white', padding: '10px', border: '1px solid #ccc' }}>
-                    <p><strong>{data.name}</strong></p>
-                    <p>Owner: {data.owner}</p>
+                    <p><strong>{data.owner}</strong></p>
+                    <p>Team: {data.name}</p>
                     <p>Playoff Odds: {data.odds.toFixed(2)}%</p>
                   </div>
                 );
@@ -380,7 +381,7 @@ const LeaguePlayoffOdds = (props) => {
         options={formatTeamOptions(playoffOdds)}
         value={selectedTeam?.name}
         onChange={handleTeamChange}
-        style={{ marginBottom: '20px' }}
+        style={{ marginBottom: '20px', border: '1px solid #ccc' }}
       />
       {selectedTeam && (
         <div>
@@ -402,7 +403,7 @@ const LeaguePlayoffOdds = (props) => {
           <Grid columns={2} stackable style={{paddingTop: 25}}>
             <Grid.Row>
               <Grid.Column>
-                <Header as="h3">Playoff Seed Probabilities</Header>
+                <Header as="h3" style={{margin: 0}}>Playoff Seed Probabilities</Header>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart 
                     data={formatSeedData(selectedTeam.seeds)}
@@ -417,13 +418,12 @@ const LeaguePlayoffOdds = (props) => {
                       label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
                     />
                     <Tooltip />
-                    <Legend verticalAlign="top" height={36} align="right" />
                     <Bar dataKey="probability" fill="#99D9D9" name="Probability %" barSize={30} />
                   </BarChart>
                 </ResponsiveContainer>
               </Grid.Column>
               <Grid.Column>
-                <Header as="h3">Record-Based Playoff Odds</Header>
+                <Header as="h3" style={{margin: 0}}  align="center">Record-Based Playoff Odds</Header>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart 
                     data={formatRecordData(selectedTeam.records)}
@@ -438,7 +438,6 @@ const LeaguePlayoffOdds = (props) => {
                       label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
                     />
                     <Tooltip />
-                    <Legend verticalAlign="top" height={36} align="right" />
                     <Bar dataKey="odds" fill="#355464" name="Playoff Odds %" barSize={30} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -446,7 +445,7 @@ const LeaguePlayoffOdds = (props) => {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                <Header as="h3">Current Week Impact on Playoff Odds</Header>
+                <Header as="h3" style={{margin: 0}} align="center">Current Week Impact on Playoff Odds</Header>
                 <ResponsiveContainer width="100%" height={350}>
                   <ComposedChart 
                     data={[
@@ -471,7 +470,7 @@ const LeaguePlayoffOdds = (props) => {
                       label={{ value: 'Percentage %', angle: -90, position: 'insideLeft' }}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend verticalAlign="top" height={36} />
+           
                     <Bar 
                       dataKey="current" 
                       fill="#99D9D9"
@@ -485,6 +484,7 @@ const LeaguePlayoffOdds = (props) => {
                       barSize={30}
                     />
                   </ComposedChart>
+                  
                 </ResponsiveContainer>
               </Grid.Column>
             </Grid.Row>
