@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 import config from './config.json';
@@ -28,7 +28,7 @@ export default class NavBar extends Component {
     const { activeItem } = this.state;
 
     return (
-      <Fragment>
+      <>
         <div className="navbar-container">
           <Link to="/" onClick={() => this.handleItemClick('/')} className="navbar-brand">
             <img src={logo} alt="OTH" className="navbar-logo" />
@@ -128,7 +128,7 @@ export default class NavBar extends Component {
             </Menu>
           )}
         </div>
-      </Fragment>
+      </>
     );
   }
 }
