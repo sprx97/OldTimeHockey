@@ -57,36 +57,49 @@ export default class LeagueStandingsTable extends Component {
           ''
         ) : (
         <center>
-          <Header as="h2" textAlign="center">
-            <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />{' '}
-            <a
-              href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year}`}
-              target="_blank"
+          <Header as="h2" style={{ margin: '1em 0' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
             >
-              {this.props.leagueName}
-            </a>{' '}
-            <Link to={{
-              pathname: `/league/${this.props.leagueID}`,
-              state: { leagueName: this.props.leagueName }
-            }}>
-              <Icon 
-                name="info circle" 
-                style={{ marginLeft: '5px', cursor: 'pointer' }}
-              />
-            </Link>
-            <Image src={"/images/jerseys/" + this.props.leagueName + ".png"} />
-            { this.props.years < 2023 ?
-            <Header.Subheader>
-              <a
-                href={`http://www.sportsclubstats.com/You/${this.props.leagueName.replace(/-/g, '')}${this.props.year.toString().substring(2,4)}${parseInt(this.props.year.toString().substring(2,4))+1}2.html`}
-                target="_blank"
-              >
-                {'Playoff Odds'}
-              </a>
-            </Header.Subheader>
-            : ''
-            }
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Image
+                  src={`/images/jerseys/${this.props.leagueName}.png`}
+                  style={{ marginRight: '10px', height: 45, width: "100%"}}
+                  alt={`${this.props.leagueName} jersey`}
+                />
+                <a
+                  href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  {this.props.leagueName}
+                </a>
+              </div>
+              <div>
+                <a
+                  href={`http://www.sportsclubstats.com/You/${this.props.leagueName.replace(
+                    /-/g,
+                    ''
+                  )}${this.props.year.toString().substring(2, 4)}${parseInt(
+                    this.props.year.toString().substring(2, 4),
+                    10
+                  ) + 1}2.html`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none', color: 'inherit', fontSize: "1.25rem"}}
+                >
+                  <i class="fa-solid fa-chart-simple" style={{marginRight: "0.5rem"}}></i>
+                  Playoff Odds
+                </a>
+              </div>
+            </div>
           </Header>
+
           <Table definition celled compact unstackable>
             <Table.Header>
               <Table.Row>
