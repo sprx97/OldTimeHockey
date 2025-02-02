@@ -157,7 +157,7 @@ export default class LeagueStandingsTable extends Component {
                               selectedOwner: FFname
                             }
                           }}
-                          style={{ color: 'inherit', textDecoration: 'underline' }}
+                          className="table-link"
                         >
                           {playoff_odds !== undefined ? playoff_odds : '-'}
                         </Link>

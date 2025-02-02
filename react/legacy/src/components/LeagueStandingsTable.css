@@ -1,31 +1,28 @@
-.header-link {
-  text-decoration: none;
-  color: inherit;
-  transition: opacity 0.2s ease;
-}
-
-.header-link:hover {
-  opacity: 0.7;
-}
-
+.header-link,
 .playoff-odds-link {
-  text-decoration: none;
-  color: inherit;
-  font-size: 1.25rem;
-  transition: opacity 0.2s ease;
-}
-
-.playoff-odds-link:hover {
-  opacity: 0.7;
-}
-
-.team-link {
   color: inherit;
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
-.team-link:hover {
+.playoff-odds-link {
+  font-size: 1.25rem;
+}
+
+.table-link {
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.team-link {
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.table-link:hover,
+.team-link:hover,
+.playoff-odds-link:hover,
+.header-link:hover  {
   text-decoration: none;
   font-weight: bold;
 }
