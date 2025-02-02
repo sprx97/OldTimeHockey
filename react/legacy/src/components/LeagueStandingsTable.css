@@ -6,7 +6,17 @@
 }
 
 .playoff-odds-link {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.playoff-odds-link:hover {
+  background-color: #f8f9fa;
+  border-color: currentColor;
 }
 
 .table-link {

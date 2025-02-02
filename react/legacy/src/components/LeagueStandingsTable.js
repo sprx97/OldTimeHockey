@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { Table, Header, Image, Icon } from 'semantic-ui-react';
 import './LeagueStandingsTable.css';
 import { getCurrentYear, GetTrophy } from './Helpers';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-export default class LeagueStandingsTable extends Component {
+class LeagueStandingsTable extends Component {
   constructor(props) {
     super(props);
   }
@@ -82,17 +82,17 @@ export default class LeagueStandingsTable extends Component {
                 </a>
               </div>
               <div>
-                <Link
-                   to={{
-                   pathname: `/league/${this.props.leagueID}`,
-                    state: { leagueName: this.props.leagueName }
+                <button
+                  onClick={() => {
+                    this.props.history.push(`/league/${this.props.leagueID}`, {
+                      leagueName: this.props.leagueName
+                    });
                   }}
-                  rel="noopener noreferrer"
                   className="playoff-odds-link"
                 >
-                  <i class="fa-solid fa-chart-simple" style={{marginRight: "0.5rem"}}></i>
+                  <i className="fa-solid fa-chart-simple" style={{marginRight: "0.5rem"}}></i>
                   Playoff Odds
-                </Link>
+                </button>
               </div>
             </div>
           </Header>
@@ -177,3 +177,5 @@ export default class LeagueStandingsTable extends Component {
     );
   }
 }
+
+export default withRouter(LeagueStandingsTable);
