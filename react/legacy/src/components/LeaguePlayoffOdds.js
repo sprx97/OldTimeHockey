@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Header, Grid, Dropdown, Tab } from 'semantic-ui-react';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, LineChart, Cell } from 'recharts';
+import { getCurrentYear, isPlayoffWeek } from './Helpers';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -34,12 +35,8 @@ const LeaguePlayoffOdds = (props) => {
       // If a team was passed via navigation, select it, otherwise select first team
       if (data && Object.keys(data).length > 0) {
         if (passedTeamName) {
-          const team = Object.values(data).find(t => t.name === passedTeamName && t.owner === passedOwnerName);
-          if (team) {
-            setSelectedTeam(team);
-          } else {
-            setSelectedTeam(Object.values(data)[0]);
-          }
+          var team = passedTeamName ? Object.values(data).find(t => t.name === passedTeamName && t.owner === passedOwnerName) : null;
+          setSelectedTeam(team || Object.values(data)[0]);
         } else {
           setSelectedTeam(Object.values(data)[0]);
         }
@@ -118,8 +115,14 @@ const LeaguePlayoffOdds = (props) => {
   const fetchHistoricalOdds = async () => {
     try {
       const weeklyData = {};
-      // Fetch data for weeks 1-22
-      const promises = Array.from({ length: 22 }, (_, i) => i + 1).map(week =>
+      const currentYear = getCurrentYear();
+      let maxWeek = 1;
+      while (!isPlayoffWeek(maxWeek, currentYear)) {
+        maxWeek++;
+      }
+  
+      // Fetch data for weeks 1 up to but not including the first playoff week
+      const promises = Array.from({ length: maxWeek - 1 }, (_, i) => i + 1).map(week =>
         fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}&week=${week}`)
           .then(res => res.json())
           .then(data => {
@@ -185,7 +188,13 @@ const LeaguePlayoffOdds = (props) => {
     // Create data points for each week where we have data
     const data = [];
     const availableWeeks = Object.entries(historicalOdds)
-      .filter(([_, weekData]) => weekData && Object.keys(weekData).length > 0)
+      .filter(([week, weekData]) => {
+        const weekNum = Number(week);
+        // Filter out playoff weeks and ensure we have data
+        return weekData && 
+              Object.keys(weekData).length > 0 && 
+              !isPlayoffWeek(weekNum, getCurrentYear());
+      })
       .map(([week]) => Number(week))
       .sort((a, b) => a - b);
 
