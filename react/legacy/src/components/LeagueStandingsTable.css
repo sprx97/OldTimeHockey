@@ -15,8 +15,10 @@
 }
 
 .playoff-odds-link:hover {
-  background-color: #f8f9fa;
-  border-color: currentColor;
+  background-color: #1e73be;
+  border: 1px solid #1e73be;
+  color: white;
+  font-weight: normal;
 }
 
 .table-link {
@@ -31,7 +33,6 @@
 
 .table-link:hover,
 .team-link:hover,
-.playoff-odds-link:hover,
 .header-link:hover  {
   text-decoration: none;
   font-weight: bold;
