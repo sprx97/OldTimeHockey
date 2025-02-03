@@ -1,12 +1,10 @@
 import React from 'react';
 import { Modal, Segment, Header } from 'semantic-ui-react';
 import {
-  LineChart, Line,
   BarChart, Bar,
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
   ScatterChart, Scatter,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  ResponsiveContainer, ComposedChart
+  ResponsiveContainer, 
 } from 'recharts';
 import _ from 'lodash';
 
