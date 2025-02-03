@@ -412,7 +412,7 @@ const LeaguePlayoffOdds = (props) => {
           <Grid columns={2} stackable style={{paddingTop: 25}}>
             <Grid.Row>
               <Grid.Column>
-                <Header as="h3" style={{margin: 0}}>Playoff Seed Probabilities</Header>
+                <Header as="h3" style={{margin: 0}} align="center">Playoff Seed Probabilities</Header>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart 
                     data={formatSeedData(selectedTeam.seeds)}
@@ -432,7 +432,7 @@ const LeaguePlayoffOdds = (props) => {
                 </ResponsiveContainer>
               </Grid.Column>
               <Grid.Column>
-                <Header as="h3" style={{margin: 0}}  align="center">Record-Based Playoff Odds</Header>
+                <Header as="h3" style={{margin: 0}} align="center">Record-Based Playoff Odds</Header>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart 
                     data={formatRecordData(selectedTeam.records)}
