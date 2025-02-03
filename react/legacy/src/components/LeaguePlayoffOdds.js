@@ -312,8 +312,8 @@ const LeaguePlayoffOdds = (props) => {
                     entry.playoff_odds >= 90 ? '#006847' : // Dallas Stars Green
                     entry.playoff_odds >= 70 ? '#0038A8' : // NY Rangers Blue
                     entry.playoff_odds >= 40 ? '#F47A38' : // Anaheim Ducks Orange
-                    entry.playoff_odds >= 10 ? '#C8102E' : // Calgary Flames Red
-                    '#C8102E' // Calgary Flames Red for very low odds lmao
+                    entry.playoff_odds >= 10 ? '#AF1E2D' : // New Jersey Devils Dark Red
+                    '#CE1126'  // Detroit Red Wings Red for missing the playoffs lmao
                   }
                 />
               ))}
