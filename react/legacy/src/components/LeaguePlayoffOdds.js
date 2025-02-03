@@ -134,6 +134,7 @@ const LeaguePlayoffOdds = (props) => {
       );
       
       await Promise.all(promises);
+      console.log(weeklyData)
       setHistoricalOdds(weeklyData);
     } catch (error) {
       console.error('Error fetching historical odds:', error);

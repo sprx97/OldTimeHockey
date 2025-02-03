@@ -9,14 +9,13 @@ import {
 import _ from 'lodash';
 
 const PlayoffOddsChart = ({ isOpen, onClose, data, leagueName }) => {
-  // Transform data for visualization
   const chartData = (data || [])
     .map(teamData => ({
       name: teamData.name || '',
       wins: parseInt(teamData.wins || 0),
       playoffOdds: parseFloat(teamData.playoff_odds || 0),
       byeOdds: parseFloat(teamData.bye_odds || 0),
-      d3Odds: teamData.d3_odds ? parseFloat(teamData.d3_odds) : undefined,
+      doubleDemotionOdds: teamData.d3_odds ? parseFloat(teamData.d3_odds) : undefined,
       seeds: teamData.seeds || []
     }))
     .sort((a, b) => (b.playoffOdds || 0) - (a.playoffOdds || 0));
@@ -60,8 +59,8 @@ const PlayoffOddsChart = ({ isOpen, onClose, data, leagueName }) => {
                   <Legend />
                   <Bar dataKey="playoffOdds" name="Playoff%" fill="#8884d8" />
                   <Bar dataKey="byeOdds" name="Bye%" fill="#82ca9d" />
-                  {chartData[0]?.d3Odds !== undefined && (
-                    <Bar dataKey="d3Odds" name="D3%" fill="#ffc658" />
+                  {chartData[0]?.doubleDemotionOdds !== undefined && (
+                    <Bar dataKey="doubleDemotionOdds" name="D3%" fill="#ffc658" />
                   )}
                 </BarChart>
               </ResponsiveContainer>
