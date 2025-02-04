@@ -1,0 +1,39 @@
+.header-link,
+.playoff-odds-link {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.playoff-odds-link {
+  font-size: 1.2rem;
+  border: 1px solid black;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.playoff-odds-link:hover {
+  background-color: #1e73be;
+  border: 1px solid #1e73be;
+  color: white;
+  font-weight: normal;
+}
+
+.table-link {
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.team-link {
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.table-link:hover,
+.team-link:hover,
+.header-link:hover  {
+  text-decoration: none;
+  font-weight: bold;
+}

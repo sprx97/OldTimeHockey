@@ -1,4 +1,4 @@
-import { Menu, Group, Center, Burger, Container } from '@mantine/core'
+import { Menu, Group, Center, Burger, Container, Box } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import {
   IconChevronDown,
@@ -7,9 +7,8 @@ import {
 } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import classes from './main-navigation.module.scss'
-import routes from '@/routes'
-import { ThemeControls } from '@components/ThemeControls'
+import routes from '../../routes'
+import { ThemeControls } from '../ThemeControls'
 
 interface RouteWithAnchors {
   path: string
@@ -31,7 +30,19 @@ function MainNavigation() {
     if (route.anchors) {
       const submenuItems = route.anchors.map((anchor) => (
         <Menu.Item key={anchor.path}>
-          <Link to={route.path + anchor.path} className={classes.link}>
+          <Link
+            to={route.path + anchor.path}
+            style={{
+              display: 'block',
+              lineHeight: 1,
+              padding: '8px 12px',
+              borderRadius: 'var(--mantine-radius-sm)',
+              textDecoration: 'none',
+              color: 'var(--mantine-color-text)',
+              fontSize: 'var(--mantine-font-size-sm)',
+              fontWeight: 500,
+            }}
+          >
             {anchor.name}
           </Link>
         </Menu.Item>
@@ -45,9 +56,21 @@ function MainNavigation() {
           withinPortal
         >
           <Menu.Target>
-            <Link to={route.path} className={classes.link}>
+            <Link
+              to={route.path}
+              style={{
+                display: 'block',
+                lineHeight: 1,
+                padding: '8px 12px',
+                borderRadius: 'var(--mantine-radius-sm)',
+                textDecoration: 'none',
+                color: 'var(--mantine-color-text)',
+                fontSize: 'var(--mantine-font-size-sm)',
+                fontWeight: 500,
+              }}
+            >
               <Center>
-                <span className={classes.linkLabel}>{route.name}</span>
+                <span style={{ marginRight: 5 }}>{route.name}</span>
                 <IconChevronDown size='0.9rem' stroke={1.5} />
               </Center>
             </Link>
@@ -55,13 +78,26 @@ function MainNavigation() {
           <Menu.Dropdown>{submenuItems}</Menu.Dropdown>
         </Menu>
       )
-    } else {
-      return (
-        <Link key={route.path} to={route.path} className={classes.link}>
-          {route.name}
-        </Link>
-      )
     }
+
+    return (
+      <Link
+        key={route.path}
+        to={route.path}
+        style={{
+          display: 'block',
+          lineHeight: 1,
+          padding: '8px 12px',
+          borderRadius: 'var(--mantine-radius-sm)',
+          textDecoration: 'none',
+          color: 'var(--mantine-color-text)',
+          fontSize: 'var(--mantine-font-size-sm)',
+          fontWeight: 500,
+        }}
+      >
+        {route.name}
+      </Link>
+    )
   }
 
   const renderMobileMenuItem = (route: RouteWithAnchors) => {
@@ -70,9 +106,20 @@ function MainNavigation() {
     if (route.anchors) {
       return (
         <div key={route.path}>
-          <div
-            className={`${classes.mobileLink} ${classes.hasChildren}`}
+          <Box
             onClick={() => toggleSubmenu(route.path)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              fontSize: 'var(--mantine-font-size-md)',
+              padding: 'var(--mantine-spacing-md) var(--mantine-spacing-lg)',
+              borderRadius: 'var(--mantine-radius-sm)',
+              fontWeight: 500,
+              color: 'var(--mantine-color-text)',
+              cursor: 'pointer',
+              justifyContent: 'space-between',
+            }}
           >
             <span>{route.name}</span>
             {isSubmenuOpen ? (
@@ -80,15 +127,30 @@ function MainNavigation() {
             ) : (
               <IconChevronRight size='1.2rem' stroke={1.5} />
             )}
-          </div>
-          <div
-            className={`${classes.mobileSubmenu} ${isSubmenuOpen ? classes.opened : ''}`}
+          </Box>
+          <Box
+            style={{
+              height: isSubmenuOpen ? 'auto' : 0,
+              overflow: 'hidden',
+              transition: 'height 300ms ease',
+            }}
           >
             {route.anchors.map((anchor) => (
               <Link
                 key={`${route.path}${anchor.path}`}
                 to={route.path + anchor.path}
-                className={classes.mobileLink}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%',
+                  fontSize: 'var(--mantine-font-size-md)',
+                  padding:
+                    'var(--mantine-spacing-md) var(--mantine-spacing-lg)',
+                  borderRadius: 'var(--mantine-radius-sm)',
+                  fontWeight: 500,
+                  color: 'var(--mantine-color-text)',
+                  textDecoration: 'none',
+                }}
                 onClick={() => {
                   close()
                   setOpenSubmenuIds([])
@@ -97,15 +159,26 @@ function MainNavigation() {
                 {anchor.name}
               </Link>
             ))}
-          </div>
+          </Box>
         </div>
       )
     }
+
     return (
       <Link
         key={route.path}
         to={route.path}
-        className={classes.mobileLink}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          fontSize: 'var(--mantine-font-size-md)',
+          padding: 'var(--mantine-spacing-md) var(--mantine-spacing-lg)',
+          borderRadius: 'var(--mantine-radius-sm)',
+          fontWeight: 500,
+          color: 'var(--mantine-color-text)',
+          textDecoration: 'none',
+        }}
         onClick={() => {
           close()
           setOpenSubmenuIds([])
@@ -125,15 +198,29 @@ function MainNavigation() {
   )
 
   return (
-    <header className={classes.header}>
+    <Box
+      component='header'
+      style={{
+        height: '100%',
+        padding: '0 var(--mantine-spacing-md)',
+      }}
+    >
       <Container size='md'>
-        <div className={classes.inner}>
+        <Box
+          style={{
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
           <div>OldTimeHockey!</div>
           <Group gap={5} visibleFrom='sm'>
             {navigationItems}
           </Group>
-          <div className={classes.rightGroup}>
-            <div className={classes.settingsMenu}>
+          <Group gap='sm'>
+            {/* Desktop Theme Menu */}
+            <Box visibleFrom='sm'>
               <Menu
                 trigger='hover'
                 transitionProps={{ exitDuration: 0 }}
@@ -146,49 +233,108 @@ function MainNavigation() {
               >
                 <Menu.Target>
                   <Center
-                    className={classes.link}
-                    style={{ cursor: 'pointer' }}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: 'var(--mantine-radius-sm)',
+                      cursor: 'pointer',
+                    }}
                   >
                     <IconSettings size='1.2rem' stroke={1.5} />
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Menu.Label>Theme Settings</Menu.Label>
-                  <div className={classes.themeControls}>
+                  <Box p='xs'>
                     <ThemeControls />
-                  </div>
+                  </Box>
                 </Menu.Dropdown>
               </Menu>
-            </div>
-            <div className={classes.burgerWrapper}>
-              <Burger
-                opened={opened}
-                onClick={() => {
-                  toggle()
-                  setOpenSubmenuIds([])
-                }}
-                size='sm'
-                hiddenFrom='sm'
-                className={classes.burger}
-              />
-            </div>
-          </div>
-        </div>
+            </Box>
+            {/* Mobile Theme Menu */}
+            <Box hiddenFrom='sm'>
+              <Menu
+                trigger='hover'
+                transitionProps={{ exitDuration: 0 }}
+                withinPortal
+                position='bottom-end'
+                closeOnItemClick={false}
+                closeOnClickOutside={false}
+                trapFocus={false}
+                zIndex={300}
+              >
+                <Menu.Target>
+                  <Center
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: 'var(--mantine-radius-sm)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <IconSettings size='1.2rem' stroke={1.5} />
+                  </Center>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>Theme Settings</Menu.Label>
+                  <Box p='xs'>
+                    <ThemeControls />
+                  </Box>
+                </Menu.Dropdown>
+              </Menu>
+            </Box>
+            <Burger
+              opened={opened}
+              onClick={() => {
+                toggle()
+                setOpenSubmenuIds([])
+              }}
+              size='sm'
+              hiddenFrom='sm'
+            />
+          </Group>
+        </Box>
       </Container>
-      <div className={`${classes.mobileMenu} ${opened ? classes.opened : ''}`}>
+      <Box
+        style={{
+          position: 'fixed',
+          top: 60,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          padding: 'var(--mantine-spacing-md)',
+          backgroundColor: 'var(--mantine-color-body)',
+          overflow: 'auto',
+          transform: opened ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 300ms ease',
+          zIndex: 100,
+        }}
+      >
         {mobileNavigationItems}
-        <div className={classes.mobileDivider} />
-        <div className={classes.mobileSettings}>
-          <div className={classes.settingsHeader}>
+        <Box
+          style={{
+            margin: 'var(--mantine-spacing-md) 0',
+            borderTop: '1px solid var(--mantine-color-default-border)',
+          }}
+        />
+        <Box p='md'>
+          <Box
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--mantine-spacing-sm)',
+              fontSize: 'var(--mantine-font-size-lg)',
+              fontWeight: 500,
+              marginBottom: 'var(--mantine-spacing-md)',
+            }}
+          >
             <IconSettings size='1.5rem' stroke={1.5} />
             <span>Theme Settings</span>
-          </div>
-          <div className={classes.settingsContent}>
+          </Box>
+          <Box px='md'>
             <ThemeControls />
-          </div>
-        </div>
-      </div>
-    </header>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 
