@@ -1,20 +1,49 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
+import config from './config.json';
+import logo from '../oth-wordmark-white.svg';
+import './NavBar.css';
 
 export default class NavBar extends Component {
-  state = { activeItem: location.pathname };
+  state = { 
+    activeItem: location.pathname,
+    isMobileMenuOpen: false
+  };
 
-  handleItemClick = (name) => this.setState({ activeItem: name });
+  handleItemClick = (name) => {
+    this.setState({ 
+      activeItem: name,
+      isMobileMenuOpen: false 
+    });
+  };
+
+  toggleMobileMenu = () => {
+    this.setState(prevState => ({
+      isMobileMenuOpen: !prevState.isMobileMenuOpen
+    }));
+  };
 
   render() {
     const { activeItem } = this.state;
 
     return (
-      // Probably should wrap this all in a hamburger button at mobile resolutions...
-      <Fragment>
-        <div style={{ display: 'flex' }}>
+      <>
+        <div className="navbar-container">
+          <Link to="/" onClick={() => this.handleItemClick('/')} className="navbar-brand">
+            <img src={logo} alt="OTH" className="navbar-logo" />
+          </Link>
+          <button 
+            className={`menu-toggle ${this.state.isMobileMenuOpen ? 'open' : ''}`} 
+            onClick={this.toggleMobileMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
           <Menu
+            id="main-menu"
+            className={`navbar-menu ${this.state.isMobileMenuOpen ? 'mobile-open' : ''}`}
             style={{ flexGrow: '1' }}
             size="large"
             inverted
@@ -22,94 +51,84 @@ export default class NavBar extends Component {
             attached
             compact
           >
-            <Link to="/" onClick={() => this.handleItemClick('/')}>
-              <Menu.Item name="home" active={activeItem === '/'} link={false}>
-                Home
-              </Menu.Item>
-            </Link>
-            <Link
+            <Menu.Item
+              as={Link}
               to="/standings"
+              name="standings"
+              active={activeItem === '/standings'}
               onClick={() => this.handleItemClick('/standings')}
             >
-              <Menu.Item
-                name="standings"
-                active={activeItem === '/standings'}
-                link={false}
-              >
-                Standings
-              </Menu.Item>
-            </Link>
-            <Link
+              Standings
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
               to="/leaderboard"
+              name="leaderboard"
+              active={activeItem === '/leaderboard'}
               onClick={() => this.handleItemClick('/leaderboard')}
             >
-              <Menu.Item
-                name="leaderboard"
-                active={activeItem === '/leaderboard'}
-                link={false}
-              >
-                Leaderboard
-              </Menu.Item>
-            </Link>
-            <Link to="/adp" onClick={() => this.handleItemClick('/adp')}>
-              <Menu.Item name="ADP" active={activeItem === '/adp'} link={false}>
-                ADP
-              </Menu.Item>
-            </Link>
-            <Link
+              Leaderboard
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
+              to="/adp"
+              name="ADP"
+              active={activeItem === '/adp'}
+              onClick={() => this.handleItemClick('/adp')}
+            >
+              ADP
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
               to="/trophyroom"
+              name="trophyRoom"
+              active={activeItem === '/trophyroom'}
               onClick={() => this.handleItemClick('/trophyroom')}
             >
-              <Menu.Item
-                name="trophyRoom"
-                active={activeItem === '/trophyroom'}
-                link={false}
-              >
-                Trophy Room
-              </Menu.Item>
-            </Link>
-            <Link
+              Trophy Room
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
               to="/halloffame"
+              name="hallOfFame"
+              active={activeItem === '/halloffame'}
               onClick={() => this.handleItemClick('/halloffame')}
             >
-              <Menu.Item
-                name="hallOfFame"
-                active={activeItem === '/halloffame'}
-                link={false}
-              >
-                Hall of Fame
-              </Menu.Item>
-            </Link>
-            <Link to="/chat" onClick={() => this.handleItemClick('/chat')}>
-              <Menu.Item
-                name="chat"
-                active={activeItem === '/chat'}
-                link={false}
-              >
-                Chat
-              </Menu.Item>
-            </Link>
+              Hall of Fame
+            </Menu.Item>
+            <Menu.Item
+              as="a"
+              href="https://discord.com/invite/zXTUtj9"
+              target="_blank"
+              rel="noopener noreferrer"
+              name="chat"
+              onClick={() => this.handleItemClick('/chat')}
+            >
+              <i className="fab fa-discord" aria-label="Join Discord Server"></i>
+            </Menu.Item>
           </Menu>
-          <Menu
-            style={{ width: 'fit-content' }}
-            size="large"
-            inverted
-            stackable
-            attached
-            compact
-          >
-            <Link to="/login" onClick={() => this.handleItemClick('/login')}>
+          {config.features.enableLogin && (
+            <Menu
+              style={{ width: 'fit-content' }}
+              size="large"
+              inverted
+              stackable
+              attached
+              compact
+            >
               <Menu.Item
+                as={Link}
+                to="/login"
                 name="login"
                 active={activeItem === '/login'}
-                link={false}
+                onClick={() => this.handleItemClick('/login')}
               >
                 Login/Register
               </Menu.Item>
-            </Link>
-          </Menu>
+            </Menu>
+          )}
         </div>
-      </Fragment>
+      </>
     );
   }
 }

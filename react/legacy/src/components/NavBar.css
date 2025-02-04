@@ -1,0 +1,167 @@
+.navbar-container {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background-color: #1b1c1d;
+  padding: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.navbar-logo {
+  height: 1.75rem;
+  width: auto;
+  display: block;
+  transition: filter 0.2s ease-in-out;
+}
+
+.navbar-brand:hover .navbar-logo {
+  filter: invert(80%) sepia(19%) saturate(297%) hue-rotate(134deg) brightness(95%) contrast(87%);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  margin: 1rem;
+  cursor: pointer;
+  margin-left: auto;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  align-self: center;
+}
+
+.menu-toggle span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+}
+
+.menu-toggle span:nth-child(1) {
+  top: 25%;
+}
+
+.menu-toggle span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.menu-toggle span:nth-child(3) {
+  bottom: 25%;
+}
+
+.menu-toggle.open span:nth-child(1) {
+  top: 50%;
+  transform: rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open span:nth-child(3) {
+  top: 50%;
+  transform: rotate(-45deg);
+}
+
+#main-menu {
+  margin: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  margin-left: auto;
+}
+
+/* Menu item styles */
+#main-menu .item {
+  font-size: 1.15rem;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0;
+  margin: 0;
+  padding: 1.15rem;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+#main-menu .item::before,
+#main-menu a.item::before {
+  display: none !important;
+}
+
+#main-menu .item .fa-discord {
+  font-size: 1.55rem;
+}
+
+#main-menu .item:hover,
+#main-menu .item.active {
+  background-color: #99D9D9;
+  /**
+  * There's some weird specificity thing going on with some other depenendcy I don't wanna track down
+  * it's not worth hunting down so Imma brute force what I want with !important - this is bad practice, 
+  * but this site isn't long for the world anyway 
+  */
+  color: #355464 !important; 
+  border: none;
+}
+
+@media screen and (min-width: 769px) {
+  #main-menu {
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #main-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #1b1c1d;
+    display: none;
+    width: 100%;
+    margin-left: 0;
+    padding: 0;
+    min-height: calc(100vh - 100%);
+    transition: all 0.3s ease-in-out;
+    z-index: 1001;
+  }
+
+  #main-menu.mobile-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #main-menu a {
+    width: 100%;
+  }
+
+  #main-menu .item {
+    width: 100%;
+    text-align: left;
+    padding: 1rem 1.5rem;
+  }
+}

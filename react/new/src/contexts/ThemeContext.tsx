@@ -8,7 +8,10 @@ import {
 import {
   MantineProvider,
   createTheme,
+  localStorageColorSchemeManager,
   type MantineColorsTuple,
+  type MantineThemeOverride,
+  type MantineTheme,
 } from '@mantine/core'
 import { NHL_TEAM_COLORS } from '../constants/nhlColors'
 import { ThemeConfig, ThemeMode, NHLTeam } from '../types/theme'
@@ -77,26 +80,40 @@ const adjustBrightness = (
     .padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`
 }
 
+const colorSchemeManager = localStorageColorSchemeManager({
+  key: 'oth-color-scheme',
+})
+
+const TEAM_STORAGE_KEY = 'oth-team-theme'
+
 interface ThemeProviderProps {
   children: ReactNode
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<ThemeConfig>({
-    mode: 'light',
-    team: undefined,
+    mode: (colorSchemeManager.get('light') === 'dark'
+      ? 'dark'
+      : 'light') as ThemeMode,
+    team: localStorage.getItem(TEAM_STORAGE_KEY) as NHLTeam | undefined,
   })
 
   const setThemeMode = useCallback((mode: ThemeMode) => {
     setTheme((prev) => ({ ...prev, mode }))
+    colorSchemeManager.set(mode)
   }, [])
 
   const setTeamTheme = useCallback((team: NHLTeam | undefined) => {
     setTheme((prev) => ({ ...prev, team }))
+    if (team) {
+      localStorage.setItem(TEAM_STORAGE_KEY, team)
+    } else {
+      localStorage.removeItem(TEAM_STORAGE_KEY)
+    }
   }, [])
 
-  const getMantineTheme = useCallback(() => {
-    const baseTheme = createTheme({
+  const getMantineTheme = useCallback((): MantineThemeOverride => {
+    return createTheme({
       primaryColor: theme.team ? 'team' : 'blue',
       colors: {
         // Default Mantine blue color
@@ -120,34 +137,22 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       primaryShade: { light: 6, dark: 8 },
       components: {
         AppShell: {
-          styles: {
+          styles: (theme: MantineTheme) => ({
             header: {
-              backgroundColor: theme.team
-                ? NHL_TEAM_COLORS[theme.team].primary
-                : 'var(--mantine-color-blue-6)',
+              backgroundColor: theme.colors[theme.primaryColor][6],
               borderBottom: 'none',
             },
-          },
+          }),
         },
       },
     })
-
-    return {
-      ...baseTheme,
-      colorScheme: theme.mode,
-      other: theme.team
-        ? {
-            teamSecondary: NHL_TEAM_COLORS[theme.team].secondary,
-          }
-        : {},
-    }
   }, [theme])
 
   return (
     <ThemeContext.Provider value={{ theme, setThemeMode, setTeamTheme }}>
       <MantineProvider
         theme={getMantineTheme()}
-        defaultColorScheme={theme.mode}
+        colorSchemeManager={colorSchemeManager}
       >
         {children}
       </MantineProvider>

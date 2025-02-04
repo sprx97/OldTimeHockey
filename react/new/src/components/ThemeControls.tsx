@@ -28,15 +28,15 @@ export function ThemeControls() {
   }))
 
   return (
-    <Stack gap='md' style={{ minWidth: 250 }}>
-      <div>
+    <Stack gap='md' miw={250}>
+      <Box>
         <Switch
           checked={theme.mode === 'dark'}
           onChange={(event) => handleThemeToggle(event.currentTarget.checked)}
           label='Dark mode'
           size='md'
         />
-      </div>
+      </Box>
       <Select
         label='Team Theme'
         description='Select your favorite NHL team colors'
@@ -51,11 +51,11 @@ export function ThemeControls() {
           return (
             <Group gap='xs' {...others}>
               <Box
+                w={16}
+                h={16}
                 style={{
-                  width: 16,
-                  height: 16,
                   backgroundColor: teamOption.color,
-                  borderRadius: 4,
+                  borderRadius: 'var(--mantine-radius-xs)',
                 }}
               />
               <span>{teamOption.label}</span>
