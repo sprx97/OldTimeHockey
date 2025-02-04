@@ -105,10 +105,10 @@ for m in all_matches:
     played.append([p2_name, p2_div])
 
     # Don't mark a winnner in the first week of a two-week matchup
-    # Currently this is only quarterfinals, semifinals, and finals, but subject to change each year
+    # Currently this is only semifinals and final (for 2024-25), but subject to change each year
     current_scores = m["scores_csv"]
     finalize = True
-    if m["group_id"] == None and m["round"] >= 5:
+    if m["group_id"] == None and m["round"] >= 6:
         if current_scores == "":
             challonge.matches.mark_as_underway(wc_id, m["id"])
             finalize = False
