@@ -34,12 +34,8 @@ const LeaguePlayoffOdds = (props) => {
       setPlayoffOdds(data);
       // If a team was passed via navigation, select it, otherwise select first team
       if (data && Object.keys(data).length > 0) {
-        if (passedTeamName) {
-          var team = passedTeamName ? Object.values(data).find(t => t.name === passedTeamName && t.owner === passedOwnerName) : null;
-          setSelectedTeam(team || Object.values(data)[0]);
-        } else {
-          setSelectedTeam(Object.values(data)[0]);
-        }
+        var team = passedTeamName ? Object.values(data).find(t => t.name === passedTeamName && t.owner === passedOwnerName) : null;
+        setSelectedTeam(team || Object.values(data)[0]);
       }
     } catch (error) {
       console.error('Error fetching playoff odds:', error);
