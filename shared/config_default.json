@@ -1,6 +1,10 @@
 {
 	"srcroot": "/var/www/OldTimeHockey/", // update this to be your local path to this folder
-	"year": "", // current season of OTH, updated annually
+	"year": "20XX", // current season of OTH, updated annually
+
+	"features": {
+		"enableLogin": false
+	}, // feature flags can be added here.
 
 	"sql_hostname": "localhost",
 	"sql_username": "", // update this to be your local mysql login
