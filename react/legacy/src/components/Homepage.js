@@ -121,7 +121,7 @@ const seasons = [
       coachesRating: { name: "Woppa", link: "https://www.fleaflicker.com/nhl/leagues/9001/teams/48839?season=2016", stat: "96.54%" },
       woppaCup: { name: "Boboombang", link: "https://www.fleaflicker.com/nhl/leagues/9013/teams/49894?season=2016" }
     },
-    ruleChanges: []
+    ruleChanges: "None"
   },
   {
     year: "2015-2016",
@@ -170,7 +170,7 @@ const seasons = [
       coachesRating: { name: "Teratic", link: "https://www.fleaflicker.com/nhl/leagues/4634/teams/26815?season=2013", stat: "96.73%" },
       woppaCup: { name: "FCBcn19", link: "https://www.fleaflicker.com/nhl/leagues/4641/teams/26622?season=2013" }
     },
-    ruleChanges: ["None"]
+    ruleChanges: "None"
   },
   {
     year: "2012-2013",
@@ -183,7 +183,7 @@ const seasons = [
       pointsFor: { name: "Woppa", link: "https://www.fleaflicker.com/nhl/leagues/3801/teams/21590?season=2012", stat: 2552.7 },
       coachesRating: { name: "IAmAChemicalEngineer", link: "https://www.fleaflicker.com/nhl/leagues/3798/teams/21659?season=2012", stat: "96.15%" },
       woppaCup: { name: "Cannon49", link: "https://www.fleaflicker.com/nhl/leagues/3800/teams/21501?season=2012" }
-    }
+    },
   }
 ];
 
@@ -193,31 +193,31 @@ const panes = seasons.map(({ year, teams, leagues, divisions, champions, ruleCha
     <Tab.Pane>
       {teams} teams, {leagues} leagues, {divisions} divisions
       <ul>
-        {champions.division1 && (
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href={champions.division1.link}>{champions.division1.name}</a>
-          </li>
-        )}
-        {champions.pointsFor && (
-          <li>
-            <b>Points For Champion: </b>
-            <a href={champions.pointsFor.link}>{champions.pointsFor.name}</a> - {champions.pointsFor.stat}
-          </li>
-        )}
-        {champions.coachesRating && (
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href={champions.coachesRating.link}>{champions.coachesRating.name}</a> - {champions.coachesRating.stat}
-          </li>
-        )}
-        {champions.woppaCup && (
-          <li>
-            <b>Woppa Cup Champion: </b>
+        <li>
+          <b>Division 1 Champion: </b>
+          {champions.division1 && champions.division1.link ?
+              (<a href={champions.division1.link}>{champions.division1.name}</a>) :
+              champions.division1 ? champions.division1.name : ''}
+        </li>
+        <li>
+          <b>Points For Champion: </b>
+          {champions.pointsFor && (
+            <><a href={champions.pointsFor.link}>{champions.pointsFor.name}</a> - {champions.pointsFor.stat}</>
+          )}
+        </li>
+        <li>
+          <b>Coaches Rating Champion: </b>
+          {champions.coachesRating && (
+            <><a href={champions.coachesRating.link}>{champions.coachesRating.name}</a> - {champions.coachesRating.stat}</>
+          )}
+        </li>
+        <li>
+          <b>Woppa Cup Champion: </b>
+          {champions.woppaCup && (
             <a href={champions.woppaCup.link}>{champions.woppaCup.name}</a>
-          </li>
-        )}
-        <u>Rule Changes</u>
+          )}
+        </li>
+        {ruleChanges && (<u>Rule Changes</u>)}
         {Array.isArray(ruleChanges) ? (
           <ul>
             {ruleChanges.map((change, index) => (
