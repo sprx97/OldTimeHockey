@@ -37,4 +37,4 @@ echo "WeekVars Incremented!"
 
 # Run weekly database copy
 python3 /var/www/OldTimeHockey/scripts/backupdata.py
-echo "Backup Complete!
+echo "Backup Complete!"

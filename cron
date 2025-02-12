@@ -4,4 +4,4 @@
 
 # Run weekly scripts to update data stores
 # Enable the day the season starts
-0 8 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh
+0 8 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh >> /var/www/OldTimeHockey/cronjob.log 2>&1
