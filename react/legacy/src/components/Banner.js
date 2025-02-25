@@ -1,12 +1,27 @@
-import React from 'react';
-import { Image } from 'semantic-ui-react';
-import "../styles/App.css"
 
-const year = "2022";
 
-const Header = () => (
-  <div alt="Banner" style={{width:"100%", height:"134px", backgroundImage:"url('/images/logos/banner.webp')", backgroundRepeat:"no-repeat", backgroundPosition:"center top", overflow:"hidden"}}>
-  </div>
-);
 
-export default Header;
+import React from "react";
+
+const Banner = ({ name, topSrc, middleSrc, bottomSrc, text }) => {
+  return (
+    <div>
+      {/* Top section */}
+      <div style={{margin: "0"}}>
+        <img src={topSrc} alt={name} />
+      </div>
+
+      {/* Middle section with text */}
+      <div>
+        <img src={middleSrc} alt={name} />
+      </div>
+
+      {/* Bottom section */}
+      <div>
+        <img src={bottomSrc} alt={name} />
+      </div>
+    </div>
+  );
+};
+
+export default Banner;
