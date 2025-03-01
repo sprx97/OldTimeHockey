@@ -422,6 +422,8 @@ const LeaguePlayoffOdds = (props) => {
                     />
                     <YAxis 
                       label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
+                      domain={[0, 100]}
+                      ticks={[0, 20, 40, 60, 80, 100]}
                     />
                     <Tooltip />
                     <Bar dataKey="probability" fill="#99D9D9" name="Probability %" barSize={30} />
@@ -442,6 +444,8 @@ const LeaguePlayoffOdds = (props) => {
                     />
                     <YAxis 
                       label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
+                      domain={[0, 100]}
+                      ticks={[0, 20, 40, 60, 80, 100]}
                     />
                     <Tooltip />
                     <Bar dataKey="odds" fill="#355464" name="Playoff Odds %" barSize={30} />
