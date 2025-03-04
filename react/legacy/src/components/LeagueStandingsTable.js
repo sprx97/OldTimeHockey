@@ -81,19 +81,21 @@ class LeagueStandingsTable extends Component {
                   {this.props.leagueName}
                 </a>
               </div>
-              <div>
-                <button
-                  onClick={() => {
-                    this.props.history.push(`/league/${this.props.leagueID}`, {
-                      leagueName: this.props.leagueName
-                    });
-                  }}
-                  className="playoff-odds-link"
-                >
-                  <i className="fa-solid fa-chart-simple" style={{marginRight: "0.5rem"}}></i>
-                  Playoff Odds
-                </button>
-              </div>
+              {this.props.year == getCurrentYear() ? (
+                <div>
+                  <button
+                    onClick={() => {
+                      this.props.history.push(`/league/${this.props.leagueID}`, {
+                        leagueName: this.props.leagueName
+                      });
+                    }}
+                    className="playoff-odds-link"
+                  >
+                    <i className="fa-solid fa-chart-simple" style={{marginRight: "0.5rem"}}></i>
+                    Playoff Odds
+                  </button>
+                </div>
+              ) : ''}
             </div>
           </Header>
 

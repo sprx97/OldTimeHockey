@@ -258,7 +258,13 @@ const LeaguePlayoffOdds = (props) => {
       <ResponsiveContainer width="100%" height={500}>
         <BarChart
           data={Object.values(playoffOdds)
-            .sort((a, b) => b.playoff_odds - a.playoff_odds)
+            .sort((a, b) => {
+              if (a.wins === b.wins) {
+                return b.PF - a.PF;
+              }
+
+              return b.wins - a.wins;
+            })
             .map(team => ({
               name: team.name,
               odds: team.playoff_odds,
@@ -301,8 +307,14 @@ const LeaguePlayoffOdds = (props) => {
             barSize={30}
           >
             {Object.values(playoffOdds)
-              .sort((a, b) => b.playoff_odds - a.playoff_odds)
-              .map((entry, index) => (
+            .sort((a, b) => {
+              if (a.wins === b.wins) {
+                return b.PF - a.PF;
+              }
+
+              return b.wins - a.wins;
+            })
+            .map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={
@@ -438,6 +450,7 @@ const LeaguePlayoffOdds = (props) => {
                             key={`cell-${index}`}
                             fill={
                               index < 6 ? '#006847' : // Dallas Stars Green
+                              (Number(leagueId) < 12090 && index > 11) ? '#CE1126' : // Red Wings Red for double demotion
                               '#F47A38' // Anaheim Ducks Orange for missing playoffs
                             }
                           />
@@ -510,7 +523,6 @@ const LeaguePlayoffOdds = (props) => {
                       barSize={30}
                     />
                   </ComposedChart>
-                  
                 </ResponsiveContainer>
               </Grid.Column>
             </Grid.Row>
