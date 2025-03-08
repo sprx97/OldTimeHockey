@@ -12,7 +12,7 @@ const TrophyBanner = ({
   secondaryColor = '#1e2c56',
   accentColor = '#ffffff',
   // Banner layout
-  width = 275,
+  width = 285,
   // Title styling
   titleFontSize = '2.25rem',
   titleLetterSpacing = '2px',
@@ -157,11 +157,10 @@ const TrophyBanner = ({
                       onMouseEnter={() => setHoveredName(name)}
                       onMouseLeave={() => setHoveredName(null)}
                       style={{ 
-                        cursor: 'pointer',
+                        cursor: 'default',
                         textDecoration: 'none',
                         textDecorationColor: 'rgba(255, 255, 255, 0.5)',
                         color: isHighlighted ? 'black' : accentColor,
-                        transform: isHighlighted ? 'scale(1.1)' : 'scale(1)',
                         display: 'inline-block',
                         transition: 'color 0.3s ease, transform 0.3s ease'
                       }}
