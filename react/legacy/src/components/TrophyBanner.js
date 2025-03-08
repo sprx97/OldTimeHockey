@@ -6,23 +6,32 @@ const TrophyBanner = ({
   title,
   logoSrc,
   textItems = [],
+  // Core colors
   mainColor = '#ce1126',
   secondaryColor = '#1e2c56',
   accentColor = '#ffffff',
-  width = 200,
+  // Banner layout
+  width = 225,
+  // Title styling
   titleFontSize = '2.25rem',
-  itemFontSize = '1.5rem'
+  titleLetterSpacing = '2px',
+  titleFontWeight = 'normal',
+  // Item styling
+  itemFontSize = '1.25rem',
+  itemLetterSpacing = '0.5px'
 }) => {
   // Generate a unique class name for this banner instance
   const bannerClass = `trophy-banner-${Math.random().toString(36).substr(2, 9)}`;
 
+  // We’ll use these dynamic values inside a single CSS string
   const customStyles = `
     .${bannerClass} {
-      width: ${width}px;
-      min-height: 200px;
-      margin: 20px;
       position: relative;
       display: inline-block;
+      vertical-align: top; /* helps align multiple banners nicely */
+      margin: 20px;
+      width: ${width}px; /* width set here for a consistent look */
+      min-height: 200px;
       background-color: ${mainColor};
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       padding-bottom: 15px;
@@ -46,12 +55,13 @@ const TrophyBanner = ({
       width: 100%;
       text-align: center;
       color: ${accentColor};
-      font-weight: bold;
+      font-family: 'Anton', sans-serif;
+      font-weight: ${titleFontWeight};
       font-size: ${titleFontSize};
+      letter-spacing: ${titleLetterSpacing};
       text-transform: uppercase;
       padding: 10px 5px;
       line-height: 1;
-      font-family: 'Anton', sans-serif;
     }
 
     /* Logo container in the middle */
@@ -84,22 +94,32 @@ const TrophyBanner = ({
     /* List items: left-aligned text */
     .${bannerClass} li {
       color: ${accentColor};
+      font-family: 'Anton', sans-serif;
       font-size: ${itemFontSize};
+      letter-spacing: ${itemLetterSpacing};
       padding: 5px 0;
       line-height: 1.2;
-      font-family: 'Anton', sans-serif;
     }
   `;
 
   return (
     <>
       <style>{customStyles}</style>
+
       <div className={bannerClass}>
-        <div className="title" dangerouslySetInnerHTML={{ __html: title }}></div>
+        <div
+          className="title"
+          // Using dangerouslySetInnerHTML so you can use html tags in the title like <br />
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
         
         {logoSrc && (
           <div className="logo-container">
-            <Image src={logoSrc} size="tiny" style={{ maxWidth: '80%', maxHeight: '60px' }} />
+            <Image
+              src={logoSrc}
+              size="tiny"
+              style={{ maxWidth: '80%', maxHeight: '60px' }}
+            />
           </div>
         )}
 
@@ -126,7 +146,10 @@ TrophyBanner.propTypes = {
   accentColor: PropTypes.string,
   width: PropTypes.number,
   titleFontSize: PropTypes.string,
-  itemFontSize: PropTypes.string
+  titleLetterSpacing: PropTypes.string,
+  titleFontWeight: PropTypes.string,
+  itemFontSize: PropTypes.string,
+  itemLetterSpacing: PropTypes.string
 };
 
 export default TrophyBanner;

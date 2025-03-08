@@ -2,20 +2,6 @@ import React from 'react';
 import { Container } from 'semantic-ui-react';
 import TrophyBanner from './TrophyBanner';
 
-// Global styles for all banners
-const globalStyles = {
-  width: 225,
-  titleTextStyle: {
-    fontSize: '1.6rem',
-    letterSpacing: '1px',
-    fontWeight: 'bold'
-  },
-  itemTextStyle: {
-    fontSize: '0.85rem',
-    letterSpacing: '0.5px'
-  }
-};
-
 const bannerData = [
   {
     id: 'division1',
@@ -121,13 +107,15 @@ const bannerData = [
 const TrophyRoom = () => {
   return (
     <Container fluid>
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'flex-start', // Align banners at the top
-        padding: '40px 0'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          padding: '40px 0'
+        }}
+      >
         {bannerData.map((banner) => (
           <TrophyBanner 
             key={banner.id}
@@ -136,9 +124,6 @@ const TrophyRoom = () => {
             textItems={banner.textItems}
             mainColor={banner.mainColor}
             secondaryColor={banner.secondaryColor}
-            width={globalStyles.width}
-            titleTextStyle={globalStyles.titleTextStyle}
-            itemTextStyle={globalStyles.itemTextStyle}
           />
         ))}
       </div>
