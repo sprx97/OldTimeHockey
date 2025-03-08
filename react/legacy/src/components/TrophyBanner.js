@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'semantic-ui-react';
+import styles from '../styles/TrophyRoom.module.css'
 import { useTrophyHover } from './TrophyHoverContext';
 
 const TrophyBanner = ({
@@ -26,160 +27,94 @@ const TrophyBanner = ({
   textShadowOffsetX = '1px',
   textShadowOffsetY = '1px'
 }) => {
+  const { hoveredName, setHoveredName } = useTrophyHover();
 
-  const bannerClass = `trophy-banner-${Math.random().toString(36).substr(2, 9)}`;
-  const customStyles = `
-    .${bannerClass} {
-      position: relative;
-      display: inline-block;
-      vertical-align: top; 
-      margin: 20px;
-      width: ${width}px; /* width set here for a consistent look */
-      min-height: 200px;
-      background-color: ${mainColor};
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      padding-bottom: 15px;
-    }
-
-    /* Pointed bottom triangle */
-    .${bannerClass}::after {
-      content: "";
-      position: absolute;
-      bottom: -30px;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: ${width / 2}px solid transparent;
-      border-right: ${width / 2}px solid transparent;
-      border-top: 30px solid ${mainColor};
-    }
-
-    /* Title at the top */
-    .${bannerClass} .title {
-      width: 100%;
-      text-align: center;
-      color: ${accentColor};
-      font-family: 'Anton', sans-serif;
-      font-weight: ${titleFontWeight};
-      font-size: ${titleFontSize};
-      letter-spacing: ${titleLetterSpacing};
-      text-transform: uppercase;
-      padding: 10px 5px;
-      line-height: 1;
-      text-shadow: ${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor};
-    }
-
-    /* Logo container in the middle */
-    .${bannerClass} .logo-container {
-      width: 100%;
-      padding: 10px 0;
-      background-color: ${secondaryColor};
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-top: 3px solid ${accentColor};
-      border-bottom: 3px solid ${accentColor};
-    }
-
-    .${bannerClass} .list-container {
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    .${bannerClass} ol {
-      width: 100%;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    .${bannerClass} li {
-      color: ${accentColor};
-      font-family: 'Anton', sans-serif;
-      font-size: ${itemFontSize};
-      letter-spacing: ${itemLetterSpacing};
-      padding: 5px 20px;
-      line-height: 1.2;
-      text-align: left;
-      width: 100%;
-      display: block;
-      text-shadow: ${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor};
-    }
-  `;
+  // Create an inline style object to pass dynamic values via CSS variables.
+  const inlineStyles = {
+    '--main-color': mainColor,
+    '--secondary-color': secondaryColor,
+    '--accent-color': accentColor,
+    '--title-font-size': titleFontSize,
+    '--title-letter-spacing': titleLetterSpacing,
+    '--title-font-weight': titleFontWeight,
+    '--item-font-size': itemFontSize,
+    '--item-letter-spacing': itemLetterSpacing,
+    '--text-shadow': `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
+    '--banner-width': `${width}px`, // Add this to match the CSS variable used in ::after
+    width: `${width}px`
+  };
 
   return (
-    <>
-      <style>{customStyles}</style>
+    <div className={styles.banner} style={inlineStyles}>
+      <div
+        className={styles.title}
+        // Using dangerouslySetInnerHTML so you can use html tags in the title like <br />
+        dangerouslySetInnerHTML={{ __html: title }}
+      />
+      
+      {logoSrc && (
+        <div className={styles.logoContainer}>
+          <Image
+            src={logoSrc}
+            size="tiny"
+            style={{ 
+              width: '90px', 
+              height: '100%', 
+              objectFit: 'contain',
+              borderRadius: '50%' 
+            }}
+          />
+        </div>
+      )}
 
-      <div className={bannerClass}>
-        <div
-          className="title"
-          // Using dangerouslySetInnerHTML so you can use html tags in the title like <br />
-          dangerouslySetInnerHTML={{ __html: title }}
-        />
-        
-        {logoSrc && (
-          <div className="logo-container">
-            <Image
-              src={logoSrc}
-              size="tiny"
-              style={{ 
-                width: '90px', 
-                height: '100%', 
-                objectFit: 'contain',
-                borderRadius: '50%' 
-              }}
-            />
-          </div>
-        )}
-
-        {textItems.length > 0 && (
-          <div className="list-container">
-            <ol>
-              {textItems.map((item, index) => {
-                const parts = item.split(' - ');
-                if (parts.length !== 2) {
-                  return <li key={index}>{item}</li>;
-                }
-                
-                const year = parts[0];
-                const name = parts[1];
-                const { hoveredName, setHoveredName } = useTrophyHover();
-                const isHighlighted = hoveredName === name;
-                
-                return (
-                  <li 
-                    key={index}
-                    style={{
-                      backgroundColor: isHighlighted ? 'rgba(255, 255, 0, 1)' : 'transparent',
+      {textItems.length > 0 && (
+        <div className={styles.listContainer}>
+          <ol className={styles.list}>
+            {textItems.map((item, index) => {
+              const parts = item.split(' - ');
+              if (parts.length !== 2) {
+                return <li key={index} className={styles.listItem}>{item}</li>;
+              }
+              
+              const year = parts[0];
+              const name = parts[1];
+              
+              // Sanitize names by removing special characters before comparison
+              const sanitizeName = (str) => str ? str.replace(/[^\w\s]/gi, '') : '';
+              const isHighlighted = sanitizeName(hoveredName) === sanitizeName(name);
+              
+              return (
+                <li 
+                  key={index}
+                  className={styles.listItem}
+                  style={{
+                    backgroundColor: isHighlighted ? 'rgba(255, 255, 0, 1)' : 'transparent',
+                    color: isHighlighted ? 'black' : accentColor,
+                    textShadow: isHighlighted ? 'none' : `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
+                    transition: 'background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease'
+                  }}
+                >
+                  {year} - <span 
+                    onMouseEnter={() => setHoveredName(name)}
+                    onMouseLeave={() => setHoveredName(null)}
+                    style={{ 
+                      cursor: 'default',
+                      textDecoration: 'none',
+                      textDecorationColor: 'rgba(255, 255, 255, 0.5)',
                       color: isHighlighted ? 'black' : accentColor,
-                      textShadow: isHighlighted ? 'none' : `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
-                      transition: 'background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease'
+                      display: 'inline-block',
+                      transition: 'color 0.3s ease, transform 0.3s ease'
                     }}
                   >
-                    {year} - <span 
-                      onMouseEnter={() => setHoveredName(name)}
-                      onMouseLeave={() => setHoveredName(null)}
-                      style={{ 
-                        cursor: 'default',
-                        textDecoration: 'none',
-                        textDecorationColor: 'rgba(255, 255, 255, 0.5)',
-                        color: isHighlighted ? 'black' : accentColor,
-                        display: 'inline-block',
-                        transition: 'color 0.3s ease, transform 0.3s ease'
-                      }}
-                    >
-                      {name}
-                    </span>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-        )}
-      </div>
-    </>
+                    {name}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      )}
+    </div>
   );
 };
 
