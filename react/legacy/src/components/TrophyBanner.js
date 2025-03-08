@@ -11,14 +11,19 @@ const TrophyBanner = ({
   secondaryColor = '#1e2c56',
   accentColor = '#ffffff',
   // Banner layout
-  width = 225,
+  width = 275,
   // Title styling
   titleFontSize = '2.25rem',
   titleLetterSpacing = '2px',
   titleFontWeight = 'normal',
   // Item styling
-  itemFontSize = '1.25rem',
-  itemLetterSpacing = '0.5px'
+  itemFontSize = '1.5rem',
+  itemLetterSpacing = '0.75px',
+  // Text shadow
+  textShadowColor = 'rgba(0, 0, 0, 0.5)',
+  textShadowBlur = '3px',
+  textShadowOffsetX = '1px',
+  textShadowOffsetY = '1px'
 }) => {
   // Generate a unique class name for this banner instance
   const bannerClass = `trophy-banner-${Math.random().toString(36).substr(2, 9)}`;
@@ -62,6 +67,7 @@ const TrophyBanner = ({
       text-transform: uppercase;
       padding: 10px 5px;
       line-height: 1;
+      text-shadow: ${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor};
     }
 
     /* Logo container in the middle */
@@ -99,6 +105,7 @@ const TrophyBanner = ({
       letter-spacing: ${itemLetterSpacing};
       padding: 5px 0;
       line-height: 1.2;
+      text-shadow: ${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor};
     }
   `;
 
@@ -149,7 +156,11 @@ TrophyBanner.propTypes = {
   titleLetterSpacing: PropTypes.string,
   titleFontWeight: PropTypes.string,
   itemFontSize: PropTypes.string,
-  itemLetterSpacing: PropTypes.string
+  itemLetterSpacing: PropTypes.string,
+  textShadowColor: PropTypes.string,
+  textShadowBlur: PropTypes.string,
+  textShadowOffsetX: PropTypes.string,
+  textShadowOffsetY: PropTypes.string
 };
 
 export default TrophyBanner;
