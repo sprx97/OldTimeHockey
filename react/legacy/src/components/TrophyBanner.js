@@ -6,11 +6,11 @@ import { useTrophyHover } from './TrophyHoverContext';
 const TrophyBanner = ({
   title,
   logoSrc,
-  textItems = [],
+  winnersList = [],
   // Core colors
-  mainColor = '#ce1126',
-  secondaryColor = '#1e2c56',
-  accentColor = '#ffffff',
+  bannerBackgroundColor = '#ce1126',
+  logoBackgroundColor = '#1e2c56',
+  logoBackgroundBorderColor = '#ffffff',
   // Banner layout
   width = 285,
   // Title styling
@@ -29,9 +29,9 @@ const TrophyBanner = ({
   const { hoveredName, setHoveredName } = useTrophyHover();
 
   const inlineStyles = {
-    '--main-color': mainColor,
-    '--secondary-color': secondaryColor,
-    '--accent-color': accentColor,
+    '--banner-background-color': bannerBackgroundColor,
+    '--logo-background-color': logoBackgroundColor,
+    '--logo-background-border-color': logoBackgroundBorderColor,
     '--title-font-size': titleFontSize,
     '--title-letter-spacing': titleLetterSpacing,
     '--title-font-weight': titleFontWeight,
@@ -68,10 +68,10 @@ const TrophyBanner = ({
         </div>
       )}
 
-      {textItems.length > 0 && (
+      {winnersList.length > 0 && (
         <div className={styles.listContainer}>
           <ol className={styles.list}>
-            {textItems.map((item, index) => {
+            {winnersList.map((item, index) => {
               const parts = item.split(' - ');
               if (parts.length !== 2) {
                 return <li key={index} className={styles.listItem}>{item}</li>;
@@ -90,7 +90,7 @@ const TrophyBanner = ({
                   className={styles.listItem}
                   style={{
                     backgroundColor: isHighlighted ? 'rgba(255, 255, 0, 1)' : 'transparent',
-                    color: isHighlighted ? 'black' : accentColor,
+                    color: isHighlighted ? 'black' : logoBackgroundBorderColor,
                     textShadow: isHighlighted ? 'none' : `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
                     transition: 'background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease'
                   }}
@@ -102,7 +102,7 @@ const TrophyBanner = ({
                       cursor: 'default',
                       textDecoration: 'none',
                       textDecorationColor: 'rgba(255, 255, 255, 0.5)',
-                      color: isHighlighted ? 'black' : accentColor,
+                      color: isHighlighted ? 'black' : logoBackgroundBorderColor,
                       display: 'inline-block',
                       transition: 'color 0.3s ease, transform 0.3s ease'
                     }}
@@ -122,10 +122,10 @@ const TrophyBanner = ({
 TrophyBanner.propTypes = {
   title: PropTypes.string.isRequired,
   logoSrc: PropTypes.string,
-  textItems: PropTypes.arrayOf(PropTypes.string),
-  mainColor: PropTypes.string,
-  secondaryColor: PropTypes.string,
-  accentColor: PropTypes.string,
+  winnersList: PropTypes.arrayOf(PropTypes.string),
+  bannerBackgroundColor: PropTypes.string,
+  logoBackgroundColor: PropTypes.string,
+  logoBackgroundBorderColor: PropTypes.string,
   width: PropTypes.number,
   titleFontSize: PropTypes.string,
   titleLetterSpacing: PropTypes.string,

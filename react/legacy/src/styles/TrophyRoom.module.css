@@ -4,7 +4,7 @@
   vertical-align: top;
   margin: 20px;
   min-height: 200px;
-  background-color: var(--main-color, #ce1126);
+  background-color: var(--banner-background-color, #ce1126);
   box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.4);
   padding-bottom: 15px;
   width: var(--banner-width, 285px);
@@ -20,13 +20,13 @@
   /* Use the dynamic banner width to calculate half the width */
   border-left: calc(var(--banner-width) / 2) solid transparent;
   border-right: calc(var(--banner-width) / 2) solid transparent;
-  border-top: 30px solid var(--main-color, #ce1126);
+  border-top: 30px solid var(--banner-background-color, #ce1126);
 }
 
 .title {
   width: 100%;
   text-align: center;
-  color: var(--accent-color, #ffffff);
+  color: var(--logo-background-border-color, #ffffff);
   font-family: 'Anton', sans-serif;
   font-weight: var(--title-font-weight, normal);
   font-size: var(--title-font-size, 2.25rem);
@@ -40,12 +40,12 @@
 .logoContainer {
   width: 100%;
   padding: 10px 0;
-  background-color: var(--secondary-color, #1e2c56);
+  background-color: var(--logo-background-color, #1e2c56);
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 3px solid var(--accent-color, #ffffff);
-  border-bottom: 3px solid var(--accent-color, #ffffff);
+  border-top: 3px solid var(--logo-background-border-color, #ffffff);
+  border-bottom: 3px solid var(--logo-background-border-color, #ffffff);
 }
 
 .listContainer {
@@ -62,7 +62,7 @@
 }
 
 .listItem {
-  color: var(--accent-color, #ffffff);
+  color: var(--logo-background-border-color, #ffffff);
   font-family: 'Anton', sans-serif;
   font-size: var(--item-font-size, 1.5rem);
   letter-spacing: var(--item-letter-spacing, 0.75px);

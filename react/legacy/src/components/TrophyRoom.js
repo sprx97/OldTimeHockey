@@ -9,7 +9,7 @@ const bannerData = [
     id: 'division1',
     title: "Division 1 Champions",
     logoSrc: "/images/logos/oth-circular.gif",
-    textItems: [
+    winnersList: [
       "2024 - GUSZ",
       "2023 - SPRX97",
       "2022 - NODDAN",
@@ -22,14 +22,14 @@ const bannerData = [
       "2015 - TERATIC",
       "2014 - CONCINI"
     ],
-    mainColor: "#1e2c56",
-    secondaryColor: "#000000"
+    bannerBackgroundColor: "#1e2c56",
+    logoBackgroundColor: "#000000"
   },
   {
     id: 'pointsFor',
     title: "Points For Champions",
     logoSrc: "/images/logos/oth-circular.gif",
-    textItems: [  
+    winnersList: [  
       "2024 - COSTCOSTAN",
       "2023 - CHRISTTHROWSROCKS",
       "2022 - AKACESFAN",
@@ -43,14 +43,14 @@ const bannerData = [
       "2014 - TERATIC",
       "2013 - WOPPA"
     ],
-    mainColor: "#8a1538",
-    secondaryColor: "#000000"
+    bannerBackgroundColor: "#8a1538",
+    logoBackgroundColor: "#000000"
   },
   {
     id: 'woppaCup',
     title: "Woppa Cup Champions",
     logoSrc: "/images/logos/oth-circular.gif",
-    textItems: [  
+    winnersList: [  
       "2024 - AKACESFAN",
       "2023 - CHRISTTHROWSROCKS",
       "2022 - PLANKS",
@@ -64,14 +64,14 @@ const bannerData = [
       "2014 - FCBCN19",
       "2013 - CANNON49"
     ],
-    mainColor: "#006847",
-    secondaryColor: "#000000"
+    bannerBackgroundColor: "#006847",
+    logoBackgroundColor: "#000000"
   },
   {
     id: 'president',
     title: "President's <br /> Trophy",
     logoSrc: "/images/logos/oth-circular.gif",
-    textItems: [  
+    winnersList: [  
       "2024 - BRUINHAWKS",
       "2023 - SPRX97",
       "2022 - TGMILLS",
@@ -84,14 +84,14 @@ const bannerData = [
       "2015 - TERATIC",
       "2014 - PEWPEW_PEW"
     ],
-    mainColor: "#041e42",
-    secondaryColor: "#000000"
+    bannerBackgroundColor: "#041e42",
+    logoBackgroundColor: "#000000"
   },
   {
     id: 'playoffPool',
     title: "Playoff Pool Champions",
     logoSrc: "/images/logos/oth-circular.gif",
-    textItems: [
+    winnersList: [
       "2024 - NODDAN",
       "2023 - HAZARD",
       "2022 - TSUNKATSE",
@@ -101,8 +101,8 @@ const bannerData = [
       "2018 - BOBOOMBANG",
       "2017 - MINNESNOTA"
     ],
-    mainColor: "#ce1126",
-    secondaryColor: "#000000"
+    bannerBackgroundColor: "#ce1126",
+    logoBackgroundColor: "#000000"
   }
 ];
 
@@ -141,9 +141,9 @@ const TrophyRoom = () => {
               key={banner.id}
               title={banner.title}
               logoSrc={banner.logoSrc}
-              textItems={banner.textItems}
-              mainColor={banner.mainColor}
-              secondaryColor={banner.secondaryColor}
+              winnersList={banner.winnersList}
+              bannerBackgroundColor={banner.bannerBackgroundColor}
+              logoBackgroundColor={banner.logoBackgroundColor}
             />
           ))}
         </div>
