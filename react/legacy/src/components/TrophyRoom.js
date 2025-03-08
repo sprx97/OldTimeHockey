@@ -2,6 +2,7 @@ import React from 'react';
 import { Container } from 'semantic-ui-react';
 import TrophyBanner from './TrophyBanner';
 import raftersBackground from '../assets/rafters.jpg';
+import { TrophyHoverProvider } from './TrophyHoverContext';
 
 const bannerData = [
   {
@@ -107,45 +108,47 @@ const bannerData = [
 
 const TrophyRoom = () => {
   return (
-    <Container fluid style={{
-      backgroundImage: `url(${raftersBackground})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      minHeight: '100vh',
-      position: 'relative'
-    }}>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 1
-      }}></div>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          padding: '40px 0',
-          position: 'relative',
-          zIndex: 2
-        }}
-      >
-        {bannerData.map((banner) => (
-          <TrophyBanner 
-            key={banner.id}
-            title={banner.title}
-            logoSrc={banner.logoSrc}
-            textItems={banner.textItems}
-            mainColor={banner.mainColor}
-            secondaryColor={banner.secondaryColor}
-          />
-        ))}
-      </div>
-    </Container>
+    <TrophyHoverProvider>
+      <Container fluid style={{
+        backgroundImage: `url(${raftersBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        position: 'relative'
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.05)',
+          zIndex: 1
+        }}></div>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            padding: '40px 0',
+            position: 'relative',
+            zIndex: 2
+          }}
+        >
+          {bannerData.map((banner) => (
+            <TrophyBanner 
+              key={banner.id}
+              title={banner.title}
+              logoSrc={banner.logoSrc}
+              textItems={banner.textItems}
+              mainColor={banner.mainColor}
+              secondaryColor={banner.secondaryColor}
+            />
+          ))}
+        </div>
+      </Container>
+    </TrophyHoverProvider>
   );
 };
 

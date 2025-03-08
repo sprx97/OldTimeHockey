@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'semantic-ui-react';
+import { useTrophyHover } from './TrophyHoverContext';
 
 const TrophyBanner = ({
   title,
@@ -25,15 +26,13 @@ const TrophyBanner = ({
   textShadowOffsetX = '1px',
   textShadowOffsetY = '1px'
 }) => {
-  // Generate a unique class name for this banner instance
-  const bannerClass = `trophy-banner-${Math.random().toString(36).substr(2, 9)}`;
 
-  // We’ll use these dynamic values inside a single CSS string
+  const bannerClass = `trophy-banner-${Math.random().toString(36).substr(2, 9)}`;
   const customStyles = `
     .${bannerClass} {
       position: relative;
       display: inline-block;
-      vertical-align: top; /* helps align multiple banners nicely */
+      vertical-align: top; 
       margin: 20px;
       width: ${width}px; /* width set here for a consistent look */
       min-height: 200px;
@@ -82,29 +81,29 @@ const TrophyBanner = ({
       border-bottom: 3px solid ${accentColor};
     }
 
-    /* List container: center the list itself */
     .${bannerClass} .list-container {
       text-align: center;
       padding: 10px 0;
     }
 
-    /* The list is displayed inline-block to remain left-aligned internally */
     .${bannerClass} ol {
-      display: inline-block;
-      text-align: left;
+      width: 100%;
       list-style-type: none;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
-    /* List items: left-aligned text */
     .${bannerClass} li {
       color: ${accentColor};
       font-family: 'Anton', sans-serif;
       font-size: ${itemFontSize};
       letter-spacing: ${itemLetterSpacing};
-      padding: 5px 0;
+      padding: 5px 20px;
       line-height: 1.2;
+      text-align: left;
+      width: 100%;
+      display: block;
       text-shadow: ${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor};
     }
   `;
@@ -133,9 +132,45 @@ const TrophyBanner = ({
         {textItems.length > 0 && (
           <div className="list-container">
             <ol>
-              {textItems.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
+              {textItems.map((item, index) => {
+                const parts = item.split(' - ');
+                if (parts.length !== 2) {
+                  return <li key={index}>{item}</li>;
+                }
+                
+                const year = parts[0];
+                const name = parts[1];
+                const { hoveredName, setHoveredName } = useTrophyHover();
+                const isHighlighted = hoveredName === name;
+                
+                return (
+                  <li 
+                    key={index}
+                    style={{
+                      backgroundColor: isHighlighted ? 'rgba(255, 255, 0, 1)' : 'transparent',
+                      color: isHighlighted ? 'black' : accentColor,
+                      textShadow: isHighlighted ? 'none' : `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
+                      transition: 'background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease'
+                    }}
+                  >
+                    {year} - <span 
+                      onMouseEnter={() => setHoveredName(name)}
+                      onMouseLeave={() => setHoveredName(null)}
+                      style={{ 
+                        cursor: 'pointer',
+                        textDecoration: 'none',
+                        textDecorationColor: 'rgba(255, 255, 255, 0.5)',
+                        color: isHighlighted ? 'black' : accentColor,
+                        transform: isHighlighted ? 'scale(1.1)' : 'scale(1)',
+                        display: 'inline-block',
+                        transition: 'color 0.3s ease, transform 0.3s ease'
+                      }}
+                    >
+                      {name}
+                    </span>
+                  </li>
+                );
+              })}
             </ol>
           </div>
         )}
