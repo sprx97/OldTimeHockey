@@ -4,14 +4,14 @@ import { Image } from 'semantic-ui-react';
 
 const TrophyBanner = ({ 
   title,
-  subtitle,
   logoSrc,
-  year,
-  mainColor = '#ce1126', // Red like in the example
-  secondaryColor = '#1e2c56', // Navy blue
-  accentColor = '#ffffff', // White
+  textItems = [],
+  mainColor = '#ce1126', 
+  secondaryColor = '#1e2c56',
+  accentColor = '#ffffff',
   width = 200,
-  height = 300
+  titleTextStyle = {},
+  itemTextStyle = {}
 }) => {
   // Generate a unique class name for this banner instance
   const bannerClass = `trophy-banner-${Math.random().toString(36).substr(2, 9)}`;
@@ -19,12 +19,13 @@ const TrophyBanner = ({
   // Base banner style
   const bannerStyle = {
     width: `${width}px`,
-    height: `${height}px`,
+    minHeight: '200px', // Minimum height to ensure banner looks good even with minimal content
     margin: '20px',
     position: 'relative',
     display: 'inline-block',
     backgroundColor: mainColor,
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    paddingBottom: '15px', // Add padding at the bottom for text content
   };
 
   // Title style (top of banner)
@@ -33,22 +34,31 @@ const TrophyBanner = ({
     textAlign: 'center',
     color: accentColor,
     fontWeight: 'bold',
-    fontSize: '1.2rem',
+    fontSize: '1.75rem',
     textTransform: 'uppercase',
     padding: '10px 5px',
-    lineHeight: '1.2',
+    lineHeight: '1',
+    fontFamily: 'Anton, sans-serif',
+    ...titleTextStyle
   };
 
-  // Subtitle style (optional)
-  const subtitleStyle = {
-    width: '100%',
-    textAlign: 'center',
+  // List container style
+  const listContainerStyle = {
+    width: '80%', // Width for the list as a whole
+    padding: '10px 0',
+    margin: '0 auto', // Center the list horizontally
+    listStyleType: 'none', // Remove default bullets
+  };
+
+  // List item style
+  const listItemStyle = {
+    textAlign: 'left',
     color: accentColor,
-    fontWeight: 'bold',
-    fontSize: '1rem',
-    textTransform: 'uppercase',
-    padding: '0 5px 10px',
+    fontSize: '0.9rem',
+    padding: '5px 0',
     lineHeight: '1.2',
+    fontFamily: 'Anton, sans-serif',
+    ...itemTextStyle
   };
 
   // Logo container style (middle of banner)
@@ -63,18 +73,8 @@ const TrophyBanner = ({
     borderBottom: `3px solid ${accentColor}`,
   };
 
-  // Year style (bottom of banner)
-  const yearStyle = {
-    width: '100%',
-    textAlign: 'center',
-    color: accentColor,
-    fontWeight: 'bold',
-    fontSize: '1.5rem',
-    padding: '15px 5px',
-  };
-
   // CSS for the pointed bottom
-  const cssRules = `
+  const bannerBottom = `
     .${bannerClass}::after {
       content: "";
       position: absolute;
@@ -90,10 +90,9 @@ const TrophyBanner = ({
 
   return (
     <>
-      <style>{cssRules}</style>
+      <style>{bannerBottom}</style>
       <div style={bannerStyle} className={bannerClass}>
-        <div style={titleStyle}>{title}</div>
-        {subtitle && <div style={subtitleStyle}>{subtitle}</div>}
+        <div style={titleStyle} dangerouslySetInnerHTML={{ __html: title }}></div>
         
         {logoSrc && (
           <div style={logoContainerStyle}>
@@ -101,7 +100,13 @@ const TrophyBanner = ({
           </div>
         )}
         
-        {year && <div style={yearStyle}>{year}</div>}
+        {textItems.length > 0 && (
+          <ol style={listContainerStyle}>
+            {textItems.map((item, index) => (
+              <li key={index} style={listItemStyle}>{item}</li>
+            ))}
+          </ol>
+        )}
       </div>
     </>
   );
@@ -109,14 +114,14 @@ const TrophyBanner = ({
 
 TrophyBanner.propTypes = {
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string,
   logoSrc: PropTypes.string,
-  year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  textItems: PropTypes.arrayOf(PropTypes.string),
   mainColor: PropTypes.string,
   secondaryColor: PropTypes.string,
   accentColor: PropTypes.string,
   width: PropTypes.number,
-  height: PropTypes.number
+  titleTextStyle: PropTypes.object,
+  itemTextStyle: PropTypes.object
 };
 
 export default TrophyBanner;
