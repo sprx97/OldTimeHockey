@@ -2,79 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'semantic-ui-react';
 
-const TrophyBanner = ({ 
+const TrophyBanner = ({
   title,
   logoSrc,
   textItems = [],
-  mainColor = '#ce1126', 
+  mainColor = '#ce1126',
   secondaryColor = '#1e2c56',
   accentColor = '#ffffff',
   width = 200,
-  titleTextStyle = {},
-  itemTextStyle = {}
+  titleFontSize = '2.25rem',
+  itemFontSize = '1.5rem'
 }) => {
   // Generate a unique class name for this banner instance
   const bannerClass = `trophy-banner-${Math.random().toString(36).substr(2, 9)}`;
-  
-  // Base banner style
-  const bannerStyle = {
-    width: `${width}px`,
-    minHeight: '200px', // Minimum height to ensure banner looks good even with minimal content
-    margin: '20px',
-    position: 'relative',
-    display: 'inline-block',
-    backgroundColor: mainColor,
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-    paddingBottom: '15px', // Add padding at the bottom for text content
-  };
 
-  // Title style (top of banner)
-  const titleStyle = {
-    width: '100%',
-    textAlign: 'center',
-    color: accentColor,
-    fontWeight: 'bold',
-    fontSize: '1.75rem',
-    textTransform: 'uppercase',
-    padding: '10px 5px',
-    lineHeight: '1',
-    fontFamily: 'Anton, sans-serif',
-    ...titleTextStyle
-  };
+  const customStyles = `
+    .${bannerClass} {
+      width: ${width}px;
+      min-height: 200px;
+      margin: 20px;
+      position: relative;
+      display: inline-block;
+      background-color: ${mainColor};
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding-bottom: 15px;
+    }
 
-  // List container style
-  const listContainerStyle = {
-    width: '80%', // Width for the list as a whole
-    padding: '10px 0',
-    margin: '0 auto', // Center the list horizontally
-    listStyleType: 'none', // Remove default bullets
-  };
-
-  // List item style
-  const listItemStyle = {
-    textAlign: 'left',
-    color: accentColor,
-    fontSize: '0.9rem',
-    padding: '5px 0',
-    lineHeight: '1.2',
-    fontFamily: 'Anton, sans-serif',
-    ...itemTextStyle
-  };
-
-  // Logo container style (middle of banner)
-  const logoContainerStyle = {
-    width: '100%',
-    padding: '10px 0',
-    backgroundColor: secondaryColor,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTop: `3px solid ${accentColor}`,
-    borderBottom: `3px solid ${accentColor}`,
-  };
-
-  // CSS for the pointed bottom
-  const bannerBottom = `
+    /* Pointed bottom triangle */
     .${bannerClass}::after {
       content: "";
       position: absolute;
@@ -86,26 +40,77 @@ const TrophyBanner = ({
       border-right: ${width / 2}px solid transparent;
       border-top: 30px solid ${mainColor};
     }
+
+    /* Title at the top */
+    .${bannerClass} .title {
+      width: 100%;
+      text-align: center;
+      color: ${accentColor};
+      font-weight: bold;
+      font-size: ${titleFontSize};
+      text-transform: uppercase;
+      padding: 10px 5px;
+      line-height: 1;
+      font-family: 'Anton', sans-serif;
+    }
+
+    /* Logo container in the middle */
+    .${bannerClass} .logo-container {
+      width: 100%;
+      padding: 10px 0;
+      background-color: ${secondaryColor};
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 3px solid ${accentColor};
+      border-bottom: 3px solid ${accentColor};
+    }
+
+    /* List container: center the list itself */
+    .${bannerClass} .list-container {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    /* The list is displayed inline-block to remain left-aligned internally */
+    .${bannerClass} ol {
+      display: inline-block;
+      text-align: left;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* List items: left-aligned text */
+    .${bannerClass} li {
+      color: ${accentColor};
+      font-size: ${itemFontSize};
+      padding: 5px 0;
+      line-height: 1.2;
+      font-family: 'Anton', sans-serif;
+    }
   `;
 
   return (
     <>
-      <style>{bannerBottom}</style>
-      <div style={bannerStyle} className={bannerClass}>
-        <div style={titleStyle} dangerouslySetInnerHTML={{ __html: title }}></div>
+      <style>{customStyles}</style>
+      <div className={bannerClass}>
+        <div className="title" dangerouslySetInnerHTML={{ __html: title }}></div>
         
         {logoSrc && (
-          <div style={logoContainerStyle}>
+          <div className="logo-container">
             <Image src={logoSrc} size="tiny" style={{ maxWidth: '80%', maxHeight: '60px' }} />
           </div>
         )}
-        
+
         {textItems.length > 0 && (
-          <ol style={listContainerStyle}>
-            {textItems.map((item, index) => (
-              <li key={index} style={listItemStyle}>{item}</li>
-            ))}
-          </ol>
+          <div className="list-container">
+            <ol>
+              {textItems.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ol>
+          </div>
         )}
       </div>
     </>
@@ -120,8 +125,8 @@ TrophyBanner.propTypes = {
   secondaryColor: PropTypes.string,
   accentColor: PropTypes.string,
   width: PropTypes.number,
-  titleTextStyle: PropTypes.object,
-  itemTextStyle: PropTypes.object
+  titleFontSize: PropTypes.string,
+  itemFontSize: PropTypes.string
 };
 
 export default TrophyBanner;
