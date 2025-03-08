@@ -124,7 +124,12 @@ const TrophyBanner = ({
             <Image
               src={logoSrc}
               size="tiny"
-              style={{ maxWidth: '80%', maxHeight: '60px' }}
+              style={{ 
+                width: '90px', 
+                height: '100%', 
+                objectFit: 'contain',
+                borderRadius: '50%' 
+              }}
             />
           </div>
         )}

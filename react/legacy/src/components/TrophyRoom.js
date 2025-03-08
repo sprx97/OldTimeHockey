@@ -8,7 +8,7 @@ const bannerData = [
   {
     id: 'division1',
     title: "Division 1 Champions",
-    logoSrc: "/images/jerseys/Gretzky.png",
+    logoSrc: "/images/logos/oth-circular.gif",
     textItems: [
       "2024 - GUSZ",
       "2023 - SPRX97",
@@ -28,7 +28,7 @@ const bannerData = [
   {
     id: 'pointsFor',
     title: "Points For Champions",
-    logoSrc: "/images/jerseys/Stanley.png",
+    logoSrc: "/images/logos/oth-circular.gif",
     textItems: [  
       "2024 - COSTCOSTAN",
       "2023 - CHRISTTHROWSROCKS",
@@ -49,7 +49,7 @@ const bannerData = [
   {
     id: 'woppaCup',
     title: "Woppa Cup Champions",
-    logoSrc: "/images/jerseys/Lemieux.png",
+    logoSrc: "/images/logos/oth-circular.gif",
     textItems: [  
       "2024 - AKACESFAN",
       "2023 - CHRISTTHROWSROCKS",
@@ -70,7 +70,7 @@ const bannerData = [
   {
     id: 'president',
     title: "President's <br /> Trophy",
-    logoSrc: "/images/jerseys/Orr.png",
+    logoSrc: "/images/logos/oth-circular.gif",
     textItems: [  
       "2024 - BRUINHAWKS",
       "2023 - SPRX97",
@@ -90,7 +90,7 @@ const bannerData = [
   {
     id: 'playoffPool',
     title: "Playoff Pool Champions",
-    logoSrc: "/images/jerseys/Howe.png",
+    logoSrc: "/images/logos/oth-circular.gif",
     textItems: [
       "2024 - NODDAN",
       "2023 - HAZARD",
