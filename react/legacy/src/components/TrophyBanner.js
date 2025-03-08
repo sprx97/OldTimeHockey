@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'semantic-ui-react';
 import styles from '../styles/TrophyRoom.module.css'
 import { useTrophyHover } from './TrophyHoverContext';
 
@@ -29,7 +28,6 @@ const TrophyBanner = ({
 }) => {
   const { hoveredName, setHoveredName } = useTrophyHover();
 
-  // Create an inline style object to pass dynamic values via CSS variables.
   const inlineStyles = {
     '--main-color': mainColor,
     '--secondary-color': secondaryColor,
@@ -40,23 +38,26 @@ const TrophyBanner = ({
     '--item-font-size': itemFontSize,
     '--item-letter-spacing': itemLetterSpacing,
     '--text-shadow': `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
-    '--banner-width': `${width}px`, // Add this to match the CSS variable used in ::after
+    '--banner-width': `${width}px`,
     width: `${width}px`
   };
 
   return (
     <div className={styles.banner} style={inlineStyles}>
-      <div
-        className={styles.title}
-        // Using dangerouslySetInnerHTML so you can use html tags in the title like <br />
-        dangerouslySetInnerHTML={{ __html: title }}
-      />
+      <div className={styles.title}>
+        {title.split(/<br\s*\/?>/).map((part, index, array) => (
+          <React.Fragment key={index}>
+            {part}
+            {index < array.length - 1 && <br />}
+          </React.Fragment>
+        ))}
+      </div>
       
       {logoSrc && (
         <div className={styles.logoContainer}>
-          <Image
+          <img
             src={logoSrc}
-            size="tiny"
+            alt="Trophy logo"
             style={{ 
               width: '90px', 
               height: '100%', 
