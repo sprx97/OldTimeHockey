@@ -3,6 +3,7 @@ import { Container } from 'semantic-ui-react';
 import TrophyBanner from './TrophyBanner';
 import raftersBackground from '../assets/rafters.jpg';
 import { TrophyHoverProvider } from './TrophyHoverContext';
+import TrophyBannerInitializer from './TrophyBannerInitializer';
 
 const bannerData = [
   {
@@ -110,6 +111,7 @@ const bannerData = [
 const TrophyRoom = () => {
   return (
     <TrophyHoverProvider>
+      <TrophyBannerInitializer />
       <Container fluid style={{
         backgroundImage: `url(${raftersBackground})`,
         backgroundSize: 'cover',

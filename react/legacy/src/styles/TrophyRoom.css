@@ -1,0 +1,11 @@
+/* Mobile-specific styles for TrophyRoom */
+@media (max-width: 768px) {
+  /* Add some spacing between banners on mobile */
+  .banner-container {
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+}

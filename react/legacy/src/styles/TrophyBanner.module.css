@@ -8,6 +8,29 @@
   box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.4);
   padding-bottom: 15px;
   width: var(--banner-width, 285px);
+  transition: min-height 0.3s ease;
+}
+
+.collapsed {
+  min-height: auto;
+  padding-bottom: 0;
+}
+
+.expanded {
+  min-height: 200px;
+  padding-bottom: 15px;
+}
+
+.bannerContent {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 1000px;
+  opacity: 1;
+  overflow: hidden;
+}
+
+.hidden {
+  max-height: 0;
+  opacity: 0;
 }
 
 .banner::after {
@@ -35,6 +58,18 @@
   padding: 10px 5px;
   line-height: 1;
   text-shadow: var(--text-shadow, 1px 1px 3px rgba(0, 0, 0, 0.5));
+  position: relative;
+  cursor: default;
+}
+
+.accordionIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .logoContainer {
@@ -90,4 +125,59 @@
   cursor: default;
   text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .banner {
+    width: 300px; /* Fixed width for all banners */
+    margin: 10px auto;
+  }
+  
+  .accordionIcon {
+    opacity: 1;
+  }
+  
+  .title {
+    padding-right: 30px; /* Make room for the accordion icon */
+    cursor: pointer;
+  }
+  
+  .collapsed::after {
+    display: none; /* Hide the banner triangle when collapsed */
+  }
+  
+  /* Auto-collapse all banners except Division 1 on mobile */
+  .banner:not([data-division="1"]) {
+    min-height: auto;
+    padding-bottom: 0;
+  }
+  
+  .banner:not([data-division="1"]) .bannerContent {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+/* JavaScript toggle overrides the CSS defaults */
+@media (max-width: 768px) {
+  .banner.expanded {
+    min-height: 200px !important;
+    padding-bottom: 15px !important;
+  }
+  
+  .banner.expanded .bannerContent {
+    max-height: 1000px !important;
+    opacity: 1 !important;
+  }
+  
+  .banner.collapsed {
+    min-height: auto !important;
+    padding-bottom: 0 !important;
+  }
+  
+  .banner.collapsed .bannerContent {
+    max-height: 0 !important;
+    opacity: 0 !important;
+  }
 }
