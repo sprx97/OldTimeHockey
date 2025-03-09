@@ -54,11 +54,12 @@
 }
 
 .list {
-  width: 100%;
+  width: 80%;
   list-style-type: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+  display: inline-block;
 }
 
 .listItem {
@@ -72,4 +73,18 @@
   width: 100%;
   display: block;
   text-shadow: var(--text-shadow, 1px 1px 3px rgba(0, 0, 0, 0.5));
+  transition: background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+  cursor: default;
+}
+
+.highlighted {
+  background-color: rgba(255, 255, 0, 1);
+  color: black;
+  text-shadow: none;
+}
+
+.hoverable span {
+  cursor: default;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
 }

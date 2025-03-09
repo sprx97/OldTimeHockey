@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../styles/TrophyRoom.module.css'
+import styles from '../styles/TrophyBanner.module.css'
 import { useTrophyHover } from './TrophyHoverContext';
 
 const TrophyBanner = ({
@@ -12,7 +12,7 @@ const TrophyBanner = ({
   logoBackgroundColor = '#1e2c56',
   logoBackgroundBorderColor = '#ffffff',
   // Banner layout
-  width = 285,
+  width = 300,
   // Title styling
   titleFontSize = '2.25rem',
   titleLetterSpacing = '2px',
@@ -39,7 +39,6 @@ const TrophyBanner = ({
     '--item-letter-spacing': itemLetterSpacing,
     '--text-shadow': `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
     '--banner-width': `${width}px`,
-    width: `${width}px`
   };
 
   return (
@@ -72,13 +71,9 @@ const TrophyBanner = ({
         <div className={styles.listContainer}>
           <ol className={styles.list}>
             {winnersList.map((item, index) => {
-              const parts = item.split(' - ');
-              if (parts.length !== 2) {
-                return <li key={index} className={styles.listItem}>{item}</li>;
-              }
-              
-              const year = parts[0];
-              const name = parts[1];
+              const year = item.year;
+              const name = item.name;
+              const nameFontSize = item.fontSize;
               
               // Sanitize names by removing special characters before comparison
               const sanitizeName = (str) => str ? str.replace(/[^\w\s]/gi, '') : '';
@@ -86,30 +81,21 @@ const TrophyBanner = ({
               
               return (
                 <li 
-                  key={index}
-                  className={styles.listItem}
-                  style={{
-                    backgroundColor: isHighlighted ? 'rgba(255, 255, 0, 1)' : 'transparent',
-                    color: isHighlighted ? 'black' : logoBackgroundBorderColor,
-                    textShadow: isHighlighted ? 'none' : `${textShadowOffsetX} ${textShadowOffsetY} ${textShadowBlur} ${textShadowColor}`,
-                    transition: 'background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease'
-                  }}
-                >
-                  {year} - <span 
-                    onMouseEnter={() => setHoveredName(name)}
-                    onMouseLeave={() => setHoveredName(null)}
-                    style={{ 
-                      cursor: 'default',
-                      textDecoration: 'none',
-                      textDecorationColor: 'rgba(255, 255, 255, 0.5)',
-                      color: isHighlighted ? 'black' : logoBackgroundBorderColor,
-                      display: 'inline-block',
-                      transition: 'color 0.3s ease, transform 0.3s ease'
-                    }}
-                  >
-                    {name}
-                  </span>
-                </li>
+    key={index}
+    className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ''}`}
+  >
+    {year} - <span 
+      className={styles.hoverable}
+      onMouseEnter={() => setHoveredName(name)}
+      onMouseLeave={() => setHoveredName(null)}
+      style={{
+        // Only dynamic inline style if fontSize needs to be unique per item:
+        fontSize: nameFontSize
+      }}
+    >
+      {name}
+    </span>
+  </li>
               );
             })}
           </ol>
@@ -122,7 +108,13 @@ const TrophyBanner = ({
 TrophyBanner.propTypes = {
   title: PropTypes.string.isRequired,
   logoSrc: PropTypes.string,
-  winnersList: PropTypes.arrayOf(PropTypes.string),
+  winnersList: PropTypes.arrayOf(
+    PropTypes.shape({
+      year: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      fontSize: PropTypes.string
+    })
+  ),
   bannerBackgroundColor: PropTypes.string,
   logoBackgroundColor: PropTypes.string,
   logoBackgroundBorderColor: PropTypes.string,
