@@ -81,21 +81,21 @@ const TrophyBanner = ({
               
               return (
                 <li 
-    key={index}
-    className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ''}`}
-  >
-    {year} - <span 
-      className={styles.hoverable}
-      onMouseEnter={() => setHoveredName(name)}
-      onMouseLeave={() => setHoveredName(null)}
-      style={{
-        // Only dynamic inline style if fontSize needs to be unique per item:
-        fontSize: nameFontSize
-      }}
-    >
-      {name}
-    </span>
-  </li>
+                  key={index}
+                  className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ''}`}
+                >
+                  {year} - 
+                  <span 
+                    className={styles.hoverable}
+                    onMouseEnter={() => setHoveredName(name)}
+                    onMouseLeave={() => setHoveredName(null)}
+                    style={{
+                      fontSize: nameFontSize
+                    }}
+                  >
+                    {name}
+                  </span>
+                </li>
               );
             })}
           </ol>
