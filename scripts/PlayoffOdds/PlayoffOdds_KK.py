@@ -13,6 +13,7 @@ leagues = ["34680"] # Just T1 Sweden
 NUM_TEAMS_PER_LEAGUE = 16 # For T1
 NUM_TEAMS_MAKING_PLAYOFFS = 6
 LOWEST_RANK_MAKING_CONSOLATION = 12
+NUM_TEAMS_GETTING_BYE = 2
 
 stddev = 60 # Educated guess
 def project_winner(teams, away, home):
@@ -55,9 +56,10 @@ def calc_playoff_odds(league):
 		    "PF_avg": pf_avg,
 		    "playoff_odds": 0,
 			"consolation_odds": 0,
+			"bye_odds": 0,
 		    "seeds": [0]*NUM_TEAMS_PER_LEAGUE,
 		    "records": {},
-		    "current_week": {"win": {"make_playoffs": 0, "make_consolation": 0, "total": 0}, "loss": {"make_playoffs": 0, "make_consolation": 0, "total": 0}}}
+		    "current_week": {"win": {"make_playoffs": 0, "make_consolation": 0, "made_bye": 0, "total": 0}, "loss": {"make_playoffs": 0, "make_consolation": 0, "made_bye": 0, "total": 0}}}
 
 	# Get the schedule for all remaining weeks
 	weeks = ";week="
@@ -95,16 +97,20 @@ def calc_playoff_odds(league):
 				teams[team]["playoff_odds"] += 1
 			elif rank < LOWEST_RANK_MAKING_CONSOLATION:
 				teams[team]["consolation_odds"] += 1
+			if rank < NUM_TEAMS_GETTING_BYE:
+				teams[team]["bye_odds"] += 1
 
 			# Odds by record in remaining games
 			record = f"{copy_teams[team]['wins'] - teams[team]['wins']}-{copy_teams[team]['losses'] - teams[team]['losses']}"
 			if record not in teams[team]["records"]:
-				teams[team]["records"][record] = {"made_playoffs": 0, "made_consolation": 0, "total": 0}
+				teams[team]["records"][record] = {"made_playoffs": 0, "made_consolation": 0, "made_bye": 0, "total": 0}
 			teams[team]["records"][record]["total"] += 1
 			if rank < NUM_TEAMS_MAKING_PLAYOFFS:
 				teams[team]["records"][record]["made_playoffs"] += 1
 			elif rank < LOWEST_RANK_MAKING_CONSOLATION:
 				teams[team]["records"][record]["made_consolation"] += 1
+			if rank < NUM_TEAMS_GETTING_BYE:
+				teams[team]["records"][record]["made_bye"] += 1
 
 			# Odds by current week results
 			if "win_current_week" in copy_teams[team]:
@@ -113,6 +119,8 @@ def calc_playoff_odds(league):
 					teams[team]["current_week"]["win"]["make_playoffs"] += 1
 				elif rank < LOWEST_RANK_MAKING_CONSOLATION:
 					teams[team]["current_week"]["win"]["make_consolation"] += 1
+				if rank < NUM_TEAMS_GETTING_BYE:
+					teams[team]["current_week"]["win"]["made_bye"] += 1
 
 			else:
 				teams[team]["current_week"]["loss"]["total"] += 1
@@ -120,6 +128,8 @@ def calc_playoff_odds(league):
 					teams[team]["current_week"]["loss"]["make_playoffs"] += 1
 				elif rank < LOWEST_RANK_MAKING_CONSOLATION:
 					teams[team]["current_week"]["loss"]["make_consolation"] += 1
+				if rank < NUM_TEAMS_GETTING_BYE:
+					teams[team]["current_week"]["loss"]["made_bye"] += 1
 
 	print("Simulations completed")
 
@@ -127,22 +137,27 @@ def calc_playoff_odds(league):
 	for team in teams:
 		teams[team]["playoff_odds"] = round(teams[team]["playoff_odds"] / (num_simulations/100), 2)
 		teams[team]["consolation_odds"] = round(teams[team]["consolation_odds"] / (num_simulations/100), 2)
+		teams[team]["bye_odds"] = round(teams[team]["bye_odds"] / (num_simulations/100), 2)
 		teams[team]["seeds"] = [round(x / num_simulations * 100, 2) for x in teams[team]["seeds"]]
 		teams[team]["records"] = dict(sorted(teams[team]["records"].items(), key=lambda item: int(item[0].split("-")[0]), reverse=True))
 
 		for record in teams[team]["records"]:
 			teams[team]["records"][record]["playoff_odds"] = round(teams[team]["records"][record]["made_playoffs"] / teams[team]["records"][record]["total"] * 100, 2)
 			teams[team]["records"][record]["consolation_odds"] = round(teams[team]["records"][record]["made_consolation"] / teams[team]["records"][record]["total"] * 100, 2)
+			teams[team]["records"][record]["bye_odds"] = round(teams[team]["records"][record]["made_bye"] / teams[team]["records"][record]["total"] * 100, 2)
 
 		teams[team]["current_week"]["win"]["playoff_odds"] = round(teams[team]["current_week"]["win"]["make_playoffs"] / teams[team]["current_week"]["win"]["total"] * 100, 2)
 		teams[team]["current_week"]["loss"]["playoff_odds"] = round(teams[team]["current_week"]["loss"]["make_playoffs"] / teams[team]["current_week"]["loss"]["total"] * 100, 2)
 		teams[team]["current_week"]["win"]["consolation_odds"] = round(teams[team]["current_week"]["win"]["make_consolation"] / teams[team]["current_week"]["win"]["total"] * 100, 2)
 		teams[team]["current_week"]["loss"]["consolation_odds"] = round(teams[team]["current_week"]["loss"]["make_consolation"] / teams[team]["current_week"]["loss"]["total"] * 100, 2)
+		teams[team]["current_week"]["win"]["bye_odds"] = round(teams[team]["current_week"]["win"]["made_bye"] / teams[team]["current_week"]["win"]["total"] * 100, 2)
+		teams[team]["current_week"]["loss"]["bye_odds"] = round(teams[team]["current_week"]["loss"]["made_bye"] / teams[team]["current_week"]["loss"]["total"] * 100, 2)
+
 
 	print(json.dumps(teams, indent=4))
 
 	for team in teams:
-		print(f"{(teams[team]['name'][:10]):10s}\t{(teams[team]['playoff_odds']):.2f}\t{(teams[team]['consolation_odds']):.2f}\t{(100-teams[team]['playoff_odds']-teams[team]['consolation_odds']):.2f}")
+		print(f"{(teams[team]['name'][:10]):10s}\t{(teams[team]['bye_odds']):.2f}\t{(teams[team]['playoff_odds']):.2f}\t{(teams[team]['consolation_odds']):.2f}\t{(100-teams[team]['playoff_odds']-teams[team]['consolation_odds']):.2f}")
 
 # MAIN
 oauth_file = "/var/www/OldTimeHockey/scripts/PlayoffOdds/yahoo_auth.json"

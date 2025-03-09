@@ -1,404 +1,241 @@
-import React from 'react';
-import { Container, Grid, Header, Image, Segment, Tab } from 'semantic-ui-react';
-import Banner from './Banner';
+import React from "react";
+import { Container, Grid, Header, Image, Segment, Tab } from "semantic-ui-react";
+import SiteHeader from "./SiteHeader";
 
-const panes = [
+const seasons = [
   {
-    menuItem: '2024-2025',
-    render: () => (
-      <Tab.Pane>
-        224 teams, 16 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-          </li>
-          <u>Rule Changes</u>
-          <p>None</p>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2024-2025",
+    teams: 224,
+    leagues: 16,
+    divisions: 4,
+    champions: {},
+    ruleChanges: "None",
   },
   {
-    menuItem: '2023-2024',
-    render: () => (
-      <Tab.Pane>
-        182 teams, 13 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62768?season=2023">GusZ</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12098/teams/63291?season=2023">costcostan</a> - 5404.45
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62752?season=2023">benzene96</a> - 99.44%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12093/teams/63316?season=2023">akacesfan</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>Tenure policy added (see Promotion and Relegation section below)</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2023-2024",
+    teams: 182,
+    leagues: 13,
+    divisions: 4,
+    champions: {
+      division1: { name: "GusZ", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62768?season=2023" },
+      pointsFor: { name: "costcostan", link: "https://www.fleaflicker.com/nhl/leagues/12098/teams/63291?season=2023", stat: 5404.45 },
+      coachesRating: { name: "benzene96", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62752?season=2023", stat: "99.44%" },
+      woppaCup: { name: "akacesfan", link: "https://www.fleaflicker.com/nhl/leagues/12093/teams/63316?season=2023" },
+    },
+    ruleChanges: ["Tenure policy added (see Promotion and Relegation section below)"],
   },
   {
-    menuItem: '2022-2023',
-    render: () => (
-      <Tab.Pane>
-        238 teams, 17 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62748?season=2022">SPRX97</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12092/teams/63347?season=2022">christhrowrocks</a> - 5446.5
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12089/teams/63214?season=2022">GusZ</a> - 99.36%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12092/teams/63347?season=2022">christhrowrocks</a>
-          </li>
-          <u>Rule Changes</u>
-          <p>None</p>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2022-2023",
+    teams: 238,
+    leagues: 17,
+    divisions: 4,
+    champions: {
+      division1: { name: "SPRX97", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62748?season=2022" },
+      pointsFor: { name: "christhrowrocks", link: "https://www.fleaflicker.com/nhl/leagues/12092/teams/63347?season=2022", stat: 5446.5 },
+      coachesRating: { name: "GusZ", link: "https://www.fleaflicker.com/nhl/leagues/12089/teams/63214?season=2022", stat: "99.36%" },
+      woppaCup: { name: "christhrowrocks", link: "https://www.fleaflicker.com/nhl/leagues/12092/teams/63347?season=2022" },
+    },
+    ruleChanges: "None",
   },
   {
-    menuItem: '2021-2022',
-    render: () => (
-      <Tab.Pane>
-        196 teams, 14 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62850?season=2021">Noddan</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12088/teams/63153?season=2021">akacesfan</a> - 5547.2
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12087/teams/63169?season=2021">ovorc</a> - 99.29%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12091/teams/63276?season=2021">TwoPlanks</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>Removed 3rd IR+ slot.</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2021-2022",
+    teams: 196,
+    leagues: 14,
+    divisions: 4,
+    champions: {
+      division1: { name: "Noddan", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62850?season=2021" },
+      pointsFor: { name: "akacesfan", link: "https://www.fleaflicker.com/nhl/leagues/12088/teams/63153?season=2021", stat: 5547.2 },
+      coachesRating: { name: "ovorc", link: "https://www.fleaflicker.com/nhl/leagues/12087/teams/63169?season=2021", stat: "99.29%" },
+      woppaCup: { name: "TwoPlanks", link: "https://www.fleaflicker.com/nhl/leagues/12091/teams/63276?season=2021" },
+    },
+    ruleChanges: ["Removed 3rd IR+ slot."],
   },
   {
-    menuItem: '2020-2021',
-    render: () => (
-      <Tab.Pane>
-        224 teams, 16 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62775?season=2020">benzene96</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12096/teams/63385?season=2020">MWHazard</a> 3172.7
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62750?season=2020">Kovellen</a> - 99.32%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62749?season=2020">Boboombang</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>Added 3rd IR+ slot for this season only.</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2020-2021",
+    teams: 224,
+    leagues: 16,
+    divisions: 4,
+    champions: {
+      division1: { name: "benzene96", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62775?season=2020" },
+      pointsFor: { name: "MWHazard", link: "https://www.fleaflicker.com/nhl/leagues/12096/teams/63385?season=2020", stat: 3172.7 },
+      coachesRating: { name: "Kovellen", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62750?season=2020", stat: "99.32%" },
+      woppaCup: { name: "Boboombang", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62749?season=2020" },
+    },
+    ruleChanges: ["Added 3rd IR+ slot for this season only."],
   },
   {
-    menuItem: '2019-2020',
-    render: () => (
-      <Tab.Pane>
-        224 teams, 16 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019">ch1zzle*</a>
-            <br/><i>* regular season winner, no playoffs due to Covid-19</i>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12091/teams/63199?season=2019">tooproforyou</a> - 5446.35
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019">ch1zzle</a> - 99.11%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/12099/teams/63238?season=2019">selcio44</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>Standings tiebreakers now PF instead of H2H</li>
-            <li>
-              Trade deadline now at end of week 22 (will vary year-to-year)
-            </li>
-            <li>+/- completely eliminated</li>
-            <li>OT Losses now worth 1 point</li>
-            <li>Saves increased from .24 to .25</li>
-            <li>Goalies now receive SHP and PPP like skaters</li>
-            <li>Mid-season promotions when D3 and higher teams go inactive</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2019-2020",
+    teams: 224,
+    leagues: 16,
+    divisions: 4,
+    champions: {
+      division1: { name: "ch1zzle*", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019" },
+      pointsFor: { name: "tooproforyou", link: "https://www.fleaflicker.com/nhl/leagues/12091/teams/63199?season=2019", stat: 5446.35 },
+      coachesRating: { name: "ch1zzle", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62572?season=2019", stat: "99.11%" },
+      woppaCup: { name: "selcio44", link: "https://www.fleaflicker.com/nhl/leagues/12099/teams/63238?season=2019" },
+    },
+    ruleChanges: [
+      "Standings tiebreakers now PF instead of H2H",
+      "Trade deadline now at end of week 22 (will vary year-to-year)",
+      "+/- completely eliminated",
+      "OT Losses now worth 1 point",
+      "Saves increased from .24 to .25",
+      "Goalies now receive SHP and PPP like skaters",
+      "Mid-season promotions when D3 and higher teams go inactive"
+    ]
   },
   {
-    menuItem: '2018-2019',
-    render: () => (
-      <Tab.Pane>
-        224 teams, 16 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/11371/teams/59124?season=2018">ch1zzle</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/11372/teams/59258?season=2018">russtyj</a> - 5477.09
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/11348/teams/59007?season=2018">sickboy1965</a> - 98.86%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/11381/teams/59349?season=2018">yaheardwperd</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>Removed position maximums</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2018-2019",
+    teams: 224,
+    leagues: 16,
+    divisions: 4,
+    champions: {
+      division1: { name: "ch1zzle", link: "https://www.fleaflicker.com/nhl/leagues/11371/teams/59124?season=2018" },
+      pointsFor: { name: "russtyj", link: "https://www.fleaflicker.com/nhl/leagues/11372/teams/59258?season=2018", stat: 5477.09 },
+      coachesRating: { name: "sickboy1965", link: "https://www.fleaflicker.com/nhl/leagues/11348/teams/59007?season=2018", stat: "98.86%" },
+      woppaCup: { name: "yaheardwperd", link: "https://www.fleaflicker.com/nhl/leagues/11381/teams/59349?season=2018" }
+    },
+    ruleChanges: ["Removed position maximums"]
   },
   {
-    menuItem: '2017-2018',
-    render: () => (
-      <Tab.Pane>
-        224 teams, 16 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/10030/teams/54417?season=2017">SleepTalkerz</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/10032/teams/54543?season=2017">SPRX97</a> - 5193.49
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/10032/teams/54491?season=2017">LAGunsHockey</a> - 98.37%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/10036/teams/54435?season=2017">akacesfan</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>+/- decreased from 1 to .25</li>
-            <li>IR slots switched to IR+</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2017-2018",
+    teams: 224,
+    leagues: 16,
+    divisions: 4,
+    champions: {
+      division1: { name: "SleepTalkerz", link: "https://www.fleaflicker.com/nhl/leagues/10030/teams/54417?season=2017" },
+      pointsFor: { name: "SPRX97", link: "https://www.fleaflicker.com/nhl/leagues/10032/teams/54543?season=2017", stat: 5193.49 },
+      coachesRating: { name: "LAGunsHockey", link: "https://www.fleaflicker.com/nhl/leagues/10032/teams/54491?season=2017", stat: "98.37%" },
+      woppaCup: { name: "akacesfan", link: "https://www.fleaflicker.com/nhl/leagues/10036/teams/54435?season=2017" }
+    },
+    ruleChanges: ["+/- decreased from 1 to .25", "IR slots switched to IR+"]
   },
   {
-    menuItem: '2016-2017',
-    render: () => (
-      <Tab.Pane>
-        224 teams, 16 leagues, 4 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/9001/teams/48833?season=2016">Noddan</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/9011/teams/49625?season=2016">Coyle1096</a> - 5080.32
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/9001/teams/48839?season=2016">Woppa</a> - 96.54%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/9013/teams/49894?season=2016">Boboombang</a>
-          </li>
-          <u>Rule Changes</u>
-          <p>None</p>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2016-2017",
+    teams: 224,
+    leagues: 16,
+    divisions: 4,
+    champions: {
+      division1: { name: "Noddan", link: "https://www.fleaflicker.com/nhl/leagues/9001/teams/48833?season=2016" },
+      pointsFor: { name: "Coyle1096", link: "https://www.fleaflicker.com/nhl/leagues/9011/teams/49625?season=2016", stat: 5080.32 },
+      coachesRating: { name: "Woppa", link: "https://www.fleaflicker.com/nhl/leagues/9001/teams/48839?season=2016", stat: "96.54%" },
+      woppaCup: { name: "Boboombang", link: "https://www.fleaflicker.com/nhl/leagues/9013/teams/49894?season=2016" }
+    },
+    ruleChanges: "None"
   },
   {
-    menuItem: '2015-2016',
-    render: () => (
-      <Tab.Pane>
-        224 teams, 16 leagues, 3 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/7526/teams/41604?season=2015">Woppa</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/7526/teams/41604?season=2015">Woppa</a> - 4875.55
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/7531/teams/41668?season=2015">racer4</a> - 97.58%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/7529/teams/41316?season=2015">SleepTalkerz</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>Wins and losses decreased from 4 and -2 to 3 and -1.5.</li>
-            <li>Shutouts decreased from 3 to 2.5.</li>
-            <li>Saves increased from .2 to .24.</li>
-            <li>Future relegation planned for 4 tiers instead of 3.</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2015-2016",
+    teams: 224,
+    leagues: 16,
+    divisions: 3,
+    champions: {
+      division1: { name: "Woppa", link: "https://www.fleaflicker.com/nhl/leagues/7526/teams/41604?season=2015" },
+      pointsFor: { name: "Woppa", link: "https://www.fleaflicker.com/nhl/leagues/7526/teams/41604?season=2015", stat: 4875.55 },
+      coachesRating: { name: "racer4", link: "https://www.fleaflicker.com/nhl/leagues/7531/teams/41668?season=2015", stat: "97.58%" },
+      woppaCup: { name: "SleepTalkerz", link: "https://www.fleaflicker.com/nhl/leagues/7529/teams/41316?season=2015" }
+    },
+    ruleChanges: [
+      "Wins and losses decreased from 4 and -2 to 3 and -1.5.",
+      "Shutouts decreased from 3 to 2.5.",
+      "Saves increased from .2 to .24.",
+      "Future relegation planned for 4 tiers instead of 3."
+    ]
   },
   {
-    menuItem: '2014-2015',
-    render: () => (
-      <Tab.Pane>
-        196 teams, 14 leagues, 3 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/5709/teams/32448?season=2014">Teratic</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/5710/teams/32638?season=2014">InvisibleTaco</a> - 5184.9
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/5709/teams/32454?season=2014">concini</a> - 96.11%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/5711/teams/32595?season=2014">hkyplyr</a>
-          </li>
-          <u>Rule Changes</u>
-          <ul>
-            <li>D2/D3 leagues increased from 12 to 14 teams.</li>
-            <li>Wins and losses decreased from 6 and -3 to 4 and -2.</li>
-            <li>Saved decreased from .3 to .2 per.</li>
-            <li>Assists increased from 2 to 2.5 per.</li>
-          </ul>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2014-2015",
+    teams: 196,
+    leagues: 14,
+    divisions: 3,
+    champions: {
+      division1: { name: "Teratic", link: "https://www.fleaflicker.com/nhl/leagues/5709/teams/32448?season=2014" },
+      pointsFor: { name: "InvisibleTaco", link: "https://www.fleaflicker.com/nhl/leagues/5710/teams/32638?season=2014", stat: 5184.9 },
+      coachesRating: { name: "concini", link: "https://www.fleaflicker.com/nhl/leagues/5709/teams/32454?season=2014", stat: "96.11%" },
+      woppaCup: { name: "hkyplyr", link: "https://www.fleaflicker.com/nhl/leagues/5711/teams/32595?season=2014" }
+    },
+    ruleChanges: [
+      "D2/D3 leagues increased from 12 to 14 teams.",
+      "Wins and losses decreased from 6 and -3 to 4 and -2.",
+      "Saves decreased from .3 to .2 per.",
+      "Assists increased from 2 to 2.5 per."
+    ]
   },
   {
-    menuItem: '2013-2014',
-    render: () => (
-      <Tab.Pane>
-        134 teams, 11 leagues, 3 divisions
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/4633/teams/26883?season=2013">concini</a>
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/4634/teams/26815?season=2013">Teratic</a> - 4907.85
-          </li>
-          <li>
-            <b>Coaches Rating Chapmion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/4634/teams/26815?season=2013">Teratic</a> - 96.73%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/4641/teams/26622?season=2013">FCBcn19</a>
-          </li>
-          <u>Rule Changes</u>
-          <p>None</p>
-        </ul>
-      </Tab.Pane>
-    ),
+    year: "2013-2014",
+    teams: 134,
+    leagues: 11,
+    divisions: 3,
+    champions: {
+      division1: { name: "concini", link: "https://www.fleaflicker.com/nhl/leagues/4633/teams/26883?season=2013" },
+      pointsFor: { name: "Teratic", link: "https://www.fleaflicker.com/nhl/leagues/4634/teams/26815?season=2013", stat: 4907.85 },
+      coachesRating: { name: "Teratic", link: "https://www.fleaflicker.com/nhl/leagues/4634/teams/26815?season=2013", stat: "96.73%" },
+      woppaCup: { name: "FCBcn19", link: "https://www.fleaflicker.com/nhl/leagues/4641/teams/26622?season=2013" }
+    },
+    ruleChanges: "None"
   },
   {
-    menuItem: '2012-2013',
-    render: () => (
-      <Tab.Pane>
-        <i>*lockout-shortened season</i><br/>
-	108 teams, 10 leagues, 1 division.
-        <ul>
-          <li>
-            <b>Division 1 Champion: </b>N/A
-          </li>
-          <li>
-            <b>Points For Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/3801/teams/21590?season=2012">Woppa</a> - 2552.7
-          </li>
-          <li>
-            <b>Coaches Rating Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/3798/teams/21659?season=2012">IAmAChemicalEngineer</a> - 96.15%
-          </li>
-          <li>
-            <b>Woppa Cup Champion: </b>
-            <a href="https://www.fleaflicker.com/nhl/leagues/3800/teams/21501?season=2012">Cannon49</a>
-          </li>
-        </ul>
-      </Tab.Pane>
-    ),
-  },
+    year: "2012-2013",
+    teams: 108,
+    leagues: 10,
+    divisions: 1,
+    notes: "*Lockout-shortened season",
+    champions: {
+      division1: { name: "N/A" },
+      pointsFor: { name: "Woppa", link: "https://www.fleaflicker.com/nhl/leagues/3801/teams/21590?season=2012", stat: 2552.7 },
+      coachesRating: { name: "IAmAChemicalEngineer", link: "https://www.fleaflicker.com/nhl/leagues/3798/teams/21659?season=2012", stat: "96.15%" },
+      woppaCup: { name: "Cannon49", link: "https://www.fleaflicker.com/nhl/leagues/3800/teams/21501?season=2012" }
+    },
+  }
 ];
+
+const panes = seasons.map(({ year, teams, leagues, divisions, champions, ruleChanges }) => ({
+  menuItem: year,
+  render: () => (
+    <Tab.Pane>
+      {teams} teams, {leagues} leagues, {divisions} divisions
+      <ul>
+        <li>
+          <b>Division 1 Champion: </b>
+          {champions.division1 && champions.division1.link ?
+              (<a href={champions.division1.link}>{champions.division1.name}</a>) :
+              champions.division1 ? champions.division1.name : ''}
+        </li>
+        <li>
+          <b>Points For Champion: </b>
+          {champions.pointsFor && (
+            <><a href={champions.pointsFor.link}>{champions.pointsFor.name}</a> - {champions.pointsFor.stat}</>
+          )}
+        </li>
+        <li>
+          <b>Coaches Rating Champion: </b>
+          {champions.coachesRating && (
+            <><a href={champions.coachesRating.link}>{champions.coachesRating.name}</a> - {champions.coachesRating.stat}</>
+          )}
+        </li>
+        <li>
+          <b>Woppa Cup Champion: </b>
+          {champions.woppaCup && (
+            <a href={champions.woppaCup.link}>{champions.woppaCup.name}</a>
+          )}
+        </li>
+        {ruleChanges && (<u>Rule Changes</u>)}
+        {Array.isArray(ruleChanges) ? (
+          <ul>
+            {ruleChanges.map((change, index) => (
+              <li key={index}>{change}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>{ruleChanges}</p>
+        )}
+      </ul>
+    </Tab.Pane>
+  ),
+}));
 
 const Homepage = () => {
   return (
     <div>
-      <Banner />
+      <SiteHeader />
       <Segment basic />
       <Container>
         <Segment basic>
@@ -409,7 +246,7 @@ const Homepage = () => {
                 OldTimeHockey is a fantasy hockey superleague run by redditors
                 using <a href="http://www.fleaflicker.com/nhl">
                   Fleaflicker
-                </a>{' '}
+                </a>{" "}
                 featuring 238 teams sorted into 17 leagues across 4 divisions.
                 English Premier League style relegation dictates movement
                 between divisions each season.
@@ -426,16 +263,16 @@ const Homepage = () => {
               </Grid.Column>
               <Grid.Column textAlign="center">
                 <Header as="h1">Contacts</Header>
-                League Founder:{' '}
+                League Founder:{" "}
                 <a href="http://www.reddit.com/u/NextLevelFantasy">
                   NextLevelFantasy
                 </a>
                 <br />
-                League Commissioners:{' '}
-                <a href="http://www.reddit.com/u/sprx97">SPRX97</a>,{' '}
+                League Commissioners:{" "}
+                <a href="http://www.reddit.com/u/sprx97">SPRX97</a>,{" "}
                 <a href="http://www.reddit.com/u/TwoPlanksPrevail">Planks</a>
                 <br />
-                Website Administator:{' '}
+                Website Administator:{" "}
                 <a href="http://www.reddit.com/u/SPRX97">SPRX97</a>
               </Grid.Column>
             </Grid.Row>
@@ -449,7 +286,7 @@ const Homepage = () => {
             menu={{
               vertical: true,
               tabular: false,
-              style: { display: 'flex', justifyContent: 'center' },
+              style: { display: "flex", justifyContent: "center" },
             }}
           />
           <Header as="h1" textAlign="center">

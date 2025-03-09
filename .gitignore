@@ -33,3 +33,5 @@ yarn-error.log*
 
 scripts/wc.log
 scripts/wc.err
+
+cronjob.log

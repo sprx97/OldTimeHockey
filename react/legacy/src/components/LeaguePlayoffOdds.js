@@ -258,7 +258,13 @@ const LeaguePlayoffOdds = (props) => {
       <ResponsiveContainer width="100%" height={500}>
         <BarChart
           data={Object.values(playoffOdds)
-            .sort((a, b) => b.playoff_odds - a.playoff_odds)
+            .sort((a, b) => {
+              if (a.wins === b.wins) {
+                return b.PF - a.PF;
+              }
+
+              return b.wins - a.wins;
+            })
             .map(team => ({
               name: team.name,
               odds: team.playoff_odds,
@@ -301,8 +307,14 @@ const LeaguePlayoffOdds = (props) => {
             barSize={30}
           >
             {Object.values(playoffOdds)
-              .sort((a, b) => b.playoff_odds - a.playoff_odds)
-              .map((entry, index) => (
+            .sort((a, b) => {
+              if (a.wins === b.wins) {
+                return b.PF - a.PF;
+              }
+
+              return b.wins - a.wins;
+            })
+            .map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={
@@ -409,7 +421,7 @@ const LeaguePlayoffOdds = (props) => {
           <Grid columns={2} stackable style={{paddingTop: 25}}>
             <Grid.Row>
               <Grid.Column>
-                <Header as="h3" style={{margin: 0}} align="center">Playoff Seed Probabilities</Header>
+                <Header as="h3" style={{margin: 0}} align="center">Final Rank Probabilities</Header>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart 
                     data={formatSeedData(selectedTeam.seeds)}
@@ -418,13 +430,32 @@ const LeaguePlayoffOdds = (props) => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       dataKey="seed"
-                      label={{ value: 'Playoff Seed', position: 'bottom', offset: 0 }}
+                      label={{ value: 'Final Rank', position: 'bottom', offset: 0 }}
                     />
                     <YAxis 
                       label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
+                      domain={[0, 100]}
+                      ticks={[0, 20, 40, 60, 80, 100]}
                     />
                     <Tooltip />
-                    <Bar dataKey="probability" fill="#99D9D9" name="Probability %" barSize={30} />
+                    <Bar
+                      dataKey="probability" 
+                      fill="#99D9D9"
+                      name="Probability %"
+                      barSize={30}
+                    >
+                      {Object.values(selectedTeam.seeds)
+                        .map((_, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={
+                              index < 6 ? '#006847' : // Dallas Stars Green
+                              (Number(leagueId) < 12090 && index > 11) ? '#CE1126' : // Red Wings Red for double demotion
+                              '#F47A38' // Anaheim Ducks Orange for missing playoffs
+                            }
+                          />
+                        ))}
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </Grid.Column>
@@ -442,6 +473,8 @@ const LeaguePlayoffOdds = (props) => {
                     />
                     <YAxis 
                       label={{ value: 'Probability %', angle: -90, position: 'insideLeft' }}
+                      domain={[0, 100]}
+                      ticks={[0, 20, 40, 60, 80, 100]}
                     />
                     <Tooltip />
                     <Bar dataKey="odds" fill="#355464" name="Playoff Odds %" barSize={30} />
@@ -490,7 +523,6 @@ const LeaguePlayoffOdds = (props) => {
                       barSize={30}
                     />
                   </ComposedChart>
-                  
                 </ResponsiveContainer>
               </Grid.Column>
             </Grid.Row>

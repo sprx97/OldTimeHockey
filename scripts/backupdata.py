@@ -4,5 +4,6 @@ import os
 os.system("mysqldump --login-path=cronjob --single-transaction OldTimeHockey Leagues Teams Teams_post Users > /var/www/OldTimeHockey/oth.sql")
 os.chdir("/var/www/OldTimeHockey")
 os.system("git add /var/www/OldTimeHockey/oth.sql")
-os.system("git add /var/www/OldTimeHockey/scripts/*")
+os.system("git add /var/www/OldTimeHockey/scripts/RedditBot/*")
+os.system("git add /var/www/OldTimeHockey/scripts/PlayoffOdds/data/*")
 os.system("git commit -m 'Weekly database dump'")
