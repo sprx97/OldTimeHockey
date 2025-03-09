@@ -49,17 +49,20 @@
 }
 
 .listContainer {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   padding: 10px 0;
+  width: 100%;
 }
 
 .list {
-  width: 80%;
+  display: inline-block;
   list-style-type: none;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
-  display: inline-block;
+  width: auto;
+  max-width: 100%;
 }
 
 .listItem {
@@ -67,11 +70,11 @@
   font-family: 'Anton', sans-serif;
   font-size: var(--item-font-size, 1.5rem);
   letter-spacing: var(--item-letter-spacing, 0.75px);
-  padding: 5px 20px;
+  padding: 5px 10px;
   line-height: 1.2;
   text-align: left;
-  width: 100%;
   display: block;
+  white-space: nowrap;
   text-shadow: var(--text-shadow, 1px 1px 3px rgba(0, 0, 0, 0.5));
   transition: background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
   cursor: default;
