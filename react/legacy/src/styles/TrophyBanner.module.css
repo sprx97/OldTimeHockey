@@ -40,10 +40,10 @@
   left: 0;
   width: 0;
   height: 0;
-  /* Use the dynamic banner width to calculate half the width */
   border-left: calc(var(--banner-width) / 2) solid transparent;
   border-right: calc(var(--banner-width) / 2) solid transparent;
   border-top: 30px solid var(--banner-background-color, #ce1126);
+  filter: drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white) drop-shadow(0 2px 0 white);
 }
 
 .title {
@@ -55,11 +55,12 @@
   font-size: var(--title-font-size, 2.25rem);
   letter-spacing: var(--title-letter-spacing, 2px);
   text-transform: uppercase;
-  padding: 10px 5px;
+  padding: 20px 5px 5px 5px;
   line-height: 1;
   text-shadow: var(--text-shadow, 1px 1px 3px rgba(0, 0, 0, 0.5));
   position: relative;
   cursor: default;
+  border-top: 2px solid white;
 }
 
 .accordionIcon {
@@ -125,11 +126,12 @@
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
-/* Media query for mobile devices */
 @media (max-width: 768px) {
   .banner {
-    width: 300px; /* Fixed width for all banners */
+    width: 75%; 
     margin: 10px auto;
+    --banner-width: 75%; 
+    border-bottom: 2px solid white;
   }
   
   .accordionIcon {
@@ -137,12 +139,12 @@
   }
   
   .title {
-    padding-right: 30px; /* Make room for the accordion icon */
+    padding-right: 30px;
     cursor: pointer;
   }
   
-  .collapsed::after {
-    display: none; /* Hide the banner triangle when collapsed */
+  .banner::after {
+    display: none;
   }
   
   /* Auto-collapse all banners except Division 1 on mobile */

@@ -13,7 +13,7 @@ const TrophyBanner = ({
   logoMiddleColor = '#a7d1f0',
   logoBackgroundBorderColor = '#ffffff',
   // Banner layout
-  width = 300,
+  width = 250,
   // Title styling
   titleFontSize = '2.25rem',
   titleLetterSpacing = '2px',
@@ -84,11 +84,11 @@ const TrophyBanner = ({
             className={styles.logoContainer}
             style={{
               backgroundImage: `linear-gradient(to bottom, 
-                #2c2e83 0%, #2c2e83 15%, 
-                #ffffff 15%, #ffffff calc(15% + 5px), 
-                ${logoMiddleColor} calc(15% + 5px), ${logoMiddleColor} calc(85% - 5px), 
-                #ffffff calc(85% - 5px), #ffffff 85%, 
-                #2c2e83 85%, #2c2e83 100%)`,
+                #2c2e83 0%, #2c2e83 32.5%, 
+                #ffffff 32.5%, #ffffff 37.5%, 
+                ${logoMiddleColor} 37.5%, ${logoMiddleColor} 62.5%, 
+                #ffffff 62.5%, #ffffff 67.5%, 
+                #2c2e83 67.5%, #2c2e83 100%)`,
               backgroundColor: 'transparent'
             }}
           >
@@ -96,7 +96,7 @@ const TrophyBanner = ({
               src={logoSrc}
               alt="Trophy logo"
               style={{ 
-                width: '90px', 
+                width: '100px', 
                 height: '100%', 
                 objectFit: 'contain',
                 borderRadius: '50%' 
@@ -122,7 +122,7 @@ const TrophyBanner = ({
                     key={index}
                     className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ''}`}
                   >
-                    {year} - 
+                    {year} - {' '}
                     <span 
                       className={styles.hoverable}
                       onMouseEnter={() => setHoveredName(name)}

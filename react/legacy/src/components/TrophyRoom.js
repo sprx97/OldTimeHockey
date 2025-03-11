@@ -9,7 +9,7 @@ const bannerData = [
   {
     id: 'division1',
     title: "Division 1 Champions",
-    logoSrc: "/images/logos/oth-circular.gif",
+    logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
       { year: "2024", name: "GUSZ" },
       { year: "2023", name: "SPRX97" },
@@ -24,12 +24,12 @@ const bannerData = [
       { year: "2014", name: "CONCINI" }
     ],
     bannerBackgroundColor: "#2c2e83",
-    logoMiddleColor: "#a7d1f0"
+    logoMiddleColor: "#ffc700"
   },
   {
     id: 'pointsFor',
     title: "Points For Champions",
-    logoSrc: "/images/logos/oth-circular.gif",
+    logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [  
       { year: "2024", name: "COSTCOSTAN" },
       /* For users with long usernames like Chris that break lines where we don't want them to I've included granular font size controls */
@@ -46,12 +46,12 @@ const bannerData = [
       { year: "2013", name: "WOPPA"}
     ],
     bannerBackgroundColor: "#2c2e83",
-    logoMiddleColor: "#ffcc00"
+    logoMiddleColor: "#ff0000"
   },
   {
     id: 'woppaCup',
     title: "Woppa Cup Champions",
-    logoSrc: "/images/logos/oth-circular.gif",
+    logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [  
       { year: "2024", name: "AKACESFAN" },
       { year: "2023", name: "CHRISTHROWSROCKS", fontSize: "1.15rem"},
@@ -67,12 +67,12 @@ const bannerData = [
       { year: "2013", name: "CANNON49" }
     ],
     bannerBackgroundColor: "#2c2e83",
-    logoMiddleColor: "#ff6b6b"
+    logoMiddleColor: "#109936"
   },
   {
     id: 'president',
     title: "President's <br /> Trophy",
-    logoSrc: "/images/logos/oth-circular.gif",
+    logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [  
       { year: "2024", name: "BRUINHAWKS" },
       { year: "2023", name: "SPRX97" },
@@ -87,12 +87,12 @@ const bannerData = [
       { year: "2014", name: "PEWPEW_PEW" }
     ],
     bannerBackgroundColor: "#2c2e83",
-    logoMiddleColor: "#4caf50"
+    logoMiddleColor: "#00f0ff"
   },
   {
     id: 'playoffPool',
     title: "Playoff Pool Champions",
-    logoSrc: "/images/logos/oth-circular.gif",
+    logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
       { year: "2024", name: "NODDAN" },
       { year: "2023", name: "HAZARD" },
@@ -104,7 +104,7 @@ const bannerData = [
       { year: "2017", name: "MINNESNOTA" }
     ],
     bannerBackgroundColor: "#2c2e83",
-    logoMiddleColor: "#9c27b0"
+    logoMiddleColor: "#ff6b00"
   }
 ];
 
