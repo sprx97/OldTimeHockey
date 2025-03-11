@@ -10,6 +10,7 @@ const TrophyBanner = ({
   // Core colors
   bannerBackgroundColor = '#ce1126',
   logoBackgroundColor = '#1e2c56',
+  logoMiddleColor = '#a7d1f0',
   logoBackgroundBorderColor = '#ffffff',
   // Banner layout
   width = 300,
@@ -79,7 +80,18 @@ const TrophyBanner = ({
       
       <div className={`${styles.bannerContent} ${!isExpanded ? styles.hidden : ''}`}>
         {logoSrc && (
-          <div className={styles.logoContainer}>
+          <div 
+            className={styles.logoContainer}
+            style={{
+              backgroundImage: `linear-gradient(to bottom, 
+                #2c2e83 0%, #2c2e83 15%, 
+                #ffffff 15%, #ffffff calc(15% + 5px), 
+                ${logoMiddleColor} calc(15% + 5px), ${logoMiddleColor} calc(85% - 5px), 
+                #ffffff calc(85% - 5px), #ffffff 85%, 
+                #2c2e83 85%, #2c2e83 100%)`,
+              backgroundColor: 'transparent'
+            }}
+          >
             <img
               src={logoSrc}
               alt="Trophy logo"
@@ -144,6 +156,7 @@ TrophyBanner.propTypes = {
   ),
   bannerBackgroundColor: PropTypes.string,
   logoBackgroundColor: PropTypes.string,
+  logoMiddleColor: PropTypes.string,
   logoBackgroundBorderColor: PropTypes.string,
   width: PropTypes.number,
   titleFontSize: PropTypes.string,

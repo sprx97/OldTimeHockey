@@ -79,8 +79,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 3px solid var(--logo-background-border-color, #ffffff);
-  border-bottom: 3px solid var(--logo-background-border-color, #ffffff);
 }
 
 .listContainer {

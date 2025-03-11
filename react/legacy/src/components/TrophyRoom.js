@@ -23,8 +23,8 @@ const bannerData = [
       { year: "2015", name: "TERATIC" },
       { year: "2014", name: "CONCINI" }
     ],
-    bannerBackgroundColor: "#1e2c56",
-    logoBackgroundColor: "#000000"
+    bannerBackgroundColor: "#2c2e83",
+    logoMiddleColor: "#a7d1f0"
   },
   {
     id: 'pointsFor',
@@ -45,8 +45,8 @@ const bannerData = [
       { year: "2014", name: "TERATIC" },
       { year: "2013", name: "WOPPA"}
     ],
-    bannerBackgroundColor: "#8a1538",
-    logoBackgroundColor: "#000000"
+    bannerBackgroundColor: "#2c2e83",
+    logoMiddleColor: "#ffcc00"
   },
   {
     id: 'woppaCup',
@@ -66,8 +66,8 @@ const bannerData = [
       { year: "2014", name: "FCBCN19" },
       { year: "2013", name: "CANNON49" }
     ],
-    bannerBackgroundColor: "#006847",
-    logoBackgroundColor: "#000000"
+    bannerBackgroundColor: "#2c2e83",
+    logoMiddleColor: "#ff6b6b"
   },
   {
     id: 'president',
@@ -86,8 +86,8 @@ const bannerData = [
       { year: "2015", name: "TERATIC" },
       { year: "2014", name: "PEWPEW_PEW" }
     ],
-    bannerBackgroundColor: "#041e42",
-    logoBackgroundColor: "#000000"
+    bannerBackgroundColor: "#2c2e83",
+    logoMiddleColor: "#4caf50"
   },
   {
     id: 'playoffPool',
@@ -103,8 +103,8 @@ const bannerData = [
       { year: "2018", name: "BOBOOMBANG" },
       { year: "2017", name: "MINNESNOTA" }
     ],
-    bannerBackgroundColor: "#ce1126",
-    logoBackgroundColor: "#000000"
+    bannerBackgroundColor: "#2c2e83",
+    logoMiddleColor: "#9c27b0"
   }
 ];
 
@@ -146,7 +146,7 @@ const TrophyRoom = () => {
               logoSrc={banner.logoSrc}
               winnersList={banner.winnersList}
               bannerBackgroundColor={banner.bannerBackgroundColor}
-              logoBackgroundColor={banner.logoBackgroundColor}
+              logoMiddleColor={banner.logoMiddleColor}
             />
           ))}
         </div>
