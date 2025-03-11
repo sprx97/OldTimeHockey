@@ -3,7 +3,7 @@ import { Container } from 'semantic-ui-react';
 import TrophyBanner from './TrophyBanner';
 import raftersBackground from '../assets/rafters.jpg';
 import { TrophyHoverProvider } from './TrophyHoverContext';
-import TrophyBannerInitializer from './TrophyBannerInitializer';
+import TrophyBannerInitializer, { BannerProvider } from './TrophyBannerInitializer';
 
 const bannerData = [
   {
@@ -111,7 +111,8 @@ const bannerData = [
 const TrophyRoom = () => {
   return (
     <TrophyHoverProvider>
-      <TrophyBannerInitializer />
+      <BannerProvider>
+        <TrophyBannerInitializer />
       <Container fluid style={{
         backgroundImage: `url(${raftersBackground})`,
         backgroundSize: 'cover',
@@ -142,6 +143,7 @@ const TrophyRoom = () => {
           {bannerData.map((banner) => (
             <TrophyBanner 
               key={banner.id}
+              id={banner.id}
               title={banner.title}
               logoSrc={banner.logoSrc}
               winnersList={banner.winnersList}
@@ -151,6 +153,7 @@ const TrophyRoom = () => {
           ))}
         </div>
       </Container>
+      </BannerProvider>
     </TrophyHoverProvider>
   );
 };

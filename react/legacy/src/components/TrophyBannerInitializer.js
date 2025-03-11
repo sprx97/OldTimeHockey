@@ -1,47 +1,64 @@
-import { useEffect } from 'react';
+import { useEffect, useContext, createContext, useState, useCallback } from 'react';
+
+// Create a context to share banner state across components
+export const BannerContext = createContext();
+
+export const useBannerContext = () => useContext(BannerContext);
+
+export const BannerProvider = ({ children }) => {
+  const [expandedBanners, setExpandedBanners] = useState({});
+  
+  // Memoize the toggleBanner function to prevent it from being recreated on each render
+  const toggleBanner = useCallback((bannerId, isExpanded) => {
+    setExpandedBanners(prev => ({
+      ...prev,
+      [bannerId]: isExpanded
+    }));
+  }, []);
+  
+  return (
+    <BannerContext.Provider value={{ expandedBanners, toggleBanner }}>
+      {children}
+    </BannerContext.Provider>
+  );
+};
 
 const TrophyBannerInitializer = () => {
+  const { toggleBanner } = useBannerContext();
+  
   useEffect(() => {
     const updateBanners = () => {
       const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      const banners = document.querySelectorAll('[data-division]');
+      const bannerElements = document.querySelectorAll('[data-banner-id]');
+      const bannerElementsArray = Array.from(bannerElements);
       
-      banners.forEach(banner => {
-        const isDivision1 = banner.getAttribute('data-division') === '1';
-        const content = banner.querySelector('[class*="bannerContent"]');
-
-        console.log('isDivision1', isDivision1)
-
+      // Update each banner's expanded state based on mobile/desktop view
+      bannerElementsArray.forEach((bannerElement, index) => {
+        const bannerId = bannerElement.getAttribute('data-banner-id');
+        if (!bannerId) return;
+        
+        const isFirstBanner = index === 0;
+        
         if (isMobile) {
-          if (isDivision1) {
-            // Keep Division 1 open
-            banner.classList.remove('collapsed');
-            banner.classList.add('expanded');
-            if (content) content.classList.remove('hidden');
-          } else {
-            // Collapse all others
-            banner.classList.add('collapsed');
-            banner.classList.remove('expanded');
-            if (content) content.classList.add('hidden');
-          }
+          // On mobile: keep first banner open, collapse others
+          toggleBanner(bannerId, isFirstBanner);
         } else {
-          // On desktop, open all banners
-          banner.classList.remove('collapsed');
-          banner.classList.add('expanded');
-          if (content) content.classList.remove('hidden');
+          // On desktop: expand all banners
+          toggleBanner(bannerId, true);
         }
       });
     };
   
+    // Init
     updateBanners();
     window.addEventListener('resize', updateBanners);
     
     return () => {
       window.removeEventListener('resize', updateBanners);
     };
-  }, []);
+  }, [toggleBanner]);
   
-  return null; // This component doesn't render anything
+  return null;
 };
 
 export default TrophyBannerInitializer;

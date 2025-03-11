@@ -139,23 +139,12 @@
   }
   
   .title {
-    padding-right: 30px;
     cursor: pointer;
+    padding: 20px 5px;
   }
   
   .banner::after {
     display: none;
-  }
-  
-  /* Auto-collapse all banners except Division 1 on mobile */
-  .banner:not([data-division="1"]) {
-    min-height: auto;
-    padding-bottom: 0;
-  }
-  
-  .banner:not([data-division="1"]) .bannerContent {
-    max-height: 0;
-    opacity: 0;
   }
 }
 

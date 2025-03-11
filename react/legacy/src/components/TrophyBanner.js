@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/TrophyBanner.module.css'
 import { useTrophyHover } from './TrophyHoverContext';
+import { useBannerContext } from './TrophyBannerInitializer';
 
 const TrophyBanner = ({
+  id,
   title,
   logoSrc,
   winnersList = [],
@@ -28,7 +30,12 @@ const TrophyBanner = ({
   textShadowOffsetY = '1px',
 }) => {
   const { hoveredName, setHoveredName } = useTrophyHover();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const { expandedBanners, toggleBanner } = useBannerContext();
+  
+  // Get expanded state from context, default to true if not in context
+  const isExpanded = id && expandedBanners.hasOwnProperty(id) 
+    ? expandedBanners[id] 
+    : true;
 
   const inlineStyles = {
     '--banner-background-color': bannerBackgroundColor,
@@ -44,7 +51,9 @@ const TrophyBanner = ({
   };
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
+    if (id) {
+      toggleBanner(id, !isExpanded);
+    }
   };
 
   // Handle click on title - only toggle on mobile
@@ -55,13 +64,11 @@ const TrophyBanner = ({
     }
   };
 
-  const isDivision1 = title === "Division 1 Champions";
-  
   return (
     <div 
       className={`${styles.banner} ${!isExpanded ? styles.collapsed : styles.expanded}`} 
       style={inlineStyles}
-      data-division={isDivision1 ? '1' : '0'}
+      data-banner-id={id}
     >
       <div 
         className={styles.title}
@@ -145,6 +152,7 @@ const TrophyBanner = ({
 };
 
 TrophyBanner.propTypes = {
+  id: PropTypes.string,
   title: PropTypes.string.isRequired,
   logoSrc: PropTypes.string,
   winnersList: PropTypes.arrayOf(
