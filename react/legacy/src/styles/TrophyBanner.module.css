@@ -9,6 +9,7 @@
   padding-bottom: 15px;
   width: var(--banner-width, 285px);
   transition: min-height 0.3s ease;
+  border-top: 2px solid white;
 }
 
 .collapsed {
@@ -60,7 +61,6 @@
   text-shadow: var(--text-shadow, 1px 1px 3px rgba(0, 0, 0, 0.5));
   position: relative;
   cursor: default;
-  border-top: 2px solid white;
 }
 
 .accordionIcon {
@@ -141,6 +141,19 @@
   .title {
     cursor: pointer;
     padding: 20px 5px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    line-height: 1.2;
+    font-size: calc(var(--title-font-size, 2.25rem) * 0.9);
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 80%;
+    margin: 0 auto;
+    hyphens: auto;
+    word-spacing: 0.1em;
   }
   
   .banner::after {

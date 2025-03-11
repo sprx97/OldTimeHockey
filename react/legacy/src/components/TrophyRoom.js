@@ -113,12 +113,12 @@ const TrophyRoom = () => {
     <TrophyHoverProvider>
       <BannerProvider>
         <TrophyBannerInitializer />
-      <Container fluid style={{
+      <Container fluid  style={{
         backgroundImage: `url(${raftersBackground})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
         minHeight: '100vh',
-        position: 'relative'
       }}>
         <div style={{
           position: 'absolute',
