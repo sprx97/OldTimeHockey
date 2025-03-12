@@ -31,8 +31,6 @@ const TrophyBanner = ({
 }) => {
   const { hoveredName, setHoveredName } = useTrophyHover();
   const { expandedBanners, toggleBanner } = useBannerContext();
-  
-  // Get expanded state from context, default to true if not in context
   const isExpanded = id && expandedBanners.hasOwnProperty(id) 
     ? expandedBanners[id] 
     : true;
@@ -56,7 +54,6 @@ const TrophyBanner = ({
     }
   };
 
-  // Handle click on title - only toggle on mobile
   const handleTitleClick = (e) => {
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (isMobile) {
@@ -81,7 +78,7 @@ const TrophyBanner = ({
           </React.Fragment>
         ))}
         <span className={styles.accordionIcon}>
-          {isExpanded ? '▲' : '▼'}
+          <i className={isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'}></i>
         </span>
       </div>
       

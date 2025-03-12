@@ -68,9 +68,14 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+.accordionIcon i {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .logoContainer {
@@ -161,11 +166,18 @@
   }
 }
 
-/* JavaScript toggle overrides the CSS defaults */
+/* 
+* JavaScript toggle overrides the CSS defaults, more brute force here.
+* Shortcut solution for now, will clean this up when ported to the new site 
+*/
 @media (max-width: 768px) {
   .banner.expanded {
     min-height: 200px !important;
     padding-bottom: 15px !important;
+  }
+  
+  .banner.expanded .title {
+    padding: 20px 5px 5px 5px !important;
   }
   
   .banner.expanded .bannerContent {

@@ -113,13 +113,36 @@ const TrophyRoom = () => {
     <TrophyHoverProvider>
       <BannerProvider>
         <TrophyBannerInitializer />
-      <Container fluid  style={{
-        backgroundImage: `url(${raftersBackground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        minHeight: '100vh',
-      }}>
+        {/* 
+        * Add a style tag with the highest specificity possible to combat semantic ui's brute forced gutters 
+        * This is a brute force response, but the key here is we're keeping the scope of the change limited
+        * to the trophy room. Otherwise global changes would be necessary and that kind of refactor isn't
+        * worth the headache atm. This works in conjuction with TrophyRoom.css
+        */}
+        <style>
+          {`
+            @media only screen and (max-width: 767px) {
+              .ui.container.fluid.trophy-room-container,
+              .ui.fluid.container.trophy-room-container {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+              }
+            }
+          `}
+        </style>
+      <Container 
+        fluid 
+        className="trophy-room-container" 
+        style={{
+          backgroundImage: `url(${raftersBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+        }}
+      >
         <div style={{
           position: 'absolute',
           top: 0,

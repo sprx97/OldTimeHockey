@@ -1,19 +1,28 @@
 import { useEffect, useContext, createContext, useState, useCallback } from 'react';
-
-// Create a context to share banner state across components
 export const BannerContext = createContext();
-
 export const useBannerContext = () => useContext(BannerContext);
-
 export const BannerProvider = ({ children }) => {
   const [expandedBanners, setExpandedBanners] = useState({});
-  
-  // Memoize the toggleBanner function to prevent it from being recreated on each render
+
   const toggleBanner = useCallback((bannerId, isExpanded) => {
-    setExpandedBanners(prev => ({
-      ...prev,
-      [bannerId]: isExpanded
-    }));
+    setExpandedBanners(prev => {
+      if (isExpanded) {
+        const newState = {};
+        Object.keys(prev).forEach(id => {
+          newState[id] = false;
+        });
+        return {
+          ...newState,
+          [bannerId]: true
+        };
+      } else {
+
+        return {
+          ...prev,
+          [bannerId]: false
+        };
+      }
+    });
   }, []);
   
   return (
@@ -28,25 +37,22 @@ const TrophyBannerInitializer = () => {
   
   useEffect(() => {
     const updateBanners = () => {
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
       const bannerElements = document.querySelectorAll('[data-banner-id]');
       const bannerElementsArray = Array.from(bannerElements);
       
-      // Update each banner's expanded state based on mobile/desktop view
-      bannerElementsArray.forEach((bannerElement, index) => {
+      bannerElementsArray.forEach((bannerElement) => {
         const bannerId = bannerElement.getAttribute('data-banner-id');
         if (!bannerId) return;
         
-        const isFirstBanner = index === 0;
-        
-        if (isMobile) {
-          // On mobile: keep first banner open, collapse others
-          toggleBanner(bannerId, isFirstBanner);
-        } else {
-          // On desktop: expand all banners
-          toggleBanner(bannerId, true);
-        }
+        toggleBanner(bannerId, false);
       });
+      
+      if (bannerElementsArray.length > 0) {
+        const firstBannerId = bannerElementsArray[0].getAttribute('data-banner-id');
+        if (firstBannerId) {
+          toggleBanner(firstBannerId, true);
+        }
+      }
     };
   
     // Init
