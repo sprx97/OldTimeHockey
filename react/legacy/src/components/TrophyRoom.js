@@ -71,7 +71,7 @@ const bannerData = [
   },
   {
     id: 'president',
-    title: "President's <br /> Trophy",
+    title: "Presidents' <br /> Trophy",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [  
       { year: "2024", name: "BRUINHAWKS" },
