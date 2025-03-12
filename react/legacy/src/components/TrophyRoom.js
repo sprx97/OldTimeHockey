@@ -101,7 +101,6 @@ const bannerData = [
       { year: "2020", name: "TWINSORA" },
       { year: "2019", name: "TOOPROFORYOU" },
       { year: "2018", name: "BOBOOMBANG" },
-      { year: "2017", name: "MINNESNOTA" }
     ],
     bannerBackgroundColor: "#2c2e83",
     logoMiddleColor: "#ff6b00"
