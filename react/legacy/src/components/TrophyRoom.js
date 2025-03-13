@@ -35,7 +35,7 @@ const bannerData = [
       /* For users with long usernames like Chris that break lines where we don't want them to I've included granular font size controls */
       { year: "2023", name: "CHRISTHROWSROCKS", fontSize: "1.15rem" }, 
       { year: "2022", name: "AKACESFAN" },
-      { year: "2021", name: "MWHazard" },
+      { year: "2021", name: "MWHAZARD" },
       { year: "2020", name: "TOOPROFORYOU" },
       { year: "2019", name: "RUSSTYJ" },
       { year: "2018", name: "SPRX97" },
