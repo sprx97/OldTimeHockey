@@ -54,7 +54,7 @@ const bannerData = [
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [  
       { year: "2024", name: "AKACESFAN" },
-      { year: "2023", name: "CHRISTHROWSROCKS", fontSize: "1.15rem"},
+      { year: "2023", name: "CHRISTHROWROCKS", fontSize: "1.15rem"},
       { year: "2022", name: "PLANKS" },
       { year: "2021", name: "BOBOOMBANG" },
       { year: "2020", name: "SELCIO44" },
