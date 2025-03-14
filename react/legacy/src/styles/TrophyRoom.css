@@ -1,0 +1,9 @@
+/* 
+* Add a style tag to the page for the highest specificity 
+* This is to combat semantic ui's stylesheets that are brute
+* forcing gutters with !important. This works in conjunction
+* with the embedded <style>s added in TrophyRoom.js
+*/
+.trophy-room-style-tag {
+  display: none;
+}
