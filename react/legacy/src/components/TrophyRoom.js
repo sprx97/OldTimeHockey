@@ -33,7 +33,7 @@ const bannerData = [
     winnersList: [  
       { year: "2024", name: "COSTCOSTAN" },
       /* For users with long usernames like Chris that break lines where we don't want them to I've included granular font size controls */
-      { year: "2023", name: "CHRISTHROWSROCKS", fontSize: "1.15rem" }, 
+      { year: "2023", name: "CHRISTHROWROCKS" }, 
       { year: "2022", name: "AKACESFAN" },
       { year: "2021", name: "MWHAZARD" },
       { year: "2020", name: "TOOPROFORYOU" },
@@ -54,7 +54,7 @@ const bannerData = [
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [  
       { year: "2024", name: "AKACESFAN" },
-      { year: "2023", name: "CHRISTHROWROCKS", fontSize: "1.15rem"},
+      { year: "2023", name: "CHRISTHROWROCKS" },
       { year: "2022", name: "PLANKS" },
       { year: "2021", name: "BOBOOMBANG" },
       { year: "2020", name: "SELCIO44" },
@@ -95,7 +95,7 @@ const bannerData = [
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
       { year: "2024", name: "NODDAN" },
-      { year: "2023", name: "HAZARD" },
+      { year: "2023", name: "MWHAZARD" },
       { year: "2022", name: "TSUNKATSE" },
       { year: "2021", name: "LEAPINLIZ" },
       { year: "2020", name: "TWINSORA" },
