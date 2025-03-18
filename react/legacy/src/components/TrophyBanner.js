@@ -78,7 +78,7 @@ const TrophyBanner = ({
           </React.Fragment>
         ))}
         <span className={styles.accordionIcon}>
-          <i className={isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'}></i>
+          <i className="fas fa-chevron-down"></i>
         </span>
       </div>
       
