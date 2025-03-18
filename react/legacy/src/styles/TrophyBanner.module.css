@@ -8,7 +8,7 @@
   box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.4);
   padding-bottom: 15px;
   width: var(--banner-width, 285px);
-  transition: min-height 0.3s ease;
+  transition: min-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   border-top: 2px solid white;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .bannerContent {
-  transition: max-height 0.3s ease, opacity 0.3s ease;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.6, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.6, 1);
   max-height: 1000px;
   opacity: 1;
   overflow: hidden;
@@ -70,7 +70,7 @@
   transform: translateY(-50%);
   font-size: 1.2rem;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .accordionIcon i {
@@ -149,15 +149,15 @@
     white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    word-break: keep-all;
     line-height: 1.2;
     font-size: calc(var(--title-font-size, 2.25rem) * 0.9);
     min-height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: 80%;
+    max-width: 85%;
     margin: 0 auto;
-    hyphens: auto;
     word-spacing: 0.1em;
   }
   
@@ -172,26 +172,34 @@
 */
 @media (max-width: 768px) {
   .banner.expanded {
-    min-height: 200px !important;
-    padding-bottom: 15px !important;
+    min-height: 200px;
+    padding-bottom: 15px;
   }
   
   .banner.expanded .title {
-    padding: 20px 5px 5px 5px !important;
+    padding: 20px 5px 5px 5px;
   }
   
   .banner.expanded .bannerContent {
-    max-height: 1000px !important;
-    opacity: 1 !important;
+    max-height: 1000px;
+    opacity: 1;
+  }
+  
+  .banner.expanded .accordionIcon i {
+    transform: rotate(180deg);
   }
   
   .banner.collapsed {
-    min-height: auto !important;
-    padding-bottom: 0 !important;
+    min-height: auto;
+    padding-bottom: 0;
   }
   
   .banner.collapsed .bannerContent {
-    max-height: 0 !important;
-    opacity: 0 !important;
+    max-height: 0;
+    opacity: 0;
+  }
+  
+  .banner.collapsed .accordionIcon i {
+    transform: rotate(0deg);
   }
 }

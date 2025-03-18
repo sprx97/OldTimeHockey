@@ -25,8 +25,23 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Old Time Hockey!</title>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Anton&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&display=swap" as="style" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&display=swap" />
+    <style>
+      /* Font fallback to prevent FOUC */
+      .font-fallback {
+        font-family: Arial, sans-serif;
+      }
+      @font-face {
+        font-family: 'Anton';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local('Anton Regular'), local('Anton-Regular'), url(https://fonts.gstatic.com/s/anton/v11/1Ptgg87LROyAm3K9-C8CSKlvPfE.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

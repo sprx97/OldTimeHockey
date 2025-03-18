@@ -68,7 +68,7 @@ const TrophyBanner = ({
       data-banner-id={id}
     >
       <div 
-        className={styles.title}
+        className={`${styles.title} font-fallback`}
         onClick={handleTitleClick}
       >
         {title.split(/<br\s*\/?>/).map((part, index, array) => (
@@ -78,7 +78,7 @@ const TrophyBanner = ({
           </React.Fragment>
         ))}
         <span className={styles.accordionIcon}>
-          <i className={isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'}></i>
+          <i className="fas fa-chevron-down"></i>
         </span>
       </div>
       
@@ -124,7 +124,7 @@ const TrophyBanner = ({
                 return (
                   <li 
                     key={index}
-                    className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ''}`}
+                    className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ''} font-fallback`}
                   >
                     {year} - {' '}
                     <span 
