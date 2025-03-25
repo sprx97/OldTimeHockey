@@ -30,7 +30,8 @@ const bannerData = [
     id: 'pointsFor',
     title: "Points For Champions",
     logoSrc: "/images/logos/oth-circle-logo.svg",
-    winnersList: [  
+    winnersList: [
+      { year: "2025", name: "CHIZZLE" },
       { year: "2024", name: "COSTCOSTAN" },
       /* For users with long usernames like Chris that break lines where we don't want them to I've included granular font size controls */
       { year: "2023", name: "CHRISTHROWROCKS" }, 
@@ -52,7 +53,8 @@ const bannerData = [
     id: 'woppaCup',
     title: "Woppa Cup Champions",
     logoSrc: "/images/logos/oth-circle-logo.svg",
-    winnersList: [  
+    winnersList: [
+      { year: "2025", name: "TOOPROFORYOU" },
       { year: "2024", name: "AKACESFAN" },
       { year: "2023", name: "CHRISTHROWROCKS" },
       { year: "2022", name: "PLANKS" },
@@ -73,7 +75,8 @@ const bannerData = [
     id: 'president',
     title: "Presidents' <br /> Trophy",
     logoSrc: "/images/logos/oth-circle-logo.svg",
-    winnersList: [  
+    winnersList: [
+      { year: "2025", name: "CHIZZLE" },
       { year: "2024", name: "BRUINHAWKS" },
       { year: "2023", name: "SPRX97" },
       { year: "2022", name: "TGMILLS" },
