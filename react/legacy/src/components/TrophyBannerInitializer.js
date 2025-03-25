@@ -1,4 +1,4 @@
-import { useEffect, useContext, createContext, useState, useCallback } from 'react';
+import { useEffect, useContext, createContext, useState, useCallback, useRef } from 'react';
 export const BannerContext = createContext();
 export const useBannerContext = () => useContext(BannerContext);
 export const BannerProvider = ({ children }) => {
@@ -55,6 +55,33 @@ export const BannerProvider = ({ children }) => {
 
 const TrophyBannerInitializer = () => {
   const { toggleBanner } = useBannerContext();
+  const fontLoadedRef = useRef(false);
+  
+  useEffect(() => {
+    if (fontLoadedRef.current) return;
+    
+    // Use the Font Loading API to detect when Anton is loaded
+    if ('fonts' in document) {
+      document.fonts.ready.then(() => {
+        document.fonts.forEach(font => {
+          if (font.family.toLowerCase() === 'anton' && font.status === 'loaded') {
+            fontLoadedRef.current = true;
+            // Remove the font-fallback class from all elements
+            document.querySelectorAll('.font-fallback').forEach(el => {
+              el.classList.remove('font-fallback');
+            });
+          }
+        });
+      });
+    } else {
+      // Fallback for browsers that don't support Font Loading API
+      setTimeout(() => {
+        document.querySelectorAll('.font-fallback').forEach(el => {
+          el.classList.remove('font-fallback');
+        });
+      }, 1000); 
+    }
+  }, []);
   
   useEffect(() => {
     const updateBanners = () => {
