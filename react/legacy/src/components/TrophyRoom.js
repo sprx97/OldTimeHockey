@@ -11,11 +11,12 @@ const bannerData = [
     title: "Division 1 Champions",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
+      { year: "2025", name: "GUSZ (2)" },
       { year: "2024", name: "GUSZ" },
       { year: "2023", name: "SPRX97" },
-      { year: "2022", name: "NODDAN" },
+      { year: "2022", name: "NODDAN (2)" },
       { year: "2021", name: "BENZENE96" },
-      { year: "2020", name: "CHIZZLE*" },
+      { year: "2020", name: "CHIZZLE* (2)" },
       { year: "2019", name: "CHIZZLE" },
       { year: "2018", name: "SLEEPTALKERZ" },
       { year: "2017", name: "NODDAN" },
@@ -33,15 +34,14 @@ const bannerData = [
     winnersList: [
       { year: "2025", name: "CHIZZLE" },
       { year: "2024", name: "COSTCOSTAN" },
-      /* For users with long usernames like Chris that break lines where we don't want them to I've included granular font size controls */
-      { year: "2023", name: "CHRISTHROWROCKS" }, 
+      { year: "2023", name: "CHRISTHROWROCKS" },
       { year: "2022", name: "AKACESFAN" },
       { year: "2021", name: "MWHAZARD" },
       { year: "2020", name: "TOOPROFORYOU" },
       { year: "2019", name: "RUSSTYJ" },
       { year: "2018", name: "SPRX97" },
       { year: "2017", name: "COYLE1096" },
-      { year: "2016", name: "WOPPA" },
+      { year: "2016", name: "WOPPA (2)" },
       { year: "2015", name: "INVISIBLETACO" },
       { year: "2014", name: "TERATIC" },
       { year: "2013", name: "WOPPA"}
@@ -55,10 +55,10 @@ const bannerData = [
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
       { year: "2025", name: "TOOPROFORYOU" },
-      { year: "2024", name: "AKACESFAN" },
+      { year: "2024", name: "AKACESFAN (2)" },
       { year: "2023", name: "CHRISTHROWROCKS" },
       { year: "2022", name: "PLANKS" },
-      { year: "2021", name: "BOBOOMBANG" },
+      { year: "2021", name: "BOBOOMBANG (2)" },
       { year: "2020", name: "SELCIO44" },
       { year: "2019", name: "YAHEARDWPERD" },
       { year: "2018", name: "AKACESFAN" },
@@ -76,12 +76,12 @@ const bannerData = [
     title: "Presidents' <br /> Trophy",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
-      { year: "2025", name: "CHIZZLE" },
+      { year: "2025", name: "CHIZZLE (3)" },
       { year: "2024", name: "BRUINHAWKS" },
       { year: "2023", name: "SPRX97" },
       { year: "2022", name: "TGMILLS" },
       { year: "2021", name: "BOBOOMBANG" },
-      { year: "2020", name: "CHIZZLE" },
+      { year: "2020", name: "CHIZZLE (2)" },
       { year: "2019", name: "CHIZZLE" },
       { year: "2018", name: "SLEEPTALKERZ" },
       { year: "2017", name: "NODDAN" },
@@ -115,8 +115,8 @@ const TrophyRoom = () => {
     <TrophyHoverProvider>
       <BannerProvider>
         <TrophyBannerInitializer />
-        {/* 
-        * Add a style tag with the highest specificity possible to combat semantic ui's brute forced gutters 
+        {/*
+        * Add a style tag with the highest specificity possible to combat semantic ui's brute forced gutters
         * This is a brute force response, but the key here is we're keeping the scope of the change limited
         * to the trophy room. Otherwise global changes would be necessary and that kind of refactor isn't
         * worth the headache atm. This works in conjuction with TrophyRoom.css
@@ -134,9 +134,9 @@ const TrophyRoom = () => {
             }
           `}
         </style>
-      <Container 
-        fluid 
-        className="trophy-room-container" 
+      <Container
+        fluid
+        className="trophy-room-container"
         style={{
           backgroundImage: `url(${raftersBackground})`,
           backgroundSize: 'cover',
@@ -166,7 +166,7 @@ const TrophyRoom = () => {
           }}
         >
           {bannerData.map((banner) => (
-            <TrophyBanner 
+            <TrophyBanner
               key={banner.id}
               id={banner.id}
               title={banner.title}
