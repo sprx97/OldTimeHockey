@@ -1,6 +1,6 @@
 var http = require("http"),
     url = require("url"),
-    mysql = require("mysql"),
+    mysql = require("mysql2"),
     mysqlEscapeArray = require("mysql-escape-array"),
     fs = require("fs"),
     config = require("../shared/config.json"),
