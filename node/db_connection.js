@@ -101,7 +101,7 @@ http.createServer(async function(request, response) {
 	}
 	else if(path == "/leagueranks") {
 		sql = "SELECT * from (SELECT Leagues.id, Leagues.name, round(sum(abs(pointsFor)), 2) as PF, round(sum(abs(pointsFor))/(count(*)), 2) as avgPF, round(stddev(abs(pointsFor)), 2) as stddev from Leagues \
-		       inner join Teams on (id=leagueID and Teams.year=Leagues.year) where Teams.year=" + mysql.escape(query.year) + " group by Leagues.name) as t order by PF desc";
+		       inner join Teams on (id=leagueID and Teams.year=Leagues.year) where Teams.year=" + mysql.escape(query.year) + " group by Leagues.id, Leagues.name) as t order by PF desc";
 	}
 	else if(path == "/divisionleagues") {
 		tierfilter = "";
