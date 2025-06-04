@@ -30,19 +30,7 @@ function MainNavigation() {
     if (route.anchors) {
       const submenuItems = route.anchors.map((anchor) => (
         <Menu.Item key={anchor.path}>
-          <Link
-            to={route.path + anchor.path}
-            style={{
-              display: 'block',
-              lineHeight: 1,
-              padding: '8px 12px',
-              borderRadius: 'var(--mantine-radius-sm)',
-              textDecoration: 'none',
-              color: 'var(--mantine-color-text)',
-              fontSize: 'var(--mantine-font-size-sm)',
-              fontWeight: 500,
-            }}
-          >
+          <Link to={route.path + anchor.path} className='nav-link'>
             {anchor.name}
           </Link>
         </Menu.Item>
@@ -56,19 +44,7 @@ function MainNavigation() {
           withinPortal
         >
           <Menu.Target>
-            <Link
-              to={route.path}
-              style={{
-                display: 'block',
-                lineHeight: 1,
-                padding: '8px 12px',
-                borderRadius: 'var(--mantine-radius-sm)',
-                textDecoration: 'none',
-                color: 'var(--mantine-color-text)',
-                fontSize: 'var(--mantine-font-size-sm)',
-                fontWeight: 500,
-              }}
-            >
+            <Link to={route.path} className='nav-link'>
               <Center>
                 <span style={{ marginRight: 5 }}>{route.name}</span>
                 <IconChevronDown size='0.9rem' stroke={1.5} />
@@ -81,20 +57,7 @@ function MainNavigation() {
     }
 
     return (
-      <Link
-        key={route.path}
-        to={route.path}
-        style={{
-          display: 'block',
-          lineHeight: 1,
-          padding: '8px 12px',
-          borderRadius: 'var(--mantine-radius-sm)',
-          textDecoration: 'none',
-          color: 'var(--mantine-color-text)',
-          fontSize: 'var(--mantine-font-size-sm)',
-          fontWeight: 500,
-        }}
-      >
+      <Link key={route.path} to={route.path} className='nav-link'>
         {route.name}
       </Link>
     )
@@ -108,18 +71,7 @@ function MainNavigation() {
         <div key={route.path}>
           <Box
             onClick={() => toggleSubmenu(route.path)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              fontSize: 'var(--mantine-font-size-md)',
-              padding: 'var(--mantine-spacing-md) var(--mantine-spacing-lg)',
-              borderRadius: 'var(--mantine-radius-sm)',
-              fontWeight: 500,
-              color: 'var(--mantine-color-text)',
-              cursor: 'pointer',
-              justifyContent: 'space-between',
-            }}
+            className='mobile-menu-toggle'
           >
             <span>{route.name}</span>
             {isSubmenuOpen ? (
@@ -129,28 +81,16 @@ function MainNavigation() {
             )}
           </Box>
           <Box
+            className='submenu-container'
             style={{
               height: isSubmenuOpen ? 'auto' : 0,
-              overflow: 'hidden',
-              transition: 'height 300ms ease',
             }}
           >
             {route.anchors.map((anchor) => (
               <Link
                 key={`${route.path}${anchor.path}`}
                 to={route.path + anchor.path}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  width: '100%',
-                  fontSize: 'var(--mantine-font-size-md)',
-                  padding:
-                    'var(--mantine-spacing-md) var(--mantine-spacing-lg)',
-                  borderRadius: 'var(--mantine-radius-sm)',
-                  fontWeight: 500,
-                  color: 'var(--mantine-color-text)',
-                  textDecoration: 'none',
-                }}
+                className='mobile-nav-link'
                 onClick={() => {
                   close()
                   setOpenSubmenuIds([])
@@ -168,17 +108,7 @@ function MainNavigation() {
       <Link
         key={route.path}
         to={route.path}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-          fontSize: 'var(--mantine-font-size-md)',
-          padding: 'var(--mantine-spacing-md) var(--mantine-spacing-lg)',
-          borderRadius: 'var(--mantine-radius-sm)',
-          fontWeight: 500,
-          color: 'var(--mantine-color-text)',
-          textDecoration: 'none',
-        }}
+        className='mobile-nav-link'
         onClick={() => {
           close()
           setOpenSubmenuIds([])
@@ -232,13 +162,7 @@ function MainNavigation() {
                 zIndex={300}
               >
                 <Menu.Target>
-                  <Center
-                    style={{
-                      padding: '8px 12px',
-                      borderRadius: 'var(--mantine-radius-sm)',
-                      cursor: 'pointer',
-                    }}
-                  >
+                  <Center className='settings-icon'>
                     <IconSettings size='1.2rem' stroke={1.5} />
                   </Center>
                 </Menu.Target>
@@ -263,13 +187,7 @@ function MainNavigation() {
                 zIndex={300}
               >
                 <Menu.Target>
-                  <Center
-                    style={{
-                      padding: '8px 12px',
-                      borderRadius: 'var(--mantine-radius-sm)',
-                      cursor: 'pointer',
-                    }}
-                  >
+                  <Center className='settings-icon'>
                     <IconSettings size='1.2rem' stroke={1.5} />
                   </Center>
                 </Menu.Target>
@@ -294,6 +212,7 @@ function MainNavigation() {
         </Box>
       </Container>
       <Box
+        className='mobile-menu'
         style={{
           position: 'fixed',
           top: 60,
@@ -304,7 +223,6 @@ function MainNavigation() {
           backgroundColor: 'var(--mantine-color-body)',
           overflow: 'auto',
           transform: opened ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 300ms ease',
           zIndex: 100,
         }}
       >

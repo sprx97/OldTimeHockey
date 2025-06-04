@@ -144,7 +144,82 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
             },
           }),
         },
+
+        // Navigation link styles
+        Link: {
+          styles: ({ radius, fontSizes, spacing }: MantineTheme) => ({
+            root: {
+              '&.nav-link': {
+                display: 'block',
+                lineHeight: 1,
+                padding: '8px 12px',
+                borderRadius: radius.sm,
+                textDecoration: 'none',
+                color: 'var(--mantine-color-text)',
+                fontSize: fontSizes.sm,
+                fontWeight: 500,
+              },
+              '&.mobile-nav-link': {
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: fontSizes.md,
+                padding: `${spacing.md} ${spacing.lg}`,
+                borderRadius: radius.sm,
+                fontWeight: 500,
+                color: 'var(--mantine-color-text)',
+                textDecoration: 'none',
+              },
+            },
+          }),
+        },
+
+        // Settings icon styles
+        Center: {
+          styles: ({ radius }: MantineTheme) => ({
+            root: {
+              '&.settings-icon': {
+                padding: '8px 12px',
+                borderRadius: radius.sm,
+                cursor: 'pointer',
+              },
+            },
+          }),
+        },
+
+        // Mobile menu styles
+        Box: {
+          styles: ({ radius, fontSizes, spacing }: MantineTheme) => ({
+            root: {
+              '&.mobile-menu': {
+                transition: 'transform 300ms ease',
+              },
+              '&.mobile-menu-toggle': {
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: fontSizes.md,
+                padding: `${spacing.md} ${spacing.lg}`,
+                borderRadius: radius.sm,
+                fontWeight: 500,
+                color: 'var(--mantine-color-text)',
+                cursor: 'pointer',
+                justifyContent: 'space-between',
+              },
+              '&.submenu-container': {
+                overflow: 'hidden',
+                transition: 'height 300ms ease',
+              },
+            },
+          }),
+        },
       },
+
+      // Custom theme properties
+      other: {
+        navTransition: 'transform 300ms ease',
+        iconStroke: 1.5,
+      } as const,
     })
   }, [theme])
 
