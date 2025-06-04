@@ -147,17 +147,28 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
         // Navigation link styles
         Link: {
-          styles: ({ radius, fontSizes, spacing }: MantineTheme) => ({
+          styles: ({ radius, fontSizes, spacing, white }: MantineTheme) => ({
             root: {
               '&.nav-link': {
-                display: 'block',
+                display: 'inline-flex',
                 lineHeight: 1,
                 padding: '8px 12px',
                 borderRadius: radius.sm,
                 textDecoration: 'none',
-                color: 'var(--mantine-color-text)',
+                color: white,
                 fontSize: fontSizes.sm,
                 fontWeight: 500,
+                fontFamily: 'Anton, sans-serif',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                alignItems: 'center',
+                height: '100%',
+                margin: '0 10px',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.3s ease',
+              },
+              '&.nav-link:hover': {
+                color: 'rgba(255, 255, 255, 0.8)',
               },
               '&.mobile-nav-link': {
                 display: 'flex',

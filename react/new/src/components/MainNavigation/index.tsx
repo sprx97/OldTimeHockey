@@ -9,6 +9,9 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import routes from '../../routes'
 import { ThemeControls } from '../ThemeControls'
+import { useTheme } from '../../contexts/ThemeContext'
+import blackLogo from '../../assets/logos/oth-wordmark-black.svg'
+import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
 
 interface RouteWithAnchors {
   path: string
@@ -19,6 +22,7 @@ interface RouteWithAnchors {
 function MainNavigation() {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
+  const { theme } = useTheme()
 
   const toggleSubmenu = (path: string) => {
     setOpenSubmenuIds((prev) =>
@@ -30,7 +34,11 @@ function MainNavigation() {
     if (route.anchors) {
       const submenuItems = route.anchors.map((anchor) => (
         <Menu.Item key={anchor.path}>
-          <Link to={route.path + anchor.path} className='nav-link'>
+          <Link
+            to={route.path + anchor.path}
+            className='nav-link'
+            style={{ display: 'inline-flex', alignItems: 'center' }}
+          >
             {anchor.name}
           </Link>
         </Menu.Item>
@@ -44,11 +52,23 @@ function MainNavigation() {
           withinPortal
         >
           <Menu.Target>
-            <Link to={route.path} className='nav-link'>
-              <Center>
-                <span style={{ marginRight: 5 }}>{route.name}</span>
-                <IconChevronDown size='0.9rem' stroke={1.5} />
-              </Center>
+            <Link
+              to={route.path}
+              className='nav-link'
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                {route.name}{' '}
+                <IconChevronDown
+                  size='0.9rem'
+                  stroke={1.5}
+                  style={{ marginLeft: 5 }}
+                />
+              </span>
             </Link>
           </Menu.Target>
           <Menu.Dropdown>{submenuItems}</Menu.Dropdown>
@@ -57,7 +77,12 @@ function MainNavigation() {
     }
 
     return (
-      <Link key={route.path} to={route.path} className='nav-link'>
+      <Link
+        key={route.path}
+        to={route.path}
+        className='nav-link'
+        style={{ display: 'inline-flex', alignItems: 'center', height: '100%' }}
+      >
         {route.name}
       </Link>
     )
@@ -133,22 +158,55 @@ function MainNavigation() {
       style={{
         height: '100%',
         padding: '0 var(--mantine-spacing-md)',
+        backgroundColor: 'var(--mantine-color-primary-filled)',
       }}
     >
-      <Container size='md'>
+      <Container size='100%' style={{ maxWidth: '100%' }}>
         <Box
           style={{
             height: '100%',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            width: '100%',
           }}
         >
-          <div>OldTimeHockey!</div>
-          <Group gap={5} visibleFrom='sm'>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '100%',
+              flex: '0 0 20%',
+            }}
+          >
+            <img
+              src={theme.mode === 'dark' ? whiteLogo : blackLogo}
+              alt='OldTimeHockey Logo'
+              style={{ height: '28px', width: 'auto' }}
+            />
+          </div>
+          <Box
+            style={{
+              height: '100%',
+              alignItems: 'center',
+              flex: '0 0 60%',
+              justifyContent: 'center',
+              display: 'flex',
+              flexDirection: 'row',
+              whiteSpace: 'nowrap',
+            }}
+            visibleFrom='sm'
+          >
             {navigationItems}
-          </Group>
-          <Group gap='sm'>
+          </Box>
+          <Group
+            gap='sm'
+            style={{
+              height: '100%',
+              alignItems: 'center',
+              flex: '0 0 20%',
+              justifyContent: 'flex-end',
+            }}
+          >
             {/* Desktop Theme Menu */}
             <Box visibleFrom='sm'>
               <Menu
@@ -162,7 +220,7 @@ function MainNavigation() {
                 zIndex={300}
               >
                 <Menu.Target>
-                  <Center className='settings-icon'>
+                  <Center className='settings-icon' style={{ height: '100%' }}>
                     <IconSettings size='1.2rem' stroke={1.5} />
                   </Center>
                 </Menu.Target>
@@ -187,7 +245,7 @@ function MainNavigation() {
                 zIndex={300}
               >
                 <Menu.Target>
-                  <Center className='settings-icon'>
+                  <Center className='settings-icon' style={{ height: '100%' }}>
                     <IconSettings size='1.2rem' stroke={1.5} />
                   </Center>
                 </Menu.Target>
@@ -207,6 +265,7 @@ function MainNavigation() {
               }}
               size='sm'
               hiddenFrom='sm'
+              color='white'
             />
           </Group>
         </Box>
