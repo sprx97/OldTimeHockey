@@ -175,7 +175,7 @@ function MainNavigation() {
               display: 'flex',
               alignItems: 'center',
               height: '100%',
-              flex: '0 0 20%',
+              flex: '0 1 auto',
             }}
           >
             <img
@@ -188,11 +188,11 @@ function MainNavigation() {
             style={{
               height: '100%',
               alignItems: 'center',
-              flex: '0 0 60%',
+              flex: '1 1 auto',
               justifyContent: 'center',
               display: 'flex',
               flexDirection: 'row',
-              whiteSpace: 'nowrap',
+              flexWrap: 'wrap',
             }}
             visibleFrom='sm'
           >
@@ -203,7 +203,7 @@ function MainNavigation() {
             style={{
               height: '100%',
               alignItems: 'center',
-              flex: '0 0 20%',
+              flex: '0 1 auto',
               justifyContent: 'flex-end',
             }}
           >
