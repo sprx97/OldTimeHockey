@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <AppShell header={{ height: 60 }} padding='sm' withBorder={false}>
+        <AppShell header={{ height: 60 }} padding={0} withBorder={false}>
           <AppShell.Header>
             <MainNavigation />
           </AppShell.Header>

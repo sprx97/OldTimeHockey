@@ -1,11 +1,4 @@
-import {
-  Menu,
-  Group,
-  Center,
-  Burger,
-  Box,
-  useMantineColorScheme,
-} from '@mantine/core'
+import { Menu, Group, Center, Burger, Box } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import {
   IconChevronDown,
@@ -17,6 +10,8 @@ import { useState } from 'react'
 import routes from '../../routes'
 import { ThemeControls } from '../ThemeControls'
 import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
+import blackLogo from '../../assets/logos/oth-wordmark-black.svg'
+import { useTheme } from '../../contexts/ThemeContext'
 
 interface RouteWithAnchors {
   path: string
@@ -27,7 +22,16 @@ interface RouteWithAnchors {
 function MainNavigation() {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
-  const { colorScheme } = useMantineColorScheme()
+  const {
+    theme,
+    getHeaderBackgroundColor,
+    getHeaderTextColor,
+    getLinkHoverColor,
+  } = useTheme()
+
+  // Determine which logo to use
+  const logoSrc =
+    theme.type === 'default' && theme.mode === 'light' ? blackLogo : whiteLogo
 
   const toggleSubmenu = (path: string) => {
     setOpenSubmenuIds((prev) =>
@@ -42,7 +46,10 @@ function MainNavigation() {
           <Link
             to={route.path + anchor.path}
             className='nav-link'
-            style={{ display: 'inline-flex', alignItems: 'center' }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+            }}
           >
             {anchor.name}
           </Link>
@@ -60,23 +67,14 @@ function MainNavigation() {
             timingFunction: 'ease',
           }}
           withinPortal
-          styles={(theme) => ({
+          position='bottom-end'
+          closeOnItemClick={false}
+          closeOnClickOutside={false}
+          trapFocus={false}
+          zIndex={300}
+          styles={() => ({
             dropdown: {
-              backgroundColor: 'var(--mantine-color-body)',
-              border: 'none',
-              borderRadius: 0,
-              marginTop: 10,
-              padding: '4px 0',
-              transformOrigin: 'top center',
-            },
-            item: {
-              color: '#001a36',
-              '&:hover': {
-                backgroundColor:
-                  colorScheme === 'dark'
-                    ? theme.colors.dark[5]
-                    : theme.colors.gray[0],
-              },
+              backgroundColor: getHeaderBackgroundColor(),
             },
           })}
         >
@@ -88,9 +86,16 @@ function MainNavigation() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 height: '100%',
+                color: getHeaderTextColor(),
               }}
             >
-              <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  color: getHeaderTextColor(),
+                }}
+              >
                 {route.name}{' '}
                 <IconChevronDown
                   size='0.9rem'
@@ -110,7 +115,12 @@ function MainNavigation() {
         key={route.path}
         to={route.path}
         className='nav-link'
-        style={{ display: 'inline-flex', alignItems: 'center', height: '100%' }}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          height: '100%',
+          color: getHeaderTextColor(),
+        }}
       >
         {route.name}
       </Link>
@@ -186,13 +196,24 @@ function MainNavigation() {
       style={{
         height: '60px',
         padding: '0 var(--mantine-spacing-md)',
-        backgroundColor: '#001a36',
+        backgroundColor: getHeaderBackgroundColor(),
         display: 'flex',
         alignItems: 'center',
         width: '100%',
         justifyContent: 'center',
+        color: getHeaderTextColor(),
       }}
     >
+      <style>
+        {`
+          .nav-link {
+            color: ${getHeaderTextColor()} !important;
+          }
+          .nav-link:hover {
+            color: ${getLinkHoverColor()} !important;
+          }
+        `}
+      </style>
       <Box size='100%' style={{ width: '100%' }}>
         <Box
           style={{
@@ -212,7 +233,7 @@ function MainNavigation() {
             }}
           >
             <img
-              src={whiteLogo}
+              src={logoSrc}
               alt='OldTimeHockey Logo'
               style={{ height: '28px', width: 'auto' }}
             />
@@ -256,28 +277,23 @@ function MainNavigation() {
                 closeOnClickOutside={false}
                 trapFocus={false}
                 zIndex={300}
-                styles={(theme) => ({
+                styles={() => ({
                   dropdown: {
-                    backgroundColor: 'var(--mantine-color-body)',
-                    border: 'none',
-                    borderRadius: 0,
-                    marginTop: 10,
-                    padding: '4px 0',
-                    transformOrigin: 'top center',
+                    backgroundColor: getHeaderBackgroundColor(),
                   },
                   item: {
-                    color: '#001a36',
+                    color: getHeaderTextColor(),
                     '&:hover': {
-                      backgroundColor:
-                        colorScheme === 'dark'
-                          ? theme.colors.dark[5]
-                          : theme.colors.gray[0],
+                      color: getLinkHoverColor(),
                     },
                   },
                 })}
               >
                 <Menu.Target>
-                  <Center className='settings-icon' style={{ height: '100%' }}>
+                  <Center
+                    className='settings-icon'
+                    style={{ height: '100%', color: getHeaderTextColor() }}
+                  >
                     <IconSettings size='1.2rem' stroke={1.5} />
                   </Center>
                 </Menu.Target>
@@ -305,28 +321,23 @@ function MainNavigation() {
                 closeOnClickOutside={false}
                 trapFocus={false}
                 zIndex={300}
-                styles={(theme) => ({
+                styles={() => ({
                   dropdown: {
-                    backgroundColor: 'var(--mantine-color-body)',
-                    border: 'none',
-                    borderRadius: 0,
-                    marginTop: 10,
-                    padding: '4px 0',
-                    transformOrigin: 'top center',
+                    backgroundColor: getHeaderBackgroundColor(),
                   },
                   item: {
-                    color: '#001a36',
+                    color: getHeaderTextColor(),
                     '&:hover': {
-                      backgroundColor:
-                        colorScheme === 'dark'
-                          ? theme.colors.dark[5]
-                          : theme.colors.gray[0],
+                      color: getLinkHoverColor(),
                     },
                   },
                 })}
               >
                 <Menu.Target>
-                  <Center className='settings-icon' style={{ height: '100%' }}>
+                  <Center
+                    className='settings-icon'
+                    style={{ height: '100%', color: getHeaderTextColor() }}
+                  >
                     <IconSettings size='1.2rem' stroke={1.5} />
                   </Center>
                 </Menu.Target>
@@ -346,7 +357,7 @@ function MainNavigation() {
               }}
               size='sm'
               hiddenFrom='sm'
-              color='white'
+              color={getHeaderTextColor()}
             />
           </Group>
         </Box>
@@ -360,7 +371,8 @@ function MainNavigation() {
           right: 0,
           bottom: 0,
           padding: 'var(--mantine-spacing-md)',
-          backgroundColor: 'var(--mantine-color-body)',
+          backgroundColor: getHeaderBackgroundColor(),
+          color: getHeaderTextColor(),
           overflow: 'auto',
           transform: opened ? 'translateX(0)' : 'translateX(100%)',
           zIndex: 100,

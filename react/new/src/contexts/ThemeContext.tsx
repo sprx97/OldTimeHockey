@@ -14,12 +14,17 @@ import {
   type MantineTheme,
 } from '@mantine/core'
 import { NHL_TEAM_COLORS } from '../constants/nhlColors'
-import { ThemeConfig, ThemeMode, NHLTeam } from '../types/theme'
+import { DEFAULT_THEME_COLORS } from '../constants/defaultTheme'
+import { ThemeConfig, ThemeMode, NHLTeam, ThemeType } from '../types/theme'
 
 interface ThemeContextType {
   theme: ThemeConfig
   setThemeMode: (mode: ThemeMode) => void
+  setThemeType: (type: ThemeType) => void
   setTeamTheme: (team: NHLTeam | undefined) => void
+  getHeaderBackgroundColor: () => string
+  getHeaderTextColor: () => string
+  getLinkHoverColor: () => string
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -85,6 +90,7 @@ const colorSchemeManager = localStorageColorSchemeManager({
 })
 
 const TEAM_STORAGE_KEY = 'oth-team-theme'
+const THEME_TYPE_STORAGE_KEY = 'oth-theme-type'
 
 interface ThemeProviderProps {
   children: ReactNode
@@ -95,6 +101,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     mode: (colorSchemeManager.get('light') === 'dark'
       ? 'dark'
       : 'light') as ThemeMode,
+    type:
+      (localStorage.getItem(THEME_TYPE_STORAGE_KEY) as ThemeType) || 'default',
     team: localStorage.getItem(TEAM_STORAGE_KEY) as NHLTeam | undefined,
   })
 
@@ -103,36 +111,63 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     colorSchemeManager.set(mode)
   }, [])
 
+  const setThemeType = useCallback((type: ThemeType) => {
+    setTheme((prev) => ({ ...prev, type }))
+    localStorage.setItem(THEME_TYPE_STORAGE_KEY, type)
+  }, [])
+
   const setTeamTheme = useCallback((team: NHLTeam | undefined) => {
-    setTheme((prev) => ({ ...prev, team }))
+    setTheme((prev) => ({ ...prev, team, type: team ? 'team' : 'default' }))
     if (team) {
       localStorage.setItem(TEAM_STORAGE_KEY, team)
+      localStorage.setItem(THEME_TYPE_STORAGE_KEY, 'team')
     } else {
       localStorage.removeItem(TEAM_STORAGE_KEY)
+      localStorage.setItem(THEME_TYPE_STORAGE_KEY, 'default')
     }
   }, [])
 
+  // Get header background color based on theme
+  const getHeaderBackgroundColor = useCallback((): string => {
+    if (theme.type === 'default') {
+      return theme.mode === 'light' ? '#FFFFFF' : '#000000'
+    } else if (theme.type === 'team' && theme.team) {
+      return NHL_TEAM_COLORS[theme.team].primary || DEFAULT_THEME_COLORS.primary
+    }
+    return DEFAULT_THEME_COLORS.primary
+  }, [theme])
+
+  // Get header text color based on theme
+  const getHeaderTextColor = useCallback((): string => {
+    if (theme.type === 'default') {
+      return theme.mode === 'light' ? '#000000' : '#FFFFFF'
+    }
+    return DEFAULT_THEME_COLORS.secondary || '#FFFFFF' // Light color for dark backgrounds
+  }, [theme])
+
+  // Get link hover color
+  const getLinkHoverColor = useCallback((): string => {
+    if (theme.type === 'default') {
+      return DEFAULT_THEME_COLORS.primary // Orange hover for default theme
+    } else if (theme.type === 'team' && theme.team) {
+      return (
+        NHL_TEAM_COLORS[theme.team].secondary || DEFAULT_THEME_COLORS.primary
+      )
+    }
+    return DEFAULT_THEME_COLORS.primary
+  }, [theme])
+
   const getMantineTheme = useCallback((): MantineThemeOverride => {
     return createTheme({
-      primaryColor: theme.team ? 'team' : 'blue',
+      primaryColor: theme.type === 'team' && theme.team ? 'team' : 'default',
       colors: {
-        // Default Mantine blue color
-        blue: [
-          '#e7f5ff',
-          '#d0ebff',
-          '#a5d8ff',
-          '#74c0fc',
-          '#4dabf7',
-          '#339af0',
-          '#228be6',
-          '#1c7ed6',
-          '#1971c2',
-          '#1864ab',
-        ] as MantineColorsTuple,
+        // Default OTH theme colors
+        default: generateColorShades(DEFAULT_THEME_COLORS.primary),
         // Add team colors if selected
-        ...(theme.team && {
-          team: generateColorShades(NHL_TEAM_COLORS[theme.team].primary),
-        }),
+        ...(theme.type === 'team' &&
+          theme.team && {
+            team: generateColorShades(NHL_TEAM_COLORS[theme.team].primary),
+          }),
       },
       primaryShade: { light: 6, dark: 8 },
       components: {
@@ -147,7 +182,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
         // Navigation link styles
         Link: {
-          styles: ({ radius, fontSizes, spacing, white }: MantineTheme) => ({
+          styles: ({ radius, fontSizes, spacing }: MantineTheme) => ({
             root: {
               '&.nav-link': {
                 display: 'inline-flex',
@@ -155,7 +190,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
                 padding: '8px 12px',
                 borderRadius: radius.sm,
                 textDecoration: 'none',
-                color: white,
                 fontSize: fontSizes.sm,
                 fontWeight: 500,
                 fontFamily: 'Anton, sans-serif',
@@ -168,7 +202,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
                 transition: 'color 0.3s ease',
               },
               '&.nav-link:hover': {
-                color: 'rgba(255, 255, 255, 0.8)',
+                color: DEFAULT_THEME_COLORS.primary,
               },
               '&.mobile-nav-link': {
                 display: 'flex',
@@ -178,8 +212,32 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
                 padding: `${spacing.md} ${spacing.lg}`,
                 borderRadius: radius.sm,
                 fontWeight: 500,
-                color: 'var(--mantine-color-text)',
+                fontFamily: 'Anton, sans-serif',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
                 textDecoration: 'none',
+              },
+            },
+          }),
+        },
+
+        // Menu styles for navigation
+        Menu: {
+          styles: () => ({
+            dropdown: {
+              border: 'none',
+              borderRadius: 0,
+              marginTop: 10,
+              padding: '8px 0',
+              transformOrigin: 'top right',
+            },
+            item: {
+              padding: '8px 12px',
+              fontFamily: 'Anton, sans-serif',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              '&:hover': {
+                backgroundColor: 'transparent',
               },
             },
           }),
@@ -235,7 +293,17 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   }, [theme])
 
   return (
-    <ThemeContext.Provider value={{ theme, setThemeMode, setTeamTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        setThemeMode,
+        setThemeType,
+        setTeamTheme,
+        getHeaderBackgroundColor,
+        getHeaderTextColor,
+        getLinkHoverColor,
+      }}
+    >
       <MantineProvider
         theme={getMantineTheme()}
         colorSchemeManager={colorSchemeManager}
