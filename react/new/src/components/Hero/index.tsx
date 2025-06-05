@@ -1,5 +1,6 @@
 import { Box, Title, Text, Button, Group, Container } from '@mantine/core'
 import styles from './hero.module.scss'
+import buttonStyles from '../../styles/buttons.module.scss'
 import playerImage from '../../assets/player_with_puck.png'
 import dotsBgLrg from '../../assets/backgrounds/dots_bg_lrg.png'
 import dotsBgSm from '../../assets/backgrounds/dots_bg_sm.png'
@@ -18,7 +19,7 @@ function Hero({
   title = 'THE ULTIMATE FANTASY HOCKEY GAUNTLET',
   subtitle = 'Old Time Hockey',
   description = '238 teams. 17 leagues. Promotion. Relegation. Glory awaits.',
-  primaryButtonText = 'JOIN',
+  primaryButtonText = 'Join Now',
   secondaryButtonText = 'LEARN MORE',
   primaryButtonLink = '#join',
   secondaryButtonLink = '#learn',
@@ -47,7 +48,7 @@ function Hero({
                 component='a'
                 href={primaryButtonLink}
                 variant='filled'
-                className={styles.primaryButton}
+                className={`${styles.primaryButton} ${buttonStyles.primary}`}
               >
                 {primaryButtonText}
               </Button>
@@ -55,7 +56,7 @@ function Hero({
                 component='a'
                 href={secondaryButtonLink}
                 variant='outline'
-                className={styles.secondaryButton}
+                className={`${styles.secondaryButton} ${buttonStyles.secondary}`}
               >
                 {secondaryButtonText}
               </Button>

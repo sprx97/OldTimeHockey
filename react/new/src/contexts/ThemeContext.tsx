@@ -233,9 +233,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
             },
             item: {
               padding: '8px 12px',
-              fontFamily: 'Anton, sans-serif',
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
+              fontFamily: 'Inter, sans-serif',
               '&:hover': {
                 backgroundColor: 'transparent',
               },

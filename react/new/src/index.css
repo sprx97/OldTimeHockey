@@ -7,6 +7,12 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
+  /* Button theme variables */
+  --primary-color: #fe5900; /* Orange from default theme */
+  --primary-hover-color: #d94c00;
+  --secondary-color: #898989; /* Gray from default theme */
+  --tertiary-color: #000000; /* Black from default theme */
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -72,6 +78,10 @@ button:focus-visible {
   :root {
     color: #213547;
     background-color: #ffffff;
+    
+    /* Button theme variables for light mode */
+    --primary-color: #fe5900;
+    --primary-hover-color: #d94c00;
   }
   a:hover {
     color: #747bff;

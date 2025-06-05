@@ -1,0 +1,58 @@
+/* Button styles for site-wide use */
+
+.button {
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+}
+
+.primary {
+  composes: button;
+  background-color: #000;
+  color: #fff;
+  padding: 0.8rem 1.8rem;
+  border: none;
+  min-width: 120px;
+  height: auto;
+  
+  &:hover {
+    background-color: var(--primary-color, #fe5900);
+    color: #fff;
+  }
+}
+
+.secondary {
+  composes: button;
+  background-color: #fff;
+  color: #000;
+  padding: 0.8rem 1.8rem;
+  border: 1px solid #000;
+  min-width: 120px;
+  height: auto;
+  
+  &:hover {
+    background-color: var(--primary-color, #fe5900);
+    color: #fff;
+    border-color: var(--primary-color, #fe5900);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 576px) {
+  .primary, .secondary {
+    padding: 0.7rem 1.4rem;
+    font-size: 0.95rem;
+    min-width: 100px;
+  }
+}
