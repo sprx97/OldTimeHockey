@@ -1,4 +1,11 @@
-import { Menu, Group, Center, Burger, Container, Box } from '@mantine/core'
+import {
+  Menu,
+  Group,
+  Center,
+  Burger,
+  Box,
+  useMantineColorScheme,
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import {
   IconChevronDown,
@@ -20,6 +27,7 @@ interface RouteWithAnchors {
 function MainNavigation() {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
+  const { colorScheme } = useMantineColorScheme()
 
   const toggleSubmenu = (path: string) => {
     setOpenSubmenuIds((prev) =>
@@ -45,8 +53,32 @@ function MainNavigation() {
         <Menu
           key={route.path}
           trigger='hover'
-          transitionProps={{ exitDuration: 0 }}
+          transitionProps={{
+            transition: 'scale-y',
+            duration: 200,
+            exitDuration: 0,
+            timingFunction: 'ease',
+          }}
           withinPortal
+          styles={(theme) => ({
+            dropdown: {
+              backgroundColor: 'var(--mantine-color-body)',
+              border: 'none',
+              borderRadius: 0,
+              marginTop: 10,
+              padding: '4px 0',
+              transformOrigin: 'top center',
+            },
+            item: {
+              color: '#001a36',
+              '&:hover': {
+                backgroundColor:
+                  colorScheme === 'dark'
+                    ? theme.colors.dark[5]
+                    : theme.colors.gray[0],
+              },
+            },
+          })}
         >
           <Menu.Target>
             <Link
@@ -212,13 +244,37 @@ function MainNavigation() {
             <Box visibleFrom='sm'>
               <Menu
                 trigger='hover'
-                transitionProps={{ exitDuration: 0 }}
+                transitionProps={{
+                  transition: 'scale-y',
+                  duration: 200,
+                  exitDuration: 0,
+                  timingFunction: 'ease',
+                }}
                 withinPortal
                 position='bottom-end'
                 closeOnItemClick={false}
                 closeOnClickOutside={false}
                 trapFocus={false}
                 zIndex={300}
+                styles={(theme) => ({
+                  dropdown: {
+                    backgroundColor: 'var(--mantine-color-body)',
+                    border: 'none',
+                    borderRadius: 0,
+                    marginTop: 10,
+                    padding: '4px 0',
+                    transformOrigin: 'top center',
+                  },
+                  item: {
+                    color: '#001a36',
+                    '&:hover': {
+                      backgroundColor:
+                        colorScheme === 'dark'
+                          ? theme.colors.dark[5]
+                          : theme.colors.gray[0],
+                    },
+                  },
+                })}
               >
                 <Menu.Target>
                   <Center className='settings-icon' style={{ height: '100%' }}>
@@ -237,13 +293,37 @@ function MainNavigation() {
             <Box hiddenFrom='sm'>
               <Menu
                 trigger='hover'
-                transitionProps={{ exitDuration: 0 }}
+                transitionProps={{
+                  transition: 'scale-y',
+                  duration: 200,
+                  exitDuration: 0,
+                  timingFunction: 'ease',
+                }}
                 withinPortal
                 position='bottom-end'
                 closeOnItemClick={false}
                 closeOnClickOutside={false}
                 trapFocus={false}
                 zIndex={300}
+                styles={(theme) => ({
+                  dropdown: {
+                    backgroundColor: 'var(--mantine-color-body)',
+                    border: 'none',
+                    borderRadius: 0,
+                    marginTop: 10,
+                    padding: '4px 0',
+                    transformOrigin: 'top center',
+                  },
+                  item: {
+                    color: '#001a36',
+                    '&:hover': {
+                      backgroundColor:
+                        colorScheme === 'dark'
+                          ? theme.colors.dark[5]
+                          : theme.colors.gray[0],
+                    },
+                  },
+                })}
               >
                 <Menu.Target>
                   <Center className='settings-icon' style={{ height: '100%' }}>
