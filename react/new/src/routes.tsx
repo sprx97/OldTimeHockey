@@ -1,5 +1,4 @@
 import AverageDraftPosition from './components/Pages/ADP'
-import Community from './components/Pages/Community'
 import HallOfFame from './components/Pages/HallOfFame'
 import HomePage from './components/Pages/Home'
 import Leaderboard from './components/Pages/Leaderboard'
@@ -33,7 +32,6 @@ const routes = [
       { path: '#woppacup', name: 'Woppa Cup Champions' },
     ],
   },
-  { path: '/community', element: <Community />, name: 'Community' },
 ]
 
 export default routes

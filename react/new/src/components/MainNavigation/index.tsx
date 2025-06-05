@@ -9,8 +9,6 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import routes from '../../routes'
 import { ThemeControls } from '../ThemeControls'
-import { useTheme } from '../../contexts/ThemeContext'
-import blackLogo from '../../assets/logos/oth-wordmark-black.svg'
 import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
 
 interface RouteWithAnchors {
@@ -22,7 +20,6 @@ interface RouteWithAnchors {
 function MainNavigation() {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
-  const { theme } = useTheme()
 
   const toggleSubmenu = (path: string) => {
     setOpenSubmenuIds((prev) =>
@@ -154,14 +151,17 @@ function MainNavigation() {
 
   return (
     <Box
-      component='header'
       style={{
-        height: '100%',
+        height: '60px',
         padding: '0 var(--mantine-spacing-md)',
-        backgroundColor: 'var(--mantine-color-primary-filled)',
+        backgroundColor: '#001a36',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
       }}
     >
-      <Container size='100%' style={{ maxWidth: '100%' }}>
+      <Box size='100%' style={{ width: '100%' }}>
         <Box
           style={{
             height: '100%',
@@ -175,11 +175,12 @@ function MainNavigation() {
               display: 'flex',
               alignItems: 'center',
               height: '100%',
-              flex: '0 1 auto',
+              flex: '0 0 auto',
+              marginRight: '20px',
             }}
           >
             <img
-              src={theme.mode === 'dark' ? whiteLogo : blackLogo}
+              src={whiteLogo}
               alt='OldTimeHockey Logo'
               style={{ height: '28px', width: 'auto' }}
             />
@@ -189,7 +190,7 @@ function MainNavigation() {
               height: '100%',
               alignItems: 'center',
               flex: '1 1 auto',
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
               display: 'flex',
               flexDirection: 'row',
               flexWrap: 'wrap',
@@ -269,7 +270,7 @@ function MainNavigation() {
             />
           </Group>
         </Box>
-      </Container>
+      </Box>
       <Box
         className='mobile-menu'
         style={{

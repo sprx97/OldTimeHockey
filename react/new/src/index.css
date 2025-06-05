@@ -81,11 +81,13 @@ button:focus-visible {
   }
 }
 
-/* Header styles */
 header {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #001a36;
+  height: 60px;
+  width: 100%;
 }
 
 header .container {
@@ -101,10 +103,12 @@ header .nav-link {
   font-family: 'Anton', sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin: 0 10px;
+  margin: 0 15px;
   color: white;
   transition: color 0.3s ease;
   white-space: nowrap;
+  font-weight: 400;
+  font-size: 16px;
 }
 
 header .nav-link:hover {
@@ -115,4 +119,6 @@ header .settings-icon {
   display: flex;
   align-items: center;
   height: 100%;
+  color: white;
+  margin-left: 15px;
 }
