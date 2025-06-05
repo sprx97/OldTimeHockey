@@ -189,9 +189,41 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     let activeColor = DEFAULT_THEME_COLORS.primary
 
     if (theme.type === 'team' && theme.team) {
-      // For team themes, use the secondary color as the active color
-      activeColor =
-        NHL_TEAM_COLORS[theme.team].secondary || DEFAULT_THEME_COLORS.primary
+      // Teams with good tertiary contrast (4.5:1 or better)
+      const teamsWithGoodTertiaryContrast = [
+        // Excellent contrast (15+:1)
+        'BOS',
+        'LAK',
+        'PIT',
+        'UTA',
+        'EDM',
+        'NYI',
+        'NYR',
+        // Good contrast (4.5-15:1)
+        'CAR',
+        'OTT',
+        'MTL',
+        'CBJ',
+        'WPG',
+        'SEA',
+        'NJD',
+        'WSH',
+        'MIN',
+        'PHI',
+      ]
+
+      if (
+        teamsWithGoodTertiaryContrast.includes(theme.team) &&
+        NHL_TEAM_COLORS[theme.team].tertiary
+      ) {
+        activeColor =
+          NHL_TEAM_COLORS[theme.team].tertiary ||
+          NHL_TEAM_COLORS[theme.team].secondary ||
+          DEFAULT_THEME_COLORS.primary
+      } else {
+        activeColor =
+          NHL_TEAM_COLORS[theme.team].secondary || DEFAULT_THEME_COLORS.primary
+      }
     }
 
     // Use 4.5:1 contrast ratio for normal text per WCAG AA
