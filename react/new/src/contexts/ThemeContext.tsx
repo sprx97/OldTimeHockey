@@ -101,13 +101,28 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+  // Get team from localStorage and validate it exists in NHL_TEAM_COLORS
+  const storedTeam = localStorage.getItem(TEAM_STORAGE_KEY) as
+    | NHLTeam
+    | undefined
+  const validTeam =
+    storedTeam && NHL_TEAM_COLORS[storedTeam] ? storedTeam : undefined
+
+  // If stored team is invalid, clean up localStorage
+  if (storedTeam && !validTeam) {
+    localStorage.removeItem(TEAM_STORAGE_KEY)
+    localStorage.setItem(THEME_TYPE_STORAGE_KEY, 'default')
+  }
+
   const [theme, setTheme] = useState<ThemeConfig>({
     mode: (colorSchemeManager.get('light') === 'dark'
       ? 'dark'
       : 'light') as ThemeMode,
-    type:
-      (localStorage.getItem(THEME_TYPE_STORAGE_KEY) as ThemeType) || 'default',
-    team: localStorage.getItem(TEAM_STORAGE_KEY) as NHLTeam | undefined,
+    type: validTeam
+      ? 'team'
+      : (localStorage.getItem(THEME_TYPE_STORAGE_KEY) as ThemeType) ||
+        'default',
+    team: validTeam,
   })
 
   const setThemeMode = useCallback((mode: ThemeMode) => {

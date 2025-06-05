@@ -48,7 +48,7 @@ import winnipegLogo from '../assets/logos/nhl/winnipeg_jets.png'
 
 const TEAM_LOGOS: Record<string, string> = {
   ANA: anaheimLogo,
-  ARI: utahLogo,
+  UTA: utahLogo,
   BOS: bostonLogo,
   BUF: buffaloLogo,
   CGY: calgaryLogo,
@@ -153,7 +153,7 @@ export function ThemeControls() {
       {theme.type === 'team' && (
         <Select
           label='Team Theme'
-          description='Select your favorite NHL team colors'
+          description='Select your favorite NHL team'
           placeholder='Select a team'
           value={theme.team}
           onChange={(value) => setTeamTheme(value as NHLTeam)}
@@ -175,6 +175,17 @@ export function ThemeControls() {
               </Group>
             )
           }}
+          leftSection={
+            theme.team ? (
+              <img
+                src={TEAM_LOGOS[theme.team]}
+                width={20}
+                height={20}
+                alt={`${NHL_TEAM_NAMES[theme.team]} logo`}
+                style={{ objectFit: 'contain' }}
+              />
+            ) : null
+          }
           comboboxProps={{
             transitionProps: { transition: 'pop', duration: 200 },
           }}

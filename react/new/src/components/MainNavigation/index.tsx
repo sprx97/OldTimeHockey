@@ -1,10 +1,8 @@
 import { Menu, Group, Center, Burger, Box } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import {
-  IconChevronDown,
-  IconChevronRight,
-  IconSettings,
-} from '@tabler/icons-react'
+import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import routes from '../../routes'
@@ -331,7 +329,7 @@ function MainNavigation() {
                     className='settings-icon'
                     style={{ height: '100%', color: getHeaderTextColor() }}
                   >
-                    <IconSettings size='1.2rem' stroke={1.5} />
+                    <FontAwesomeIcon icon={faGear} size='sm' />
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>
@@ -375,7 +373,7 @@ function MainNavigation() {
                     className='settings-icon'
                     style={{ height: '100%', color: getHeaderTextColor() }}
                   >
-                    <IconSettings size='1.2rem' stroke={1.5} />
+                    <FontAwesomeIcon icon={faGear} size='sm' />
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>
@@ -433,7 +431,7 @@ function MainNavigation() {
               marginBottom: 'var(--mantine-spacing-md)',
             }}
           >
-            <IconSettings size='1.5rem' stroke={1.5} />
+            <FontAwesomeIcon icon={faGear} size='lg' />
             <span>Theme Settings</span>
           </Box>
           <Box px='md'>

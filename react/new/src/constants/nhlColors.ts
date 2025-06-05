@@ -2,7 +2,6 @@ import { TeamColors } from '../types/theme'
 
 export const NHL_TEAM_COLORS: Record<string, TeamColors> = {
   ANA: { primary: '#F47A38', secondary: '#B9975B' },
-  ARI: { primary: '#8C2633', secondary: '#E2D6B5' },
   BOS: { primary: '#FFB81C', secondary: '#000000' },
   BUF: { primary: '#002654', secondary: '#FCB514' },
   CGY: { primary: '#C8102E', secondary: '#F1BE48' },
@@ -29,6 +28,7 @@ export const NHL_TEAM_COLORS: Record<string, TeamColors> = {
   STL: { primary: '#002F87', secondary: '#FCB514' },
   TBL: { primary: '#002868', secondary: '#FFFFFF' },
   TOR: { primary: '#00205B', secondary: '#FFFFFF' },
+  UTA: { primary: '#002D62', secondary: '#FFCD00' },
   VAN: { primary: '#00205B', secondary: '#00843D' },
   VGK: { primary: '#B4975A', secondary: '#333F42' },
   WSH: { primary: '#C8102E', secondary: '#041E42' },
