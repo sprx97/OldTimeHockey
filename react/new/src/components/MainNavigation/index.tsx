@@ -10,6 +10,8 @@ import { ThemeControls } from '../ThemeControls'
 import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
 import blackLogo from '../../assets/logos/oth-wordmark-black.svg'
 import { useTheme } from '../../contexts/ThemeContext'
+import styles from './mainNavigation.module.scss'
+import { TEAM_LOGOS } from '../../constants/teamLogos'
 
 interface RouteWithAnchors {
   path: string
@@ -32,6 +34,10 @@ function MainNavigation() {
 
   const logoSrc =
     theme.type === 'default' && theme.mode === 'light' ? blackLogo : whiteLogo
+
+  // Get the current team logo if a team theme is selected
+  const teamLogo =
+    theme.type === 'team' && theme.team ? TEAM_LOGOS[theme.team] : null
 
   const toggleSubmenu = (path: string) => {
     setOpenSubmenuIds((prev) =>
@@ -234,8 +240,15 @@ function MainNavigation() {
         width: '100%',
         justifyContent: 'center',
         color: getHeaderTextColor(),
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {teamLogo && (
+        <div className={styles.teamLogoBackground} style={{ left: '35%' }}>
+          <img src={teamLogo} alt='Team Logo Background' />
+        </div>
+      )}
       <style>
         {`
         .nav-link {
@@ -265,6 +278,8 @@ function MainNavigation() {
               height: '100%',
               flex: '0 0 auto',
               marginRight: '20px',
+              position: 'relative',
+              zIndex: 2,
             }}
           >
             <img
@@ -282,6 +297,8 @@ function MainNavigation() {
               display: 'flex',
               flexDirection: 'row',
               flexWrap: 'wrap',
+              position: 'relative',
+              zIndex: 2,
             }}
             visibleFrom='sm'
           >

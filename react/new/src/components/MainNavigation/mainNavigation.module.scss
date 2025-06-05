@@ -16,6 +16,32 @@
   z-index: 0;
 }
 
+.teamLogoBackground {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 180%;
+  opacity: 0.25; 
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+:global {
+  .nav-link:hover span {
+    color: inherit !important;
+  }
+}
+
 .primaryBackground {
   flex: 3;
   height: 100%;
