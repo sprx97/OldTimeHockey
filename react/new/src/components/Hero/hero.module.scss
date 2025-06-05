@@ -14,7 +14,7 @@
   position: relative;
   z-index: 3;
   width: 100%;
-  padding: 0 2rem;
+  padding: 0 0 0 2rem;
 }
 
 .dotsBgLrg {
@@ -92,7 +92,7 @@
   background-color: #000;
   color: #fff;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 400;
   padding: 0.8rem 1.8rem;
   border-radius: 0;
   font-family: 'Anton', sans-serif;
@@ -105,7 +105,7 @@
   align-items: center;
   justify-content: center;
   height: auto;
-  font-size: 1.05rem;
+  font-size: 16px;
   
   &:hover {
     background-color: var(--primary-color, #fe5900);
@@ -117,7 +117,7 @@
   border: 1px solid #000;
   color: #000;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 400;
   padding: 0.8rem 1.8rem;
   border-radius: 0;
   background-color: #fff;
@@ -131,7 +131,7 @@
   align-items: center;
   justify-content: center;
   height: auto;
-  font-size: 1.05rem;
+  font-size: 16px;
   
   &:hover {
     background-color: var(--primary-color, #fe5900);

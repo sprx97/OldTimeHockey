@@ -5,13 +5,14 @@ import {
   IconChevronRight,
   IconSettings,
 } from '@tabler/icons-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import routes from '../../routes'
 import { ThemeControls } from '../ThemeControls'
 import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
 import blackLogo from '../../assets/logos/oth-wordmark-black.svg'
 import { useTheme } from '../../contexts/ThemeContext'
+import { DEFAULT_THEME_COLORS } from '../../constants/defaultTheme'
 
 interface RouteWithAnchors {
   path: string
@@ -22,6 +23,7 @@ interface RouteWithAnchors {
 function MainNavigation() {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
+  const location = useLocation()
   const {
     theme,
     getHeaderBackgroundColor,
@@ -29,7 +31,6 @@ function MainNavigation() {
     getLinkHoverColor,
   } = useTheme()
 
-  // Determine which logo to use
   const logoSrc =
     theme.type === 'default' && theme.mode === 'light' ? blackLogo : whiteLogo
 
@@ -39,7 +40,16 @@ function MainNavigation() {
     )
   }
 
+  const isCurrentPage = (path: string) => {
+    if (path === '/') {
+      return location.pathname === path
+    }
+    return location.pathname.startsWith(path)
+  }
+
   const renderMenuItem = (route: RouteWithAnchors) => {
+    const isActive = isCurrentPage(route.path)
+
     if (route.anchors) {
       const submenuItems = route.anchors.map((anchor) => (
         <Menu.Item key={anchor.path}>
@@ -81,19 +91,23 @@ function MainNavigation() {
           <Menu.Target>
             <Link
               to={route.path}
-              className='nav-link'
+              className={`nav-link ${isActive ? 'active' : ''}`}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 height: '100%',
-                color: getHeaderTextColor(),
+                color: isActive
+                  ? DEFAULT_THEME_COLORS.primary
+                  : getHeaderTextColor(),
               }}
             >
               <span
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  color: getHeaderTextColor(),
+                  color: isActive
+                    ? DEFAULT_THEME_COLORS.primary
+                    : getHeaderTextColor(),
                 }}
               >
                 {route.name}{' '}
@@ -114,12 +128,12 @@ function MainNavigation() {
       <Link
         key={route.path}
         to={route.path}
-        className='nav-link'
+        className={`nav-link ${isActive ? 'active' : ''}`}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
           height: '100%',
-          color: getHeaderTextColor(),
+          color: isActive ? DEFAULT_THEME_COLORS.primary : getHeaderTextColor(),
         }}
       >
         {route.name}
@@ -129,6 +143,7 @@ function MainNavigation() {
 
   const renderMobileMenuItem = (route: RouteWithAnchors) => {
     const isSubmenuOpen = openSubmenuIds.includes(route.path)
+    const isActive = isCurrentPage(route.path)
 
     if (route.anchors) {
       return (
@@ -136,6 +151,11 @@ function MainNavigation() {
           <Box
             onClick={() => toggleSubmenu(route.path)}
             className='mobile-menu-toggle'
+            style={{
+              color: isActive
+                ? DEFAULT_THEME_COLORS.primary
+                : getHeaderTextColor(),
+            }}
           >
             <span>{route.name}</span>
             {isSubmenuOpen ? (
@@ -154,7 +174,13 @@ function MainNavigation() {
               <Link
                 key={`${route.path}${anchor.path}`}
                 to={route.path + anchor.path}
-                className='mobile-nav-link'
+                className={`mobile-nav-link ${isActive && anchor.path === location.hash ? 'active' : ''}`}
+                style={{
+                  color:
+                    isActive && anchor.path === location.hash
+                      ? DEFAULT_THEME_COLORS.primary
+                      : getHeaderTextColor(),
+                }}
                 onClick={() => {
                   close()
                   setOpenSubmenuIds([])
@@ -172,7 +198,10 @@ function MainNavigation() {
       <Link
         key={route.path}
         to={route.path}
-        className='mobile-nav-link'
+        className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+        style={{
+          color: isActive ? DEFAULT_THEME_COLORS.primary : getHeaderTextColor(),
+        }}
         onClick={() => {
           close()
           setOpenSubmenuIds([])
@@ -208,6 +237,9 @@ function MainNavigation() {
         {`
           .nav-link {
             color: ${getHeaderTextColor()} !important;
+          }
+          .nav-link.active, .mobile-nav-link.active {
+            color: ${DEFAULT_THEME_COLORS.primary} !important;
           }
           .nav-link:hover {
             color: ${getLinkHoverColor()} !important;
