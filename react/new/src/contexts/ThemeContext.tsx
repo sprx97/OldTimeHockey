@@ -16,6 +16,7 @@ import {
 import { NHL_TEAM_COLORS } from '../constants/nhlColors'
 import { DEFAULT_THEME_COLORS } from '../constants/defaultTheme'
 import { ThemeConfig, ThemeMode, NHLTeam, ThemeType } from '../types/theme'
+import { getAccessibleColor } from '../utils/colorUtils'
 
 interface ThemeContextType {
   theme: ThemeConfig
@@ -25,6 +26,9 @@ interface ThemeContextType {
   getHeaderBackgroundColor: () => string
   getHeaderTextColor: () => string
   getLinkHoverColor: () => string
+  getAccessibleLinkColor: () => string
+  getAccessibleActiveLinkColor: () => string
+  getAccessibleHoverLinkColor: () => string
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -157,13 +161,41 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     return DEFAULT_THEME_COLORS.primary
   }, [theme])
 
+  // Get accessible link color that meets WCAG contrast requirements
+  const getAccessibleLinkColor = useCallback((): string => {
+    const backgroundColor = getHeaderBackgroundColor()
+    const baseTextColor = getHeaderTextColor()
+    // Use 4.5:1 contrast ratio for normal text per WCAG AA
+    return getAccessibleColor(backgroundColor, baseTextColor, 4.5)
+  }, [theme, getHeaderBackgroundColor, getHeaderTextColor])
+
+  const getAccessibleActiveLinkColor = useCallback((): string => {
+    const backgroundColor = getHeaderBackgroundColor()
+    let activeColor = DEFAULT_THEME_COLORS.primary
+
+    if (theme.type === 'team' && theme.team) {
+      // For team themes, use the secondary color as the active color
+      activeColor =
+        NHL_TEAM_COLORS[theme.team].secondary || DEFAULT_THEME_COLORS.primary
+    }
+
+    // Use 4.5:1 contrast ratio for normal text per WCAG AA
+    return getAccessibleColor(backgroundColor, activeColor, 4.5)
+  }, [theme, getHeaderBackgroundColor])
+
+  const getAccessibleHoverLinkColor = useCallback((): string => {
+    const backgroundColor = getHeaderBackgroundColor()
+    const hoverColor = getLinkHoverColor()
+
+    // Use 3:1 contrast ratio for large text/UI components per WCAG AA
+    return getAccessibleColor(backgroundColor, hoverColor, 3)
+  }, [theme, getHeaderBackgroundColor, getLinkHoverColor])
+
   const getMantineTheme = useCallback((): MantineThemeOverride => {
     return createTheme({
       primaryColor: theme.type === 'team' && theme.team ? 'team' : 'default',
       colors: {
-        // Default OTH theme colors
         default: generateColorShades(DEFAULT_THEME_COLORS.primary),
-        // Add team colors if selected
         ...(theme.type === 'team' &&
           theme.team && {
             team: generateColorShades(NHL_TEAM_COLORS[theme.team].primary),
@@ -300,6 +332,9 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         getHeaderBackgroundColor,
         getHeaderTextColor,
         getLinkHoverColor,
+        getAccessibleLinkColor,
+        getAccessibleActiveLinkColor,
+        getAccessibleHoverLinkColor,
       }}
     >
       <MantineProvider

@@ -12,7 +12,6 @@ import { ThemeControls } from '../ThemeControls'
 import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
 import blackLogo from '../../assets/logos/oth-wordmark-black.svg'
 import { useTheme } from '../../contexts/ThemeContext'
-import { DEFAULT_THEME_COLORS } from '../../constants/defaultTheme'
 
 interface RouteWithAnchors {
   path: string
@@ -28,7 +27,9 @@ function MainNavigation() {
     theme,
     getHeaderBackgroundColor,
     getHeaderTextColor,
-    getLinkHoverColor,
+    getAccessibleLinkColor,
+    getAccessibleActiveLinkColor,
+    getAccessibleHoverLinkColor,
   } = useTheme()
 
   const logoSrc =
@@ -97,8 +98,8 @@ function MainNavigation() {
                 alignItems: 'center',
                 height: '100%',
                 color: isActive
-                  ? DEFAULT_THEME_COLORS.primary
-                  : getHeaderTextColor(),
+                  ? getAccessibleActiveLinkColor()
+                  : getAccessibleLinkColor(),
               }}
             >
               <span
@@ -106,8 +107,8 @@ function MainNavigation() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   color: isActive
-                    ? DEFAULT_THEME_COLORS.primary
-                    : getHeaderTextColor(),
+                    ? getAccessibleActiveLinkColor()
+                    : getAccessibleLinkColor(),
                 }}
               >
                 {route.name}{' '}
@@ -133,7 +134,9 @@ function MainNavigation() {
           display: 'inline-flex',
           alignItems: 'center',
           height: '100%',
-          color: isActive ? DEFAULT_THEME_COLORS.primary : getHeaderTextColor(),
+          color: isActive
+            ? getAccessibleActiveLinkColor()
+            : getAccessibleLinkColor(),
         }}
       >
         {route.name}
@@ -153,8 +156,8 @@ function MainNavigation() {
             className='mobile-menu-toggle'
             style={{
               color: isActive
-                ? DEFAULT_THEME_COLORS.primary
-                : getHeaderTextColor(),
+                ? getAccessibleActiveLinkColor()
+                : getAccessibleLinkColor(),
             }}
           >
             <span>{route.name}</span>
@@ -178,8 +181,8 @@ function MainNavigation() {
                 style={{
                   color:
                     isActive && anchor.path === location.hash
-                      ? DEFAULT_THEME_COLORS.primary
-                      : getHeaderTextColor(),
+                      ? getAccessibleActiveLinkColor()
+                      : getAccessibleLinkColor(),
                 }}
                 onClick={() => {
                   close()
@@ -200,7 +203,9 @@ function MainNavigation() {
         to={route.path}
         className={`mobile-nav-link ${isActive ? 'active' : ''}`}
         style={{
-          color: isActive ? DEFAULT_THEME_COLORS.primary : getHeaderTextColor(),
+          color: isActive
+            ? getAccessibleActiveLinkColor()
+            : getAccessibleLinkColor(),
         }}
         onClick={() => {
           close()
@@ -235,14 +240,14 @@ function MainNavigation() {
     >
       <style>
         {`
-          .nav-link {
-            color: ${getHeaderTextColor()} !important;
+        .nav-link {
+            color: ${getAccessibleLinkColor()} !important;
           }
           .nav-link.active, .mobile-nav-link.active {
-            color: ${DEFAULT_THEME_COLORS.primary} !important;
+            color: ${getAccessibleActiveLinkColor()} !important;
           }
           .nav-link:hover {
-            color: ${getLinkHoverColor()} !important;
+            color: ${getAccessibleHoverLinkColor()} !important;
           }
         `}
       </style>
@@ -314,9 +319,9 @@ function MainNavigation() {
                     backgroundColor: getHeaderBackgroundColor(),
                   },
                   item: {
-                    color: getHeaderTextColor(),
+                    color: getAccessibleLinkColor(),
                     '&:hover': {
-                      color: getLinkHoverColor(),
+                      color: getAccessibleHoverLinkColor(),
                     },
                   },
                 })}
@@ -358,9 +363,9 @@ function MainNavigation() {
                     backgroundColor: getHeaderBackgroundColor(),
                   },
                   item: {
-                    color: getHeaderTextColor(),
+                    color: getAccessibleLinkColor(),
                     '&:hover': {
-                      color: getLinkHoverColor(),
+                      color: getAccessibleHoverLinkColor(),
                     },
                   },
                 })}
