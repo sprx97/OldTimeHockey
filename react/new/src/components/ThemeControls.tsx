@@ -6,6 +6,7 @@ import {
   Group,
   Box,
   SegmentedControl,
+  Text,
 } from '@mantine/core'
 import { useTheme } from '../contexts/ThemeContext'
 import { NHLTeam, ThemeType } from '../types/theme'
@@ -82,7 +83,19 @@ const TEAM_LOGOS: Record<string, string> = {
 }
 
 export function ThemeControls() {
-  const { theme, setThemeMode, setThemeType, setTeamTheme } = useTheme()
+  const {
+    theme,
+    setThemeMode,
+    setThemeType,
+    setTeamTheme,
+    getAccessibleLinkColor,
+    getHeaderBackgroundColor,
+  } = useTheme()
+
+  // Get page background color based on theme mode
+  const getPageBackgroundColor = () => {
+    return theme.mode === 'dark' ? '#242424' : '#ffffff'
+  }
   const { setColorScheme } = useMantineColorScheme()
 
   const handleThemeToggle = (checked: boolean) => {
@@ -106,13 +119,39 @@ export function ThemeControls() {
   }))
 
   return (
-    <Stack gap='md' miw={250}>
+    <Stack
+      gap='md'
+      miw={250}
+      style={{
+        backgroundColor: getHeaderBackgroundColor(),
+        padding: '10px',
+        borderRadius: '4px',
+      }}
+    >
       <Box>
         <Switch
           checked={theme.mode === 'dark'}
           onChange={(event) => handleThemeToggle(event.currentTarget.checked)}
-          label='Dark mode'
+          label={
+            <Text style={{ color: getAccessibleLinkColor(), fontSize: '14px' }}>
+              Dark mode
+            </Text>
+          }
           size='md'
+          styles={{
+            track: {
+              backgroundColor: theme.mode === 'dark' ? '#373A40' : '#E9ECEF',
+              '&[data-checked]': {
+                backgroundColor:
+                  theme.type === 'team' && theme.team
+                    ? NHL_TEAM_COLORS[theme.team].primary
+                    : DEFAULT_THEME_COLORS.primary,
+              },
+            },
+            thumb: {
+              backgroundColor: theme.mode === 'dark' ? '#FFFFFF' : '#FFFFFF',
+            },
+          }}
         />
       </Box>
 
@@ -121,28 +160,54 @@ export function ThemeControls() {
           fullWidth
           value={theme.type}
           onChange={handleThemeTypeChange}
+          styles={{
+            root: {
+              backgroundColor: getPageBackgroundColor(),
+              border: `1px solid ${theme.mode === 'dark' ? '#373A40' : '#E9ECEF'}`,
+              borderRadius: '4px',
+            },
+            indicator: {
+              backgroundColor:
+                theme.type === 'team' && theme.team
+                  ? NHL_TEAM_COLORS[theme.team].primary
+                  : DEFAULT_THEME_COLORS.primary,
+              borderRadius: '4px',
+            },
+            label: {
+              color: getAccessibleLinkColor(),
+              '&[data-active]': {
+                color: theme.mode === 'dark' ? '#FFFFFF' : '#000000',
+              },
+            },
+          }}
           data={[
             {
               value: 'default',
               label: (
-                <Group gap='xs'>
-                  <Box
-                    w={16}
-                    h={16}
+                <Group gap='xs' justify='center' style={{ width: '100%' }}>
+                  <span
                     style={{
-                      backgroundColor: DEFAULT_THEME_COLORS.primary,
-                      borderRadius: 'var(--mantine-radius-xs)',
+                      color: getAccessibleLinkColor(),
+                      fontSize: '14px',
                     }}
-                  />
-                  <span>Default</span>
+                  >
+                    Default
+                  </span>
                 </Group>
               ),
             },
             {
               value: 'team',
               label: (
-                <Group gap='xs'>
-                  <span>Team</span>
+                <Group gap='xs' justify='center' style={{ width: '100%' }}>
+                  <span
+                    style={{
+                      color: getAccessibleLinkColor(),
+                      fontSize: '14px',
+                    }}
+                  >
+                    Team
+                  </span>
                 </Group>
               ),
             },
@@ -152,8 +217,11 @@ export function ThemeControls() {
 
       {theme.type === 'team' && (
         <Select
-          label='Team Theme'
-          description='Select your favorite NHL team'
+          label={
+            <Text style={{ color: getAccessibleLinkColor(), fontSize: '14px' }}>
+              Team Theme
+            </Text>
+          }
           placeholder='Select a team'
           value={theme.team}
           onChange={(value) => setTeamTheme(value as NHLTeam)}
@@ -171,7 +239,11 @@ export function ThemeControls() {
                   alt={`${teamOption.label} logo`}
                   style={{ objectFit: 'contain' }}
                 />
-                <span>{teamOption.label}</span>
+                <span
+                  style={{ color: getAccessibleLinkColor(), fontSize: '14px' }}
+                >
+                  {teamOption.label}
+                </span>
               </Group>
             )
           }}
@@ -189,6 +261,19 @@ export function ThemeControls() {
           comboboxProps={{
             transitionProps: { transition: 'pop', duration: 200 },
           }}
+          styles={() => ({
+            dropdown: {
+              backgroundColor: getPageBackgroundColor(),
+            },
+            input: {
+              color: '#FFFFFF',
+              fontSize: '14px',
+              '&::placeholder': {
+                color: '#FFFFFF',
+                fontSize: '14px',
+              },
+            },
+          })}
         />
       )}
     </Stack>

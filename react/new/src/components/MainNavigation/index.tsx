@@ -333,7 +333,6 @@ function MainNavigation() {
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Label>Theme Settings</Menu.Label>
                   <Box p='xs'>
                     <ThemeControls />
                   </Box>
@@ -377,7 +376,6 @@ function MainNavigation() {
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Label>Theme Settings</Menu.Label>
                   <Box p='xs'>
                     <ThemeControls />
                   </Box>
@@ -431,8 +429,7 @@ function MainNavigation() {
               marginBottom: 'var(--mantine-spacing-md)',
             }}
           >
-            <FontAwesomeIcon icon={faGear} size='lg' />
-            <span>Theme Settings</span>
+            <FontAwesomeIcon icon={faGear} size='sm' />
           </Box>
           <Box px='md'>
             <ThemeControls />
