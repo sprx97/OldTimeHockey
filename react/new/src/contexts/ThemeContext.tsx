@@ -16,7 +16,7 @@ import {
 import { NHL_TEAM_COLORS } from '../constants/nhlColors'
 import { DEFAULT_THEME_COLORS } from '../constants/defaultTheme'
 import { ThemeConfig, ThemeMode, NHLTeam, ThemeType } from '../types/theme'
-import { getAccessibleColor } from '../utils/colorUtils'
+import { getLuminance, hexToRgb } from '../utils/colorUtils'
 
 interface ThemeContextType {
   theme: ThemeConfig
@@ -41,7 +41,6 @@ export const useTheme = () => {
   return context
 }
 
-// Helper function to generate color shades
 const generateColorShades = (hexColor: string): MantineColorsTuple => {
   // Convert hex to RGB for manipulation
   const r = parseInt(hexColor.slice(1, 3), 16)
@@ -63,7 +62,6 @@ const generateColorShades = (hexColor: string): MantineColorsTuple => {
   ] as MantineColorsTuple
 }
 
-// Helper function to adjust RGB brightness
 const adjustBrightness = (
   r: number,
   g: number,
@@ -101,14 +99,12 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  // Get team from localStorage and validate it exists in NHL_TEAM_COLORS
   const storedTeam = localStorage.getItem(TEAM_STORAGE_KEY) as
     | NHLTeam
     | undefined
   const validTeam =
     storedTeam && NHL_TEAM_COLORS[storedTeam] ? storedTeam : undefined
 
-  // If stored team is invalid, clean up localStorage
   if (storedTeam && !validTeam) {
     localStorage.removeItem(TEAM_STORAGE_KEY)
     localStorage.setItem(THEME_TYPE_STORAGE_KEY, 'default')
@@ -146,7 +142,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     }
   }, [])
 
-  // Get header background color based on theme
   const getHeaderBackgroundColor = useCallback((): string => {
     if (theme.type === 'default') {
       return theme.mode === 'light' ? '#FFFFFF' : '#000000'
@@ -156,7 +151,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     return DEFAULT_THEME_COLORS.primary
   }, [theme])
 
-  // Get header text color based on theme
   const getHeaderTextColor = useCallback((): string => {
     if (theme.type === 'default') {
       return theme.mode === 'light' ? '#000000' : '#FFFFFF'
@@ -179,64 +173,27 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   // Get accessible link color that meets WCAG contrast requirements
   const getAccessibleLinkColor = useCallback((): string => {
     const backgroundColor = getHeaderBackgroundColor()
-    const baseTextColor = getHeaderTextColor()
-    // Use 4.5:1 contrast ratio for normal text per WCAG AA
-    return getAccessibleColor(backgroundColor, baseTextColor, 4.5)
-  }, [theme, getHeaderBackgroundColor, getHeaderTextColor])
+    // Force either white or black based on background color
+    const bgLuminance = getLuminance(hexToRgb(backgroundColor))
+    // Use white for dark backgrounds, black for light backgrounds
+    return bgLuminance < 0.5 ? '#FFFFFF' : '#000000'
+  }, [getHeaderBackgroundColor])
 
   const getAccessibleActiveLinkColor = useCallback((): string => {
-    const backgroundColor = getHeaderBackgroundColor()
-    let activeColor = DEFAULT_THEME_COLORS.primary
-
     if (theme.type === 'team' && theme.team) {
-      // Teams with good tertiary contrast (4.5:1 or better)
-      const teamsWithGoodTertiaryContrast = [
-        // Excellent contrast (15+:1)
-        'BOS',
-        'LAK',
-        'PIT',
-        'UTA',
-        'EDM',
-        'NYI',
-        'NYR',
-        // Good contrast (4.5-15:1)
-        'CAR',
-        'OTT',
-        'MTL',
-        'CBJ',
-        'WPG',
-        'SEA',
-        'NJD',
-        'WSH',
-        'MIN',
-        'PHI',
-      ]
-
-      if (
-        teamsWithGoodTertiaryContrast.includes(theme.team) &&
-        NHL_TEAM_COLORS[theme.team].tertiary
-      ) {
-        activeColor =
-          NHL_TEAM_COLORS[theme.team].tertiary ||
-          NHL_TEAM_COLORS[theme.team].secondary ||
-          DEFAULT_THEME_COLORS.primary
-      } else {
-        activeColor =
-          NHL_TEAM_COLORS[theme.team].secondary || DEFAULT_THEME_COLORS.primary
-      }
+      return (
+        NHL_TEAM_COLORS[theme.team].secondary ||
+        NHL_TEAM_COLORS[theme.team].tertiary ||
+        DEFAULT_THEME_COLORS.primary
+      )
     }
 
-    // Use 4.5:1 contrast ratio for normal text per WCAG AA
-    return getAccessibleColor(backgroundColor, activeColor, 4.5)
-  }, [theme, getHeaderBackgroundColor])
+    return DEFAULT_THEME_COLORS.primary
+  }, [theme])
 
   const getAccessibleHoverLinkColor = useCallback((): string => {
-    const backgroundColor = getHeaderBackgroundColor()
-    const hoverColor = getLinkHoverColor()
-
-    // Use 3:1 contrast ratio for large text/UI components per WCAG AA
-    return getAccessibleColor(backgroundColor, hoverColor, 3)
-  }, [theme, getHeaderBackgroundColor, getLinkHoverColor])
+    return getAccessibleActiveLinkColor()
+  }, [getAccessibleActiveLinkColor])
 
   const getMantineTheme = useCallback((): MantineThemeOverride => {
     return createTheme({
@@ -279,9 +236,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
                 margin: '0 10px',
                 whiteSpace: 'nowrap',
                 transition: 'color 0.3s ease',
-              },
-              '&.nav-link:hover': {
-                color: DEFAULT_THEME_COLORS.primary,
               },
               '&.mobile-nav-link': {
                 display: 'flex',
