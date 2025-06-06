@@ -421,7 +421,7 @@ const MainNavigation = () => {
       transform-origin: left;
     }
     
-    .nav-link.active::after {
+    .nav-link.active:not(.dropdown-link):not(.dropdown-trigger)::after {
       content: '';
       position: absolute;
       width: 100%;
