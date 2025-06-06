@@ -45,7 +45,7 @@
 }
 
 .navLinkActive {
-  composes: navLink;
+  @extend .navLink;
 }
 
 .navLinkContent {
@@ -61,7 +61,7 @@
 }
 
 .mobileNavLinkActive {
-  composes: mobileNavLink;
+  @extend .mobileNavLink;
 }
 
 .mobileMenuToggle {
@@ -81,6 +81,8 @@
   height: 100%;
   cursor: pointer;
   transition: color 0.3s ease;
+  
+  margin-left: 5px;
 }
 
 :global {
@@ -209,7 +211,7 @@
 }
 
 .mobileMenuOpen {
-  composes: mobileMenu;
+  @extend .mobileMenu;
   transform: translateX(0);
 }
 

@@ -1,8 +1,8 @@
 import { Menu, Group, Center, Burger, Box } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
+import { IconChevronRight } from '@tabler/icons-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useCallback, useMemo, memo } from 'react'
 import routes from '../../routes'
@@ -119,10 +119,9 @@ const MenuItem = memo(
                 }}
               >
                 {route.name}{' '}
-                <IconChevronDown
-                  size='0.9rem'
-                  stroke={1.5}
-                  style={{ marginLeft: 5 }}
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  style={{ marginLeft: 5, fontSize: '0.9rem' }}
                 />
               </span>
             </Link>
@@ -178,7 +177,10 @@ const MobileMenuItem = memo(
           >
             <span>{route.name}</span>
             {isSubmenuOpen ? (
-              <IconChevronDown size='1.2rem' stroke={1.5} />
+              <FontAwesomeIcon
+                icon={faChevronDown}
+                style={{ fontSize: '1.2rem' }}
+              />
             ) : (
               <IconChevronRight size='1.2rem' stroke={1.5} />
             )}
