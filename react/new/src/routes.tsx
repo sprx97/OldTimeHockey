@@ -1,4 +1,4 @@
-import AverageDraftPosition from './components/Pages/ADP'
+import About from './components/Pages/About'
 import HallOfFame from './components/Pages/HallOfFame'
 import HomePage from './components/Pages/Home'
 import Leaderboard from './components/Pages/Leaderboard'
@@ -7,6 +7,7 @@ import TrophyRoom from './components/Pages/TrophyRoom'
 
 const routes = [
   { path: '/', element: <HomePage />, name: 'Home' },
+  { path: '/about', element: <About />, name: 'About' },
   { path: '/leaderboard', element: <Leaderboard />, name: 'Leaderboard' },
   {
     path: '/standings',
@@ -20,17 +21,11 @@ const routes = [
       { path: '#d4', name: 'Division 4' },
     ],
   },
-  { path: '/adp', element: <AverageDraftPosition />, name: 'ADP' },
   { path: '/halloffame', element: <HallOfFame />, name: 'Hall of Fame' },
   {
     path: '/trophyroom',
     element: <TrophyRoom />,
     name: 'Trophy Room',
-    anchors: [
-      { path: '#d1', name: 'Division 1 Champions' },
-      { path: '#pointsfor', name: 'Points For Champions' },
-      { path: '#woppacup', name: 'Woppa Cup Champions' },
-    ],
   },
 ]
 

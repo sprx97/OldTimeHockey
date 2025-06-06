@@ -251,13 +251,13 @@ function MainNavigation() {
       )}
       <style>
         {`
-        .nav-link {
+        .nav-link, .settings-icon {
             color: ${getAccessibleLinkColor()} !important;
           }
           .nav-link.active, .mobile-nav-link.active {
             color: ${getAccessibleActiveLinkColor()} !important;
           }
-          .nav-link:hover {
+          .nav-link:hover, .settings-icon:hover {
             color: ${getAccessibleHoverLinkColor()} !important;
           }
         `}
@@ -311,6 +311,8 @@ function MainNavigation() {
               alignItems: 'center',
               flex: '0 1 auto',
               justifyContent: 'flex-end',
+              position: 'relative',
+              zIndex: 2,
             }}
           >
             {/* Desktop Theme Menu */}
@@ -344,9 +346,12 @@ function MainNavigation() {
                 <Menu.Target>
                   <Center
                     className='settings-icon'
-                    style={{ height: '100%', color: getHeaderTextColor() }}
+                    style={{ height: '100%', color: getAccessibleLinkColor() }}
                   >
-                    <FontAwesomeIcon icon={faGear} size='sm' />
+                    <FontAwesomeIcon
+                      icon={faGear}
+                      style={{ fontSize: '1.5rem' }}
+                    />
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>
@@ -387,9 +392,12 @@ function MainNavigation() {
                 <Menu.Target>
                   <Center
                     className='settings-icon'
-                    style={{ height: '100%', color: getHeaderTextColor() }}
+                    style={{ height: '100%', color: getAccessibleLinkColor() }}
                   >
-                    <FontAwesomeIcon icon={faGear} size='md' />
+                    <FontAwesomeIcon
+                      icon={faGear}
+                      style={{ fontSize: '1.5rem' }}
+                    />
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>
@@ -446,7 +454,7 @@ function MainNavigation() {
               marginBottom: 'var(--mantine-spacing-md)',
             }}
           >
-            <FontAwesomeIcon icon={faGear} size='sm' />
+            <FontAwesomeIcon icon={faGear} style={{ fontSize: '1.5rem' }} />
           </Box>
           <Box px='md'>
             <ThemeControls />
