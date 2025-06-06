@@ -475,7 +475,10 @@ const MainNavigation = () => {
       )}
       <style>{navStyles}</style>
       <Box size='100%' style={{ width: '100%' }}>
-        <Box className={styles.headerBox}>
+        <Box
+          className={styles.headerBox}
+          style={{ justifyContent: 'space-between' }}
+        >
           <div className={styles.logoContainer}>
             <Link
               to='/'
@@ -501,7 +504,7 @@ const MainNavigation = () => {
           >
             {navigationItems}
           </Box>
-          <Group gap='sm' className={styles.navGroup}>
+          <Group gap='sm' className={styles.navGroup} justify='flex-end'>
             {/* Desktop Theme Menu */}
             <Box visibleFrom='sm'>
               <ThemeMenu
@@ -521,9 +524,9 @@ const MainNavigation = () => {
             <Burger
               opened={opened}
               onClick={handleBurgerClick}
-              size='sm'
+              size='md'
               hiddenFrom='sm'
-              color={headerTextColor}
+              color={accessibleLinkColor}
             />
           </Group>
         </Box>
