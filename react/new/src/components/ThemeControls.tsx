@@ -23,10 +23,8 @@ export function ThemeControls() {
     setThemeType,
     setTeamTheme,
     getAccessibleLinkColor,
-    getHeaderBackgroundColor,
   } = useTheme()
 
-  // Get page background color based on theme mode
   const getPageBackgroundColor = () => {
     return theme.mode === 'dark' ? '#242424' : '#ffffff'
   }
@@ -58,7 +56,7 @@ export function ThemeControls() {
       miw={250}
       className={styles.container}
       style={{
-        backgroundColor: getHeaderBackgroundColor(),
+        backgroundColor: 'transparent',
       }}
     >
       <Box>

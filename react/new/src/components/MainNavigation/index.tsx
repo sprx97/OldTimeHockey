@@ -549,13 +549,8 @@ const MainNavigation = () => {
       >
         {mobileNavigationItems}
         <hr className={styles.mobileMenuHr} />
-        <Box p='md'>
-          <Box className={styles.mobileSettingsContainer}>
-            <span>Theme Settings</span>
-          </Box>
-          <Box px='md'>
-            <ThemeControls />
-          </Box>
+        <Box p='md' style={{ width: '100%' }}>
+          <ThemeControls />
         </Box>
       </Box>
     </Box>
