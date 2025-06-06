@@ -4,7 +4,7 @@ import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { Link, useLocation } from 'react-router-dom'
-import { useState, useCallback, useMemo, memo, FC, CSSProperties } from 'react'
+import { useState, useCallback, useMemo, memo, CSSProperties } from 'react'
 import routes from '../../routes'
 import { ThemeControls } from '../ThemeControls'
 import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
@@ -13,15 +13,11 @@ import { useTheme } from '../../contexts/ThemeContext'
 import styles from './mainNavigation.module.scss'
 import { TEAM_LOGOS } from '../../constants/teamLogos'
 
-// Constants
 const HEADER_HEIGHT = 60
 const MENU_Z_INDEX = 300
 const MOBILE_MENU_Z_INDEX = 100
-const LOGO_HEIGHT = 28
 const MENU_TRANSITION_DURATION = 200
-const LOGO_MARGIN_RIGHT = 20
 
-// Types
 interface Anchor {
   path: string
   name: string
@@ -60,16 +56,14 @@ interface ThemeMenuProps {
   accessibleHoverLinkColor: string
 }
 
-// Memoized MenuItem component
-const MenuItem: FC<MenuItemProps> = memo(
+const MenuItem = memo(
   ({
     route,
     isActive,
     accessibleLinkColor,
     accessibleActiveLinkColor,
     headerBackgroundColor,
-  }) => {
-    // If the route has anchors, render a dropdown menu
+  }: MenuItemProps) => {
     if (route.anchors) {
       const submenuItems = route.anchors.map((anchor) => (
         <Menu.Item key={anchor.path}>
@@ -162,7 +156,7 @@ const MenuItem: FC<MenuItemProps> = memo(
   }
 )
 
-const MobileMenuItem: FC<MobileMenuItemProps> = memo(
+const MobileMenuItem = memo(
   ({
     route,
     isActive,
@@ -173,7 +167,7 @@ const MobileMenuItem: FC<MobileMenuItemProps> = memo(
     closeMenu,
     resetOpenSubmenuIds,
     locationHash,
-  }) => {
+  }: MobileMenuItemProps) => {
     const handleCloseMenu = useCallback(() => {
       closeMenu()
       resetOpenSubmenuIds()
@@ -241,12 +235,12 @@ const MobileMenuItem: FC<MobileMenuItemProps> = memo(
   }
 )
 
-const ThemeMenu: FC<ThemeMenuProps> = memo(
+const ThemeMenu = memo(
   ({
     headerBackgroundColor,
     accessibleLinkColor,
     accessibleHoverLinkColor,
-  }) => {
+  }: ThemeMenuProps) => {
     return (
       <Menu
         trigger='hover'
@@ -292,7 +286,7 @@ const ThemeMenu: FC<ThemeMenuProps> = memo(
   }
 )
 
-const MainNavigation: FC = () => {
+const MainNavigation = () => {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
   const location = useLocation()
@@ -411,7 +405,6 @@ const MainNavigation: FC = () => {
         )
       }),
     [
-      routes,
       isCurrentPage,
       accessibleLinkColor,
       accessibleActiveLinkColor,
@@ -439,6 +432,7 @@ const MainNavigation: FC = () => {
     [headerBackgroundColor, headerTextColor]
   )
 
+  /*
   const logoContainerStyles = useMemo(
     (): CSSProperties => ({
       display: 'flex',
@@ -459,7 +453,7 @@ const MainNavigation: FC = () => {
     }),
     []
   )
-
+*/
   const navContainerStyles = useMemo(
     (): CSSProperties => ({
       height: '100%',
@@ -536,8 +530,17 @@ const MainNavigation: FC = () => {
             width: '100%',
           }}
         >
-          <div style={logoContainerStyles}>
-            <img src={logoSrc} alt='OldTimeHockey Logo' style={logoStyles} />
+          <div className={styles.logoContainer}>
+            <img
+              src={logoSrc}
+              alt='OldTimeHockey Logo'
+              style={{
+                height: '28px',
+                width: 'auto',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            />
           </div>
           <Box style={navContainerStyles} visibleFrom='sm'>
             {navigationItems}

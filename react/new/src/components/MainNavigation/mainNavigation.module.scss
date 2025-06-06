@@ -75,3 +75,79 @@
     background-color: #666666;
   }
 }
+
+/* Add this to your mainNavigation.module.scss */
+
+.logoContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex: 0 0 auto;
+  margin-right: 20px;
+  z-index: 2;
+}
+
+.logoContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -20px; /* Extend beyond the logo container */
+  width: 280px; /* Adjust based on your needs */
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1); /* Semi-transparent overlay */
+  /* Hockey stick blade angle - adjust the percentages to fine-tune */
+  clip-path: polygon(
+    0% 0%,           /* Top left */
+    75% 0%,          /* Top right (75% across) */
+    85% 100%,        /* Bottom right (hockey stick angle) */
+    0% 100%          /* Bottom left */
+  );
+  z-index: -1;
+}
+
+/* Alternative version with a different angle */
+.logoContainer.alternateAngle::before {
+  clip-path: polygon(
+    0% 0%,           /* Top left */
+    70% 0%,          /* Top right */
+    80% 100%,        /* Bottom right (steeper angle) */
+    0% 100%          /* Bottom left */
+  );
+}
+
+/* Version with gradient for more depth */
+.logoContainer.withGradient::before {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+}
+
+/* Version that adapts to your theme colors */
+.logoContainer.themeAdaptive::before {
+  background: var(--header-accent-color, rgba(0, 0, 0, 0.1));
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .logoContainer::before {
+    width: 200px; /* Smaller on mobile */
+    left: -15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoContainer::before {
+    width: 150px;
+    left: -10px;
+    /* Adjust angle for smaller screens */
+    clip-path: polygon(
+      0% 0%,
+      80% 0%,
+      90% 100%,
+      0% 100%
+    );
+  }
+}
