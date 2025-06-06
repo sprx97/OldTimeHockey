@@ -454,9 +454,14 @@ const MainNavigation = () => {
     [accessibleLinkColor, accessibleActiveLinkColor]
   )
 
+  const isBlackBackground = useMemo(
+    () => getHeaderBackgroundColor() === '#000000',
+    [getHeaderBackgroundColor]
+  )
+
   return (
     <Box
-      className={styles.headerContainer}
+      className={`${styles.headerContainer} ${isBlackBackground ? styles.blackBackground : ''}`}
       style={{
         backgroundColor: getHeaderBackgroundColor(),
         color: getHeaderTextColor(),

@@ -146,6 +146,7 @@
   overflow: hidden;
 }
 
+/* Base styles for the pseudo-elements */
 .headerContainer::before {
   content: '';
   position: absolute;
@@ -153,7 +154,6 @@
   left: 0;
   width: 350px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.08);
   clip-path: polygon(0% 0%, 78% 0%, 88% 100%, 0% 100%);
   z-index: 1;
 }
@@ -165,9 +165,26 @@
   left: 0;
   width: 280px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.15);
   clip-path: polygon(0% 0%, 72% 0%, 82% 100%, 0% 100%);
   z-index: 2;
+}
+
+/* Default style for colored/white backgrounds */
+.headerContainer:not(.blackBackground)::before {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.headerContainer:not(.blackBackground)::after {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Style for black backgrounds */
+.blackBackground::before {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+.blackBackground::after {
+  background: rgba(128, 128, 128, 0.25);
 }
 
 .logoContainer {
