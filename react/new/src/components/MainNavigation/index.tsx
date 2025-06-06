@@ -477,11 +477,23 @@ const MainNavigation = () => {
       <Box size='100%' style={{ width: '100%' }}>
         <Box className={styles.headerBox}>
           <div className={styles.logoContainer}>
-            <img
-              src={logoSrc}
-              alt='OldTimeHockey Logo'
-              className={styles.logo}
-            />
+            <Link
+              to='/'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                height: '100%',
+                position: 'relative',
+                zIndex: 3,
+                cursor: 'pointer',
+              }}
+            >
+              <img
+                src={logoSrc}
+                alt='OldTimeHockey Logo'
+                className={styles.logo}
+              />
+            </Link>
           </div>
           <Box
             className={`${styles.navContainer} nav-container`}
