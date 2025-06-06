@@ -97,6 +97,11 @@ const MenuItem = memo(
               transform: 'translateY(0)',
               opacity: 1,
               animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
+              paddingTop: 0,
+              paddingBottom: 0,
+            },
+            item: {
+              borderRadius: 0,
             },
           })}
         >
@@ -247,9 +252,12 @@ const ThemeMenu = memo(
             transform: 'translateY(0)',
             opacity: 1,
             animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
+            paddingTop: 0,
+            paddingBottom: 0,
           },
           item: {
             color: accessibleLinkColor,
+            borderRadius: 0,
             '&:hover': {
               color: accessibleHoverLinkColor,
             },
