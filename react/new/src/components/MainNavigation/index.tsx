@@ -80,9 +80,9 @@ const MenuItem = memo(
           key={route.path}
           trigger='hover'
           transitionProps={{
-            transition: 'scale-y',
+            transition: 'fade',
             duration: MENU_TRANSITION_DURATION,
-            exitDuration: 0,
+            exitDuration: MENU_TRANSITION_DURATION / 2,
             timingFunction: 'ease',
           }}
           withinPortal
@@ -94,6 +94,9 @@ const MenuItem = memo(
           styles={() => ({
             dropdown: {
               backgroundColor: headerBackgroundColor,
+              transform: 'translateY(0)',
+              opacity: 1,
+              animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
             },
           })}
         >
@@ -227,9 +230,9 @@ const ThemeMenu = memo(
       <Menu
         trigger='hover'
         transitionProps={{
-          transition: 'scale-y',
+          transition: 'fade',
           duration: MENU_TRANSITION_DURATION,
-          exitDuration: 0,
+          exitDuration: MENU_TRANSITION_DURATION / 2,
           timingFunction: 'ease',
         }}
         withinPortal
@@ -241,6 +244,9 @@ const ThemeMenu = memo(
         styles={() => ({
           dropdown: {
             backgroundColor: headerBackgroundColor,
+            transform: 'translateY(0)',
+            opacity: 1,
+            animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
           },
           item: {
             color: accessibleLinkColor,
@@ -408,7 +414,7 @@ const MainNavigation = () => {
       position: absolute;
       width: 100%;
       height: 2px;
-      bottom: 0;
+      bottom: -2px;
       left: 0;
       background-color: ${accessibleActiveLinkColor};
       transform: scaleX(0);
@@ -426,7 +432,7 @@ const MainNavigation = () => {
       position: absolute;
       width: 100%;
       height: 2px;
-      bottom: 0;
+      bottom: -2px;
       left: 0;
       background-color: ${accessibleActiveLinkColor};
       transform: scaleX(1);
