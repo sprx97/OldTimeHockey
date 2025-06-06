@@ -64,7 +64,7 @@ const MenuItem = memo(
         <Menu.Item key={anchor.path}>
           <Link
             to={route.path + anchor.path}
-            className='nav-link'
+            className='nav-link dropdown-link'
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -100,7 +100,7 @@ const MenuItem = memo(
           <Menu.Target>
             <Link
               to={route.path}
-              className={`nav-link ${isActive ? 'active' : ''}`}
+              className={`nav-link dropdown-trigger ${isActive ? 'active' : ''}`}
               style={{
                 color: accessibleLinkColor,
               }}
@@ -398,7 +398,12 @@ const MainNavigation = () => {
       position: relative;
     }
     
-    .nav-link::after {
+    .dropdown-link::after,
+    .dropdown-trigger::after {
+      display: none !important;
+    }
+    
+    .nav-link:not(.dropdown-link):not(.dropdown-trigger)::after {
       content: '';
       position: absolute;
       width: 100%;
@@ -410,8 +415,8 @@ const MainNavigation = () => {
       transform-origin: right;
       transition: transform 0.3s ease;
     }
-    
-    .nav-link:hover::after {
+
+    .nav-link:not(.dropdown-link):not(.dropdown-trigger):hover::after {
       transform: scaleX(1);
       transform-origin: left;
     }
@@ -459,7 +464,10 @@ const MainNavigation = () => {
               className={styles.logo}
             />
           </div>
-          <Box className={styles.navContainer} visibleFrom='sm'>
+          <Box
+            className={`${styles.navContainer} nav-container`}
+            visibleFrom='sm'
+          >
             {navigationItems}
           </Box>
           <Group gap='sm' className={styles.navGroup}>
