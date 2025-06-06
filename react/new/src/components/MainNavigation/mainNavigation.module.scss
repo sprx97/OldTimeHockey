@@ -19,7 +19,7 @@
 .teamLogoBackground {
   position: absolute;
   top: 50%;
-  left: 0;
+  right: calc(var(--mantine-spacing-md) - 20px);
   transform: translateY(-50%);
   height: 180%;
   opacity: 0.25; 

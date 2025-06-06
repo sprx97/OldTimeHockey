@@ -245,7 +245,7 @@ function MainNavigation() {
       }}
     >
       {teamLogo && (
-        <div className={styles.teamLogoBackground} style={{ left: '35%' }}>
+        <div className={styles.teamLogoBackground}>
           <img src={teamLogo} alt='Team Logo Background' />
         </div>
       )}
@@ -389,7 +389,7 @@ function MainNavigation() {
                     className='settings-icon'
                     style={{ height: '100%', color: getHeaderTextColor() }}
                   >
-                    <FontAwesomeIcon icon={faGear} size='sm' />
+                    <FontAwesomeIcon icon={faGear} size='md' />
                   </Center>
                 </Menu.Target>
                 <Menu.Dropdown>

@@ -1,7 +1,7 @@
 import { Box, Title, Text, Button, Group, Container } from '@mantine/core'
 import styles from './hero.module.scss'
 import buttonStyles from '../../styles/buttons.module.scss'
-import playerImage from '../../assets/gordie_howe.png'
+import playerImage from '../../assets/player_with_puck.png'
 import dotsBgLrg from '../../assets/backgrounds/dots_bg_lrg.png'
 import dotsBgSm from '../../assets/backgrounds/dots_bg_sm.png'
 
