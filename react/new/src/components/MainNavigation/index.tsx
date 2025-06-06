@@ -4,7 +4,7 @@ import { IconChevronDown, IconChevronRight } from '@tabler/icons-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 import { Link, useLocation } from 'react-router-dom'
-import { useState, useCallback, useMemo, memo, CSSProperties } from 'react'
+import { useState, useCallback, useMemo, memo } from 'react'
 import routes from '../../routes'
 import { ThemeControls } from '../ThemeControls'
 import whiteLogo from '../../assets/logos/oth-wordmark-white.svg'
@@ -13,9 +13,7 @@ import { useTheme } from '../../contexts/ThemeContext'
 import styles from './mainNavigation.module.scss'
 import { TEAM_LOGOS } from '../../constants/teamLogos'
 
-const HEADER_HEIGHT = 60
 const MENU_Z_INDEX = 300
-const MOBILE_MENU_Z_INDEX = 100
 const MENU_TRANSITION_DURATION = 200
 
 interface Anchor {
@@ -107,18 +105,14 @@ const MenuItem = memo(
               to={route.path}
               className={`nav-link ${isActive ? 'active' : ''}`}
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                height: '100%',
                 color: isActive
                   ? accessibleActiveLinkColor
                   : accessibleLinkColor,
               }}
             >
               <span
+                className={styles.navLinkContent}
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
                   color: isActive
                     ? accessibleActiveLinkColor
                     : accessibleLinkColor,
@@ -144,9 +138,6 @@ const MenuItem = memo(
         to={route.path}
         className={`nav-link ${isActive ? 'active' : ''}`}
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          height: '100%',
           color: isActive ? accessibleActiveLinkColor : accessibleLinkColor,
         }}
       >
@@ -180,7 +171,7 @@ const MobileMenuItem = memo(
         <div key={route.path}>
           <Box
             onClick={() => toggleSubmenu(route.path)}
-            className='mobile-menu-toggle'
+            className={styles.mobileMenuToggle}
             style={{
               color: isActive ? accessibleActiveLinkColor : accessibleLinkColor,
             }}
@@ -193,7 +184,7 @@ const MobileMenuItem = memo(
             )}
           </Box>
           <Box
-            className='submenu-container'
+            className={styles.submenuContainer}
             style={{
               height: isSubmenuOpen ? 'auto' : 0,
             }}
@@ -270,8 +261,8 @@ const ThemeMenu = memo(
       >
         <Menu.Target>
           <Center
-            className='settings-icon'
-            style={{ height: '100%', color: accessibleLinkColor }}
+            className={styles.settingsIcon}
+            style={{ color: accessibleLinkColor }}
           >
             <FontAwesomeIcon icon={faGear} style={{ fontSize: '1.5rem' }} />
           </Center>
@@ -416,88 +407,6 @@ const MainNavigation = () => {
     ]
   )
 
-  const headerStyles = useMemo(
-    (): CSSProperties => ({
-      height: `${HEADER_HEIGHT}px`,
-      padding: '0 var(--mantine-spacing-md)',
-      backgroundColor: headerBackgroundColor,
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%',
-      justifyContent: 'center',
-      color: headerTextColor,
-      position: 'relative',
-      overflow: 'hidden',
-    }),
-    [headerBackgroundColor, headerTextColor]
-  )
-
-  /*
-  const logoContainerStyles = useMemo(
-    (): CSSProperties => ({
-      display: 'flex',
-      alignItems: 'center',
-      height: '100%',
-      flex: '0 0 auto',
-      marginRight: `${LOGO_MARGIN_RIGHT}px`,
-      position: 'relative',
-      zIndex: 2,
-    }),
-    []
-  )
-
-  const logoStyles = useMemo(
-    (): CSSProperties => ({
-      height: `${LOGO_HEIGHT}px`,
-      width: 'auto',
-    }),
-    []
-  )
-*/
-  const navContainerStyles = useMemo(
-    (): CSSProperties => ({
-      height: '100%',
-      alignItems: 'center',
-      flex: '1 1 auto',
-      justifyContent: 'flex-end',
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      position: 'relative',
-      zIndex: 2,
-    }),
-    []
-  )
-
-  const groupStyles = useMemo(
-    (): CSSProperties => ({
-      height: '100%',
-      alignItems: 'center',
-      flex: '0 1 auto',
-      justifyContent: 'flex-end',
-      position: 'relative',
-      zIndex: 2,
-    }),
-    []
-  )
-
-  const mobileMenuStyles = useMemo(
-    (): CSSProperties => ({
-      position: 'fixed',
-      top: HEADER_HEIGHT,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      padding: 'var(--mantine-spacing-md)',
-      backgroundColor: headerBackgroundColor,
-      color: headerTextColor,
-      overflow: 'auto',
-      transform: opened ? 'translateX(0)' : 'translateX(100%)',
-      zIndex: MOBILE_MENU_Z_INDEX,
-    }),
-    [opened, headerBackgroundColor, headerTextColor]
-  )
-
   const navStyles = useMemo(
     () => `
     .nav-link, .settings-icon {
@@ -514,7 +423,14 @@ const MainNavigation = () => {
   )
 
   return (
-    <Box style={headerStyles}>
+    <Box
+      className={styles.headerContainer}
+      style={{
+        backgroundColor: getHeaderBackgroundColor(),
+        color: getHeaderTextColor(),
+        position: 'relative',
+      }}
+    >
       {teamLogo && (
         <div className={styles.teamLogoBackground}>
           <img src={teamLogo} alt='Team Logo Background' />
@@ -522,30 +438,18 @@ const MainNavigation = () => {
       )}
       <style>{navStyles}</style>
       <Box size='100%' style={{ width: '100%' }}>
-        <Box
-          style={{
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
+        <Box className={styles.headerBox}>
           <div className={styles.logoContainer}>
             <img
               src={logoSrc}
               alt='OldTimeHockey Logo'
-              style={{
-                height: '28px',
-                width: 'auto',
-                position: 'relative',
-                zIndex: 1,
-              }}
+              className={styles.logo}
             />
           </div>
-          <Box style={navContainerStyles} visibleFrom='sm'>
+          <Box className={styles.navContainer} visibleFrom='sm'>
             {navigationItems}
           </Box>
-          <Group gap='sm' style={groupStyles}>
+          <Group gap='sm' className={styles.navGroup}>
             {/* Desktop Theme Menu */}
             <Box visibleFrom='sm'>
               <ThemeMenu
@@ -572,25 +476,17 @@ const MainNavigation = () => {
           </Group>
         </Box>
       </Box>
-      <Box className='mobile-menu' style={mobileMenuStyles}>
+      <Box
+        className={opened ? styles.mobileMenuOpen : styles.mobileMenu}
+        style={{
+          backgroundColor: headerBackgroundColor,
+          color: headerTextColor,
+        }}
+      >
         {mobileNavigationItems}
-        <Box
-          style={{
-            margin: 'var(--mantine-spacing-md) 0',
-            borderTop: '1px solid var(--mantine-color-default-border)',
-          }}
-        />
+        <Box className={styles.mobileMenuDivider} />
         <Box p='md'>
-          <Box
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--mantine-spacing-sm)',
-              fontSize: 'var(--mantine-font-size-lg)',
-              fontWeight: 500,
-              marginBottom: 'var(--mantine-spacing-md)',
-            }}
-          >
+          <Box className={styles.mobileSettingsContainer}>
             <FontAwesomeIcon icon={faGear} style={{ fontSize: '1.5rem' }} />
           </Box>
           <Box px='md'>

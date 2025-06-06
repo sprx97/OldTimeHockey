@@ -14,6 +14,7 @@ import { NHL_TEAM_COLORS } from '../constants/nhlColors'
 import { NHL_TEAM_NAMES } from '../constants/nhlTeams'
 import { DEFAULT_THEME_COLORS } from '../constants/defaultTheme'
 import { TEAM_LOGOS } from '../constants/teamLogos'
+import styles from './themeControls.module.scss'
 
 export function ThemeControls() {
   const {
@@ -55,10 +56,9 @@ export function ThemeControls() {
     <Stack
       gap='md'
       miw={250}
+      className={styles.container}
       style={{
         backgroundColor: getHeaderBackgroundColor(),
-        padding: '10px',
-        borderRadius: '4px',
       }}
     >
       <Box>
@@ -66,7 +66,10 @@ export function ThemeControls() {
           checked={theme.mode === 'dark'}
           onChange={(event) => handleThemeToggle(event.currentTarget.checked)}
           label={
-            <Text style={{ color: getAccessibleLinkColor(), fontSize: '14px' }}>
+            <Text
+              className={styles.darkModeLabel}
+              style={{ color: getAccessibleLinkColor() }}
+            >
               Dark mode
             </Text>
           }
@@ -117,12 +120,14 @@ export function ThemeControls() {
             {
               value: 'default',
               label: (
-                <Group gap='xs' justify='center' style={{ width: '100%' }}>
+                <Group
+                  gap='xs'
+                  justify='center'
+                  className={styles.teamOptionGroup}
+                >
                   <span
-                    style={{
-                      color: getAccessibleLinkColor(),
-                      fontSize: '14px',
-                    }}
+                    className={styles.segmentedControlLabel}
+                    style={{ color: getAccessibleLinkColor() }}
                   >
                     Default
                   </span>
@@ -132,12 +137,14 @@ export function ThemeControls() {
             {
               value: 'team',
               label: (
-                <Group gap='xs' justify='center' style={{ width: '100%' }}>
+                <Group
+                  gap='xs'
+                  justify='center'
+                  className={styles.teamOptionGroup}
+                >
                   <span
-                    style={{
-                      color: getAccessibleLinkColor(),
-                      fontSize: '14px',
-                    }}
+                    className={styles.segmentedControlLabel}
+                    style={{ color: getAccessibleLinkColor() }}
                   >
                     Team
                   </span>
@@ -151,7 +158,10 @@ export function ThemeControls() {
       {theme.type === 'team' && (
         <Select
           label={
-            <Text style={{ color: getAccessibleLinkColor(), fontSize: '14px' }}>
+            <Text
+              className={styles.teamLabel}
+              style={{ color: getAccessibleLinkColor() }}
+            >
               Team Theme
             </Text>
           }
@@ -170,10 +180,11 @@ export function ThemeControls() {
                   width={24}
                   height={24}
                   alt={`${teamOption.label} logo`}
-                  style={{ objectFit: 'contain' }}
+                  className={styles.teamLogo}
                 />
                 <span
-                  style={{ color: getAccessibleLinkColor(), fontSize: '14px' }}
+                  className={styles.teamOption}
+                  style={{ color: getAccessibleLinkColor() }}
                 >
                   {teamOption.label}
                 </span>
@@ -187,7 +198,7 @@ export function ThemeControls() {
                 width={20}
                 height={20}
                 alt={`${NHL_TEAM_NAMES[theme.team]} logo`}
-                style={{ objectFit: 'contain' }}
+                className={styles.teamLogo}
               />
             ) : null
           }
