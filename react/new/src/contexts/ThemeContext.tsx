@@ -29,6 +29,7 @@ interface ThemeContextType {
   getAccessibleLinkColor: () => string
   getAccessibleActiveLinkColor: () => string
   getAccessibleHoverLinkColor: () => string
+  getMainBackgroundColor: () => string
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -195,6 +196,15 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     return getAccessibleActiveLinkColor()
   }, [getAccessibleActiveLinkColor])
 
+  const getMainBackgroundColor = useCallback((): string => {
+    if (theme.type === 'default') {
+      return theme.mode === 'light' ? '#FFFFFF' : '#242424'
+    } else if (theme.type === 'team' && theme.team) {
+      return theme.mode === 'light' ? '#FFFFFF' : '#242424'
+    }
+    return theme.mode === 'light' ? '#FFFFFF' : '#242424'
+  }, [theme])
+
   const getMantineTheme = useCallback((): MantineThemeOverride => {
     return createTheme({
       primaryColor: theme.type === 'team' && theme.team ? 'team' : 'default',
@@ -249,6 +259,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
                 textTransform: 'uppercase',
                 letterSpacing: '1px',
                 textDecoration: 'none',
+                borderBottom: '15px',
               },
             },
           }),
@@ -336,6 +347,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         getAccessibleLinkColor,
         getAccessibleActiveLinkColor,
         getAccessibleHoverLinkColor,
+        getMainBackgroundColor,
       }}
     >
       <MantineProvider

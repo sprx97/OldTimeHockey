@@ -1,5 +1,5 @@
 import { Menu, Group, Center, Burger, Box } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 import { IconChevronRight } from '@tabler/icons-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -32,7 +32,7 @@ interface MenuItemProps {
   route: RouteWithAnchors
   isActive: boolean
   accessibleLinkColor: string
-  headerBackgroundColor: string
+  mainBackgroundColor: string
 }
 
 interface MobileMenuItemProps {
@@ -47,7 +47,7 @@ interface MobileMenuItemProps {
 }
 
 interface ThemeMenuProps {
-  headerBackgroundColor: string
+  mainBackgroundColor: string
   accessibleLinkColor: string
   accessibleHoverLinkColor: string
 }
@@ -57,7 +57,7 @@ const MenuItem = memo(
     route,
     isActive,
     accessibleLinkColor,
-    headerBackgroundColor,
+    mainBackgroundColor,
   }: MenuItemProps) => {
     if (route.anchors) {
       const submenuItems = route.anchors.map((anchor) => (
@@ -93,7 +93,7 @@ const MenuItem = memo(
           zIndex={MENU_Z_INDEX}
           styles={() => ({
             dropdown: {
-              backgroundColor: headerBackgroundColor,
+              backgroundColor: mainBackgroundColor,
               transform: 'translateY(0)',
               opacity: 1,
               animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
@@ -227,7 +227,7 @@ const MobileMenuItem = memo(
 
 const ThemeMenu = memo(
   ({
-    headerBackgroundColor,
+    mainBackgroundColor,
     accessibleLinkColor,
     accessibleHoverLinkColor,
   }: ThemeMenuProps) => {
@@ -248,7 +248,7 @@ const ThemeMenu = memo(
         zIndex={MENU_Z_INDEX}
         styles={() => ({
           dropdown: {
-            backgroundColor: headerBackgroundColor,
+            backgroundColor: mainBackgroundColor,
             transform: 'translateY(0)',
             opacity: 1,
             animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
@@ -283,9 +283,14 @@ const ThemeMenu = memo(
 )
 
 const MainNavigation = () => {
+  const isDesktop = useMediaQuery('(min-width: 768px)')
   const [opened, { toggle, close }] = useDisclosure(false)
   const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
   const location = useLocation()
+
+  if (isDesktop && opened) {
+    close()
+  }
   const {
     theme,
     getHeaderBackgroundColor,
@@ -293,6 +298,7 @@ const MainNavigation = () => {
     getAccessibleLinkColor,
     getAccessibleActiveLinkColor,
     getAccessibleHoverLinkColor,
+    getMainBackgroundColor,
   } = useTheme()
 
   const logoSrc = useMemo(
@@ -316,6 +322,11 @@ const MainNavigation = () => {
   const headerTextColor = useMemo(
     () => getHeaderTextColor(),
     [getHeaderTextColor]
+  )
+
+  const mainBackgroundColor = useMemo(
+    () => getMainBackgroundColor(),
+    [getMainBackgroundColor]
   )
 
   const accessibleLinkColor = useMemo(
@@ -368,11 +379,11 @@ const MainNavigation = () => {
             route={route as RouteWithAnchors}
             isActive={isActive}
             accessibleLinkColor={accessibleLinkColor}
-            headerBackgroundColor={headerBackgroundColor}
+            mainBackgroundColor={mainBackgroundColor}
           />
         )
       }),
-    [isCurrentPage, accessibleLinkColor, headerBackgroundColor]
+    [isCurrentPage, accessibleLinkColor, mainBackgroundColor]
   )
 
   const mobileNavigationItems = useMemo(
@@ -445,26 +456,32 @@ const MainNavigation = () => {
       background-color: ${accessibleActiveLinkColor};
       transform: scaleX(1);
     }
+      
+    .mobile-nav-link {
+      margin-bottom: 25px;
+      font-size: 1.2rem;
+      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;    
+    }
     
     .mobile-nav-link.active {
-      border-left: 3px solid ${accessibleActiveLinkColor};
-      padding-left: 5px;
+      border-bottom: 3px solid ${accessibleActiveLinkColor};
+      padding-left: 0;
     }
   `,
     [accessibleLinkColor, accessibleActiveLinkColor]
   )
 
   const isBlackBackground = useMemo(
-    () => getHeaderBackgroundColor() === '#000000',
-    [getHeaderBackgroundColor]
+    () => headerBackgroundColor === '#000000',
+    [headerBackgroundColor]
   )
 
   return (
     <Box
       className={`${styles.headerContainer} ${isBlackBackground ? styles.blackBackground : ''}`}
       style={{
-        backgroundColor: getHeaderBackgroundColor(),
-        color: getHeaderTextColor(),
+        backgroundColor: headerBackgroundColor,
+        color: headerTextColor,
         position: 'relative',
       }}
     >
@@ -508,15 +525,7 @@ const MainNavigation = () => {
             {/* Desktop Theme Menu */}
             <Box visibleFrom='sm'>
               <ThemeMenu
-                headerBackgroundColor={headerBackgroundColor}
-                accessibleLinkColor={accessibleLinkColor}
-                accessibleHoverLinkColor={accessibleHoverLinkColor}
-              />
-            </Box>
-            {/* Mobile Theme Menu */}
-            <Box hiddenFrom='sm'>
-              <ThemeMenu
-                headerBackgroundColor={headerBackgroundColor}
+                mainBackgroundColor={mainBackgroundColor}
                 accessibleLinkColor={accessibleLinkColor}
                 accessibleHoverLinkColor={accessibleHoverLinkColor}
               />
@@ -534,15 +543,15 @@ const MainNavigation = () => {
       <Box
         className={opened ? styles.mobileMenuOpen : styles.mobileMenu}
         style={{
-          backgroundColor: headerBackgroundColor,
+          backgroundColor: mainBackgroundColor,
           color: headerTextColor,
         }}
       >
         {mobileNavigationItems}
-        <Box className={styles.mobileMenuDivider} />
+        <hr className={styles.mobileMenuHr} />
         <Box p='md'>
           <Box className={styles.mobileSettingsContainer}>
-            <FontAwesomeIcon icon={faGear} style={{ fontSize: '1.5rem' }} />
+            <span>Theme Settings</span>
           </Box>
           <Box px='md'>
             <ThemeControls />
