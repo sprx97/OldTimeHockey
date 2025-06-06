@@ -32,7 +32,6 @@ interface MenuItemProps {
   route: RouteWithAnchors
   isActive: boolean
   accessibleLinkColor: string
-  accessibleActiveLinkColor: string
   headerBackgroundColor: string
 }
 
@@ -40,7 +39,6 @@ interface MobileMenuItemProps {
   route: RouteWithAnchors
   isActive: boolean
   accessibleLinkColor: string
-  accessibleActiveLinkColor: string
   openSubmenuIds: string[]
   toggleSubmenu: (path: string) => void
   closeMenu: () => void
@@ -59,7 +57,6 @@ const MenuItem = memo(
     route,
     isActive,
     accessibleLinkColor,
-    accessibleActiveLinkColor,
     headerBackgroundColor,
   }: MenuItemProps) => {
     if (route.anchors) {
@@ -105,17 +102,13 @@ const MenuItem = memo(
               to={route.path}
               className={`nav-link ${isActive ? 'active' : ''}`}
               style={{
-                color: isActive
-                  ? accessibleActiveLinkColor
-                  : accessibleLinkColor,
+                color: accessibleLinkColor,
               }}
             >
               <span
                 className={styles.navLinkContent}
                 style={{
-                  color: isActive
-                    ? accessibleActiveLinkColor
-                    : accessibleLinkColor,
+                  color: accessibleLinkColor,
                 }}
               >
                 {route.name}{' '}
@@ -137,7 +130,7 @@ const MenuItem = memo(
         to={route.path}
         className={`nav-link ${isActive ? 'active' : ''}`}
         style={{
-          color: isActive ? accessibleActiveLinkColor : accessibleLinkColor,
+          color: accessibleLinkColor,
         }}
       >
         {route.name}
@@ -151,7 +144,6 @@ const MobileMenuItem = memo(
     route,
     isActive,
     accessibleLinkColor,
-    accessibleActiveLinkColor,
     openSubmenuIds,
     toggleSubmenu,
     closeMenu,
@@ -172,7 +164,7 @@ const MobileMenuItem = memo(
             onClick={() => toggleSubmenu(route.path)}
             className={styles.mobileMenuToggle}
             style={{
-              color: isActive ? accessibleActiveLinkColor : accessibleLinkColor,
+              color: accessibleLinkColor,
             }}
           >
             <span>{route.name}</span>
@@ -197,10 +189,7 @@ const MobileMenuItem = memo(
                 to={route.path + anchor.path}
                 className={`mobile-nav-link ${isActive && anchor.path === locationHash ? 'active' : ''}`}
                 style={{
-                  color:
-                    isActive && anchor.path === locationHash
-                      ? accessibleActiveLinkColor
-                      : accessibleLinkColor,
+                  color: accessibleLinkColor,
                 }}
                 onClick={handleCloseMenu}
               >
@@ -218,7 +207,7 @@ const MobileMenuItem = memo(
         to={route.path}
         className={`mobile-nav-link ${isActive ? 'active' : ''}`}
         style={{
-          color: isActive ? accessibleActiveLinkColor : accessibleLinkColor,
+          color: accessibleLinkColor,
         }}
         onClick={handleCloseMenu}
       >
@@ -365,17 +354,11 @@ const MainNavigation = () => {
             route={route as RouteWithAnchors}
             isActive={isActive}
             accessibleLinkColor={accessibleLinkColor}
-            accessibleActiveLinkColor={accessibleActiveLinkColor}
             headerBackgroundColor={headerBackgroundColor}
           />
         )
       }),
-    [
-      isCurrentPage,
-      accessibleLinkColor,
-      accessibleActiveLinkColor,
-      headerBackgroundColor,
-    ]
+    [isCurrentPage, accessibleLinkColor, headerBackgroundColor]
   )
 
   const mobileNavigationItems = useMemo(
@@ -388,7 +371,6 @@ const MainNavigation = () => {
             route={route as RouteWithAnchors}
             isActive={isActive}
             accessibleLinkColor={accessibleLinkColor}
-            accessibleActiveLinkColor={accessibleActiveLinkColor}
             openSubmenuIds={openSubmenuIds}
             toggleSubmenu={toggleSubmenu}
             closeMenu={close}
@@ -400,7 +382,6 @@ const MainNavigation = () => {
     [
       isCurrentPage,
       accessibleLinkColor,
-      accessibleActiveLinkColor,
       openSubmenuIds,
       toggleSubmenu,
       close,
@@ -413,15 +394,45 @@ const MainNavigation = () => {
     () => `
     .nav-link, .settings-icon {
       color: ${accessibleLinkColor} !important;
+      text-decoration: none;
+      position: relative;
     }
-    .nav-link.active, .mobile-nav-link.active {
-      color: ${accessibleActiveLinkColor} !important;
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: ${accessibleActiveLinkColor};
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
     }
-    .nav-link:hover, .settings-icon:hover {
-      color: ${accessibleHoverLinkColor} !important;
+    
+    .nav-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: ${accessibleActiveLinkColor};
+      transform: scaleX(1);
+    }
+    
+    .mobile-nav-link.active {
+      border-left: 3px solid ${accessibleActiveLinkColor};
+      padding-left: 5px;
     }
   `,
-    [accessibleLinkColor, accessibleActiveLinkColor, accessibleHoverLinkColor]
+    [accessibleLinkColor, accessibleActiveLinkColor]
   )
 
   return (
