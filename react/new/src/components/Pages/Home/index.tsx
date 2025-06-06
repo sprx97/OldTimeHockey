@@ -1,4 +1,4 @@
-import Hero from '../../Hero'
+import Hero from '@/components/Hero'
 import styles from './home.module.scss'
 
 function HomePage() {
