@@ -8,7 +8,12 @@ const seasons = [
     teams: 224,
     leagues: 16,
     divisions: 4,
-    champions: {},
+    champions: {
+      division1: { name: "GusZ", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62768&season=2024" },
+      pointsFor: { name: "ch1zzle", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62749?season=2024", stat: 5070.5 },
+      coachesRating: { name: "GusZ", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62768?season=2024", stat: "99.51%" },
+      woppaCup: { name: "tooproforyou", link: "https://www.fleaflicker.com/nhl/leagues/12088/teams/63135?season=2024" },
+    },
     ruleChanges: "None",
   },
   {

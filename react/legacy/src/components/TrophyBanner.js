@@ -31,8 +31,8 @@ const TrophyBanner = ({
 }) => {
   const { hoveredName, setHoveredName } = useTrophyHover();
   const { expandedBanners, toggleBanner } = useBannerContext();
-  const isExpanded = id && expandedBanners.hasOwnProperty(id) 
-    ? expandedBanners[id] 
+  const isExpanded = id && expandedBanners.hasOwnProperty(id)
+    ? expandedBanners[id]
     : true;
 
   const inlineStyles = {
@@ -62,12 +62,12 @@ const TrophyBanner = ({
   };
 
   return (
-    <div 
-      className={`${styles.banner} ${!isExpanded ? styles.collapsed : styles.expanded}`} 
+    <div
+      className={`${styles.banner} ${!isExpanded ? styles.collapsed : styles.expanded}`}
       style={inlineStyles}
       data-banner-id={id}
     >
-      <div 
+      <div
         className={`${styles.title} font-fallback`}
         onClick={handleTitleClick}
       >
@@ -81,17 +81,17 @@ const TrophyBanner = ({
           <i className="fas fa-chevron-down"></i>
         </span>
       </div>
-      
+
       <div className={`${styles.bannerContent} ${!isExpanded ? styles.hidden : ''}`}>
         {logoSrc && (
-          <div 
+          <div
             className={styles.logoContainer}
             style={{
-              backgroundImage: `linear-gradient(to bottom, 
-                #2c2e83 0%, #2c2e83 32.5%, 
-                #ffffff 32.5%, #ffffff 37.5%, 
-                ${logoMiddleColor} 37.5%, ${logoMiddleColor} 62.5%, 
-                #ffffff 62.5%, #ffffff 67.5%, 
+              backgroundImage: `linear-gradient(to bottom,
+                #2c2e83 0%, #2c2e83 32.5%,
+                #ffffff 32.5%, #ffffff 37.5%,
+                ${logoMiddleColor} 37.5%, ${logoMiddleColor} 62.5%,
+                #ffffff 62.5%, #ffffff 67.5%,
                 #2c2e83 67.5%, #2c2e83 100%)`,
               backgroundColor: 'transparent'
             }}
@@ -99,11 +99,11 @@ const TrophyBanner = ({
             <img
               src={logoSrc}
               alt="Trophy logo"
-              style={{ 
-                width: '100px', 
-                height: '100%', 
+              style={{
+                width: '100px',
+                height: '100%',
                 objectFit: 'contain',
-                borderRadius: '50%' 
+                borderRadius: '50%'
               }}
             />
           </div>
@@ -116,18 +116,18 @@ const TrophyBanner = ({
                 const year = item.year;
                 const name = item.name;
                 const nameFontSize = item.fontSize;
-                
+
                 // Sanitize names by removing special characters before comparison
-                const sanitizeName = (str) => str ? str.replace(/[^\w\s]/gi, '') : '';
+                const sanitizeName = (str) => str ? str.split(' ')[0].replace(/[^\w\s]/gi, '') : '';
                 const isHighlighted = sanitizeName(hoveredName) === sanitizeName(name);
-                
+
                 return (
-                  <li 
+                  <li
                     key={index}
                     className={`${styles.listItem} ${isHighlighted ? styles.highlighted : ''} font-fallback`}
                   >
                     {year} - {' '}
-                    <span 
+                    <span
                       className={styles.hoverable}
                       onMouseEnter={() => setHoveredName(name)}
                       onMouseLeave={() => setHoveredName(null)}

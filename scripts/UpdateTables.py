@@ -237,6 +237,8 @@ if __name__ == "__main__":
                 next[1] = next[1].replace("í", "i").replace("ř", "r") # non-english characters
                 next[1] = next[1].replace("á", "a").replace("č", "c").replace("Š", "S") # more non-english characters
                 next[1] = demojify(next[1])
+                if len(next[1]) == 1 and ord(next[1][0]) == 65039: # Weird issue with team names solely composed of emoji
+                    next[1] = "<Blank Team Name>"
                 next[3] = next[3].replace(";", "") # prevent sql injection
                 next[3] = next[3].replace("'", "''") # correct quote escaping
                 try:
@@ -256,12 +258,11 @@ if __name__ == "__main__":
                     cursor.execute("INSERT into Teams values (" + str(next[0]) + ", " + str(league[0]) + ", " + str(next[2]) + ", '" + \
                     next[1] + "', " + str(next[5]) + ", " + str(next[6]) + ", " + str(next[7]) + ", " + str(next[8]) + ", " + \
                     str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ", " + str(next[13]) + ")")
-
                 elif len(data) == 1:
                     if intP(data[0][2]) != intP(next[2]) and intP(next[2]) != 0:
                         cursor.execute("UPDATE Teams set ownerID=" + str(next[2]) + ", replacement=1 where teamID=" + str(next[0]) + " AND year=" + str(year))
 
-                    cursor.execute("UPDATE Teams set  name='" + next[1] + \
+                    cursor.execute("UPDATE Teams set name='" + next[1] + \
                     "', wins=" + str(next[5]) + ", losses=" + str(next[6]) + ", ties=" + str(next[13]) + ", gamesBack=" + str(next[7]) + \
                     ", streak=" + str(next[8]) + ", pointsFor=" + str(next[9]) + ", pointsAgainst=" + str(next[10]) + \
                     ", coachRating=" + str(next[11]) + ", isChamp=" + str(next[12]) +  " where teamID=" + str(next[0]) + " AND year=" + str(year))
