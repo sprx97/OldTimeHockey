@@ -145,7 +145,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
   const getHeaderBackgroundColor = useCallback((): string => {
     if (theme.type === 'default') {
-      return theme.mode === 'light' ? '#FFFFFF' : '#000000'
+      return theme.mode === 'light' ? '#f5f5f5' : '#000000'
     } else if (theme.type === 'team' && theme.team) {
       return NHL_TEAM_COLORS[theme.team].primary || DEFAULT_THEME_COLORS.primary
     }
@@ -154,9 +154,9 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
   const getHeaderTextColor = useCallback((): string => {
     if (theme.type === 'default') {
-      return theme.mode === 'light' ? '#000000' : '#FFFFFF'
+      return theme.mode === 'light' ? '#333333' : '#FFFFFF'
     }
-    return DEFAULT_THEME_COLORS.secondary || '#FFFFFF' // Light color for dark backgrounds
+    return DEFAULT_THEME_COLORS.secondary || '#FFFFFF'
   }, [theme])
 
   // Get link hover color
@@ -174,10 +174,9 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   // Get accessible link color that meets WCAG contrast requirements
   const getAccessibleLinkColor = useCallback((): string => {
     const backgroundColor = getHeaderBackgroundColor()
-    // Force either white or black based on background color
     const bgLuminance = getLuminance(hexToRgb(backgroundColor))
-    // Use white for dark backgrounds, black for light backgrounds
-    return bgLuminance < 0.5 ? '#FFFFFF' : '#000000'
+    // Use white for dark backgrounds, dark gray for light backgrounds
+    return bgLuminance < 0.5 ? '#FFFFFF' : '#333333'
   }, [getHeaderBackgroundColor])
 
   const getAccessibleActiveLinkColor = useCallback((): string => {
@@ -198,11 +197,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
   const getMainBackgroundColor = useCallback((): string => {
     if (theme.type === 'default') {
-      return theme.mode === 'light' ? '#FFFFFF' : '#242424'
+      return theme.mode === 'light' ? '#f5f5f5' : '#242424'
     } else if (theme.type === 'team' && theme.team) {
-      return theme.mode === 'light' ? '#FFFFFF' : '#242424'
+      return theme.mode === 'light' ? '#f5f5f5' : '#242424'
     }
-    return theme.mode === 'light' ? '#FFFFFF' : '#242424'
+    return theme.mode === 'light' ? '#f5f5f5' : '#242424'
   }, [theme])
 
   const getMantineTheme = useCallback((): MantineThemeOverride => {

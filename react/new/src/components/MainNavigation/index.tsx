@@ -33,6 +33,7 @@ interface MenuItemProps {
   isActive: boolean
   accessibleLinkColor: string
   mainBackgroundColor: string
+  theme: any
 }
 
 interface MobileMenuItemProps {
@@ -58,6 +59,7 @@ const MenuItem = memo(
     isActive,
     accessibleLinkColor,
     mainBackgroundColor,
+    theme,
   }: MenuItemProps) => {
     if (route.anchors) {
       const submenuItems = route.anchors.map((anchor) => (
@@ -68,6 +70,10 @@ const MenuItem = memo(
             style={{
               display: 'inline-flex',
               alignItems: 'center',
+              color:
+                theme.mode === 'dark'
+                  ? '#FFFFFF !important'
+                  : '#333333 !important',
             }}
           >
             {anchor.name}
@@ -102,6 +108,20 @@ const MenuItem = memo(
             },
             item: {
               borderRadius: 0,
+              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
+              '&:hover': {
+                backgroundColor:
+                  theme.mode === 'dark'
+                    ? 'rgba(255,255,255,0.1)'
+                    : 'rgba(0,0,0,0.05)',
+                color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
+              },
+              '& a': {
+                color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
+              },
+              '& *': {
+                color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
+              },
             },
           })}
         >
@@ -380,10 +400,11 @@ const MainNavigation = () => {
             isActive={isActive}
             accessibleLinkColor={accessibleLinkColor}
             mainBackgroundColor={mainBackgroundColor}
+            theme={theme}
           />
         )
       }),
-    [isCurrentPage, accessibleLinkColor, mainBackgroundColor]
+    [isCurrentPage, accessibleLinkColor, mainBackgroundColor, theme]
   )
 
   const mobileNavigationItems = useMemo(

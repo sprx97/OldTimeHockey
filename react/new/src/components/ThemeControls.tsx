@@ -26,8 +26,9 @@ export function ThemeControls() {
   } = useTheme()
 
   const getPageBackgroundColor = () => {
-    return theme.mode === 'dark' ? '#242424' : '#ffffff'
+    return theme.mode === 'dark' ? '#242424' : '#f5f5f5'
   }
+
   const { setColorScheme } = useMantineColorScheme()
 
   const handleThemeToggle = (checked: boolean) => {
@@ -66,7 +67,7 @@ export function ThemeControls() {
           label={
             <Text
               className={styles.darkModeLabel}
-              style={{ color: getAccessibleLinkColor() }}
+              style={{ color: theme.mode === 'dark' ? '#FFFFFF' : '#333333' }}
             >
               Dark mode
             </Text>
@@ -108,9 +109,9 @@ export function ThemeControls() {
               borderRadius: '4px',
             },
             label: {
-              color: getAccessibleLinkColor(),
+              color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
               '&[data-active]': {
-                color: theme.mode === 'dark' ? '#FFFFFF' : '#000000',
+                color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
               },
             },
           }}
@@ -125,7 +126,9 @@ export function ThemeControls() {
                 >
                   <span
                     className={styles.segmentedControlLabel}
-                    style={{ color: getAccessibleLinkColor() }}
+                    style={{
+                      color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
+                    }}
                   >
                     Default
                   </span>
@@ -142,7 +145,9 @@ export function ThemeControls() {
                 >
                   <span
                     className={styles.segmentedControlLabel}
-                    style={{ color: getAccessibleLinkColor() }}
+                    style={{
+                      color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
+                    }}
                   >
                     Team
                   </span>
@@ -158,12 +163,13 @@ export function ThemeControls() {
           label={
             <Text
               className={styles.teamLabel}
-              style={{ color: getAccessibleLinkColor() }}
+              style={{ color: theme.mode === 'dark' ? '#FFFFFF' : '#333333' }}
             >
               Team Theme
             </Text>
           }
           placeholder='Select a team'
+          style={{ color: getAccessibleLinkColor() }}
           value={theme.team}
           onChange={(value) => setTeamTheme(value as NHLTeam)}
           data={teamOptions}
@@ -180,12 +186,7 @@ export function ThemeControls() {
                   alt={`${teamOption.label} logo`}
                   className={styles.teamLogo}
                 />
-                <span
-                  className={styles.teamOption}
-                  style={{ color: getAccessibleLinkColor() }}
-                >
-                  {teamOption.label}
-                </span>
+                <span className={styles.teamOption}>{teamOption.label}</span>
               </Group>
             )
           }}
@@ -203,19 +204,83 @@ export function ThemeControls() {
           comboboxProps={{
             transitionProps: { transition: 'pop', duration: 200 },
           }}
-          styles={() => ({
-            dropdown: {
-              backgroundColor: getPageBackgroundColor(),
-            },
-            input: {
-              color: '#FFFFFF',
-              fontSize: '14px',
-              '&::placeholder': {
-                color: '#FFFFFF',
-                fontSize: '14px',
+          styles={() => {
+            // For dropdown/form text, we need to ensure readability against the page background
+            // The page background is light in light mode, so text should be dark
+            // The page background is dark in dark mode, so text should be light
+            const textColor = theme.mode === 'dark' ? '#FFFFFF' : '#333333'
+            return {
+              dropdown: {
+                backgroundColor: getPageBackgroundColor(),
               },
-            },
-          })}
+              input: {
+                color: textColor,
+                fontSize: '14px',
+                '&::placeholder': {
+                  color: textColor,
+                  fontSize: '14px',
+                },
+                '& *': {
+                  color: textColor,
+                },
+              },
+              option: {
+                color: textColor,
+                '&[data-selected]': {
+                  color: textColor,
+                },
+                '&[data-hovered]': {
+                  color: textColor,
+                },
+                '& *': {
+                  color: textColor,
+                },
+              },
+              item: {
+                color: textColor,
+                '&[data-selected]': {
+                  color: textColor,
+                },
+                '&[data-hovered]': {
+                  color: textColor,
+                },
+                '& *': {
+                  color: textColor,
+                },
+              },
+              value: {
+                color: textColor,
+                '& *': {
+                  color: textColor,
+                },
+              },
+              placeholder: {
+                color: textColor,
+                '& *': {
+                  color: textColor,
+                },
+              },
+              wrapper: {
+                '& *': {
+                  color: textColor,
+                },
+              },
+              root: {
+                '& *': {
+                  color: textColor,
+                },
+              },
+              section: {
+                color: textColor,
+              },
+              rightSection: {
+                color: textColor,
+              },
+              leftSection: {
+                color: textColor,
+              },
+            }
+          }}
         />
       )}
     </Stack>
