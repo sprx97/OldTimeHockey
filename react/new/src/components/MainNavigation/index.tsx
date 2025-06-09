@@ -1,6 +1,5 @@
 import { Menu, Group, Center, Burger, Box } from '@mantine/core'
 import { useDisclosure, useMediaQuery } from '@mantine/hooks'
-import { IconChevronRight } from '@tabler/icons-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Link, useLocation } from 'react-router-dom'
@@ -195,11 +194,19 @@ const MobileMenuItem = memo(
     if (route.anchors) {
       return (
         <div key={route.path}>
-          <Box
-            onClick={() => toggleSubmenu(route.path)}
-            className={styles.mobileMenuToggle}
+          <Link
+            to={route.path}
+            className={`mobile-nav-link ${isActive ? 'active' : ''}`}
             style={{
               color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+            }}
+            onClick={(e) => {
+              e.preventDefault()
+              toggleSubmenu(route.path)
             }}
           >
             <span>{route.name}</span>
@@ -209,9 +216,12 @@ const MobileMenuItem = memo(
                 style={{ fontSize: '1.2rem' }}
               />
             ) : (
-              <IconChevronRight size='1.2rem' stroke={1.5} />
+              <FontAwesomeIcon
+                icon={faChevronDown}
+                style={{ fontSize: '1.2rem', transform: 'rotate(-90deg)' }}
+              />
             )}
-          </Box>
+          </Link>
           <Box
             className={styles.submenuContainer}
             style={{
