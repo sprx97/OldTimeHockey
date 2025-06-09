@@ -1,0 +1,152 @@
+@keyframes moveRight {
+  from { left: 3px; }
+  to { left: calc(100% - 27px); }
+}
+
+@keyframes moveLeft {
+  from { left: calc(100% - 27px); }
+  to { left: 3px; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes rotateIn {
+  from { transform: rotate(-90deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes rotateOut {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(90deg); }
+}
+
+@keyframes bgToDark {
+  from { background-color: #f0e3c0; }
+  to { background-color: #1a365d; }
+}
+
+@keyframes bgToLight {
+  from { background-color: #1a365d; }
+  to { background-color: #f0e3c0; }
+}
+
+@keyframes thumbToDark {
+  from { background-color: #e67e00; }
+  to { background-color: #38bdf8; }
+}
+
+@keyframes thumbToLight {
+  from { background-color: #38bdf8; }
+  to { background-color: #e67e00; }
+}
+
+.themeToggle {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  width: 60px;
+  height: 30px;
+  user-select: none;
+  
+  &:focus {
+    outline: none;
+  }
+  
+  &.focused {
+    .toggleTrack {
+      box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.5);
+    }
+  }
+}
+
+.toggleTrack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background-color: #f0e3c0;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #e67e00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sunIcon {
+  position: absolute;
+  font-size: 14px;
+  color: #fff;
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.moonIcon {
+  position: absolute;
+  font-size: 14px;
+  color: #fff;
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+.checked {
+  .toggleTrack {
+    background-color: #1a365d;
+    animation: bgToDark 0.5s ease forwards;
+  }
+  
+  .toggleThumb {
+    left: calc(100% - 27px);
+    background-color: #38bdf8;
+    animation: moveRight 0.5s ease forwards, thumbToDark 0.5s ease forwards;
+  }
+  
+  .sunIcon {
+    opacity: 0;
+    transform: rotate(90deg);
+    animation: fadeOut 0.5s ease forwards, rotateOut 0.5s ease forwards;
+  }
+  
+  .moonIcon {
+    opacity: 1;
+    transform: rotate(0deg);
+    animation: fadeIn 0.5s ease forwards, rotateIn 0.5s ease forwards;
+  }
+}
+
+.themeToggle:not(.checked) {
+  .toggleTrack {
+    animation: bgToLight 0.5s ease forwards;
+  }
+  
+  .toggleThumb {
+    animation: moveLeft 0.5s ease forwards, thumbToLight 0.5s ease forwards;
+  }
+  
+  .sunIcon {
+    animation: fadeIn 0.5s ease forwards, rotateIn 0.5s ease forwards;
+  }
+  
+  .moonIcon {
+    animation: fadeOut 0.5s ease forwards, rotateOut 0.5s ease forwards;
+  }
+}

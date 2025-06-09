@@ -4,8 +4,19 @@
   min-width: 250px;
 }
 
-.darkModeLabel {
-  font-size: 14px;
+.toggleWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.sunIcon {
+  transition: color 0.3s ease;
+}
+
+.moonIcon {
+  transition: color 0.3s ease;
 }
 
 .segmentedControlRoot {

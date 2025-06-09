@@ -1,6 +1,5 @@
 import {
   Select,
-  Switch,
   Stack,
   useMantineColorScheme,
   Group,
@@ -8,6 +7,7 @@ import {
   SegmentedControl,
   Text,
 } from '@mantine/core'
+import { ThemeToggle } from './ThemeToggle'
 import { useTheme } from '../contexts/ThemeContext'
 import { NHLTeam, ThemeType } from '../types/theme'
 import { NHL_TEAM_COLORS } from '../constants/nhlColors'
@@ -70,33 +70,16 @@ export function ThemeControls() {
         backgroundColor: 'transparent',
       }}
     >
-      <Box>
-        <Switch
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '10px',
+        }}
+      >
+        <ThemeToggle
           checked={theme.mode === 'dark'}
-          onChange={(event) => handleThemeToggle(event.currentTarget.checked)}
-          label={
-            <Text
-              className={styles.darkModeLabel}
-              style={{ color: theme.mode === 'dark' ? '#FFFFFF' : '#333333' }}
-            >
-              Dark mode
-            </Text>
-          }
-          size='md'
-          styles={{
-            track: {
-              backgroundColor: theme.mode === 'dark' ? '#373A40' : '#E9ECEF',
-              '&[data-checked]': {
-                backgroundColor:
-                  theme.type === 'team' && theme.team
-                    ? NHL_TEAM_COLORS[theme.team].primary
-                    : DEFAULT_THEME_COLORS.primary,
-              },
-            },
-            thumb: {
-              backgroundColor: theme.mode === 'dark' ? '#FFFFFF' : '#FFFFFF',
-            },
-          }}
+          onChange={handleThemeToggle}
         />
       </Box>
 
