@@ -34,7 +34,7 @@ export function ThemeToggle({ checked, onChange }: ThemeToggleProps) {
 
   return (
     <div
-      className={`${styles.themeToggle} ${localChecked ? styles.checked : ''} ${isFocused ? styles.focused : ''}`}
+      className={`${styles.themeToggle} ${localChecked ? styles.checked : ''} ${isFocused ? styles.focused : ''} ${isAnimating ? styles.animating : ''}`}
       role='switch'
       aria-checked={localChecked}
       tabIndex={0}

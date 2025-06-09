@@ -111,29 +111,43 @@
 .checked {
   .toggleTrack {
     background-color: #1a365d;
-    animation: bgToDark 0.5s ease forwards;
   }
   
   .toggleThumb {
     left: calc(100% - 27px);
     background-color: #38bdf8;
-    animation: moveRight 0.5s ease forwards, thumbToDark 0.5s ease forwards;
   }
   
   .sunIcon {
     opacity: 0;
     transform: rotate(90deg);
-    animation: fadeOut 0.5s ease forwards, rotateOut 0.5s ease forwards;
   }
   
   .moonIcon {
     opacity: 1;
     transform: rotate(0deg);
+  }
+}
+
+.themeToggle.animating.checked {
+  .toggleTrack {
+    animation: bgToDark 0.5s ease forwards;
+  }
+  
+  .toggleThumb {
+    animation: moveRight 0.5s ease forwards, thumbToDark 0.5s ease forwards;
+  }
+  
+  .sunIcon {
+    animation: fadeOut 0.5s ease forwards, rotateOut 0.5s ease forwards;
+  }
+  
+  .moonIcon {
     animation: fadeIn 0.5s ease forwards, rotateIn 0.5s ease forwards;
   }
 }
 
-.themeToggle:not(.checked) {
+.themeToggle.animating:not(.checked) {
   .toggleTrack {
     animation: bgToLight 0.5s ease forwards;
   }
