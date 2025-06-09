@@ -69,8 +69,11 @@ const MenuItem = memo(
             to={route.path + anchor.path}
             className='nav-link dropdown-link'
             style={{
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
+              width: '100%',
+              height: '100%',
+              padding: '8px 16px',
               color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
             }}
           >
@@ -107,6 +110,7 @@ const MenuItem = memo(
             item: {
               borderRadius: 0,
               color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
+              padding: 0,
               '&:hover': {
                 backgroundColor:
                   theme.mode === 'dark'
@@ -116,6 +120,8 @@ const MenuItem = memo(
               },
               '& a': {
                 color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
+                width: '100%',
+                height: '100%',
               },
               '& *': {
                 color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
