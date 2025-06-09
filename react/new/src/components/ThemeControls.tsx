@@ -56,16 +56,33 @@ export function ThemeControls() {
   return (
     <Stack
       gap='md'
-      miw={250}
       className={styles.container}
       style={{
         backgroundColor: 'transparent',
       }}
     >
+      <Text
+        fw={600}
+        size='md'
+        style={{
+          color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
+          marginBottom: '5px',
+        }}
+      >
+        Theme Settings
+      </Text>
+      <hr
+        style={{
+          border: 'none',
+          height: '1px',
+          backgroundColor: theme.mode === 'dark' ? '#444444' : '#dddddd',
+          margin: '0 0 10px 0',
+        }}
+      />
       <Box
         style={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           marginBottom: '10px',
         }}
       >
