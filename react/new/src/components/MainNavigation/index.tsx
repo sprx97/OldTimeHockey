@@ -12,6 +12,7 @@ import blackLogo from '../../assets/logos/oth-wordmark-black.svg'
 import { useTheme } from '../../contexts/ThemeContext'
 import styles from './mainNavigation.module.scss'
 import { TEAM_LOGOS } from '../../constants/teamLogos'
+import { ThemeConfig } from '../../types/theme'
 
 const MENU_Z_INDEX = 300
 const MENU_TRANSITION_DURATION = 200
@@ -33,7 +34,7 @@ interface MenuItemProps {
   isActive: boolean
   accessibleLinkColor: string
   mainBackgroundColor: string
-  theme: any
+  theme: ThemeConfig
 }
 
 interface MobileMenuItemProps {
@@ -70,10 +71,7 @@ const MenuItem = memo(
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              color:
-                theme.mode === 'dark'
-                  ? '#FFFFFF !important'
-                  : '#333333 !important',
+              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
             }}
           >
             {anchor.name}
@@ -122,6 +120,9 @@ const MenuItem = memo(
               '& *': {
                 color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
               },
+            },
+            itemLabel: {
+              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
             },
           })}
         >
@@ -438,8 +439,14 @@ const MainNavigation = () => {
 
   const navStyles = useMemo(
     () => `
-    .nav-link, .settings-icon {
+    .nav-link:not(.dropdown-link), .settings-icon {
       color: ${accessibleLinkColor} !important;
+      text-decoration: none;
+      position: relative;
+    }
+    
+    .nav-link.dropdown-link {
+      color: ${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important;
       text-decoration: none;
       position: relative;
     }
@@ -489,7 +496,7 @@ const MainNavigation = () => {
       padding-left: 0;
     }
   `,
-    [accessibleLinkColor, accessibleActiveLinkColor]
+    [accessibleLinkColor, accessibleActiveLinkColor, theme]
   )
 
   const isBlackBackground = useMemo(
