@@ -40,12 +40,12 @@ interface MenuItemProps {
 interface MobileMenuItemProps {
   route: RouteWithAnchors
   isActive: boolean
-  accessibleLinkColor: string
   openSubmenuIds: string[]
   toggleSubmenu: (path: string) => void
   closeMenu: () => void
   resetOpenSubmenuIds: () => void
   locationHash: string
+  theme: ThemeConfig
 }
 
 interface ThemeMenuProps {
@@ -178,12 +178,12 @@ const MobileMenuItem = memo(
   ({
     route,
     isActive,
-    accessibleLinkColor,
     openSubmenuIds,
     toggleSubmenu,
     closeMenu,
     resetOpenSubmenuIds,
     locationHash,
+    theme,
   }: MobileMenuItemProps) => {
     const handleCloseMenu = useCallback(() => {
       closeMenu()
@@ -199,7 +199,7 @@ const MobileMenuItem = memo(
             onClick={() => toggleSubmenu(route.path)}
             className={styles.mobileMenuToggle}
             style={{
-              color: accessibleLinkColor,
+              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
             }}
           >
             <span>{route.name}</span>
@@ -224,7 +224,7 @@ const MobileMenuItem = memo(
                 to={route.path + anchor.path}
                 className={`mobile-nav-link ${isActive && anchor.path === locationHash ? 'active' : ''}`}
                 style={{
-                  color: accessibleLinkColor,
+                  color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
                 }}
                 onClick={handleCloseMenu}
               >
@@ -242,7 +242,7 @@ const MobileMenuItem = memo(
         to={route.path}
         className={`mobile-nav-link ${isActive ? 'active' : ''}`}
         style={{
-          color: accessibleLinkColor,
+          color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
         }}
         onClick={handleCloseMenu}
       >
@@ -423,23 +423,23 @@ const MainNavigation = () => {
             key={route.path}
             route={route as RouteWithAnchors}
             isActive={isActive}
-            accessibleLinkColor={accessibleLinkColor}
             openSubmenuIds={openSubmenuIds}
             toggleSubmenu={toggleSubmenu}
             closeMenu={close}
             resetOpenSubmenuIds={resetOpenSubmenuIds}
             locationHash={location.hash}
+            theme={theme}
           />
         )
       }),
     [
       isCurrentPage,
-      accessibleLinkColor,
       openSubmenuIds,
       toggleSubmenu,
       close,
       resetOpenSubmenuIds,
       location.hash,
+      theme,
     ]
   )
 
@@ -494,7 +494,8 @@ const MainNavigation = () => {
     .mobile-nav-link {
       margin-bottom: 25px;
       font-size: 1.2rem;
-      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;    
+      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+      color: ${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important;
     }
     
     .mobile-nav-link.active {
