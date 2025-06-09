@@ -121,8 +121,17 @@
   height: 100%;
   cursor: pointer;
   transition: color 0.3s ease;
-  
   margin-left: 5px;
+  
+  svg {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  &:hover {
+    svg {
+      transform: rotate(30deg);
+    }
+  }
 }
 
 :global {
