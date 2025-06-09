@@ -4,15 +4,14 @@ import {
   useMantineColorScheme,
   Group,
   Box,
-  SegmentedControl,
+  Button,
   Text,
 } from '@mantine/core'
 import { ThemeToggle } from './ThemeToggle'
 import { useTheme } from '../contexts/ThemeContext'
-import { NHLTeam, ThemeType } from '../types/theme'
+import { NHLTeam } from '../types/theme'
 import { NHL_TEAM_COLORS } from '../constants/nhlColors'
 import { NHL_TEAM_NAMES } from '../constants/nhlTeams'
-import { DEFAULT_THEME_COLORS } from '../constants/defaultTheme'
 import { TEAM_LOGOS } from '../constants/teamLogos'
 import styles from './themeControls.module.scss'
 
@@ -35,13 +34,6 @@ export function ThemeControls() {
     const newMode = checked ? 'dark' : 'light'
     setThemeMode(newMode)
     setColorScheme(newMode)
-  }
-
-  const handleThemeTypeChange = (value: string) => {
-    setThemeType(value as ThemeType)
-    if (value === 'default') {
-      setTeamTheme(undefined)
-    }
   }
 
   const handleTeamChange = (value: string | null) => {
@@ -84,71 +76,17 @@ export function ThemeControls() {
       </Box>
 
       <Box>
-        <SegmentedControl
+        <Button
           fullWidth
-          value={theme.type}
-          onChange={handleThemeTypeChange}
-          styles={{
-            root: {
-              backgroundColor: getPageBackgroundColor(),
-              border: `1px solid ${theme.mode === 'dark' ? '#373A40' : '#E9ECEF'}`,
-              borderRadius: '4px',
-            },
-            indicator: {
-              backgroundColor:
-                theme.type === 'team' && theme.team
-                  ? NHL_TEAM_COLORS[theme.team].primary
-                  : DEFAULT_THEME_COLORS.primary,
-              borderRadius: '4px',
-            },
-            label: {
-              color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
-              '&[data-active]': {
-                color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
-              },
-            },
+          disabled={theme.type === 'default'}
+          variant={theme.type === 'default' ? 'light' : 'filled'}
+          color={theme.type === 'default' ? 'gray' : 'orange'}
+          onClick={() => {
+            handleTeamChange(null)
           }}
-          data={[
-            {
-              value: 'default',
-              label: (
-                <Group
-                  gap='xs'
-                  justify='center'
-                  className={styles.teamOptionGroup}
-                >
-                  <span
-                    className={styles.segmentedControlLabel}
-                    style={{
-                      color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
-                    }}
-                  >
-                    Default
-                  </span>
-                </Group>
-              ),
-            },
-            {
-              value: 'team',
-              label: (
-                <Group
-                  gap='xs'
-                  justify='center'
-                  className={styles.teamOptionGroup}
-                >
-                  <span
-                    className={styles.segmentedControlLabel}
-                    style={{
-                      color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
-                    }}
-                  >
-                    Team
-                  </span>
-                </Group>
-              ),
-            },
-          ]}
-        />
+        >
+          OTH Theme
+        </Button>
       </Box>
 
       <Select
