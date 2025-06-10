@@ -94,9 +94,10 @@ const MenuItem = memo(
           withinPortal
           position='bottom-end'
           closeOnItemClick={false}
-          closeOnClickOutside={false}
-          trapFocus={false}
+          closeOnClickOutside={true}
+          trapFocus={true}
           zIndex={MENU_Z_INDEX}
+          aria-label={`${route.name} submenu`}
           styles={() => ({
             dropdown: {
               backgroundColor: mainBackgroundColor,
@@ -138,6 +139,10 @@ const MenuItem = memo(
               style={{
                 color: accessibleLinkColor,
               }}
+              aria-expanded={false}
+              aria-haspopup='menu'
+              role='button'
+              tabIndex={0}
             >
               <span
                 className={styles.navLinkContent}
@@ -149,6 +154,7 @@ const MenuItem = memo(
                 <FontAwesomeIcon
                   icon={faChevronDown}
                   style={{ marginLeft: 5, fontSize: '0.9rem' }}
+                  aria-hidden='true'
                 />
               </span>
             </Link>
@@ -166,6 +172,7 @@ const MenuItem = memo(
         style={{
           color: accessibleLinkColor,
         }}
+        aria-current={isActive ? 'page' : undefined}
       >
         {route.name}
       </Link>
@@ -575,6 +582,10 @@ const MainNavigation = () => {
               size='md'
               hiddenFrom='sm'
               color={themeValues.accessibleLinkColor}
+              aria-label={
+                opened ? 'Close navigation menu' : 'Open navigation menu'
+              }
+              aria-expanded={opened}
             />
           </Group>
         </Box>
@@ -585,6 +596,9 @@ const MainNavigation = () => {
           backgroundColor: themeValues.mainBackgroundColor,
           color: themeValues.headerTextColor,
         }}
+        role='navigation'
+        aria-label='Mobile navigation menu'
+        aria-hidden={!opened}
       >
         {mobileNavigationItems}
         <hr className={styles.mobileMenuHr} />

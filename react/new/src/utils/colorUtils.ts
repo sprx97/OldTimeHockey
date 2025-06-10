@@ -95,25 +95,19 @@ function getAccessibleColor(
   baseColor: string,
   minContrast: number = 4.5
 ): string {
-  // Start with the base color
   let contrast = getContrastRatio(backgroundColor, baseColor)
 
-  // If contrast is already sufficient, return the base color
   if (contrast >= minContrast) {
     return baseColor
   }
 
-  // Convert to HSL for easier manipulation
   const colorHsl = hexToHsl(baseColor)
-
-  // Determine if we need to lighten or darken the color
   const bgLuminance = getLuminance(hexToRgb(backgroundColor))
   const needLighter = bgLuminance < 0.5
 
-  // Adjust lightness until we meet contrast requirements
   let adjustedL = colorHsl.l
   const step = needLighter ? 5 : -5
-  let maxIterations = 20 // Prevent infinite loops
+  let maxIterations = 20
 
   while (contrast < minContrast && maxIterations > 0) {
     adjustedL = Math.max(0, Math.min(100, adjustedL + step))
