@@ -59,11 +59,11 @@
 }
 
 .subtitle {
-  font-size: 0.9rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 6px;
   margin-bottom: 1rem;
-  color: #666;
+  color: var(--primary-color, #fe5900);
   font-family: 'Anton', sans-serif;
   text-align: left;
 }

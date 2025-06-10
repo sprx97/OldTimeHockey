@@ -5,6 +5,7 @@ import playerImage from '@assets/player_with_puck.png'
 import dotsBgLrg from '@assets/backgrounds/dots_bg_lrg.png'
 import dotsBgSm from '@assets/backgrounds/dots_bg_sm.png'
 import { memo, useMemo } from 'react'
+import { useTheme } from '@contexts/ThemeContext'
 
 interface HeroProps {
   title?: string
@@ -17,7 +18,7 @@ interface HeroProps {
 }
 
 const Hero = memo(function Hero({
-  title = 'THE ULTIMATE FANTASY HOCKEY GAUNTLET',
+  title = 'The Ultimate Fantasy Hockey Gauntlet',
   subtitle = 'Old Time Hockey',
   description = '238 teams. 17 leagues. Promotion. Relegation. Glory awaits.',
   primaryButtonText = 'Join Now',
@@ -25,12 +26,21 @@ const Hero = memo(function Hero({
   primaryButtonLink = '#join',
   secondaryButtonLink = '#learn',
 }: HeroProps) {
+  const { getLinkHoverColor } = useTheme()
+
   const backgroundStyles = useMemo(
     () => ({
       dotsBgLrg: { backgroundImage: `url(${dotsBgLrg})` },
       dotsBgSm: { backgroundImage: `url(${dotsBgSm})` },
     }),
     []
+  )
+
+  const subtitleStyles = useMemo(
+    () => ({
+      color: getLinkHoverColor(),
+    }),
+    [getLinkHoverColor]
   )
 
   return (
@@ -42,7 +52,9 @@ const Hero = memo(function Hero({
       <Container size='xl' className={styles.container}>
         <Box className={styles.contentContainer}>
           <Box className={styles.textContent}>
-            <Text className={styles.subtitle}>{subtitle}</Text>
+            <Text className={styles.subtitle} style={subtitleStyles}>
+              {subtitle}
+            </Text>
             <Title className={styles.title}>{title}</Title>
             <Text className={styles.description}>{description}</Text>
 
