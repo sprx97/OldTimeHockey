@@ -1,5 +1,5 @@
 import { CSSProperties, useMemo } from 'react'
-import { useTheme } from '../../contexts/ThemeContext'
+import { useTheme } from '@contexts/ThemeContext'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'text'
 
