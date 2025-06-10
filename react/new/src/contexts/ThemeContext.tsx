@@ -159,7 +159,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     return DEFAULT_THEME_COLORS.secondary || '#FFFFFF'
   }, [theme])
 
-  // Get link hover color
   const getLinkHoverColor = useCallback((): string => {
     if (theme.type === 'default') {
       return DEFAULT_THEME_COLORS.primary // Orange hover for default theme
@@ -171,11 +170,9 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     return DEFAULT_THEME_COLORS.primary
   }, [theme])
 
-  // Get accessible link color that meets WCAG contrast requirements
   const getAccessibleLinkColor = useCallback((): string => {
     const backgroundColor = getHeaderBackgroundColor()
     const bgLuminance = getLuminance(hexToRgb(backgroundColor))
-    // Use white for dark backgrounds, dark gray for light backgrounds
     return bgLuminance < 0.5 ? '#FFFFFF' : '#333333'
   }, [getHeaderBackgroundColor])
 

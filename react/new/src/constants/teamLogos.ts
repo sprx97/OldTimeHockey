@@ -1,4 +1,3 @@
-// Import team logos
 import anaheimLogo from '../assets/logos/nhl/anaheim_ducks.svg'
 import bostonLogo from '../assets/logos/nhl/boston_bruins.svg'
 import buffaloLogo from '../assets/logos/nhl/buffalo_sabres.svg'
@@ -32,7 +31,6 @@ import vegasLogo from '../assets/logos/nhl/vegas_golden_knights.svg'
 import washingtonLogo from '../assets/logos/nhl/washington_capitals.svg'
 import winnipegLogo from '../assets/logos/nhl/winnipeg_jets.svg'
 
-// Team logo mapping
 export const TEAM_LOGOS: Record<string, string> = {
   ANA: anaheimLogo,
   UTA: utahLogo,
