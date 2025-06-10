@@ -1,586 +1,64 @@
-import { Menu, Group, Center, Burger, Box } from '@mantine/core'
-import { useDisclosure, useMediaQuery } from '@mantine/hooks'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { Link, useLocation } from 'react-router-dom'
-import { useState, useCallback, useMemo, memo } from 'react'
-import routes from '@/routes'
-import { ThemeControls } from '@components/ThemeControls'
-import whiteLogo from '@assets/logos/oth-wordmark-white.svg'
-import blackLogo from '@assets/logos/oth-wordmark-black.svg'
+import { Box } from '@mantine/core'
+import { useNavigationState } from './useNavigationState'
+import { useNavigationStyles } from './useNavigationStyles'
+import NavigationLogo from './NavigationLogo'
+import DesktopNavigation from './DesktopNavigation'
+import MobileNavigation from './MobileNavigation'
 import { useTheme } from '@contexts/ThemeContext'
 import styles from './mainNavigation.module.scss'
-import { TEAM_LOGOS } from '@constants/teamLogos'
-import { ThemeConfig } from '../../types/theme'
-
-const MENU_Z_INDEX = 300
-const MENU_TRANSITION_DURATION = 200
-
-interface Anchor {
-  path: string
-  name: string
-}
-
-interface RouteWithAnchors {
-  path: string
-  name: string
-  element?: React.ReactNode
-  anchors?: Anchor[]
-}
-
-interface MenuItemProps {
-  route: RouteWithAnchors
-  isActive: boolean
-  accessibleLinkColor: string
-  mainBackgroundColor: string
-  theme: ThemeConfig
-}
-
-interface MobileMenuItemProps {
-  route: RouteWithAnchors
-  isActive: boolean
-  openSubmenuIds: string[]
-  toggleSubmenu: (path: string) => void
-  closeMenu: () => void
-  resetOpenSubmenuIds: () => void
-  locationHash: string
-  theme: ThemeConfig
-}
-
-interface ThemeMenuProps {
-  mainBackgroundColor: string
-  accessibleLinkColor: string
-  accessibleHoverLinkColor: string
-}
-
-const MenuItem = memo(
-  ({
-    route,
-    isActive,
-    accessibleLinkColor,
-    mainBackgroundColor,
-    theme,
-  }: MenuItemProps) => {
-    if (route.anchors) {
-      const submenuItems = route.anchors.map((anchor) => (
-        <Menu.Item key={anchor.path}>
-          <Link
-            to={route.path + anchor.path}
-            className='nav-link dropdown-link'
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              height: '100%',
-              padding: '8px 16px',
-              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
-            }}
-          >
-            {anchor.name}
-          </Link>
-        </Menu.Item>
-      ))
-
-      return (
-        <Menu
-          key={route.path}
-          trigger='hover'
-          transitionProps={{
-            transition: 'fade',
-            duration: MENU_TRANSITION_DURATION,
-            exitDuration: MENU_TRANSITION_DURATION / 2,
-            timingFunction: 'ease',
-          }}
-          withinPortal
-          position='bottom-end'
-          closeOnItemClick={false}
-          closeOnClickOutside={true}
-          trapFocus={true}
-          zIndex={MENU_Z_INDEX}
-          aria-label={`${route.name} submenu`}
-          styles={() => ({
-            dropdown: {
-              backgroundColor: mainBackgroundColor,
-              transform: 'translateY(0)',
-              opacity: 1,
-              animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
-              paddingTop: 0,
-              paddingBottom: 0,
-            },
-            item: {
-              borderRadius: 0,
-              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
-              padding: 0,
-              '&:hover': {
-                backgroundColor:
-                  theme.mode === 'dark'
-                    ? 'rgba(255,255,255,0.1)'
-                    : 'rgba(0,0,0,0.05)',
-                color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
-              },
-              '& a': {
-                color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
-                width: '100%',
-                height: '100%',
-              },
-              '& *': {
-                color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
-              },
-            },
-            itemLabel: {
-              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important`,
-            },
-          })}
-        >
-          <Menu.Target>
-            <Link
-              to={route.path}
-              className={`nav-link dropdown-trigger ${isActive ? 'active' : ''}`}
-              style={{
-                color: accessibleLinkColor,
-              }}
-              aria-expanded={false}
-              aria-haspopup='menu'
-              role='button'
-              tabIndex={0}
-            >
-              <span
-                className={styles.navLinkContent}
-                style={{
-                  color: accessibleLinkColor,
-                }}
-              >
-                {route.name}{' '}
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  style={{ marginLeft: 5, fontSize: '0.9rem' }}
-                  aria-hidden='true'
-                />
-              </span>
-            </Link>
-          </Menu.Target>
-          <Menu.Dropdown>{submenuItems}</Menu.Dropdown>
-        </Menu>
-      )
-    }
-
-    return (
-      <Link
-        key={route.path}
-        to={route.path}
-        className={`nav-link ${isActive ? 'active' : ''}`}
-        style={{
-          color: accessibleLinkColor,
-        }}
-        aria-current={isActive ? 'page' : undefined}
-      >
-        {route.name}
-      </Link>
-    )
-  }
-)
-
-const MobileMenuItem = memo(
-  ({
-    route,
-    isActive,
-    openSubmenuIds,
-    toggleSubmenu,
-    closeMenu,
-    resetOpenSubmenuIds,
-    locationHash,
-    theme,
-  }: MobileMenuItemProps) => {
-    const handleCloseMenu = useCallback(() => {
-      closeMenu()
-      resetOpenSubmenuIds()
-    }, [closeMenu, resetOpenSubmenuIds])
-
-    const isSubmenuOpen = openSubmenuIds.includes(route.path)
-
-    if (route.anchors) {
-      return (
-        <div key={route.path}>
-          <Link
-            to={route.path}
-            className={`mobile-nav-link ${isActive ? 'active' : ''}`}
-            style={{
-              color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
-            }}
-            onClick={(e) => {
-              e.preventDefault()
-              toggleSubmenu(route.path)
-            }}
-          >
-            <span>{route.name}</span>
-            {isSubmenuOpen ? (
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                style={{ fontSize: '1.2rem' }}
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                style={{ fontSize: '1.2rem', transform: 'rotate(-90deg)' }}
-              />
-            )}
-          </Link>
-          <Box
-            className={styles.submenuContainer}
-            style={{
-              height: isSubmenuOpen ? 'auto' : 0,
-            }}
-          >
-            {route.anchors.map((anchor) => (
-              <Link
-                key={`${route.path}${anchor.path}`}
-                to={route.path + anchor.path}
-                className={`mobile-nav-link ${isActive && anchor.path === locationHash ? 'active' : ''}`}
-                style={{
-                  color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
-                }}
-                onClick={handleCloseMenu}
-              >
-                {anchor.name}
-              </Link>
-            ))}
-          </Box>
-        </div>
-      )
-    }
-
-    return (
-      <Link
-        key={route.path}
-        to={route.path}
-        className={`mobile-nav-link ${isActive ? 'active' : ''}`}
-        style={{
-          color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
-        }}
-        onClick={handleCloseMenu}
-      >
-        {route.name}
-      </Link>
-    )
-  }
-)
-
-const ThemeMenu = memo(
-  ({
-    mainBackgroundColor,
-    accessibleLinkColor,
-    accessibleHoverLinkColor,
-  }: ThemeMenuProps) => {
-    return (
-      <Menu
-        trigger='hover'
-        transitionProps={{
-          transition: 'fade',
-          duration: MENU_TRANSITION_DURATION,
-          exitDuration: MENU_TRANSITION_DURATION / 2,
-          timingFunction: 'ease',
-        }}
-        withinPortal
-        position='bottom-end'
-        closeOnItemClick={false}
-        closeOnClickOutside={false}
-        trapFocus={false}
-        zIndex={MENU_Z_INDEX}
-        styles={() => ({
-          dropdown: {
-            backgroundColor: mainBackgroundColor,
-            transform: 'translateY(0)',
-            opacity: 1,
-            animation: `${styles.dropdownAnimation} ${MENU_TRANSITION_DURATION}ms ease`,
-            paddingTop: 0,
-            paddingBottom: 0,
-          },
-          item: {
-            color: accessibleLinkColor,
-            borderRadius: 0,
-            '&:hover': {
-              color: accessibleHoverLinkColor,
-            },
-          },
-        })}
-      >
-        <Menu.Target>
-          <Center
-            className={styles.settingsIcon}
-            style={{ color: accessibleLinkColor }}
-          >
-            <FontAwesomeIcon icon={faGear} style={{ fontSize: '1.5rem' }} />
-          </Center>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Box p='xs'>
-            <ThemeControls />
-          </Box>
-        </Menu.Dropdown>
-      </Menu>
-    )
-  }
-)
 
 const MainNavigation = () => {
-  const isDesktop = useMediaQuery('(min-width: 768px)')
-  const [opened, { toggle, close }] = useDisclosure(false)
-  const [openSubmenuIds, setOpenSubmenuIds] = useState<string[]>([])
-  const location = useLocation()
+  const navigationState = useNavigationState()
+  const navigationStyles = useNavigationStyles()
+  const { theme } = useTheme()
 
-  if (isDesktop && opened) {
-    close()
-  }
-  const { theme, colors } = useTheme()
+  const {
+    opened,
+    openSubmenuIds,
+    location,
+    toggleSubmenu,
+    close,
+    resetOpenSubmenuIds,
+    isCurrentPage,
+    handleBurgerClick,
+  } = navigationState
 
-  const themeValues = useMemo(() => {
-    return {
-      logoSrc:
-        theme.type === 'default' && theme.mode === 'light'
-          ? blackLogo
-          : whiteLogo,
-      teamLogo:
-        theme.type === 'team' && theme.team ? TEAM_LOGOS[theme.team] : null,
-      headerBackgroundColor: colors.headerBackground,
-      headerTextColor: colors.headerText,
-      mainBackgroundColor: colors.mainBackground,
-      accessibleLinkColor: colors.linkColor,
-      accessibleActiveLinkColor: colors.activeLinkColor,
-      accessibleHoverLinkColor: colors.hoverLinkColor,
-      isBlackBackground: colors.headerBackground === '#000000',
-    }
-  }, [theme, colors])
-
-  const toggleSubmenu = useCallback((path: string) => {
-    setOpenSubmenuIds((prev) =>
-      prev.includes(path) ? prev.filter((id) => id !== path) : [...prev, path]
-    )
-  }, [])
-
-  const resetOpenSubmenuIds = useCallback(() => {
-    setOpenSubmenuIds([])
-  }, [])
-
-  const isCurrentPage = useCallback(
-    (path: string) => {
-      if (path === '/') {
-        return location.pathname === path
-      }
-      return location.pathname.startsWith(path)
-    },
-    [location.pathname]
-  )
-
-  const handleBurgerClick = useCallback(() => {
-    toggle()
-    resetOpenSubmenuIds()
-  }, [toggle, resetOpenSubmenuIds])
-
-  const navigationItems = useMemo(
-    () =>
-      routes.map((route) => {
-        const isActive = isCurrentPage(route.path)
-        return (
-          <MenuItem
-            key={route.path}
-            route={route as RouteWithAnchors}
-            isActive={isActive}
-            accessibleLinkColor={themeValues.accessibleLinkColor}
-            mainBackgroundColor={themeValues.mainBackgroundColor}
-            theme={theme}
-          />
-        )
-      }),
-    [
-      isCurrentPage,
-      themeValues.accessibleLinkColor,
-      themeValues.mainBackgroundColor,
-      theme,
-    ]
-  )
-
-  const mobileNavigationItems = useMemo(
-    () =>
-      routes.map((route) => {
-        const isActive = isCurrentPage(route.path)
-        return (
-          <MobileMenuItem
-            key={route.path}
-            route={route as RouteWithAnchors}
-            isActive={isActive}
-            openSubmenuIds={openSubmenuIds}
-            toggleSubmenu={toggleSubmenu}
-            closeMenu={close}
-            resetOpenSubmenuIds={resetOpenSubmenuIds}
-            locationHash={location.hash}
-            theme={theme}
-          />
-        )
-      }),
-    [
-      isCurrentPage,
-      openSubmenuIds,
-      toggleSubmenu,
-      close,
-      resetOpenSubmenuIds,
-      location.hash,
-      theme,
-    ]
-  )
-
-  const navStyles = useMemo(
-    () => `
-    .nav-link:not(.dropdown-link), .settings-icon {
-      color: ${themeValues.accessibleLinkColor} !important;
-      text-decoration: none;
-      position: relative;
-    }
-    
-    .nav-link.dropdown-link {
-      color: ${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important;
-      text-decoration: none;
-      position: relative;
-    }
-    
-    .dropdown-link::after,
-    .dropdown-trigger::after {
-      display: none !important;
-    }
-    
-    .nav-link:not(.dropdown-link):not(.dropdown-trigger)::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      bottom: -2px;
-      left: 0;
-      background-color: ${themeValues.accessibleActiveLinkColor};
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.3s ease;
-    }
-
-    .nav-link:not(.dropdown-link):not(.dropdown-trigger):hover::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-    
-    .nav-link.active:not(.dropdown-link):not(.dropdown-trigger)::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      bottom: -2px;
-      left: 0;
-      background-color: ${themeValues.accessibleActiveLinkColor};
-      transform: scaleX(1);
-    }
-      
-    .mobile-nav-link {
-      margin-bottom: 25px;
-      font-size: 1.2rem;
-      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-      color: ${theme.mode === 'dark' ? '#FFFFFF' : '#333333'} !important;
-    }
-    
-    .mobile-nav-link.active {
-      border-bottom: 3px solid ${themeValues.accessibleActiveLinkColor};
-      padding-left: 0;
-    }
-  `,
-    [
-      themeValues.accessibleLinkColor,
-      themeValues.accessibleActiveLinkColor,
-      theme,
-    ]
-  )
+  const { logoSrc, teamLogo, colors, isBlackBackground, navLinkStyles } =
+    navigationStyles
 
   return (
     <Box
-      className={`${styles.headerContainer} ${themeValues.isBlackBackground ? styles.blackBackground : ''}`}
+      className={`${styles.headerContainer} ${isBlackBackground ? styles.blackBackground : ''}`}
       style={{
-        backgroundColor: themeValues.headerBackgroundColor,
-        color: themeValues.headerTextColor,
+        backgroundColor: colors.headerBackground,
+        color: colors.headerText,
         position: 'relative',
       }}
     >
-      {themeValues.teamLogo && (
-        <div className={styles.teamLogoBackground}>
-          <img src={themeValues.teamLogo} alt='Team Logo Background' />
-        </div>
-      )}
-      <style>{navStyles}</style>
+      <NavigationLogo logoSrc={logoSrc} teamLogo={teamLogo} />
+      <style>{navLinkStyles}</style>
       <Box size='100%' style={{ width: '100%' }}>
         <Box
           className={styles.headerBox}
           style={{ justifyContent: 'space-between' }}
         >
-          <div className={styles.logoContainer}>
-            <Link
-              to='/'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                height: '100%',
-                position: 'relative',
-                zIndex: 3,
-                cursor: 'pointer',
-              }}
-            >
-              <img
-                src={themeValues.logoSrc}
-                alt='OldTimeHockey Logo'
-                className={styles.logo}
-              />
-            </Link>
-          </div>
-          <Box
-            className={`${styles.navContainer} nav-container`}
-            visibleFrom='sm'
-          >
-            {navigationItems}
-          </Box>
-          <Group gap='sm' className={styles.navGroup} justify='flex-end'>
-            {/* Desktop Theme Menu */}
-            <Box visibleFrom='sm'>
-              <ThemeMenu
-                mainBackgroundColor={themeValues.mainBackgroundColor}
-                accessibleLinkColor={themeValues.accessibleLinkColor}
-                accessibleHoverLinkColor={themeValues.accessibleHoverLinkColor}
-              />
-            </Box>
-            <Burger
-              opened={opened}
-              onClick={handleBurgerClick}
-              size='md'
-              hiddenFrom='sm'
-              color={themeValues.accessibleLinkColor}
-              aria-label={
-                opened ? 'Close navigation menu' : 'Open navigation menu'
-              }
-              aria-expanded={opened}
-            />
-          </Group>
-        </Box>
-      </Box>
-      <Box
-        className={opened ? styles.mobileMenuOpen : styles.mobileMenu}
-        style={{
-          backgroundColor: themeValues.mainBackgroundColor,
-          color: themeValues.headerTextColor,
-        }}
-        role='navigation'
-        aria-label='Mobile navigation menu'
-        aria-hidden={!opened}
-      >
-        {mobileNavigationItems}
-        <hr className={styles.mobileMenuHr} />
-        <Box p='md' style={{ width: '100%' }}>
-          <ThemeControls />
+          <DesktopNavigation
+            colors={colors}
+            theme={theme}
+            isCurrentPage={isCurrentPage}
+          />
+          <MobileNavigation
+            opened={opened}
+            openSubmenuIds={openSubmenuIds}
+            colors={colors}
+            theme={theme}
+            isCurrentPage={isCurrentPage}
+            toggleSubmenu={toggleSubmenu}
+            close={close}
+            resetOpenSubmenuIds={resetOpenSubmenuIds}
+            locationHash={location.hash}
+            handleBurgerClick={handleBurgerClick}
+          />
         </Box>
       </Box>
     </Box>
