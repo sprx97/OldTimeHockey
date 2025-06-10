@@ -97,6 +97,48 @@ const getAccessibleActiveLinkColor = (theme: ThemeConfig): string => {
   return DEFAULT_THEME_COLORS.primary
 }
 
+const getButtonColors = (theme: ThemeConfig) => {
+  const primaryColor =
+    theme.type === 'team' && theme.team
+      ? NHL_TEAM_COLORS[theme.team].primary
+      : DEFAULT_THEME_COLORS.primary
+
+  const secondaryColor =
+    theme.type === 'team' && theme.team
+      ? NHL_TEAM_COLORS[theme.team].secondary ||
+        NHL_TEAM_COLORS[theme.team].tertiary ||
+        '#000'
+      : DEFAULT_THEME_COLORS.tertiary
+
+  if (theme.mode === 'light') {
+    return {
+      primaryBg: secondaryColor,
+      primaryText: '#fff',
+      primaryHoverBg: primaryColor,
+      primaryHoverText: '#fff',
+      secondaryBg: '#fff',
+      secondaryText: secondaryColor,
+      secondaryBorder: secondaryColor,
+      secondaryHoverBg: primaryColor,
+      secondaryHoverText: '#fff',
+      secondaryHoverBorder: primaryColor,
+    }
+  } else {
+    return {
+      primaryBg: '#fff',
+      primaryText: '#000',
+      primaryHoverBg: primaryColor,
+      primaryHoverText: '#fff',
+      secondaryBg: 'transparent',
+      secondaryText: '#fff',
+      secondaryBorder: '#fff',
+      secondaryHoverBg: primaryColor,
+      secondaryHoverText: '#fff',
+      secondaryHoverBorder: primaryColor,
+    }
+  }
+}
+
 const computeThemeColors = (theme: ThemeConfig): ThemeColors => {
   const headerBackground = getHeaderBackgroundColor(theme)
   const activeLinkColor = getAccessibleActiveLinkColor(theme)
@@ -189,10 +231,55 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, dispatch] = useReducer(themeReducer, initializeTheme())
 
   const colors = useMemo(() => computeThemeColors(theme), [theme])
+  const buttonColors = useMemo(() => getButtonColors(theme), [theme])
 
   useEffect(() => {
     colorSchemeManager.set(theme.mode)
   }, [theme.mode])
+
+  useEffect(() => {
+    const root = document.documentElement
+    root.style.setProperty(
+      '--button-primary-bg',
+      buttonColors.primaryBg || '#000'
+    )
+    root.style.setProperty(
+      '--button-primary-text',
+      buttonColors.primaryText || '#fff'
+    )
+    root.style.setProperty(
+      '--button-primary-hover-bg',
+      buttonColors.primaryHoverBg || '#fe5900'
+    )
+    root.style.setProperty(
+      '--button-primary-hover-text',
+      buttonColors.primaryHoverText || '#fff'
+    )
+    root.style.setProperty(
+      '--button-secondary-bg',
+      buttonColors.secondaryBg || '#fff'
+    )
+    root.style.setProperty(
+      '--button-secondary-text',
+      buttonColors.secondaryText || '#000'
+    )
+    root.style.setProperty(
+      '--button-secondary-border',
+      buttonColors.secondaryBorder || '#000'
+    )
+    root.style.setProperty(
+      '--button-secondary-hover-bg',
+      buttonColors.secondaryHoverBg || '#fe5900'
+    )
+    root.style.setProperty(
+      '--button-secondary-hover-text',
+      buttonColors.secondaryHoverText || '#fff'
+    )
+    root.style.setProperty(
+      '--button-secondary-hover-border',
+      buttonColors.secondaryHoverBorder || '#fe5900'
+    )
+  }, [buttonColors])
 
   useEffect(() => {
     if (theme.team) {

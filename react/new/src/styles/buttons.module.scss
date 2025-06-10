@@ -18,33 +18,33 @@
 }
 
 .primary {
-  composes: button;
-  background-color: #000;
-  color: #fff;
+  @extend .button;
+  background-color: var(--button-primary-bg, #000);
+  color: var(--button-primary-text, #fff);
   padding: 0.8rem 1.8rem;
   border: none;
   min-width: 120px;
   height: auto;
   
   &:hover {
-    background-color: var(--primary-color, #fe5900);
-    color: #fff;
+    background-color: var(--button-primary-hover-bg, var(--primary-color, #fe5900));
+    color: var(--button-primary-hover-text, #fff);
   }
 }
 
 .secondary {
-  composes: button;
-  background-color: #fff;
-  color: #000;
+  @extend .button;
+  background-color: var(--button-secondary-bg, #fff);
+  color: var(--button-secondary-text, #000);
   padding: 0.8rem 1.8rem;
-  border: 1px solid #000;
+  border: 1px solid var(--button-secondary-border, #000);
   min-width: 120px;
   height: auto;
   
   &:hover {
-    background-color: var(--primary-color, #fe5900);
-    color: #fff;
-    border-color: var(--primary-color, #fe5900);
+    background-color: var(--button-secondary-hover-bg, var(--primary-color, #fe5900));
+    color: var(--button-secondary-hover-text, #fff);
+    border-color: var(--button-secondary-hover-border, var(--primary-color, #fe5900));
   }
 }
 
