@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { useMemo, memo } from 'react'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
-import { ThemeConfig } from '../../types/theme'
+import { ThemeConfig } from '@/types/theme'
 import { NAVIGATION_CONSTANTS } from '@/constants/navigation'
 import styles from './mainNavigation.module.scss'
 

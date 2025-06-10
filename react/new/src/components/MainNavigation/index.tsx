@@ -4,7 +4,7 @@ import { useNavigationStyles } from './useNavigationStyles'
 import NavigationLogo from './NavigationLogo'
 import DesktopNavigation from './DesktopNavigation'
 import MobileNavigation from './MobileNavigation'
-import { useTheme } from '@contexts/ThemeContext'
+import { useTheme } from '@/contexts/ThemeContext'
 import styles from './mainNavigation.module.scss'
 
 const MainNavigation = () => {

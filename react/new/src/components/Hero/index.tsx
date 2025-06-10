@@ -1,11 +1,11 @@
 import { Box, Title, Text, Group, Container } from '@mantine/core'
-import { LinkButton } from '@components/Button'
+import { LinkButton } from '@/components/Button'
 import styles from './hero.module.scss'
-import playerImage from '@assets/player_with_puck.png'
-import dotsBgLrg from '@assets/backgrounds/dots_bg_lrg.png'
-import dotsBgSm from '@assets/backgrounds/dots_bg_sm.png'
+import playerImage from '@/assets/player_with_puck.png'
+import dotsBgLrg from '@/assets/backgrounds/dots_bg_lrg.png'
+import dotsBgSm from '@/assets/backgrounds/dots_bg_sm.png'
 import { memo, useMemo } from 'react'
-import { useTheme } from '@contexts/ThemeContext'
+import { useTheme } from '@/contexts/ThemeContext'
 
 interface HeroProps {
   title?: string

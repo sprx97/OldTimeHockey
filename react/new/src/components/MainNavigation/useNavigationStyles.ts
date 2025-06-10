@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useTheme } from '@contexts/ThemeContext'
-import { TEAM_LOGOS } from '@constants/teamLogos'
-import whiteLogo from '@assets/logos/oth-wordmark-white.svg'
-import blackLogo from '@assets/logos/oth-wordmark-black.svg'
+import { useTheme } from '@/contexts/ThemeContext'
+import { TEAM_LOGOS } from '@/constants/teamLogos'
+import whiteLogo from '@/assets/logos/oth-wordmark-white.svg'
+import blackLogo from '@/assets/logos/oth-wordmark-black.svg'
 
 export const useNavigationStyles = () => {
   const { theme, colors } = useTheme()

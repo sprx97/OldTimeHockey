@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { useMemo, useCallback, memo } from 'react'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
-import { ThemeConfig } from '../../types/theme'
+import { ThemeConfig } from '@/types/theme'
 import styles from './mainNavigation.module.scss'
 
 interface MobileNavigationProps {

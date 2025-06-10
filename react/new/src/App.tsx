@@ -2,9 +2,9 @@ import './App.css'
 import '@mantine/core/styles.css'
 import { AppShell } from '@mantine/core'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import routes from './routes'
-import MainNavigation from './components/MainNavigation'
-import { ThemeProvider } from './contexts/ThemeContext'
+import routes from '@/routes'
+import MainNavigation from '@/components/MainNavigation'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 
 function App() {
   return (

@@ -6,13 +6,13 @@ import {
   Box,
   Text,
 } from '@mantine/core'
-import { Button } from '@components/Button'
-import { ThemeToggle } from '@components/ThemeToggle'
-import { useTheme } from '@contexts/ThemeContext'
-import { NHLTeam } from '../types/theme'
-import { NHL_TEAM_COLORS } from '@constants/nhlColors'
-import { NHL_TEAM_NAMES } from '@constants/nhlTeams'
-import { TEAM_LOGOS } from '@constants/teamLogos'
+import { Button } from '@/components/Button'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { useTheme } from '@/contexts/ThemeContext'
+import { NHLTeam } from '@/types/theme'
+import { NHL_TEAM_COLORS } from '@/constants/nhlColors'
+import { NHL_TEAM_NAMES } from '@/constants/nhlTeams'
+import { TEAM_LOGOS } from '@/constants/teamLogos'
 import styles from './themeControls.module.scss'
 
 export function ThemeControls() {

@@ -1,9 +1,9 @@
-import About from './components/Pages/About'
-import HomePage from './components/Pages/Home'
-import Leaderboard from './components/Pages/Leaderboard'
-import Rules from './components/Pages/Rules'
-import Standings from './components/Pages/Standings'
-import TrophyRoom from './components/Pages/TrophyRoom'
+import About from '@components/Pages/About'
+import HomePage from '@components/Pages/Home'
+import Leaderboard from '@components/Pages/Leaderboard'
+import Rules from '@components/Pages/Rules'
+import Standings from '@components/Pages/Standings'
+import TrophyRoom from '@components/Pages/TrophyRoom'
 
 const routes = [
   { path: '/', element: <HomePage />, name: 'Home' },
