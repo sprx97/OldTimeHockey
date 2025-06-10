@@ -131,36 +131,36 @@
 
 .themeToggle.animating.checked {
   .toggleTrack {
-    animation: bgToDark 0.5s ease forwards;
+    animation: bgToDark 0.25s ease forwards;
   }
   
   .toggleThumb {
-    animation: moveRight 0.5s ease forwards, thumbToDark 0.5s ease forwards;
+    animation: moveRight 0.25s ease forwards, thumbToDark 0.25s ease forwards;
   }
   
   .sunIcon {
-    animation: fadeOut 0.5s ease forwards, rotateOut 0.5s ease forwards;
+    animation: fadeOut 0.25s ease forwards, rotateOut 0.25s ease forwards;
   }
   
   .moonIcon {
-    animation: fadeIn 0.5s ease forwards, rotateIn 0.5s ease forwards;
+    animation: fadeIn 0.25s ease forwards, rotateIn 0.25s ease forwards;
   }
 }
 
 .themeToggle.animating:not(.checked) {
   .toggleTrack {
-    animation: bgToLight 0.5s ease forwards;
+    animation: bgToLight 0.25s ease forwards;
   }
   
   .toggleThumb {
-    animation: moveLeft 0.5s ease forwards, thumbToLight 0.5s ease forwards;
+    animation: moveLeft 0.25s ease forwards, thumbToLight 0.25s ease forwards;
   }
   
   .sunIcon {
-    animation: fadeIn 0.5s ease forwards, rotateIn 0.5s ease forwards;
+    animation: fadeIn 0.25s ease forwards, rotateIn 0.25s ease forwards;
   }
   
   .moonIcon {
-    animation: fadeOut 0.5s ease forwards, rotateOut 0.5s ease forwards;
+    animation: fadeOut 0.25s ease forwards, rotateOut 0.25s ease forwards;
   }
 }

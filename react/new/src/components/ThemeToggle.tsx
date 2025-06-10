@@ -21,7 +21,7 @@ export function ThemeToggle({ checked, onChange }: ThemeToggleProps) {
       setTimeout(() => {
         onChange(newChecked)
         setIsAnimating(false)
-      }, 500)
+      }, 250)
     }
   }
 
