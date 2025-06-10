@@ -1,15 +1,15 @@
 import {
   createContext,
   useContext,
-  useCallback,
-  useState,
+  useReducer,
+  useEffect,
+  useMemo,
   ReactNode,
 } from 'react'
 import {
   MantineProvider,
   createTheme,
   localStorageColorSchemeManager,
-  type MantineColorsTuple,
   type MantineThemeOverride,
   type MantineTheme,
 } from '@mantine/core'
@@ -17,20 +17,32 @@ import { NHL_TEAM_COLORS } from '../constants/nhlColors'
 import { DEFAULT_THEME_COLORS } from '../constants/defaultTheme'
 import { ThemeConfig, ThemeMode, NHLTeam, ThemeType } from '../types/theme'
 import { getLuminance, hexToRgb } from '../utils/colorUtils'
+import { generateColorShades } from '../utils/themeUtils'
+
+interface ThemeColors {
+  headerBackground: string
+  headerText: string
+  mainBackground: string
+  linkColor: string
+  activeLinkColor: string
+  hoverLinkColor: string
+}
 
 interface ThemeContextType {
   theme: ThemeConfig
-  setThemeMode: (mode: ThemeMode) => void
-  setThemeType: (type: ThemeType) => void
-  setTeamTheme: (team: NHLTeam | undefined) => void
-  getHeaderBackgroundColor: () => string
-  getHeaderTextColor: () => string
-  getLinkHoverColor: () => string
-  getAccessibleLinkColor: () => string
-  getAccessibleActiveLinkColor: () => string
-  getAccessibleHoverLinkColor: () => string
-  getMainBackgroundColor: () => string
+  colors: ThemeColors
+  setMode: (mode: ThemeMode) => void
+  toggleMode: () => void
+  setTeam: (team: NHLTeam | undefined) => void
+  resetToDefault: () => void
 }
+
+type ThemeAction =
+  | { type: 'INITIALIZE'; payload: ThemeConfig }
+  | { type: 'SET_MODE'; payload: ThemeMode }
+  | { type: 'SET_TEAM'; payload: NHLTeam | undefined }
+  | { type: 'TOGGLE_MODE' }
+  | { type: 'RESET_TO_DEFAULT' }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
@@ -42,52 +54,6 @@ export const useTheme = () => {
   return context
 }
 
-const generateColorShades = (hexColor: string): MantineColorsTuple => {
-  // Convert hex to RGB for manipulation
-  const r = parseInt(hexColor.slice(1, 3), 16)
-  const g = parseInt(hexColor.slice(3, 5), 16)
-  const b = parseInt(hexColor.slice(5, 7), 16)
-
-  // Generate shades by adjusting brightness
-  return [
-    adjustBrightness(r, g, b, 0.9), // Lightest
-    adjustBrightness(r, g, b, 0.7),
-    adjustBrightness(r, g, b, 0.5),
-    adjustBrightness(r, g, b, 0.3),
-    adjustBrightness(r, g, b, 0.1),
-    hexColor, // Base color
-    adjustBrightness(r, g, b, -0.1),
-    adjustBrightness(r, g, b, -0.3),
-    adjustBrightness(r, g, b, -0.5),
-    adjustBrightness(r, g, b, -0.7), // Darkest
-  ] as MantineColorsTuple
-}
-
-const adjustBrightness = (
-  r: number,
-  g: number,
-  b: number,
-  factor: number
-): string => {
-  const adjust = (value: number): number => {
-    if (factor > 0) {
-      // Lighten: blend with white
-      return Math.round(value + (255 - value) * factor)
-    } else {
-      // Darken: blend with black
-      return Math.round(value * (1 + factor))
-    }
-  }
-
-  const newR = adjust(r)
-  const newG = adjust(g)
-  const newB = adjust(b)
-
-  return `#${newR.toString(16).padStart(2, '0')}${newG
-    .toString(16)
-    .padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`
-}
-
 const colorSchemeManager = localStorageColorSchemeManager({
   key: 'oth-color-scheme',
 })
@@ -95,113 +61,166 @@ const colorSchemeManager = localStorageColorSchemeManager({
 const TEAM_STORAGE_KEY = 'oth-team-theme'
 const THEME_TYPE_STORAGE_KEY = 'oth-theme-type'
 
+const getHeaderBackgroundColor = (theme: ThemeConfig): string => {
+  if (theme.type === 'default') {
+    return theme.mode === 'light' ? '#f5f5f5' : '#000000'
+  } else if (theme.type === 'team' && theme.team) {
+    return NHL_TEAM_COLORS[theme.team].primary || DEFAULT_THEME_COLORS.primary
+  }
+  return DEFAULT_THEME_COLORS.primary
+}
+
+const getHeaderTextColor = (theme: ThemeConfig): string => {
+  if (theme.type === 'default') {
+    return theme.mode === 'light' ? '#333333' : '#FFFFFF'
+  }
+  return DEFAULT_THEME_COLORS.secondary || '#FFFFFF'
+}
+
+const getMainBackgroundColor = (theme: ThemeConfig): string => {
+  return theme.mode === 'light' ? '#f5f5f5' : '#242424'
+}
+
+const getAccessibleLinkColor = (backgroundColor: string): string => {
+  const bgLuminance = getLuminance(hexToRgb(backgroundColor))
+  return bgLuminance < 0.5 ? '#FFFFFF' : '#333333'
+}
+
+const getAccessibleActiveLinkColor = (theme: ThemeConfig): string => {
+  if (theme.type === 'team' && theme.team) {
+    return (
+      NHL_TEAM_COLORS[theme.team].secondary ||
+      NHL_TEAM_COLORS[theme.team].tertiary ||
+      DEFAULT_THEME_COLORS.primary
+    )
+  }
+  return DEFAULT_THEME_COLORS.primary
+}
+
+const computeThemeColors = (theme: ThemeConfig): ThemeColors => {
+  const headerBackground = getHeaderBackgroundColor(theme)
+  const activeLinkColor = getAccessibleActiveLinkColor(theme)
+
+  return {
+    headerBackground,
+    headerText: getHeaderTextColor(theme),
+    mainBackground: getMainBackgroundColor(theme),
+    linkColor: getAccessibleLinkColor(headerBackground),
+    activeLinkColor,
+    hoverLinkColor: activeLinkColor,
+  }
+}
+
+const themeReducer = (state: ThemeConfig, action: ThemeAction): ThemeConfig => {
+  switch (action.type) {
+    case 'INITIALIZE':
+      return action.payload
+
+    case 'SET_MODE':
+      return { ...state, mode: action.payload }
+
+    case 'SET_TEAM':
+      return {
+        ...state,
+        team: action.payload,
+        type: action.payload ? 'team' : 'default',
+      }
+
+    case 'TOGGLE_MODE':
+      return { ...state, mode: state.mode === 'light' ? 'dark' : 'light' }
+
+    case 'RESET_TO_DEFAULT':
+      return { ...state, type: 'default', team: undefined }
+
+    default:
+      return state
+  }
+}
+
+const safeLocalStorage = {
+  get: (key: string): string | null => {
+    try {
+      return localStorage.getItem(key)
+    } catch {
+      return null
+    }
+  },
+  set: (key: string, value: string): void => {
+    try {
+      localStorage.setItem(key, value)
+    } catch {
+      // Silently fail
+    }
+  },
+  remove: (key: string): void => {
+    try {
+      localStorage.removeItem(key)
+    } catch {
+      // Silently fail
+    }
+  },
+}
+
+const initializeTheme = (): ThemeConfig => {
+  const storedTeam = safeLocalStorage.get(TEAM_STORAGE_KEY) as NHLTeam | null
+  const validTeam =
+    storedTeam && NHL_TEAM_COLORS[storedTeam] ? storedTeam : undefined
+
+  if (storedTeam && !validTeam) {
+    safeLocalStorage.remove(TEAM_STORAGE_KEY)
+    safeLocalStorage.set(THEME_TYPE_STORAGE_KEY, 'default')
+  }
+
+  const mode = (
+    colorSchemeManager.get('light') === 'dark' ? 'dark' : 'light'
+  ) as ThemeMode
+  const type = validTeam
+    ? 'team'
+    : (safeLocalStorage.get(THEME_TYPE_STORAGE_KEY) as ThemeType) || 'default'
+
+  return { mode, type, team: validTeam }
+}
+
 interface ThemeProviderProps {
   children: ReactNode
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const storedTeam = localStorage.getItem(TEAM_STORAGE_KEY) as
-    | NHLTeam
-    | undefined
-  const validTeam =
-    storedTeam && NHL_TEAM_COLORS[storedTeam] ? storedTeam : undefined
+  const [theme, dispatch] = useReducer(themeReducer, initializeTheme())
 
-  if (storedTeam && !validTeam) {
-    localStorage.removeItem(TEAM_STORAGE_KEY)
-    localStorage.setItem(THEME_TYPE_STORAGE_KEY, 'default')
+  const colors = useMemo(() => computeThemeColors(theme), [theme])
+
+  useEffect(() => {
+    colorSchemeManager.set(theme.mode)
+  }, [theme.mode])
+
+  useEffect(() => {
+    if (theme.team) {
+      safeLocalStorage.set(TEAM_STORAGE_KEY, theme.team)
+      safeLocalStorage.set(THEME_TYPE_STORAGE_KEY, 'team')
+    } else {
+      safeLocalStorage.remove(TEAM_STORAGE_KEY)
+      safeLocalStorage.set(THEME_TYPE_STORAGE_KEY, theme.type)
+    }
+  }, [theme.team, theme.type])
+
+  const setMode = (mode: ThemeMode) => {
+    dispatch({ type: 'SET_MODE', payload: mode })
   }
 
-  const [theme, setTheme] = useState<ThemeConfig>({
-    mode: (colorSchemeManager.get('light') === 'dark'
-      ? 'dark'
-      : 'light') as ThemeMode,
-    type: validTeam
-      ? 'team'
-      : (localStorage.getItem(THEME_TYPE_STORAGE_KEY) as ThemeType) ||
-        'default',
-    team: validTeam,
-  })
+  const toggleMode = () => {
+    dispatch({ type: 'TOGGLE_MODE' })
+  }
 
-  const setThemeMode = useCallback((mode: ThemeMode) => {
-    setTheme((prev) => ({ ...prev, mode }))
-    colorSchemeManager.set(mode)
-  }, [])
+  const setTeam = (team: NHLTeam | undefined) => {
+    dispatch({ type: 'SET_TEAM', payload: team })
+  }
 
-  const setThemeType = useCallback((type: ThemeType) => {
-    setTheme((prev) => ({ ...prev, type }))
-    localStorage.setItem(THEME_TYPE_STORAGE_KEY, type)
-  }, [])
+  const resetToDefault = () => {
+    dispatch({ type: 'RESET_TO_DEFAULT' })
+  }
 
-  const setTeamTheme = useCallback((team: NHLTeam | undefined) => {
-    setTheme((prev) => ({ ...prev, team, type: team ? 'team' : 'default' }))
-    if (team) {
-      localStorage.setItem(TEAM_STORAGE_KEY, team)
-      localStorage.setItem(THEME_TYPE_STORAGE_KEY, 'team')
-    } else {
-      localStorage.removeItem(TEAM_STORAGE_KEY)
-      localStorage.setItem(THEME_TYPE_STORAGE_KEY, 'default')
-    }
-  }, [])
-
-  const getHeaderBackgroundColor = useCallback((): string => {
-    if (theme.type === 'default') {
-      return theme.mode === 'light' ? '#f5f5f5' : '#000000'
-    } else if (theme.type === 'team' && theme.team) {
-      return NHL_TEAM_COLORS[theme.team].primary || DEFAULT_THEME_COLORS.primary
-    }
-    return DEFAULT_THEME_COLORS.primary
-  }, [theme])
-
-  const getHeaderTextColor = useCallback((): string => {
-    if (theme.type === 'default') {
-      return theme.mode === 'light' ? '#333333' : '#FFFFFF'
-    }
-    return DEFAULT_THEME_COLORS.secondary || '#FFFFFF'
-  }, [theme])
-
-  const getLinkHoverColor = useCallback((): string => {
-    if (theme.type === 'default') {
-      return DEFAULT_THEME_COLORS.primary // Orange hover for default theme
-    } else if (theme.type === 'team' && theme.team) {
-      return (
-        NHL_TEAM_COLORS[theme.team].secondary || DEFAULT_THEME_COLORS.primary
-      )
-    }
-    return DEFAULT_THEME_COLORS.primary
-  }, [theme])
-
-  const getAccessibleLinkColor = useCallback((): string => {
-    const backgroundColor = getHeaderBackgroundColor()
-    const bgLuminance = getLuminance(hexToRgb(backgroundColor))
-    return bgLuminance < 0.5 ? '#FFFFFF' : '#333333'
-  }, [getHeaderBackgroundColor])
-
-  const getAccessibleActiveLinkColor = useCallback((): string => {
-    if (theme.type === 'team' && theme.team) {
-      return (
-        NHL_TEAM_COLORS[theme.team].secondary ||
-        NHL_TEAM_COLORS[theme.team].tertiary ||
-        DEFAULT_THEME_COLORS.primary
-      )
-    }
-
-    return DEFAULT_THEME_COLORS.primary
-  }, [theme])
-
-  const getAccessibleHoverLinkColor = useCallback((): string => {
-    return getAccessibleActiveLinkColor()
-  }, [getAccessibleActiveLinkColor])
-
-  const getMainBackgroundColor = useCallback((): string => {
-    if (theme.type === 'default') {
-      return theme.mode === 'light' ? '#f5f5f5' : '#242424'
-    } else if (theme.type === 'team' && theme.team) {
-      return theme.mode === 'light' ? '#f5f5f5' : '#242424'
-    }
-    return theme.mode === 'light' ? '#f5f5f5' : '#242424'
-  }, [theme])
-
-  const getMantineTheme = useCallback((): MantineThemeOverride => {
+  const getMantineTheme = useMemo((): MantineThemeOverride => {
     return createTheme({
       primaryColor: theme.type === 'team' && theme.team ? 'team' : 'default',
       colors: {
@@ -222,7 +241,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           }),
         },
 
-        // Navigation link styles
         Link: {
           styles: ({ radius, fontSizes, spacing }: MantineTheme) => ({
             root: {
@@ -261,7 +279,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           }),
         },
 
-        // Menu styles for navigation
         Menu: {
           styles: () => ({
             dropdown: {
@@ -281,7 +298,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           }),
         },
 
-        // Settings icon styles
         Center: {
           styles: ({ radius }: MantineTheme) => ({
             root: {
@@ -294,7 +310,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           }),
         },
 
-        // Mobile menu styles
         Box: {
           styles: ({ radius, fontSizes, spacing }: MantineTheme) => ({
             root: {
@@ -322,7 +337,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         },
       },
 
-      // Custom theme properties
       other: {
         navTransition: 'transform 300ms ease',
         iconStroke: 1.5,
@@ -330,24 +344,22 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     })
   }, [theme])
 
+  const contextValue = useMemo(
+    () => ({
+      theme,
+      colors,
+      setMode,
+      toggleMode,
+      setTeam,
+      resetToDefault,
+    }),
+    [theme, colors]
+  )
+
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        setThemeMode,
-        setThemeType,
-        setTeamTheme,
-        getHeaderBackgroundColor,
-        getHeaderTextColor,
-        getLinkHoverColor,
-        getAccessibleLinkColor,
-        getAccessibleActiveLinkColor,
-        getAccessibleHoverLinkColor,
-        getMainBackgroundColor,
-      }}
-    >
+    <ThemeContext.Provider value={contextValue}>
       <MantineProvider
-        theme={getMantineTheme()}
+        theme={getMantineTheme}
         colorSchemeManager={colorSchemeManager}
       >
         {children}

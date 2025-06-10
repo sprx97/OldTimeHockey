@@ -16,13 +16,7 @@ import { TEAM_LOGOS } from '@constants/teamLogos'
 import styles from './themeControls.module.scss'
 
 export function ThemeControls() {
-  const {
-    theme,
-    setThemeMode,
-    setThemeType,
-    setTeamTheme,
-    getAccessibleLinkColor,
-  } = useTheme()
+  const { theme, colors, setMode, setTeam } = useTheme()
 
   const getPageBackgroundColor = () => {
     return theme.mode === 'dark' ? '#242424' : '#f5f5f5'
@@ -32,17 +26,15 @@ export function ThemeControls() {
 
   const handleThemeToggle = (checked: boolean) => {
     const newMode = checked ? 'dark' : 'light'
-    setThemeMode(newMode)
+    setMode(newMode)
     setColorScheme(newMode)
   }
 
   const handleTeamChange = (value: string | null) => {
     if (value) {
-      setTeamTheme(value as NHLTeam)
-      setThemeType('team')
+      setTeam(value as NHLTeam)
     } else {
-      setTeamTheme(undefined)
-      setThemeType('default')
+      setTeam(undefined)
     }
   }
 
@@ -115,7 +107,7 @@ export function ThemeControls() {
           </Text>
         }
         placeholder='Select a team'
-        style={{ color: getAccessibleLinkColor() }}
+        style={{ color: colors.linkColor }}
         value={theme.team}
         onChange={handleTeamChange}
         data={teamOptions}

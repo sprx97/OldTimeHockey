@@ -11,16 +11,15 @@ export function useButtonStyles(
   variant: ButtonVariant = 'primary',
   style?: CSSProperties
 ) {
-  const { theme, getHeaderBackgroundColor, getAccessibleActiveLinkColor } =
-    useTheme()
+  const { theme, colors } = useTheme()
 
   const styles = useMemo(() => {
     const baseStyle: CSSPropertiesWithVars = {
       ...(style as CSSPropertiesWithVars),
     }
 
-    const headerBgColor = getHeaderBackgroundColor()
-    const activeLinkColor = getAccessibleActiveLinkColor()
+    const headerBgColor = colors.headerBackground
+    const activeLinkColor = colors.activeLinkColor
 
     if (variant === 'primary') {
       const bgColor =
@@ -66,13 +65,7 @@ export function useButtonStyles(
     }
 
     return baseStyle
-  }, [
-    variant,
-    style,
-    theme,
-    getHeaderBackgroundColor,
-    getAccessibleActiveLinkColor,
-  ])
+  }, [variant, style, theme, colors.headerBackground, colors.activeLinkColor])
 
   return useMemo(
     () => ({

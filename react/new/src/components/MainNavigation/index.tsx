@@ -335,24 +335,9 @@ const MainNavigation = () => {
   if (isDesktop && opened) {
     close()
   }
-  const {
-    theme,
-    getHeaderBackgroundColor,
-    getHeaderTextColor,
-    getAccessibleLinkColor,
-    getAccessibleActiveLinkColor,
-    getAccessibleHoverLinkColor,
-    getMainBackgroundColor,
-  } = useTheme()
+  const { theme, colors } = useTheme()
 
   const themeValues = useMemo(() => {
-    const headerBackgroundColor = getHeaderBackgroundColor()
-    const headerTextColor = getHeaderTextColor()
-    const mainBackgroundColor = getMainBackgroundColor()
-    const accessibleLinkColor = getAccessibleLinkColor()
-    const accessibleActiveLinkColor = getAccessibleActiveLinkColor()
-    const accessibleHoverLinkColor = getAccessibleHoverLinkColor()
-
     return {
       logoSrc:
         theme.type === 'default' && theme.mode === 'light'
@@ -360,23 +345,15 @@ const MainNavigation = () => {
           : whiteLogo,
       teamLogo:
         theme.type === 'team' && theme.team ? TEAM_LOGOS[theme.team] : null,
-      headerBackgroundColor,
-      headerTextColor,
-      mainBackgroundColor,
-      accessibleLinkColor,
-      accessibleActiveLinkColor,
-      accessibleHoverLinkColor,
-      isBlackBackground: headerBackgroundColor === '#000000',
+      headerBackgroundColor: colors.headerBackground,
+      headerTextColor: colors.headerText,
+      mainBackgroundColor: colors.mainBackground,
+      accessibleLinkColor: colors.linkColor,
+      accessibleActiveLinkColor: colors.activeLinkColor,
+      accessibleHoverLinkColor: colors.hoverLinkColor,
+      isBlackBackground: colors.headerBackground === '#000000',
     }
-  }, [
-    theme,
-    getHeaderBackgroundColor,
-    getHeaderTextColor,
-    getMainBackgroundColor,
-    getAccessibleLinkColor,
-    getAccessibleActiveLinkColor,
-    getAccessibleHoverLinkColor,
-  ])
+  }, [theme, colors])
 
   const toggleSubmenu = useCallback((path: string) => {
     setOpenSubmenuIds((prev) =>

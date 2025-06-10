@@ -26,7 +26,7 @@ const Hero = memo(function Hero({
   primaryButtonLink = '#join',
   secondaryButtonLink = '#learn',
 }: HeroProps) {
-  const { getLinkHoverColor } = useTheme()
+  const { colors } = useTheme()
 
   const backgroundStyles = useMemo(
     () => ({
@@ -38,9 +38,9 @@ const Hero = memo(function Hero({
 
   const subtitleStyles = useMemo(
     () => ({
-      color: getLinkHoverColor(),
+      color: colors.hoverLinkColor,
     }),
-    [getLinkHoverColor]
+    [colors.hoverLinkColor]
   )
 
   return (
