@@ -11,12 +11,8 @@ export function useButtonStyles(
   variant: ButtonVariant = 'primary',
   style?: CSSProperties
 ) {
-  const {
-    theme,
-    getHeaderBackgroundColor,
-    getAccessibleLinkColor,
-    getAccessibleActiveLinkColor,
-  } = useTheme()
+  const { theme, getHeaderBackgroundColor, getAccessibleActiveLinkColor } =
+    useTheme()
 
   const styles = useMemo(() => {
     const baseStyle: CSSPropertiesWithVars = {
@@ -24,7 +20,6 @@ export function useButtonStyles(
     }
 
     const headerBgColor = getHeaderBackgroundColor()
-    const linkColor = getAccessibleLinkColor()
     const activeLinkColor = getAccessibleActiveLinkColor()
 
     if (variant === 'primary') {
@@ -32,7 +27,7 @@ export function useButtonStyles(
         theme.type === 'team' && theme.team ? headerBgColor : '#000'
 
       baseStyle.backgroundColor = bgColor
-      baseStyle.color = linkColor
+      baseStyle.color = '#fff'
       baseStyle.border = 'none'
       baseStyle['--hover-bg-color'] = activeLinkColor
       baseStyle['--hover-text-color'] = '#fff'
@@ -41,7 +36,11 @@ export function useButtonStyles(
       const borderColor =
         theme.type === 'team' && theme.team ? headerBgColor : '#000'
       const textColor =
-        theme.type === 'team' && theme.team ? headerBgColor : '#000'
+        theme.type === 'team' && theme.team
+          ? headerBgColor
+          : theme.mode === 'light'
+            ? '#333'
+            : '#000'
 
       baseStyle.backgroundColor = '#fff'
       baseStyle.color = textColor
@@ -51,8 +50,15 @@ export function useButtonStyles(
       baseStyle['--hover-border-color'] = activeLinkColor
       baseStyle['--primary-color'] = activeLinkColor
     } else if (variant === 'text') {
-      const textColor =
-        theme.type === 'team' && theme.team ? headerBgColor : '#000'
+      let textColor = '#000'
+
+      if (theme.type === 'team' && theme.team) {
+        textColor = headerBgColor
+      } else if (theme.mode === 'light') {
+        textColor = '#333'
+      } else {
+        textColor = '#fff'
+      }
 
       baseStyle.color = textColor
       baseStyle['--hover-text-color'] = activeLinkColor
@@ -65,7 +71,6 @@ export function useButtonStyles(
     style,
     theme,
     getHeaderBackgroundColor,
-    getAccessibleLinkColor,
     getAccessibleActiveLinkColor,
   ])
 
