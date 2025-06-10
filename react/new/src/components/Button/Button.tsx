@@ -1,5 +1,5 @@
 import styles from './button.module.scss'
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { ButtonHTMLAttributes, ReactNode, memo, useMemo } from 'react'
 import { ButtonVariant, useButtonStyles } from './useButtonStyles'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,7 +8,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode
 }
 
-export function Button({
+export const Button = memo(function Button({
   variant = 'primary',
   className,
   style,
@@ -20,9 +20,14 @@ export function Button({
     style
   )
 
+  const combinedClassName = useMemo(
+    () => `${styles[variantClass]} ${className || ''}`,
+    [variantClass, className]
+  )
+
   return (
     <button
-      className={`${styles[variantClass]} ${className || ''}`}
+      className={combinedClassName}
       style={buttonStyles}
       type='button'
       {...props}
@@ -30,4 +35,4 @@ export function Button({
       {children}
     </button>
   )
-}
+})

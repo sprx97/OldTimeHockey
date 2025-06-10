@@ -4,6 +4,7 @@ import styles from './hero.module.scss'
 import playerImage from '../../assets/player_with_puck.png'
 import dotsBgLrg from '../../assets/backgrounds/dots_bg_lrg.png'
 import dotsBgSm from '../../assets/backgrounds/dots_bg_sm.png'
+import { memo, useMemo } from 'react'
 
 interface HeroProps {
   title?: string
@@ -15,7 +16,7 @@ interface HeroProps {
   secondaryButtonLink?: string
 }
 
-function Hero({
+const Hero = memo(function Hero({
   title = 'THE ULTIMATE FANTASY HOCKEY GAUNTLET',
   subtitle = 'Old Time Hockey',
   description = '238 teams. 17 leagues. Promotion. Relegation. Glory awaits.',
@@ -24,17 +25,19 @@ function Hero({
   primaryButtonLink = '#join',
   secondaryButtonLink = '#learn',
 }: HeroProps) {
+  const backgroundStyles = useMemo(
+    () => ({
+      dotsBgLrg: { backgroundImage: `url(${dotsBgLrg})` },
+      dotsBgSm: { backgroundImage: `url(${dotsBgSm})` },
+    }),
+    []
+  )
+
   return (
     <Box className={styles.heroContainer}>
       {/* Background elements */}
-      <div
-        className={styles.dotsBgLrg}
-        style={{ backgroundImage: `url(${dotsBgLrg})` }}
-      />
-      <div
-        className={styles.dotsBgSm}
-        style={{ backgroundImage: `url(${dotsBgSm})` }}
-      />
+      <div className={styles.dotsBgLrg} style={backgroundStyles.dotsBgLrg} />
+      <div className={styles.dotsBgSm} style={backgroundStyles.dotsBgSm} />
 
       <Container size='xl' className={styles.container}>
         <Box className={styles.contentContainer}>
@@ -72,6 +75,6 @@ function Hero({
       </Container>
     </Box>
   )
-}
+})
 
 export default Hero

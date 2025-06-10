@@ -338,48 +338,38 @@ const MainNavigation = () => {
     getMainBackgroundColor,
   } = useTheme()
 
-  const logoSrc = useMemo(
-    () =>
-      theme.type === 'default' && theme.mode === 'light'
-        ? blackLogo
-        : whiteLogo,
-    [theme.type, theme.mode]
-  )
+  const themeValues = useMemo(() => {
+    const headerBackgroundColor = getHeaderBackgroundColor()
+    const headerTextColor = getHeaderTextColor()
+    const mainBackgroundColor = getMainBackgroundColor()
+    const accessibleLinkColor = getAccessibleLinkColor()
+    const accessibleActiveLinkColor = getAccessibleActiveLinkColor()
+    const accessibleHoverLinkColor = getAccessibleHoverLinkColor()
 
-  const teamLogo = useMemo(
-    () => (theme.type === 'team' && theme.team ? TEAM_LOGOS[theme.team] : null),
-    [theme.type, theme.team]
-  )
-
-  const headerBackgroundColor = useMemo(
-    () => getHeaderBackgroundColor(),
-    [getHeaderBackgroundColor]
-  )
-
-  const headerTextColor = useMemo(
-    () => getHeaderTextColor(),
-    [getHeaderTextColor]
-  )
-
-  const mainBackgroundColor = useMemo(
-    () => getMainBackgroundColor(),
-    [getMainBackgroundColor]
-  )
-
-  const accessibleLinkColor = useMemo(
-    () => getAccessibleLinkColor(),
-    [getAccessibleLinkColor]
-  )
-
-  const accessibleActiveLinkColor = useMemo(
-    () => getAccessibleActiveLinkColor(),
-    [getAccessibleActiveLinkColor]
-  )
-
-  const accessibleHoverLinkColor = useMemo(
-    () => getAccessibleHoverLinkColor(),
-    [getAccessibleHoverLinkColor]
-  )
+    return {
+      logoSrc:
+        theme.type === 'default' && theme.mode === 'light'
+          ? blackLogo
+          : whiteLogo,
+      teamLogo:
+        theme.type === 'team' && theme.team ? TEAM_LOGOS[theme.team] : null,
+      headerBackgroundColor,
+      headerTextColor,
+      mainBackgroundColor,
+      accessibleLinkColor,
+      accessibleActiveLinkColor,
+      accessibleHoverLinkColor,
+      isBlackBackground: headerBackgroundColor === '#000000',
+    }
+  }, [
+    theme,
+    getHeaderBackgroundColor,
+    getHeaderTextColor,
+    getMainBackgroundColor,
+    getAccessibleLinkColor,
+    getAccessibleActiveLinkColor,
+    getAccessibleHoverLinkColor,
+  ])
 
   const toggleSubmenu = useCallback((path: string) => {
     setOpenSubmenuIds((prev) =>
@@ -415,13 +405,18 @@ const MainNavigation = () => {
             key={route.path}
             route={route as RouteWithAnchors}
             isActive={isActive}
-            accessibleLinkColor={accessibleLinkColor}
-            mainBackgroundColor={mainBackgroundColor}
+            accessibleLinkColor={themeValues.accessibleLinkColor}
+            mainBackgroundColor={themeValues.mainBackgroundColor}
             theme={theme}
           />
         )
       }),
-    [isCurrentPage, accessibleLinkColor, mainBackgroundColor, theme]
+    [
+      isCurrentPage,
+      themeValues.accessibleLinkColor,
+      themeValues.mainBackgroundColor,
+      theme,
+    ]
   )
 
   const mobileNavigationItems = useMemo(
@@ -456,7 +451,7 @@ const MainNavigation = () => {
   const navStyles = useMemo(
     () => `
     .nav-link:not(.dropdown-link), .settings-icon {
-      color: ${accessibleLinkColor} !important;
+      color: ${themeValues.accessibleLinkColor} !important;
       text-decoration: none;
       position: relative;
     }
@@ -479,7 +474,7 @@ const MainNavigation = () => {
       height: 2px;
       bottom: -2px;
       left: 0;
-      background-color: ${accessibleActiveLinkColor};
+      background-color: ${themeValues.accessibleActiveLinkColor};
       transform: scaleX(0);
       transform-origin: right;
       transition: transform 0.3s ease;
@@ -497,7 +492,7 @@ const MainNavigation = () => {
       height: 2px;
       bottom: -2px;
       left: 0;
-      background-color: ${accessibleActiveLinkColor};
+      background-color: ${themeValues.accessibleActiveLinkColor};
       transform: scaleX(1);
     }
       
@@ -509,30 +504,29 @@ const MainNavigation = () => {
     }
     
     .mobile-nav-link.active {
-      border-bottom: 3px solid ${accessibleActiveLinkColor};
+      border-bottom: 3px solid ${themeValues.accessibleActiveLinkColor};
       padding-left: 0;
     }
   `,
-    [accessibleLinkColor, accessibleActiveLinkColor, theme]
-  )
-
-  const isBlackBackground = useMemo(
-    () => headerBackgroundColor === '#000000',
-    [headerBackgroundColor]
+    [
+      themeValues.accessibleLinkColor,
+      themeValues.accessibleActiveLinkColor,
+      theme,
+    ]
   )
 
   return (
     <Box
-      className={`${styles.headerContainer} ${isBlackBackground ? styles.blackBackground : ''}`}
+      className={`${styles.headerContainer} ${themeValues.isBlackBackground ? styles.blackBackground : ''}`}
       style={{
-        backgroundColor: headerBackgroundColor,
-        color: headerTextColor,
+        backgroundColor: themeValues.headerBackgroundColor,
+        color: themeValues.headerTextColor,
         position: 'relative',
       }}
     >
-      {teamLogo && (
+      {themeValues.teamLogo && (
         <div className={styles.teamLogoBackground}>
-          <img src={teamLogo} alt='Team Logo Background' />
+          <img src={themeValues.teamLogo} alt='Team Logo Background' />
         </div>
       )}
       <style>{navStyles}</style>
@@ -554,7 +548,7 @@ const MainNavigation = () => {
               }}
             >
               <img
-                src={logoSrc}
+                src={themeValues.logoSrc}
                 alt='OldTimeHockey Logo'
                 className={styles.logo}
               />
@@ -570,9 +564,9 @@ const MainNavigation = () => {
             {/* Desktop Theme Menu */}
             <Box visibleFrom='sm'>
               <ThemeMenu
-                mainBackgroundColor={mainBackgroundColor}
-                accessibleLinkColor={accessibleLinkColor}
-                accessibleHoverLinkColor={accessibleHoverLinkColor}
+                mainBackgroundColor={themeValues.mainBackgroundColor}
+                accessibleLinkColor={themeValues.accessibleLinkColor}
+                accessibleHoverLinkColor={themeValues.accessibleHoverLinkColor}
               />
             </Box>
             <Burger
@@ -580,7 +574,7 @@ const MainNavigation = () => {
               onClick={handleBurgerClick}
               size='md'
               hiddenFrom='sm'
-              color={accessibleLinkColor}
+              color={themeValues.accessibleLinkColor}
             />
           </Group>
         </Box>
@@ -588,8 +582,8 @@ const MainNavigation = () => {
       <Box
         className={opened ? styles.mobileMenuOpen : styles.mobileMenu}
         style={{
-          backgroundColor: mainBackgroundColor,
-          color: headerTextColor,
+          backgroundColor: themeValues.mainBackgroundColor,
+          color: themeValues.headerTextColor,
         }}
       >
         {mobileNavigationItems}

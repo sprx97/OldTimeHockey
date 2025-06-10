@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, useMemo } from 'react'
 import { useTheme } from '../../contexts/ThemeContext'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'text'
@@ -18,67 +18,62 @@ export function useButtonStyles(
     getAccessibleActiveLinkColor,
   } = useTheme()
 
-  const getStyles = () => {
+  const styles = useMemo(() => {
     const baseStyle: CSSPropertiesWithVars = {
       ...(style as CSSPropertiesWithVars),
     }
 
+    const headerBgColor = getHeaderBackgroundColor()
+    const linkColor = getAccessibleLinkColor()
+    const activeLinkColor = getAccessibleActiveLinkColor()
+
     if (variant === 'primary') {
       const bgColor =
-        theme.type === 'team' && theme.team
-          ? getHeaderBackgroundColor()
-          : '#000'
-
-      const textColor = getAccessibleLinkColor()
-      const hoverColor = getAccessibleActiveLinkColor()
+        theme.type === 'team' && theme.team ? headerBgColor : '#000'
 
       baseStyle.backgroundColor = bgColor
-      baseStyle.color = textColor
+      baseStyle.color = linkColor
       baseStyle.border = 'none'
-
-      baseStyle['--hover-bg-color'] = hoverColor
+      baseStyle['--hover-bg-color'] = activeLinkColor
       baseStyle['--hover-text-color'] = '#fff'
-      baseStyle['--primary-color'] = hoverColor
+      baseStyle['--primary-color'] = activeLinkColor
     } else if (variant === 'secondary') {
       const borderColor =
-        theme.type === 'team' && theme.team
-          ? getHeaderBackgroundColor()
-          : '#000'
-
+        theme.type === 'team' && theme.team ? headerBgColor : '#000'
       const textColor =
-        theme.type === 'team' && theme.team
-          ? getHeaderBackgroundColor()
-          : '#000'
-
-      const hoverColor = getAccessibleActiveLinkColor()
+        theme.type === 'team' && theme.team ? headerBgColor : '#000'
 
       baseStyle.backgroundColor = '#fff'
       baseStyle.color = textColor
       baseStyle.border = `1px solid ${borderColor}`
-
-      baseStyle['--hover-bg-color'] = hoverColor
+      baseStyle['--hover-bg-color'] = activeLinkColor
       baseStyle['--hover-text-color'] = '#fff'
-      baseStyle['--hover-border-color'] = hoverColor
-      baseStyle['--primary-color'] = hoverColor
+      baseStyle['--hover-border-color'] = activeLinkColor
+      baseStyle['--primary-color'] = activeLinkColor
     } else if (variant === 'text') {
       const textColor =
-        theme.type === 'team' && theme.team
-          ? getHeaderBackgroundColor()
-          : '#000'
-
-      const hoverColor = getAccessibleActiveLinkColor()
+        theme.type === 'team' && theme.team ? headerBgColor : '#000'
 
       baseStyle.color = textColor
-
-      baseStyle['--hover-text-color'] = hoverColor
-      baseStyle['--primary-color'] = hoverColor
+      baseStyle['--hover-text-color'] = activeLinkColor
+      baseStyle['--primary-color'] = activeLinkColor
     }
 
     return baseStyle
-  }
+  }, [
+    variant,
+    style,
+    theme,
+    getHeaderBackgroundColor,
+    getAccessibleLinkColor,
+    getAccessibleActiveLinkColor,
+  ])
 
-  return {
-    styles: getStyles(),
-    className: variant,
-  }
+  return useMemo(
+    () => ({
+      styles,
+      className: variant,
+    }),
+    [styles, variant]
+  )
 }

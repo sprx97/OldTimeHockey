@@ -1,4 +1,11 @@
-import { useState, KeyboardEvent } from 'react'
+import {
+  useState,
+  KeyboardEvent,
+  useCallback,
+  useMemo,
+  useRef,
+  memo,
+} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
 import styles from './themeToggle.module.scss'
@@ -8,40 +15,64 @@ interface ThemeToggleProps {
   onChange: (checked: boolean) => void
 }
 
-export function ThemeToggle({ checked, onChange }: ThemeToggleProps) {
+export const ThemeToggle = memo(function ThemeToggle({
+  checked,
+  onChange,
+}: ThemeToggleProps) {
   const [isFocused, setIsFocused] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
-  const [localChecked, setLocalChecked] = useState(checked)
+  const animationTimeoutRef = useRef<number | null>(null)
 
-  const handleToggle = () => {
+  const handleToggle = useCallback(() => {
     if (!isAnimating) {
-      const newChecked = !localChecked
+      const newChecked = !checked
       setIsAnimating(true)
-      setLocalChecked(newChecked)
-      setTimeout(() => {
+
+      // Clear any existing timeout
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current)
+      }
+
+      // Set new timeout for animation
+      animationTimeoutRef.current = setTimeout(() => {
         onChange(newChecked)
         setIsAnimating(false)
+        animationTimeoutRef.current = null
       }, 250)
     }
-  }
+  }, [checked, onChange, isAnimating])
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      handleToggle()
-    }
-  }
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault()
+        handleToggle()
+      }
+    },
+    [handleToggle]
+  )
+
+  const handleFocus = useCallback(() => setIsFocused(true), [])
+  const handleBlur = useCallback(() => setIsFocused(false), [])
+
+  const className = useMemo(() => {
+    const classes = [styles.themeToggle]
+    if (checked) classes.push(styles.checked)
+    if (isFocused) classes.push(styles.focused)
+    if (isAnimating) classes.push(styles.animating)
+    return classes.join(' ')
+  }, [checked, isFocused, isAnimating])
 
   return (
     <div
-      className={`${styles.themeToggle} ${localChecked ? styles.checked : ''} ${isFocused ? styles.focused : ''} ${isAnimating ? styles.animating : ''}`}
+      className={className}
       role='switch'
-      aria-checked={localChecked}
+      aria-checked={checked}
       tabIndex={0}
       onClick={handleToggle}
       onKeyDown={handleKeyDown}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
     >
       <div className={styles.toggleTrack}>
         <div className={styles.toggleThumb}>
@@ -51,4 +82,4 @@ export function ThemeToggle({ checked, onChange }: ThemeToggleProps) {
       </div>
     </div>
   )
-}
+})

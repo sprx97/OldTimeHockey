@@ -1,5 +1,5 @@
 import styles from './button.module.scss'
-import { AnchorHTMLAttributes, ReactNode } from 'react'
+import { AnchorHTMLAttributes, ReactNode, memo, useMemo } from 'react'
 import { ButtonVariant, useButtonStyles } from './useButtonStyles'
 
 export interface LinkButtonProps
@@ -10,7 +10,7 @@ export interface LinkButtonProps
   href: string
 }
 
-export function LinkButton({
+export const LinkButton = memo(function LinkButton({
   variant = 'primary',
   className,
   style,
@@ -23,9 +23,14 @@ export function LinkButton({
     style
   )
 
+  const combinedClassName = useMemo(
+    () => `${styles[variantClass]} ${className || ''}`,
+    [variantClass, className]
+  )
+
   return (
     <a
-      className={`${styles[variantClass]} ${className || ''}`}
+      className={combinedClassName}
       style={buttonStyles}
       href={href}
       {...props}
@@ -33,4 +38,4 @@ export function LinkButton({
       {children}
     </a>
   )
-}
+})
