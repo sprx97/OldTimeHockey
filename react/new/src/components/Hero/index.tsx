@@ -1,6 +1,6 @@
-import { Box, Title, Text, Button, Group, Container } from '@mantine/core'
+import { Box, Title, Text, Group, Container } from '@mantine/core'
+import { LinkButton } from '../Button'
 import styles from './hero.module.scss'
-import buttonStyles from '../../styles/buttons.module.scss'
 import playerImage from '../../assets/player_with_puck.png'
 import dotsBgLrg from '../../assets/backgrounds/dots_bg_lrg.png'
 import dotsBgSm from '../../assets/backgrounds/dots_bg_sm.png'
@@ -44,22 +44,20 @@ function Hero({
             <Text className={styles.description}>{description}</Text>
 
             <Group mt='xl'>
-              <Button
-                component='a'
+              <LinkButton
                 href={primaryButtonLink}
-                variant='filled'
-                className={`${styles.primaryButton} ${buttonStyles.primary}`}
+                variant='primary'
+                className={styles.primaryButton}
               >
                 {primaryButtonText}
-              </Button>
-              <Button
-                component='a'
+              </LinkButton>
+              <LinkButton
                 href={secondaryButtonLink}
-                variant='outline'
-                className={`${styles.secondaryButton} ${buttonStyles.secondary}`}
+                variant='secondary'
+                className={styles.secondaryButton}
               >
                 {secondaryButtonText}
-              </Button>
+              </LinkButton>
             </Group>
           </Box>
 
