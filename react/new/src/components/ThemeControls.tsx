@@ -4,9 +4,9 @@ import {
   useMantineColorScheme,
   Group,
   Box,
-  Button,
   Text,
 } from '@mantine/core'
+import { Button } from './Button'
 import { ThemeToggle } from './ThemeToggle'
 import { useTheme } from '../contexts/ThemeContext'
 import { NHLTeam } from '../types/theme'
@@ -94,10 +94,9 @@ export function ThemeControls() {
 
       <Box>
         <Button
-          fullWidth
+          style={{ width: '100%' }}
           disabled={theme.type === 'default'}
-          variant={theme.type === 'default' ? 'light' : 'filled'}
-          color={theme.type === 'default' ? 'gray' : 'orange'}
+          variant='primary'
           onClick={() => {
             handleTeamChange(null)
           }}

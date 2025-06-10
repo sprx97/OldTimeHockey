@@ -14,13 +14,30 @@
   justify-content: center;
   font-size: 16px;
   text-decoration: none;
+  box-sizing: border-box;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    border-color: #cccccc !important;
+    
+    &:hover, &:focus {
+      background-color: #cccccc !important;
+      color: #666666 !important;
+      border-color: #cccccc !important;
+      text-decoration: none !important;
+      opacity: 0.5 !important;
+    }
+  }
 }
 
 .primary {
   @extend .button;
   padding: 0.8rem 1.8rem;
   min-width: 120px;
-  height: auto;
+  min-height: 48px;
   
   &:hover,
   &:focus {
@@ -35,7 +52,7 @@
   @extend .button;
   padding: 0.8rem 1.8rem;
   min-width: 120px;
-  height: auto;
+  min-height: 48px;
   
   &:hover,
   &:focus {
@@ -51,18 +68,30 @@
   padding: 0.5rem 1rem;
   background-color: transparent;
   border: none;
+  min-height: 36px;
   
   &:hover,
   &:focus {
     color: var(--hover-text-color, #fe5900) !important;
     text-decoration: none;
   }
+  
+  &:disabled {
+    background-color: transparent !important;
+  }
 }
 
 @media (max-width: 576px) {
-  .primary, .secondary, .text {
+  .primary, .secondary {
     padding: 0.7rem 1.4rem;
     font-size: 0.95rem;
     min-width: 100px;
+    min-height: 44px;
+  }
+  
+  .text {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    min-height: 32px;
   }
 }
