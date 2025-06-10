@@ -1,17 +1,55 @@
-import AverageDraftPosition from './components/Pages/ADP'
-import Community from './components/Pages/Community'
-import HallOfFame from './components/Pages/HallOfFame'
-import HomePage from './components/Pages/Home'
-import Leaderboard from './components/Pages/Leaderboard'
-import Standings from './components/Pages/Standings'
-import TrophyRoom from './components/Pages/TrophyRoom'
+import About from '@components/Pages/About'
+import HomePage from '@components/Pages/Home'
+import Leaderboard from '@components/Pages/Leaderboard'
+import Rules from '@components/Pages/Rules'
+import Standings from '@components/Pages/Standings'
+import TrophyRoom from '@components/Pages/TrophyRoom'
+import RouteErrorBoundary from '@components/ErrorBoundary/RouteErrorBoundary'
 
 const routes = [
-  { path: '/', element: <HomePage />, name: 'Home' },
-  { path: '/leaderboard', element: <Leaderboard />, name: 'Leaderboard' },
+  {
+    path: '/',
+    element: (
+      <RouteErrorBoundary routeName='Home'>
+        <HomePage />
+      </RouteErrorBoundary>
+    ),
+    name: 'Home',
+  },
+  {
+    path: '/about',
+    element: (
+      <RouteErrorBoundary routeName='About'>
+        <About />
+      </RouteErrorBoundary>
+    ),
+    name: 'About',
+  },
+  {
+    path: '/rules',
+    element: (
+      <RouteErrorBoundary routeName='Rules'>
+        <Rules />
+      </RouteErrorBoundary>
+    ),
+    name: 'Rules',
+  },
+  {
+    path: '/leaderboard',
+    element: (
+      <RouteErrorBoundary routeName='Leaderboard'>
+        <Leaderboard />
+      </RouteErrorBoundary>
+    ),
+    name: 'Leaderboard',
+  },
   {
     path: '/standings',
-    element: <Standings />,
+    element: (
+      <RouteErrorBoundary routeName='Standings'>
+        <Standings />
+      </RouteErrorBoundary>
+    ),
     name: 'Standings',
     anchors: [
       { path: '#leagueranks', name: 'League Ranks' },
@@ -21,19 +59,15 @@ const routes = [
       { path: '#d4', name: 'Division 4' },
     ],
   },
-  { path: '/adp', element: <AverageDraftPosition />, name: 'ADP' },
-  { path: '/halloffame', element: <HallOfFame />, name: 'Hall of Fame' },
   {
     path: '/trophyroom',
-    element: <TrophyRoom />,
-    name: 'Trophy Room',
-    anchors: [
-      { path: '#d1', name: 'Division 1 Champions' },
-      { path: '#pointsfor', name: 'Points For Champions' },
-      { path: '#woppacup', name: 'Woppa Cup Champions' },
-    ],
+    element: (
+      <RouteErrorBoundary routeName='Awards'>
+        <TrophyRoom />
+      </RouteErrorBoundary>
+    ),
+    name: 'Awards',
   },
-  { path: '/community', element: <Community />, name: 'Community' },
 ]
 
 export default routes
