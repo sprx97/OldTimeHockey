@@ -21,19 +21,19 @@ export const ThemeToggle = memo(function ThemeToggle({
 }: ThemeToggleProps) {
   const [isFocused, setIsFocused] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [visualState, setVisualState] = useState(checked)
   const animationTimeoutRef = useRef<number | null>(null)
 
   const handleToggle = useCallback(() => {
     if (!isAnimating) {
       const newChecked = !checked
+
+      setVisualState(newChecked)
       setIsAnimating(true)
 
-      // Clear any existing timeout
       if (animationTimeoutRef.current) {
         clearTimeout(animationTimeoutRef.current)
       }
-
-      // Set new timeout for animation
       animationTimeoutRef.current = setTimeout(() => {
         onChange(newChecked)
         setIsAnimating(false)
@@ -57,17 +57,17 @@ export const ThemeToggle = memo(function ThemeToggle({
 
   const className = useMemo(() => {
     const classes = [styles.themeToggle]
-    if (checked) classes.push(styles.checked)
+    if (visualState) classes.push(styles.checked)
     if (isFocused) classes.push(styles.focused)
     if (isAnimating) classes.push(styles.animating)
     return classes.join(' ')
-  }, [checked, isFocused, isAnimating])
+  }, [visualState, isFocused, isAnimating])
 
   return (
     <div
       className={className}
       role='switch'
-      aria-checked={checked}
+      aria-checked={visualState}
       tabIndex={0}
       onClick={handleToggle}
       onKeyDown={handleKeyDown}
