@@ -28,8 +28,8 @@ export function LinkButton({
   const {
     theme,
     getHeaderBackgroundColor,
-    getLinkHoverColor,
     getAccessibleLinkColor,
+    getAccessibleActiveLinkColor,
   } = useTheme()
 
   const getLinkStyles = () => {
@@ -44,7 +44,7 @@ export function LinkButton({
           : '#000'
 
       const textColor = getAccessibleLinkColor()
-      const hoverColor = getLinkHoverColor()
+      const hoverColor = getAccessibleActiveLinkColor()
 
       baseStyle.backgroundColor = bgColor
       baseStyle.color = textColor
@@ -52,6 +52,7 @@ export function LinkButton({
 
       baseStyle['--hover-bg-color'] = hoverColor
       baseStyle['--hover-text-color'] = '#fff'
+      baseStyle['--primary-color'] = hoverColor
     } else if (variant === 'secondary') {
       const borderColor =
         theme.type === 'team' && theme.team
@@ -63,7 +64,7 @@ export function LinkButton({
           ? getHeaderBackgroundColor()
           : '#000'
 
-      const hoverColor = getLinkHoverColor()
+      const hoverColor = getAccessibleActiveLinkColor()
 
       baseStyle.backgroundColor = '#fff'
       baseStyle.color = textColor
@@ -72,17 +73,19 @@ export function LinkButton({
       baseStyle['--hover-bg-color'] = hoverColor
       baseStyle['--hover-text-color'] = '#fff'
       baseStyle['--hover-border-color'] = hoverColor
+      baseStyle['--primary-color'] = hoverColor
     } else if (variant === 'text') {
       const textColor =
         theme.type === 'team' && theme.team
           ? getHeaderBackgroundColor()
           : '#000'
 
-      const hoverColor = getLinkHoverColor()
+      const hoverColor = getAccessibleActiveLinkColor()
 
       baseStyle.color = textColor
 
       baseStyle['--hover-text-color'] = hoverColor
+      baseStyle['--primary-color'] = hoverColor
     }
 
     return baseStyle

@@ -13,6 +13,7 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  text-decoration: none;
 }
 
 .primary {
@@ -21,10 +22,12 @@
   min-width: 120px;
   height: auto;
   
-  &:hover {
-    background-color: var(--hover-bg-color, #fe5900);
-    color: var(--hover-text-color, #fff);
-    border-color: var(--hover-border-color, transparent);
+  &:hover,
+  &:focus {
+    background-color: var(--hover-bg-color, #fe5900) !important;
+    color: var(--hover-text-color, #fff) !important;
+    border-color: var(--hover-border-color, transparent) !important;
+    text-decoration: none;
   }
 }
 
@@ -34,10 +37,12 @@
   min-width: 120px;
   height: auto;
   
-  &:hover {
-    background-color: var(--hover-bg-color, #fe5900);
-    color: var(--hover-text-color, #fff);
-    border-color: var(--hover-border-color, #fe5900);
+  &:hover,
+  &:focus {
+    background-color: var(--hover-bg-color, #fe5900) !important;
+    color: var(--hover-text-color, #fff) !important;
+    border-color: var(--hover-border-color, #fe5900) !important;
+    text-decoration: none;
   }
 }
 
@@ -47,8 +52,10 @@
   background-color: transparent;
   border: none;
   
-  &:hover {
-    color: var(--hover-text-color, #fe5900);
+  &:hover,
+  &:focus {
+    color: var(--hover-text-color, #fe5900) !important;
+    text-decoration: none;
   }
 }
 
