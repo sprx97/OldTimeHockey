@@ -6,8 +6,6 @@ import {
   useRef,
   memo,
 } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
 import styles from './themeToggle.module.scss'
 
 interface ThemeToggleProps {
@@ -76,8 +74,8 @@ export const ThemeToggle = memo(function ThemeToggle({
     >
       <div className={styles.toggleTrack}>
         <div className={styles.toggleThumb}>
-          <FontAwesomeIcon icon={faSun} className={styles.sunIcon} />
-          <FontAwesomeIcon icon={faMoon} className={styles.moonIcon} />
+          <i className={`lni lni-sun ${styles.sunIcon}`}></i>
+          <i className={`lni lni-moon ${styles.moonIcon}`}></i>
         </div>
       </div>
     </div>

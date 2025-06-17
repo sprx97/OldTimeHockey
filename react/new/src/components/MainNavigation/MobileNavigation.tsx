@@ -1,6 +1,4 @@
 import { Burger, Box } from '@mantine/core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useMemo, useCallback, memo } from 'react'
 import routes from '@/routes'
@@ -87,13 +85,13 @@ const MobileMenuItem = memo(
           >
             <span>{route.name}</span>
             {isSubmenuOpen ? (
-              <FontAwesomeIcon
-                icon={faChevronDown}
+              <i
+                className='lni lni-chevron-down'
                 style={{ fontSize: '1.2rem' }}
               />
             ) : (
-              <FontAwesomeIcon
-                icon={faChevronDown}
+              <i
+                className='lni lni-chevron-down'
                 style={{ fontSize: '1.2rem', transform: 'rotate(-90deg)' }}
               />
             )}

@@ -1,6 +1,4 @@
 import { Menu, Group, Center, Box } from '@mantine/core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useMemo, memo } from 'react'
 import routes from '@/routes'
@@ -138,8 +136,8 @@ const MenuItem = memo(({ route, isActive, colors, theme }: MenuItemProps) => {
               }}
             >
               {route.name}{' '}
-              <FontAwesomeIcon
-                icon={faChevronDown}
+              <i
+                className='lni lni-chevron-down'
                 style={{ marginLeft: 5, fontSize: '0.9rem' }}
                 aria-hidden='true'
               />
@@ -207,7 +205,7 @@ const ThemeMenu = memo(({ colors }: ThemeMenuProps) => {
           className={styles.settingsIcon}
           style={{ color: colors.linkColor }}
         >
-          <FontAwesomeIcon icon={faGear} style={{ fontSize: '1.5rem' }} />
+          <i className='lni lni-cog' style={{ fontSize: '1.5rem' }} />
         </Center>
       </Menu.Target>
       <Menu.Dropdown>
