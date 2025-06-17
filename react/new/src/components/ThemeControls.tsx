@@ -46,177 +46,179 @@ export function ThemeControls() {
   }))
 
   return (
-    <Stack
-      gap='md'
-      className={styles.container}
-      style={{
-        backgroundColor: 'transparent',
-      }}
-    >
+    <Box style={{ backgroundColor: 'transparent' }}>
       <Text
         fw={600}
         size='md'
         style={{
           color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
-          marginBottom: '5px',
+          marginBottom: '15px',
+          textAlign: 'left',
+          width: '100%',
+          backgroundColor:
+            theme.mode === 'dark'
+              ? 'rgba(0, 0, 0, 0.3)'
+              : 'rgba(0, 0, 0, 0.05)',
+          padding: '12px 15px',
+          fontSize: '1.15rem',
         }}
       >
-        Theme Settings
+        Theme
       </Text>
-      <hr
+      <Stack
+        gap='md'
+        className={styles.container}
         style={{
-          border: 'none',
-          height: '1px',
-          backgroundColor: theme.mode === 'dark' ? '#444444' : '#dddddd',
-          margin: '0 0 10px 0',
-        }}
-      />
-      <Box
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-start',
-          marginBottom: '10px',
+          backgroundColor: 'transparent',
         }}
       >
-        <ThemeToggle
-          checked={theme.mode === 'dark'}
-          onChange={handleThemeToggle}
-        />
-      </Box>
-
-      <Box>
-        <Button
-          style={{ width: '100%' }}
-          disabled={theme.type === 'default'}
-          variant='primary'
-          onClick={() => {
-            handleTeamChange(null)
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            marginBottom: '10px',
           }}
         >
-          OTH Theme
-        </Button>
-      </Box>
+          <ThemeToggle
+            checked={theme.mode === 'dark'}
+            onChange={handleThemeToggle}
+          />
+        </Box>
 
-      <Select
-        label={
-          <Text
-            className={styles.teamLabel}
-            style={{ color: theme.mode === 'dark' ? '#FFFFFF' : '#333333' }}
+        <Box>
+          <Button
+            style={{ width: '100%' }}
+            disabled={theme.type === 'default'}
+            variant='primary'
+            onClick={() => {
+              handleTeamChange(null)
+            }}
           >
-            Team Theme
-          </Text>
-        }
-        placeholder='Select a team'
-        style={{ color: colors.linkColor }}
-        value={theme.team}
-        onChange={handleTeamChange}
-        data={teamOptions}
-        clearable
-        searchable
-        renderOption={({ option, ...others }) => {
-          const teamOption = option as (typeof teamOptions)[0]
-          return (
-            <Group gap='xs' {...others}>
+            OTH Theme
+          </Button>
+        </Box>
+
+        <Select
+          label={
+            <Text
+              className={styles.teamLabel}
+              style={{ color: theme.mode === 'dark' ? '#FFFFFF' : '#333333' }}
+            >
+              Team Theme
+            </Text>
+          }
+          placeholder='Select a team'
+          style={{ color: colors.linkColor }}
+          value={theme.team}
+          onChange={handleTeamChange}
+          data={teamOptions}
+          clearable
+          searchable
+          renderOption={({ option, ...others }) => {
+            const teamOption = option as (typeof teamOptions)[0]
+            return (
+              <Group gap='xs' {...others}>
+                <img
+                  src={teamOption.logo}
+                  width={24}
+                  height={24}
+                  alt={`${teamOption.label} logo`}
+                  className={styles.teamLogo}
+                />
+                <span className={styles.teamOption}>{teamOption.label}</span>
+              </Group>
+            )
+          }}
+          leftSection={
+            theme.team ? (
               <img
-                src={teamOption.logo}
-                width={24}
-                height={24}
-                alt={`${teamOption.label} logo`}
+                src={TEAM_LOGOS[theme.team]}
+                width={20}
+                height={20}
+                alt={`${NHL_TEAM_NAMES[theme.team]} logo`}
                 className={styles.teamLogo}
               />
-              <span className={styles.teamOption}>{teamOption.label}</span>
-            </Group>
-          )
-        }}
-        leftSection={
-          theme.team ? (
-            <img
-              src={TEAM_LOGOS[theme.team]}
-              width={20}
-              height={20}
-              alt={`${NHL_TEAM_NAMES[theme.team]} logo`}
-              className={styles.teamLogo}
-            />
-          ) : null
-        }
-        comboboxProps={{
-          transitionProps: { transition: 'pop', duration: 200 },
-        }}
-        styles={() => {
-          const textColor = theme.mode === 'dark' ? '#FFFFFF' : '#333333'
-          return {
-            dropdown: {
-              backgroundColor: getPageBackgroundColor(),
-            },
-            input: {
-              color: textColor,
-              fontSize: '14px',
-              '&::placeholder': {
+            ) : null
+          }
+          comboboxProps={{
+            transitionProps: { transition: 'pop', duration: 200 },
+          }}
+          styles={() => {
+            const textColor = theme.mode === 'dark' ? '#FFFFFF' : '#333333'
+            return {
+              dropdown: {
+                backgroundColor: getPageBackgroundColor(),
+              },
+              input: {
                 color: textColor,
                 fontSize: '14px',
+                '&::placeholder': {
+                  color: textColor,
+                  fontSize: '14px',
+                },
+                '& *': {
+                  color: textColor,
+                },
               },
-              '& *': {
+              option: {
+                color: textColor,
+                '&[data-selected]': {
+                  color: textColor,
+                },
+                '&[data-hovered]': {
+                  color: textColor,
+                },
+                '& *': {
+                  color: textColor,
+                },
+              },
+              item: {
+                color: textColor,
+                '&[data-selected]': {
+                  color: textColor,
+                },
+                '&[data-hovered]': {
+                  color: textColor,
+                },
+                '& *': {
+                  color: textColor,
+                },
+              },
+              value: {
+                color: textColor,
+                '& *': {
+                  color: textColor,
+                },
+              },
+              placeholder: {
+                color: textColor,
+                '& *': {
+                  color: textColor,
+                },
+              },
+              wrapper: {
+                '& *': {
+                  color: textColor,
+                },
+              },
+              root: {
+                '& *': {
+                  color: textColor,
+                },
+              },
+              section: {
                 color: textColor,
               },
-            },
-            option: {
-              color: textColor,
-              '&[data-selected]': {
+              rightSection: {
                 color: textColor,
               },
-              '&[data-hovered]': {
+              leftSection: {
                 color: textColor,
               },
-              '& *': {
-                color: textColor,
-              },
-            },
-            item: {
-              color: textColor,
-              '&[data-selected]': {
-                color: textColor,
-              },
-              '&[data-hovered]': {
-                color: textColor,
-              },
-              '& *': {
-                color: textColor,
-              },
-            },
-            value: {
-              color: textColor,
-              '& *': {
-                color: textColor,
-              },
-            },
-            placeholder: {
-              color: textColor,
-              '& *': {
-                color: textColor,
-              },
-            },
-            wrapper: {
-              '& *': {
-                color: textColor,
-              },
-            },
-            root: {
-              '& *': {
-                color: textColor,
-              },
-            },
-            section: {
-              color: textColor,
-            },
-            rightSection: {
-              color: textColor,
-            },
-            leftSection: {
-              color: textColor,
-            },
-          }
-        }}
-      />
-    </Stack>
+            }
+          }}
+        />
+      </Stack>
+    </Box>
   )
 }

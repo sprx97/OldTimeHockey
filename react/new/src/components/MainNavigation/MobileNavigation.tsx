@@ -71,16 +71,14 @@ const MobileMenuItem = memo(
 
     if (route.anchors) {
       return (
-        <div key={route.path}>
+        <div key={route.path} style={{ width: '100%' }}>
           <Link
             to={route.path}
-            className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+            className={
+              isActive ? styles.mobileNavLinkActive : styles.mobileNavLink
+            }
             style={{
               color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
             }}
             onClick={(e) => {
               e.preventDefault()
@@ -110,7 +108,11 @@ const MobileMenuItem = memo(
               <Link
                 key={`${route.path}${anchor.path}`}
                 to={route.path + anchor.path}
-                className={`mobile-nav-link ${isActive && anchor.path === locationHash ? 'active' : ''}`}
+                className={
+                  isActive && anchor.path === locationHash
+                    ? styles.mobileNavLinkActive
+                    : styles.mobileNavLink
+                }
                 style={{
                   color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
                 }}
@@ -128,13 +130,13 @@ const MobileMenuItem = memo(
       <Link
         key={route.path}
         to={route.path}
-        className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+        className={isActive ? styles.mobileNavLinkActive : styles.mobileNavLink}
         style={{
           color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
         }}
         onClick={handleCloseMenu}
       >
-        {route.name}
+        <span>{route.name}</span>
       </Link>
     )
   }
@@ -191,20 +193,24 @@ const MobileNavigation = ({
         color={colors.linkColor}
         aria-label={opened ? 'Close navigation menu' : 'Open navigation menu'}
         aria-expanded={opened}
+        style={{
+          position: 'relative',
+          zIndex: 20,
+        }}
       />
       <Box
         className={opened ? styles.mobileMenuOpen : styles.mobileMenu}
         style={{
           backgroundColor: colors.mainBackground,
           color: colors.headerText,
+          padding: '0 0 30px 0',
         }}
         role='navigation'
         aria-label='Mobile navigation menu'
         aria-hidden={!opened}
       >
         {mobileNavigationItems}
-        <hr className={styles.mobileMenuHr} />
-        <Box p='md' style={{ width: '100%' }}>
+        <Box style={{ width: '100%' }}>
           <ThemeControls />
         </Box>
       </Box>
