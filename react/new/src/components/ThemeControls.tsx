@@ -59,7 +59,7 @@ export function ThemeControls() {
             theme.mode === 'dark'
               ? 'rgba(0, 0, 0, 0.3)'
               : 'rgba(0, 0, 0, 0.05)',
-          padding: '12px 15px',
+          padding: '15px 20px',
           fontSize: '1.15rem',
         }}
       >
