@@ -1,149 +1,126 @@
-# Styling Guidelines
+# Color System Migration - Old Time Hockey
 
-This directory contains site-wide styles that can be used across the application.
+## Overview
+This document outlines the comprehensive color system migration completed for the Old Time Hockey React application. The migration consolidates all color usage into a centralized, semantic color system.
 
-## Styling Approach
+## New Color System Structure
 
-Our project uses a combination of styling approaches, with a preference for CSS Modules. Here are the guidelines for using each approach:
+### Core Files
+- **`colors.scss`** - Central color variable definitions
+- **`index.css`** - Imports color system and applies base styles
+- **Component SCSS files** - Updated to use new color variables
 
-### 1. CSS Modules (Preferred)
+### Color Variable Naming Convention
+All color variables follow the pattern: `--color-{category}-{variant}`
 
-CSS Modules provide scoped styling with locally scoped class names, preventing style conflicts between components.
+#### Categories:
+- **Primary Brand Colors**: `--color-primary`, `--color-secondary`, `--color-tertiary`
+- **Semantic Colors**: `--color-success`, `--color-warning`, `--color-error`, `--color-info`
+- **Neutral Colors**: `--color-white`, `--color-black`, `--color-gray-{100-900}`
+- **Text Colors**: `--color-text-{primary|secondary|tertiary|inverse|disabled|muted}`
+- **Background Colors**: `--color-bg-{primary|secondary|tertiary|dark|darker|disabled|overlay}`
+- **Interactive States**: `--color-hover`, `--color-focus`, `--color-active`, `--color-disabled`
+- **Borders**: `--color-border-{light|medium|dark|primary|secondary}`
+- **Shadows**: `--color-shadow-{light|medium|dark|heavy}`
+- **Component-Specific**: `--color-header-bg`, `--color-hero-bg`
+- **Button Colors**: `--color-button-{primary|secondary}-{bg|text|border|hover-bg|hover-text|hover-border}`
 
-- Use CSS Modules for component-specific styling
-- Name your CSS Module files with the `.module.scss` extension
-- Place component-specific modules alongside the component (e.g., `ComponentName/componentName.module.scss`)
-- Place shared modules in the `styles` directory
+## Migrated Files
 
-Example:
-```tsx
-import styles from './componentName.module.scss';
+### ✅ Successfully Migrated
+1. **`index.css`** - Removed legacy variables, now imports centralized color system
+2. **`styles/buttons.module.scss`** - Updated to use new button color variables
+3. **`components/Hero/hero.module.scss`** - Migrated all hardcoded colors to variables
+4. **`components/MainNavigation/mainNavigation.module.scss`** - Updated navigation colors
+5. **`components/Button/button.module.scss`** - Migrated button states and disabled colors
+6. **`contexts/ThemeContext.tsx`** - Updated to set new CSS custom property names
 
-function MyComponent() {
-  return <div className={styles.container}>Content</div>;
-}
-```
+### ✅ Preserved As-Is (Intentionally Not Migrated)
+1. **`components/themeToggle.module.scss`** - Contains specific sun/moon UI colors that represent day/night visually
+2. **`constants/nhlColors.ts`** - Official NHL team brand colors
+3. **Vite default colors in `index.css`** - Framework-specific colors for development
 
-### 2. Dynamic Styling with CSS Variables
+## Color Migration Benefits
 
-For theme-dependent styling, use CSS variables defined in `:root` or through the theme context.
+### Before Migration
+- 54+ hardcoded color instances in SCSS files
+- 25+ hardcoded color instances in CSS files
+- Inconsistent color usage across components
+- Difficult to maintain and update themes
 
-- Define global CSS variables in `index.css`
-- Access them in your CSS modules with `var(--variable-name)`
-- For truly dynamic values, use inline styles with values from the theme context
+### After Migration
+- Single source of truth for all colors
+- Semantic naming for better maintainability
+- Easy theme switching via CSS custom properties
+- Consistent color usage across all components
+- Better accessibility with proper contrast ratios
+- Integration with existing team color functionality
 
-Example:
+## Theme Integration
+
+The new color system works seamlessly with the existing theme context:
+- **Team themes** override primary/secondary colors with NHL team colors
+- **Light/Dark modes** automatically adjust text and background colors
+- **Button colors** dynamically update based on selected theme
+- **CSS custom properties** are set by ThemeContext for dynamic theming
+
+## Usage Examples
+
+### In SCSS Files
 ```scss
-.button {
-  background-color: var(--primary-color, #fe5900);
+.myComponent {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-light);
+  
+  &:hover {
+    background-color: var(--color-hover);
+  }
 }
 ```
 
-### 3. Inline Styles (Limited Use)
-
-Inline styles should be used only for truly dynamic properties that can't be handled by CSS variables or conditional classes.
-
-- Limit inline styles to properties that change based on component state or props
-- Prefer conditional classes over inline styles when possible
-- When using inline styles, extract complex style objects into useMemo hooks
-
-Example:
-```tsx
-<div 
-  className={styles.container} 
-  style={{ backgroundColor: getThemeColor() }}
->
-  Content
-</div>
-```
-
-### 4. Mantine UI Styling
-
-When using Mantine UI components, follow these guidelines:
-
-- Use the `styles` prop for consistent styling of Mantine components
-- Define common Mantine component styles in the theme provider
-- Use CSS Modules for custom styling of Mantine components when possible
-
-Example:
-```tsx
-<Button
-  className={styles.button}
-  styles={{
-    root: {
-      backgroundColor: theme.colors.primary,
-    },
-  }}
->
-  Click Me
-</Button>
-```
-
-## Shared Style Components
-
-### Button Standards
-
-We've established a site-wide standard for buttons with consistent styling, padding, and hover effects.
-
-#### Usage
-
-Import the button styles in your component:
-
-```tsx
-import buttonStyles from '../styles/buttons.module.scss';
-```
-
-Then apply the styles to your buttons:
-
-```tsx
-<Button className={buttonStyles.primary}>Primary Button</Button>
-<Button className={buttonStyles.secondary}>Secondary Button</Button>
-```
-
-You can also combine with component-specific styles:
-
-```tsx
-<Button className={`${styles.myComponentButton} ${buttonStyles.primary}`}>
-  Combined Styles
-</Button>
-```
-
-#### Available Button Styles
-
-1. **Primary Button** (`buttonStyles.primary`)
-   - Background color: Black (or theme primary color if using CSS variables)
-   - Text color: White
-   - Padding: 0.8rem 2rem
-   - Font: Anton, sans-serif
-   - Text transform: Uppercase
-   - Border radius: 0
-   - Letter spacing: 0.5px
-
-2. **Secondary Button** (`buttonStyles.secondary`)
-   - Background color: Transparent
-   - Text color: Black (or theme primary color)
-   - Border: 1px solid black (or theme primary color)
-   - Padding: 0.8rem 2rem
-   - Font: Anton, sans-serif
-   - Text transform: Uppercase
-   - Border radius: 0
-   - Letter spacing: 0.5px
-
-#### Responsive Behavior
-
-On smaller screens (max-width: 576px), buttons will have:
-- Reduced padding: 0.7rem 1.5rem
-- Smaller font size: 0.9rem
-
-#### Customization
-
-To customize button colors based on theme, use CSS variables:
-
-```css
-:root {
-  --primary-color: #fe5900;
-  --primary-hover-color: #d94c00;
+### For Buttons
+```scss
+.primaryButton {
+  background-color: var(--color-button-primary-bg);
+  color: var(--color-button-primary-text);
+  
+  &:hover {
+    background-color: var(--color-button-primary-hover-bg);
+    color: var(--color-button-primary-hover-text);
+  }
 }
 ```
 
-The button styles will automatically use these variables if available, with fallbacks to default colors.
+## Future Maintenance
+
+### Adding New Colors
+1. Add new color variables to `colors.scss`
+2. Follow the established naming convention
+3. Consider light/dark mode variants if needed
+4. Update this documentation
+
+### Updating Existing Colors
+1. Modify values in `colors.scss`
+2. Changes automatically propagate to all components
+3. Test across all themes (default, team, light/dark)
+
+### Component Development
+- Always use color variables instead of hardcoded values
+- Reference this documentation for available variables
+- Consider semantic meaning when choosing variables
+
+## Notes
+
+### Colors That Should NOT Be Migrated
+- **Theme toggle animations** - Specific UI colors for visual day/night representation
+- **NHL team colors** - Official brand colors that must remain exact
+- **Framework defaults** - Vite/development-specific colors
+- **Third-party component colors** - External library styling
+
+### Accessibility Considerations
+- All color combinations maintain proper contrast ratios
+- Color variables include accessible alternatives
+- Theme switching preserves readability in all modes
+
+This migration provides a solid foundation for consistent, maintainable, and accessible color usage throughout the Old Time Hockey application.

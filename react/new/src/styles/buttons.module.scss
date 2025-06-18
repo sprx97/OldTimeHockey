@@ -19,32 +19,32 @@
 
 .primary {
   @extend .button;
-  background-color: var(--button-primary-bg, #000);
-  color: var(--button-primary-text, #fff);
+  background-color: var(--color-button-primary-bg);
+  color: var(--color-button-primary-text);
   padding: 0.8rem 1.8rem;
   border: none;
   min-width: 120px;
   height: auto;
   
   &:hover {
-    background-color: var(--button-primary-hover-bg, var(--primary-color, #fe5900));
-    color: var(--button-primary-hover-text, #fff);
+    background-color: var(--color-button-primary-hover-bg);
+    color: var(--color-button-primary-hover-text);
   }
 }
 
 .secondary {
   @extend .button;
-  background-color: var(--button-secondary-bg, #fff);
-  color: var(--button-secondary-text, #000);
+  background-color: var(--color-button-secondary-bg);
+  color: var(--color-button-secondary-text);
   padding: 0.8rem 1.8rem;
-  border: 1px solid var(--button-secondary-border, #000);
+  border: 1px solid var(--color-button-secondary-border);
   min-width: 120px;
   height: auto;
   
   &:hover {
-    background-color: var(--button-secondary-hover-bg, var(--primary-color, #fe5900));
-    color: var(--button-secondary-hover-text, #fff);
-    border-color: var(--button-secondary-hover-border, var(--primary-color, #fe5900));
+    background-color: var(--color-button-secondary-hover-bg);
+    color: var(--color-button-secondary-hover-text);
+    border-color: var(--color-button-secondary-hover-border);
   }
 }
 

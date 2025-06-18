@@ -169,21 +169,21 @@
 
 .lightThemeHeaderBackground {
   .primaryBackground {
-    background-color: #000000;
+    background-color: var(--color-secondary);
   }
   
   .secondaryBackground {
-    background-color: #898989;
+    background-color: var(--color-tertiary);
   }
 }
 
 .darkThemeHeaderBackground {
   .primaryBackground {
-    background-color: #333333;
+    background-color: var(--color-gray-700);
   }
   
   .secondaryBackground {
-    background-color: #666666;
+    background-color: var(--color-gray-600);
   }
 }
 
