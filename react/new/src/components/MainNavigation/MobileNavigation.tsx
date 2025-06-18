@@ -4,11 +4,12 @@ import { useMemo, useCallback, memo } from 'react'
 import {
   AiOutlineHome,
   AiOutlineInfoCircle,
-  AiOutlineBook,
   AiOutlineBarChart,
-  AiOutlineUnorderedList,
-  AiOutlineCrown,
 } from 'react-icons/ai'
+import { GoTrophy, GoListOrdered } from 'react-icons/go'
+import { BsInfoCircle, BsTrophy } from 'react-icons/bs'
+import { GrDocumentVerified } from 'react-icons/gr'
+
 import { FaChevronRight, FaChevronDown } from 'react-icons/fa6'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
@@ -64,15 +65,15 @@ const getRouteIcon = (routeName: string): React.ReactNode => {
     case 'Home':
       return <AiOutlineHome style={iconStyle} />
     case 'About':
-      return <AiOutlineInfoCircle style={iconStyle} />
+      return <BsInfoCircle style={iconStyle} />
     case 'Rules':
-      return <AiOutlineBook style={iconStyle} />
+      return <GrDocumentVerified style={iconStyle} />
     case 'Leaderboard':
       return <AiOutlineBarChart style={iconStyle} />
     case 'Standings':
-      return <AiOutlineUnorderedList style={iconStyle} />
+      return <GoListOrdered style={iconStyle} />
     case 'Awards':
-      return <AiOutlineCrown style={iconStyle} />
+      return <BsTrophy style={iconStyle} />
     default:
       return <AiOutlineHome style={iconStyle} />
   }
