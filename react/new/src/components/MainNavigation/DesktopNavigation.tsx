@@ -211,7 +211,7 @@ const ThemeMenu = memo(({ colors }: ThemeMenuProps) => {
       </Menu.Target>
       <Menu.Dropdown>
         <Box p='xs'>
-          <ThemeControls />
+          <ThemeControls variant='desktop' />
         </Box>
       </Menu.Dropdown>
     </Menu>

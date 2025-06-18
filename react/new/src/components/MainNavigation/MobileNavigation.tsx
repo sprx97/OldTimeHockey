@@ -235,7 +235,7 @@ const MobileNavigation = ({
       >
         {mobileNavigationItems}
         <Box style={{ width: '100%' }}>
-          <ThemeControls />
+          <ThemeControls variant='mobile' />
         </Box>
       </Box>
     </>

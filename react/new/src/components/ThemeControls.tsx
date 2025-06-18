@@ -15,7 +15,11 @@ import { NHL_TEAM_NAMES } from '@/constants/nhlTeams'
 import { TEAM_LOGOS } from '@/constants/teamLogos'
 import styles from './themeControls.module.scss'
 
-export function ThemeControls() {
+interface ThemeControlsProps {
+  variant?: 'mobile' | 'desktop'
+}
+
+export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
   const { theme, colors, setMode, setTeam } = useTheme()
 
   const getPageBackgroundColor = () => {
@@ -45,6 +49,10 @@ export function ThemeControls() {
     logo: TEAM_LOGOS[code],
   }))
 
+  const isDesktop = variant === 'desktop'
+  const headerPadding = isDesktop ? '8px' : '15px 20px'
+  const containerPadding = isDesktop ? '0 8px' : '0 20px'
+
   return (
     <Box style={{ backgroundColor: 'transparent' }}>
       <Text
@@ -59,7 +67,7 @@ export function ThemeControls() {
             theme.mode === 'dark'
               ? 'rgba(0, 0, 0, 0.3)'
               : 'rgba(0, 0, 0, 0.05)',
-          padding: '15px 20px',
+          padding: headerPadding,
           fontSize: '1.15rem',
         }}
       >
@@ -70,7 +78,7 @@ export function ThemeControls() {
         className={styles.container}
         style={{
           backgroundColor: 'transparent',
-          padding: '0 20px',
+          padding: containerPadding,
         }}
       >
         <Box
