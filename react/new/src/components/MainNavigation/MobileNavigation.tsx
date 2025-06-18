@@ -1,19 +1,14 @@
 import { Burger, Box } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { useMemo, useCallback, memo } from 'react'
-import {
-  AiOutlineHome,
-  AiOutlineInfoCircle,
-  AiOutlineBarChart,
-} from 'react-icons/ai'
-import { GoTrophy, GoListOrdered } from 'react-icons/go'
-import { BsInfoCircle, BsTrophy } from 'react-icons/bs'
-import { GrDocumentVerified } from 'react-icons/gr'
-
-import { FaChevronRight, FaChevronDown } from 'react-icons/fa6'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
 import { ThemeConfig } from '@/types/theme'
+import { AiOutlineHome, AiOutlineBarChart } from 'react-icons/ai'
+import { GoListOrdered } from 'react-icons/go'
+import { BsInfoCircle, BsTrophy } from 'react-icons/bs'
+import { GrDocumentVerified } from 'react-icons/gr'
+import { FaChevronRight, FaChevronDown } from 'react-icons/fa6'
 import styles from './mainNavigation.module.scss'
 
 interface MobileNavigationProps {

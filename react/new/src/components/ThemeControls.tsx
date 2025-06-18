@@ -70,6 +70,7 @@ export function ThemeControls() {
         className={styles.container}
         style={{
           backgroundColor: 'transparent',
+          padding: '0 20px',
         }}
       >
         <Box
