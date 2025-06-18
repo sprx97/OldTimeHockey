@@ -8,9 +8,8 @@ import {
   AiOutlineBarChart,
   AiOutlineUnorderedList,
   AiOutlineCrown,
-  AiOutlineDown,
-  AiOutlineRight,
 } from 'react-icons/ai'
+import { FaChevronRight, FaChevronDown } from 'react-icons/fa6'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
 import { ThemeConfig } from '@/types/theme'
@@ -121,9 +120,9 @@ const MobileMenuItem = memo(
               <span>{route.name}</span>
             </div>
             {isSubmenuOpen ? (
-              <AiOutlineDown style={{ fontSize: '1.2rem' }} />
+              <FaChevronDown style={{ fontSize: '1.2rem' }} />
             ) : (
-              <AiOutlineRight style={{ fontSize: '1.2rem' }} />
+              <FaChevronRight style={{ fontSize: '1.2rem' }} />
             )}
           </Link>
           <Box

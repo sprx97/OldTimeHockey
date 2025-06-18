@@ -1,7 +1,7 @@
 import { Menu, Group, Center, Box } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { useMemo, memo } from 'react'
-import { IoChevronDownSharp } from 'react-icons/io5'
+import { FaChevronDown } from 'react-icons/fa6'
 import { FaGear } from 'react-icons/fa6'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
@@ -138,8 +138,8 @@ const MenuItem = memo(({ route, isActive, colors, theme }: MenuItemProps) => {
               }}
             >
               {route.name}{' '}
-              <IoChevronDownSharp
-                style={{ marginLeft: 5, fontSize: '1.2rem' }}
+              <FaChevronDown
+                style={{ marginLeft: 5, fontSize: '1rem' }}
                 aria-hidden='true'
               />
             </span>
