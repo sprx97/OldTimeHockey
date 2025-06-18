@@ -1,6 +1,8 @@
 import { Menu, Group, Center, Box } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { useMemo, memo } from 'react'
+import { IoChevronDownSharp } from 'react-icons/io5'
+import { FaGear } from 'react-icons/fa6'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
 import { ThemeConfig } from '@/types/theme'
@@ -136,9 +138,8 @@ const MenuItem = memo(({ route, isActive, colors, theme }: MenuItemProps) => {
               }}
             >
               {route.name}{' '}
-              <i
-                className='lni lni-chevron-down'
-                style={{ marginLeft: 5, fontSize: '0.9rem' }}
+              <IoChevronDownSharp
+                style={{ marginLeft: 5, fontSize: '1.2rem' }}
                 aria-hidden='true'
               />
             </span>
@@ -205,7 +206,7 @@ const ThemeMenu = memo(({ colors }: ThemeMenuProps) => {
           className={styles.settingsIcon}
           style={{ color: colors.linkColor }}
         >
-          <i className='lni lni-cog' style={{ fontSize: '1.5rem' }} />
+          <FaGear style={{ fontSize: '1.5rem' }} />
         </Center>
       </Menu.Target>
       <Menu.Dropdown>

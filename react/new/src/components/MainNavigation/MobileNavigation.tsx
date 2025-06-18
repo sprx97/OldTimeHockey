@@ -1,6 +1,16 @@
 import { Burger, Box } from '@mantine/core'
 import { Link } from 'react-router-dom'
 import { useMemo, useCallback, memo } from 'react'
+import {
+  AiOutlineHome,
+  AiOutlineInfoCircle,
+  AiOutlineBook,
+  AiOutlineBarChart,
+  AiOutlineUnorderedList,
+  AiOutlineCrown,
+  AiOutlineDown,
+  AiOutlineRight,
+} from 'react-icons/ai'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
 import { ThemeConfig } from '@/types/theme'
@@ -49,6 +59,26 @@ interface MobileMenuItemProps {
   theme: ThemeConfig
 }
 
+const getRouteIcon = (routeName: string): React.ReactNode => {
+  const iconStyle = { fontSize: '1.2rem', marginRight: '0.5rem' }
+  switch (routeName) {
+    case 'Home':
+      return <AiOutlineHome style={iconStyle} />
+    case 'About':
+      return <AiOutlineInfoCircle style={iconStyle} />
+    case 'Rules':
+      return <AiOutlineBook style={iconStyle} />
+    case 'Leaderboard':
+      return <AiOutlineBarChart style={iconStyle} />
+    case 'Standings':
+      return <AiOutlineUnorderedList style={iconStyle} />
+    case 'Awards':
+      return <AiOutlineCrown style={iconStyle} />
+    default:
+      return <AiOutlineHome style={iconStyle} />
+  }
+}
+
 const MobileMenuItem = memo(
   ({
     route,
@@ -66,6 +96,7 @@ const MobileMenuItem = memo(
     }, [closeMenu, resetOpenSubmenuIds])
 
     const isSubmenuOpen = openSubmenuIds.includes(route.path)
+    const routeIcon = getRouteIcon(route.name)
 
     if (route.anchors) {
       return (
@@ -73,7 +104,9 @@ const MobileMenuItem = memo(
           <Link
             to={route.path}
             className={
-              isActive ? styles.mobileNavLinkActive : styles.mobileNavLink
+              isActive
+                ? styles.mobileNavLinkActive
+                : styles.mobileNavLinkWithSubmenu
             }
             style={{
               color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
@@ -83,17 +116,14 @@ const MobileMenuItem = memo(
               toggleSubmenu(route.path)
             }}
           >
-            <span>{route.name}</span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {routeIcon}
+              <span>{route.name}</span>
+            </div>
             {isSubmenuOpen ? (
-              <i
-                className='lni lni-chevron-down'
-                style={{ fontSize: '1.2rem' }}
-              />
+              <AiOutlineDown style={{ fontSize: '1.2rem' }} />
             ) : (
-              <i
-                className='lni lni-chevron-down'
-                style={{ fontSize: '1.2rem', transform: 'rotate(-90deg)' }}
-              />
+              <AiOutlineRight style={{ fontSize: '1.2rem' }} />
             )}
           </Link>
           <Box
@@ -134,6 +164,7 @@ const MobileMenuItem = memo(
         }}
         onClick={handleCloseMenu}
       >
+        {routeIcon}
         <span>{route.name}</span>
       </Link>
     )

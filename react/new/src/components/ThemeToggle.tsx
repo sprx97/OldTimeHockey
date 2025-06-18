@@ -6,6 +6,8 @@ import {
   useRef,
   memo,
 } from 'react'
+import { FaSun } from 'react-icons/fa'
+import { IoMoon } from 'react-icons/io5'
 import styles from './themeToggle.module.scss'
 
 interface ThemeToggleProps {
@@ -74,8 +76,8 @@ export const ThemeToggle = memo(function ThemeToggle({
     >
       <div className={styles.toggleTrack}>
         <div className={styles.toggleThumb}>
-          <i className={`lni lni-sun ${styles.sunIcon}`}></i>
-          <i className={`lni lni-moon ${styles.moonIcon}`}></i>
+          <FaSun className={styles.sunIcon} />
+          <IoMoon className={styles.moonIcon} />
         </div>
       </div>
     </div>

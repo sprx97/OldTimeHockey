@@ -1,6 +1,7 @@
 import { Component, ReactNode, ErrorInfo } from 'react'
 import { Box, Text, Button, Stack, Alert } from '@mantine/core'
-import { IconAlertTriangle, IconRefresh } from '@tabler/icons-react'
+import { RiAlertLine } from 'react-icons/ri'
+import { GrRefresh } from 'react-icons/gr'
 
 interface Props {
   children: ReactNode
@@ -87,7 +88,7 @@ class ErrorBoundary extends Component<Props, State> {
           case 'app':
             return (
               <Button
-                leftSection={<IconRefresh size={16} />}
+                leftSection={<GrRefresh size={16} />}
                 onClick={this.handleReload}
                 variant='filled'
               >
@@ -98,7 +99,7 @@ class ErrorBoundary extends Component<Props, State> {
             return (
               <Stack gap='sm'>
                 <Button
-                  leftSection={<IconRefresh size={16} />}
+                  leftSection={<GrRefresh size={16} />}
                   onClick={this.handleRetry}
                   variant='filled'
                 >
@@ -112,7 +113,7 @@ class ErrorBoundary extends Component<Props, State> {
           case 'component':
             return (
               <Button
-                leftSection={<IconRefresh size={16} />}
+                leftSection={<GrRefresh size={16} />}
                 onClick={this.handleRetry}
                 variant='outline'
                 size='sm'
@@ -128,7 +129,7 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <Box p='xl' style={{ textAlign: 'center' }}>
           <Stack gap='lg' align='center'>
-            <IconAlertTriangle size={48} color='var(--mantine-color-red-6)' />
+            <RiAlertLine size={48} color='var(--mantine-color-red-6)' />
 
             <Stack gap='sm' align='center'>
               <Text size='lg' fw={600}>
@@ -143,7 +144,7 @@ class ErrorBoundary extends Component<Props, State> {
 
             {showDetails && error && (
               <Alert
-                icon={<IconAlertTriangle size={16} />}
+                icon={<RiAlertLine size={16} />}
                 title='Error Details'
                 color='red'
                 variant='light'

@@ -102,7 +102,9 @@ export function ThemeControls() {
           label={
             <Text
               className={styles.teamLabel}
-              style={{ color: theme.mode === 'dark' ? '#FFFFFF' : '#333333' }}
+              style={{
+                color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
+              }}
             >
               Team Theme
             </Text>

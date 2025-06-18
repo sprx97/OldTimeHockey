@@ -72,6 +72,18 @@
   padding: 15px 15px 15px 20px;
   margin-bottom: 8px;
   font-size: 1.1rem;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.mobileNavLinkWithSubmenu {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: color 0.3s ease;
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
   justify-content: space-between;
   text-align: left;
 }

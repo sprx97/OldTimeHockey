@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import ErrorBoundary from './ErrorBoundary'
 import { Box, Text, Button, Stack } from '@mantine/core'
-import { IconRefresh } from '@tabler/icons-react'
+import { GrRefresh } from 'react-icons/gr'
 
 interface ThemeErrorBoundaryProps {
   children: ReactNode
@@ -40,7 +40,7 @@ const ThemeErrorFallback = () => {
           corrupted theme settings. Click below to reset and reload.
         </Text>
         <Button
-          leftSection={<IconRefresh size={16} />}
+          leftSection={<GrRefresh size={16} />}
           onClick={handleReload}
           variant='filled'
         >
