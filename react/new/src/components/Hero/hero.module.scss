@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
   min-height: 500px;
-  background-color: var(--color-hero-bg);
+  background-color: #f8f8f8;
   display: flex;
   align-items: center;
   width: 100%;
@@ -63,7 +63,7 @@
   text-transform: uppercase;
   letter-spacing: 6px;
   margin-bottom: 1rem;
-  color: var(--color-primary);
+  color: #fe5900;
   font-family: 'Anton', sans-serif;
   text-align: left;
 }
@@ -75,7 +75,7 @@
   line-height: 1;
   margin-bottom: 1.5rem;
   font-family: 'Anton', sans-serif;
-  color: var(--color-text-primary);
+  color: var(--color-hero-title);
   text-align: left;
 }
 
@@ -83,7 +83,7 @@
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 2rem;
-  color: var(--color-text-secondary);
+  color: #666;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   text-align: left;
 }

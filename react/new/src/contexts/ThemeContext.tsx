@@ -279,7 +279,13 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       '--color-button-secondary-hover-border',
       buttonColors.secondaryHoverBorder || '#fe5900'
     )
-  }, [buttonColors])
+
+    const heroTitleColor =
+      theme.type === 'team' && theme.team
+        ? NHL_TEAM_COLORS[theme.team].primary
+        : '#000'
+    root.style.setProperty('--color-hero-title', heroTitleColor)
+  }, [buttonColors, theme])
 
   useEffect(() => {
     if (theme.team) {
