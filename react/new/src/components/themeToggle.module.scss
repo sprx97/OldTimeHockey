@@ -29,23 +29,23 @@
 }
 
 @keyframes bgToDark {
-  from { background-color: #f0e3c0; }
-  to { background-color: #1a365d; }
+  from { background-color: var(--color-toggle-track-light); }
+  to { background-color: var(--color-toggle-track-dark); }
 }
 
 @keyframes bgToLight {
-  from { background-color: #1a365d; }
-  to { background-color: #f0e3c0; }
+  from { background-color: var(--color-toggle-track-dark); }
+  to { background-color: var(--color-toggle-track-light); }
 }
 
 @keyframes thumbToDark {
-  from { background-color: #e67e00; }
-  to { background-color: #38bdf8; }
+  from { background-color: var(--color-toggle-thumb-light); }
+  to { background-color: var(--color-toggle-thumb-dark); }
 }
 
 @keyframes thumbToLight {
-  from { background-color: #38bdf8; }
-  to { background-color: #e67e00; }
+  from { background-color: var(--color-toggle-thumb-dark); }
+  to { background-color: var(--color-toggle-thumb-light); }
 }
 
 .themeToggle {
@@ -72,9 +72,9 @@
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  background-color: #f0e3c0;
+  background-color: var(--color-toggle-track-light);
   overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 3px var(--color-shadow-light);
 }
 
 .toggleThumb {
@@ -84,18 +84,18 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #e67e00;
+  background-color: var(--color-toggle-thumb-light);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px var(--color-shadow-dark);
 }
 
 .sunIcon {
   position: absolute;
   font-size: 14px;
-  color: #fff;
+  color: var(--color-toggle-icon);
   opacity: 1;
   transform: rotate(0deg);
 }
@@ -103,19 +103,19 @@
 .moonIcon {
   position: absolute;
   font-size: 14px;
-  color: #fff;
+  color: var(--color-toggle-icon);
   opacity: 0;
   transform: rotate(-90deg);
 }
 
 .checked {
   .toggleTrack {
-    background-color: #1a365d;
+    background-color: var(--color-toggle-track-dark);
   }
   
   .toggleThumb {
     left: calc(100% - 27px);
-    background-color: #38bdf8;
+    background-color: var(--color-toggle-thumb-dark);
   }
   
   .sunIcon {

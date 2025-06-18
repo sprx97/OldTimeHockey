@@ -280,11 +280,19 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       buttonColors.secondaryHoverBorder || '#fe5900'
     )
 
+    // Hero
     const heroTitleColor =
       theme.type === 'team' && theme.team
         ? NHL_TEAM_COLORS[theme.team].primary
-        : '#000'
+        : theme.mode === 'light'
+          ? '#000'
+          : '#fff'
     root.style.setProperty('--color-hero-title', heroTitleColor)
+
+    const heroBg = theme.mode === 'light' ? '#f8f9fa' : '#1a1a1a'
+    const heroText = theme.mode === 'light' ? '#000' : '#fff'
+    root.style.setProperty('--color-hero-bg', heroBg)
+    root.style.setProperty('--color-hero-text', heroText)
   }, [buttonColors, theme])
 
   useEffect(() => {
