@@ -56,19 +56,20 @@ export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
   return (
     <Box style={{ backgroundColor: 'transparent' }}>
       <Text
-        fw={600}
+        fw={isDesktop ? 400 : 600}
         size='md'
         style={{
           color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
           marginBottom: '15px',
           textAlign: 'left',
           width: '100%',
-          backgroundColor:
-            theme.mode === 'dark'
+          backgroundColor: isDesktop
+            ? 'transparent'
+            : theme.mode === 'dark'
               ? 'rgba(0, 0, 0, 0.3)'
               : 'rgba(0, 0, 0, 0.05)',
           padding: headerPadding,
-          fontSize: '1.15rem',
+          fontSize: isDesktop ? '1rem' : '1.15rem',
         }}
       >
         Theme
