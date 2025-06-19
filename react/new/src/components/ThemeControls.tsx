@@ -60,7 +60,7 @@ export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
         style={{
           color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
           marginBottom: isDesktop ? '5px' : '15px',
-          textAlign: 'left',
+          textAlign: isDesktop ? 'center' : 'left',
           width: '100%',
           backgroundColor: isDesktop
             ? 'transparent'
@@ -69,9 +69,11 @@ export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
               : 'rgba(0, 0, 0, 0.05)',
           padding: headerPadding,
           fontSize: isDesktop ? '1rem' : '1.15rem',
+          fontFamily: isDesktop ? 'Anton, sans-serif' : 'inherit',
+          textTransform: isDesktop ? 'uppercase' : 'none',
         }}
       >
-        Theme
+        Theme Settings
       </Text>
 
       <Box style={{ padding: isDesktop ? '0' : '0 20px' }}>
@@ -119,6 +121,8 @@ export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
                 className={styles.teamLabel}
                 style={{
                   color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
+                  textAlign: 'center',
+                  paddingBottom: isDesktop ? '5px' : '0',
                 }}
               >
                 Team Theme
