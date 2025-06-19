@@ -54,13 +54,13 @@ export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
   const containerPadding = isDesktop ? '0 8px' : '0 20px'
 
   return (
-    <Box style={{ backgroundColor: 'transparent' }}>
+    <Box style={{ backgroundColor: 'transparent', position: 'relative' }}>
       <Text
         fw={isDesktop ? 400 : 600}
         size='md'
         style={{
           color: theme.mode === 'dark' ? '#FFFFFF' : '#333333',
-          marginBottom: '15px',
+          marginBottom: isDesktop ? '5px' : '15px',
           textAlign: 'left',
           width: '100%',
           backgroundColor: isDesktop
@@ -74,19 +74,15 @@ export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
       >
         Theme
       </Text>
-      <Stack
-        gap='md'
-        className={styles.container}
-        style={{
-          backgroundColor: 'transparent',
-          padding: containerPadding,
-        }}
-      >
+
+      {isDesktop && (
         <Box
           style={{
             display: 'flex',
-            justifyContent: 'flex-start',
-            marginBottom: '10px',
+            justifyContent: 'center',
+            marginBottom: '-15px',
+            position: 'relative',
+            zIndex: 2,
           }}
         >
           <ThemeToggle
@@ -94,6 +90,34 @@ export function ThemeControls({ variant = 'mobile' }: ThemeControlsProps) {
             onChange={handleThemeToggle}
           />
         </Box>
+      )}
+
+      <Stack
+        gap='md'
+        className={styles.container}
+        style={{
+          backgroundColor: 'transparent',
+          padding: isDesktop ? '20px 8px 8px 8px' : containerPadding,
+          border: isDesktop
+            ? `1px solid ${theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'}`
+            : 'none',
+          borderRadius: isDesktop ? '8px' : '0',
+        }}
+      >
+        {!isDesktop && (
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              marginBottom: '10px',
+            }}
+          >
+            <ThemeToggle
+              checked={theme.mode === 'dark'}
+              onChange={handleThemeToggle}
+            />
+          </Box>
+        )}
 
         <Box>
           <Button
