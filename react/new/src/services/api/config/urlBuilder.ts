@@ -53,7 +53,6 @@ export const buildApiUrl = (endpoint: string, params?: QueryParams): string => {
   return url.toString()
 }
 
-// League & Division Management
 export const buildLeagueTeamsUrl = (params: LeagueTeamsParams) =>
   buildApiUrl(API_ENDPOINTS.leagueTeams, {
     id: params.leagueId,
@@ -66,14 +65,12 @@ export const buildDivisionLeaguesUrl = (params: DivisionLeaguesParams) =>
 export const buildLeagueRanksUrl = (year: number) =>
   buildApiUrl(API_ENDPOINTS.leagueRanks, { year })
 
-// Standings & Playoff Data
 export const buildPlayoffOddsUrl = (params: PlayoffOddsParams) =>
   buildApiUrl(API_ENDPOINTS.playoffOdds, params)
 
 export const buildCurrentTierUrl = (year: number) =>
   buildApiUrl(API_ENDPOINTS.currentTier, { year })
 
-// Leaderboard & Statistics
 export const buildLeadersUrl = (params: LeadersParams) =>
   buildApiUrl(API_ENDPOINTS.leaders, params)
 
@@ -81,11 +78,9 @@ export const buildCurrentWeekUrl = () => buildApiUrl(API_ENDPOINTS.getWeek)
 
 export const buildCurrentYearUrl = () => buildApiUrl(API_ENDPOINTS.getYear)
 
-// ADP
 export const buildAdpUrl = (params: AdpParams) =>
   buildApiUrl(API_ENDPOINTS.adp, params)
 
-// Hall of Fame Records
 export const buildCareerRecordUrl = (
   recordType: 'wins' | 'winPct' | 'pointsFor' | 'avgPointsFor' | 'coachRating',
   params?: RecordParams
