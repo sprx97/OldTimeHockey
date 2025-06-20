@@ -1,3 +1,3 @@
-// API clients and utilities
-export * from './clients'
 export * from './config'
+export * from './queries'
+export * from './queryConfig'

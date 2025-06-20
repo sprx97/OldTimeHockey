@@ -6,24 +6,15 @@ export interface ApiConfig {
 }
 
 export interface ApiEndpoints {
-  // League & Division Management
   divisionLeagues: string
   leagueTeams: string
   leagueRanks: string
-
-  // Standings & Playoff Data
   playoffOdds: string
   currentTier: string
-
-  // Leaderboard & Statistics
   leaders: string
   getWeek: string
   getYear: string
-
-  // Draft & Player Data
   adp: string
-
-  // Hall of Fame Records
   winsRecord: string
   winPctRecord: string
   pfRecord: string
@@ -48,24 +39,15 @@ const getApiConfig = (): ApiConfig => {
 }
 
 export const API_ENDPOINTS: ApiEndpoints = {
-  // League & Division Management
   divisionLeagues: '/divisionleagues',
   leagueTeams: '/leagueteams',
   leagueRanks: '/leagueranks',
-
-  // Standings & Playoff Data
   playoffOdds: '/v2/standings/advanced/playoff_odds',
   currentTier: '/currenttier',
-
-  // Leaderboard & Statistics
   leaders: '/leaders',
   getWeek: '/getweek',
   getYear: '/getyear',
-
-  // Draft & Player Data
   adp: '/adp',
-
-  // Hall of Fame Records
   winsRecord: '/winsrecord',
   winPctRecord: '/winpctrecord',
   pfRecord: '/pfrecord',

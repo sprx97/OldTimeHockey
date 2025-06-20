@@ -1,10 +1,5 @@
 import { apiConfig, API_ENDPOINTS } from './apiConfig'
 
-/**
- * URL Builder utilities
- * Functions to build complete API URLs with query parameters
- */
-
 export type QueryParams = Record<string, string | number | boolean | undefined>
 
 export interface LeagueTeamsParams extends QueryParams {
