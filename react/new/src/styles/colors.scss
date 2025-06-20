@@ -1,0 +1,160 @@
+/* ==========================================================================
+   Color System
+   Three-tier structure: Base Colors → Semantic Colors → Component Colors
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     TIER 1: BASE COLOR PALETTE
+     Raw color values named by their actual color/shade
+     ========================================================================== */
+  
+  /* Orange (Primary brand color) */
+  --orange-400: #ff7a33;
+  --orange-500: #fe5900;
+  --orange-600: #d94c00;
+  --orange-700: #c44200;
+  --orange-800: #b03800;
+  
+  /* Blue */
+  --blue-900: #001a36;
+  --blue-800: #002244;
+  --blue-700: #003366;
+
+  /* Gray */
+  --gray-50: #f8f9fa;
+  --gray-100: #e9ecef;
+  --gray-200: #dee2e6;
+  --gray-300: #ced4da;
+  --gray-400: #adb5bd;
+  --gray-500: #6c757d;
+  --gray-600: #495057;
+  --gray-700: #343a40;
+  --gray-800: #212529;
+  --gray-900: #1a1a1a;
+  
+  /* Pure colors */
+  --white: #ffffff;
+  --black: #000000;
+  
+  /* Status colors */
+  --green-500: #28a745;
+  --yellow-500: #ffc107;
+  --red-500: #dc3545;
+  --cyan-500: #17a2b8;
+  
+  /* ==========================================================================
+     TIER 2: SEMANTIC COLOR MAPPING
+     Purpose-based color assignments using base colors
+     ========================================================================== */
+  
+  /* OTH Brand */
+  --color-primary: var(--orange-500);
+  --color-primary-hover: var(--orange-600);
+  --color-primary-active: var(--orange-700);
+  --color-primary-light: var(--orange-400);
+  --color-primary-dark: var(--orange-800);
+  
+  --color-secondary: var(--black);
+  --color-tertiary: var(--gray-500);
+  
+  /* Status */
+  --color-success: var(--green-500);
+  --color-warning: var(--yellow-500);
+  --color-error: var(--red-500);
+  --color-info: var(--cyan-500);
+  
+  /* Text */
+  --color-text-primary: var(--black);
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary: var(--gray-500);
+  --color-text-inverse: var(--white);
+  --color-text-disabled: var(--gray-400);
+  --color-text-muted: var(--gray-500);
+  
+  /* Backgrounds */
+  --color-bg-primary: var(--white);
+  --color-bg-secondary: var(--gray-50);
+  --color-bg-tertiary: var(--gray-100);
+  --color-bg-dark: var(--gray-700);
+  --color-bg-darker: var(--gray-900);
+  --color-bg-disabled: var(--gray-100);
+  --color-bg-overlay: rgba(0, 0, 0, 0.5);
+  
+  /* Interactive states */
+  --color-hover: var(--color-primary-hover);
+  --color-focus: rgba(254, 89, 0, 0.25);
+  --color-active: var(--color-primary-active);
+  --color-disabled: var(--gray-300);
+  --color-disabled-text: var(--gray-400);
+  
+  /* Borders */
+  --color-border-light: var(--gray-200);
+  --color-border-medium: var(--gray-300);
+  --color-border-dark: var(--gray-600);
+  --color-border-primary: var(--color-primary);
+  --color-border-secondary: var(--color-secondary);
+  
+  /* Shadows */
+  --color-shadow-light: rgba(0, 0, 0, 0.1);
+  --color-shadow-medium: rgba(0, 0, 0, 0.15);
+  --color-shadow-dark: rgba(0, 0, 0, 0.2);
+  --color-shadow-heavy: rgba(0, 0, 0, 0.3);
+  
+  /* ==========================================================================
+     TIER 3: COMPONENT-SPECIFIC COLORS
+     Implementation colors for specific UI components
+     ========================================================================== */
+  
+  /* Header/Navigation */
+  --color-header-bg: var(--blue-900);
+  --color-nav-text: var(--color-text-inverse);
+  --color-nav-text-hover: var(--color-primary);
+  
+  /* Hero */
+  --color-hero-bg: var(--color-bg-secondary);
+  --color-hero-text: var(--color-text-primary);
+  
+  /* Buttons */
+  --color-button-primary-bg: var(--color-secondary);
+  --color-button-primary-text: var(--color-text-inverse);
+  --color-button-primary-hover-bg: var(--color-primary);
+  --color-button-primary-hover-text: var(--color-text-inverse);
+  
+  --color-button-secondary-bg: var(--color-bg-primary);
+  --color-button-secondary-text: var(--color-secondary);
+  --color-button-secondary-border: var(--color-secondary);
+  --color-button-secondary-hover-bg: var(--color-primary);
+  --color-button-secondary-hover-text: var(--color-text-inverse);
+  --color-button-secondary-hover-border: var(--color-primary);
+  
+  /* Cards */
+  --color-card-bg: var(--color-bg-primary);
+  --color-card-border: var(--color-border-light);
+  --color-card-shadow: var(--color-shadow-light);
+  
+  /* Forms */
+  --color-input-bg: var(--color-bg-primary);
+  --color-input-border: var(--color-border-medium);
+  --color-input-border-focus: var(--color-primary);
+  --color-input-text: var(--color-text-primary);
+  --color-input-placeholder: var(--color-text-tertiary);
+  
+  /* Tables */
+  --color-table-header-bg: var(--color-bg-tertiary);
+  --color-table-row-even: var(--color-bg-primary);
+  --color-table-row-odd: var(--color-bg-secondary);
+  --color-table-border: var(--color-border-light);
+  
+  /* Theme Toggle */
+  --color-toggle-track-light: #f0e3c0;
+  --color-toggle-track-dark: #1a365d;
+  --color-toggle-thumb-light: #e67e00;
+  --color-toggle-thumb-dark: #38bdf8;
+  --color-toggle-icon: var(--white);
+}
+
+/* ==========================================================================
+   THEME OVERRIDES
+   Note: Theme colors are now managed programmatically by ThemeContext
+   ========================================================================== */
