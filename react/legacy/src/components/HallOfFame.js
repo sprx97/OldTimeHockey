@@ -83,7 +83,7 @@ const HallOfFame = () => {
     seasonWinPctRecord &&
     seasonWinPctRecord.map(item => (
       <List.Item key={item.FFname}>
-        {item.FFname} - {item.wpct.toFixed(3)} ({item.wins}-{item.losses}{item.ties > 0 ? "-"+item.ties : ''}) (
+        {item.FFname} - {item.wpct} ({item.wins}-{item.losses}{item.ties > 0 ? "-"+item.ties : ''}) (
         {item.year}-{item.year + 1} {item.name})
       </List.Item>
     ));
@@ -109,7 +109,7 @@ const HallOfFame = () => {
     seasonCoachRatingRecord &&
     seasonCoachRatingRecord.map(item => (
       <List.Item key={item.FFname}>
-        {item.FFname} - {item.coachRating.toFixed(2)}% ({item.year}-
+        {item.FFname} - {item.coachRating}% ({item.year}-
         {item.year + 1} {item.name})
       </List.Item>
     ));
