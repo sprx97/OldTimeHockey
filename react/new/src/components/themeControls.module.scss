@@ -1,0 +1,47 @@
+.container {
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.toggleWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.sunIcon {
+  transition: color 0.3s ease;
+}
+
+.moonIcon {
+  transition: color 0.3s ease;
+}
+
+.segmentedControlRoot {
+  border-radius: 4px;
+}
+
+.segmentedControlIndicator {
+  border-radius: 4px;
+}
+
+.segmentedControlLabel {
+  font-size: 14px;
+}
+
+.teamLabel {
+  font-size: 14px;
+}
+
+.teamOption {
+  font-size: 14px;
+}
+
+.teamLogo {
+  object-fit: contain;
+}
+
+.teamOptionGroup {
+  width: 100%;
+}

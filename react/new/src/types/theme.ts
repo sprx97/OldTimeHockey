@@ -3,6 +3,7 @@ export type ThemeMode = 'light' | 'dark'
 export interface TeamColors {
   primary: string
   secondary: string
+  tertiary?: string
 }
 
 export type NHLTeam =
@@ -39,7 +40,10 @@ export type NHLTeam =
   | 'WSH'
   | 'WPG'
 
+export type ThemeType = 'default' | 'team'
+
 export interface ThemeConfig {
   mode: ThemeMode
+  type: ThemeType
   team?: NHLTeam
 }

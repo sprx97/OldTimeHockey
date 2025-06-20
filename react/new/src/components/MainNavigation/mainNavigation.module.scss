@@ -1,0 +1,362 @@
+@keyframes dropdownAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headerTreatment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.headerBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 0;
+}
+
+.teamLogoBackground {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--mantine-spacing-md) - 20px);
+  transform: translateY(-50%);
+  height: 180%;
+  opacity: 0.25; 
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+/* Navigation links */
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  transition: color 0.3s ease;
+}
+
+.navLinkActive {
+  @extend .navLink;
+}
+
+.navLinkContent {
+  display: inline-flex;
+  align-items: center;
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: color 0.3s ease;
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.mobileNavLinkWithSubmenu {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: color 0.3s ease;
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.mobileNavLinkActive {
+  @extend .mobileNavLink;
+  text-decoration: none;
+  background-color: rgba(128, 128, 128, 0.15);
+  padding-left: 20px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.mobileMenuToggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 12px 0 16px 0;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+.submenuContainer {
+  overflow: hidden;
+  transition: height 300ms ease;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+  a {
+    display: flex;
+    align-items: center;
+    padding: 15px 15px 15px 35px;
+    font-size: 1rem;
+    justify-content: space-between;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+
+.settingsIcon {
+  height: 100%;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-left: 5px;
+  
+  svg {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  &:hover {
+    svg {
+      transform: rotate(30deg);
+    }
+  }
+}
+
+:global {
+  .nav-link:hover span {
+    color: inherit !important;
+  }
+}
+
+.primaryBackground {
+  flex: 3;
+  height: 100%;
+}
+
+.secondaryBackground {
+  flex: 1;
+  height: 100%;
+  transform: skew(-20deg);
+  transform-origin: top right;
+  margin-left: -5px;
+}
+
+.lightThemeHeaderBackground {
+  .primaryBackground {
+    background-color: var(--color-secondary);
+  }
+  
+  .secondaryBackground {
+    background-color: var(--color-tertiary);
+  }
+}
+
+.darkThemeHeaderBackground {
+  .primaryBackground {
+    background-color: var(--color-gray-700);
+  }
+  
+  .secondaryBackground {
+    background-color: var(--color-gray-600);
+  }
+}
+
+.headerContainer {
+  position: relative;
+  height: 60px;
+  padding: 0 var(--mantine-spacing-md);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Base styles for the pseudo-elements */
+.headerContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 350px;
+  height: 100%;
+  clip-path: polygon(0% 0%, 78% 0%, 88% 100%, 0% 100%);
+  z-index: 1;
+}
+
+.headerContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  clip-path: polygon(0% 0%, 72% 0%, 82% 100%, 0% 100%);
+  z-index: 2;
+}
+
+/* Default style for colored/white backgrounds */
+.headerContainer:not(.blackBackground)::before {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.headerContainer:not(.blackBackground)::after {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Style for black backgrounds */
+.blackBackground::before {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+.blackBackground::after {
+  background: rgba(128, 128, 128, 0.25);
+}
+
+.logoContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex: 0 0 auto;
+  margin-right: 20px;
+  z-index: 3;
+}
+
+.logo {
+  height: 28px;
+  width: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.navContainer {
+  height: 100%;
+  align-items: center;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 10;
+}
+
+.navGroup {
+  height: 100%;
+  align-items: center;
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 10;
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--mantine-spacing-md);
+  overflow: auto;
+  transform: translateX(100%);
+  transition: transform 300ms ease;
+  z-index: 100;
+}
+
+.mobileMenuOpen {
+  @extend .mobileMenu;
+  transform: translateX(0);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  
+  > a:last-of-type {
+    border-bottom: none;
+  }
+  
+  > div:last-of-type:not(.mobileMenuDivider):not(.mobileSettingsContainer) {
+    .mobileMenuToggle {
+      border-bottom: none;
+    }
+  }
+}
+
+.mobileMenuDivider {
+  margin: var(--mantine-spacing-md) 0;
+  border-top: 1px solid var(--mantine-color-default-border);
+}
+
+.mobileMenuHr {
+  width: 100%;
+  margin: var(--mantine-spacing-md) 0;
+  border: none;
+  border-top: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.mobileSettingsContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: var(--mantine-spacing-md);
+  padding-left: 0;
+  text-align: left;
+}
+
+.headerBox {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .headerContainer::before {
+    width: 250px;
+  }
+  
+  .headerContainer::after {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContainer::before {
+    width: 180px;
+    clip-path: polygon(0% 0%, 82% 0%, 92% 100%, 0% 100%);
+  }
+  
+  .headerContainer::after {
+    width: 140px;
+    clip-path: polygon(0% 0%, 78% 0%, 88% 100%, 0% 100%);
+  }
+}
