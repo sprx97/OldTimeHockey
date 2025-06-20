@@ -1,11 +1,14 @@
 import { Burger, Box } from '@mantine/core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useMemo, useCallback, memo } from 'react'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
 import { ThemeConfig } from '@/types/theme'
+import { AiOutlineHome, AiOutlineBarChart } from 'react-icons/ai'
+import { GoListOrdered } from 'react-icons/go'
+import { BsInfoCircle, BsTrophy } from 'react-icons/bs'
+import { GrDocumentVerified } from 'react-icons/gr'
+import { FaChevronRight, FaChevronDown } from 'react-icons/fa6'
 import styles from './mainNavigation.module.scss'
 
 interface MobileNavigationProps {
@@ -51,6 +54,26 @@ interface MobileMenuItemProps {
   theme: ThemeConfig
 }
 
+const getRouteIcon = (routeName: string): React.ReactNode => {
+  const iconStyle = { fontSize: '1.2rem', marginRight: '0.5rem' }
+  switch (routeName) {
+    case 'Home':
+      return <AiOutlineHome style={iconStyle} />
+    case 'About':
+      return <BsInfoCircle style={iconStyle} />
+    case 'Rules':
+      return <GrDocumentVerified style={iconStyle} />
+    case 'Leaderboard':
+      return <AiOutlineBarChart style={iconStyle} />
+    case 'Standings':
+      return <GoListOrdered style={iconStyle} />
+    case 'Awards':
+      return <BsTrophy style={iconStyle} />
+    default:
+      return <AiOutlineHome style={iconStyle} />
+  }
+}
+
 const MobileMenuItem = memo(
   ({
     route,
@@ -68,36 +91,34 @@ const MobileMenuItem = memo(
     }, [closeMenu, resetOpenSubmenuIds])
 
     const isSubmenuOpen = openSubmenuIds.includes(route.path)
+    const routeIcon = getRouteIcon(route.name)
 
     if (route.anchors) {
       return (
-        <div key={route.path}>
+        <div key={route.path} style={{ width: '100%' }}>
           <Link
             to={route.path}
-            className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+            className={
+              isActive
+                ? styles.mobileNavLinkActive
+                : styles.mobileNavLinkWithSubmenu
+            }
             style={{
               color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
             }}
             onClick={(e) => {
               e.preventDefault()
               toggleSubmenu(route.path)
             }}
           >
-            <span>{route.name}</span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {routeIcon}
+              <span>{route.name}</span>
+            </div>
             {isSubmenuOpen ? (
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                style={{ fontSize: '1.2rem' }}
-              />
+              <FaChevronDown style={{ fontSize: '1.2rem' }} />
             ) : (
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                style={{ fontSize: '1.2rem', transform: 'rotate(-90deg)' }}
-              />
+              <FaChevronRight style={{ fontSize: '1.2rem' }} />
             )}
           </Link>
           <Box
@@ -110,7 +131,11 @@ const MobileMenuItem = memo(
               <Link
                 key={`${route.path}${anchor.path}`}
                 to={route.path + anchor.path}
-                className={`mobile-nav-link ${isActive && anchor.path === locationHash ? 'active' : ''}`}
+                className={
+                  isActive && anchor.path === locationHash
+                    ? styles.mobileNavLinkActive
+                    : styles.mobileNavLink
+                }
                 style={{
                   color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
                 }}
@@ -128,13 +153,14 @@ const MobileMenuItem = memo(
       <Link
         key={route.path}
         to={route.path}
-        className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+        className={isActive ? styles.mobileNavLinkActive : styles.mobileNavLink}
         style={{
           color: `${theme.mode === 'dark' ? '#FFFFFF' : '#333333'}`,
         }}
         onClick={handleCloseMenu}
       >
-        {route.name}
+        {routeIcon}
+        <span>{route.name}</span>
       </Link>
     )
   }
@@ -191,21 +217,25 @@ const MobileNavigation = ({
         color={colors.linkColor}
         aria-label={opened ? 'Close navigation menu' : 'Open navigation menu'}
         aria-expanded={opened}
+        style={{
+          position: 'relative',
+          zIndex: 20,
+        }}
       />
       <Box
         className={opened ? styles.mobileMenuOpen : styles.mobileMenu}
         style={{
           backgroundColor: colors.mainBackground,
           color: colors.headerText,
+          padding: '0 0 30px 0',
         }}
         role='navigation'
         aria-label='Mobile navigation menu'
         aria-hidden={!opened}
       >
         {mobileNavigationItems}
-        <hr className={styles.mobileMenuHr} />
-        <Box p='md' style={{ width: '100%' }}>
-          <ThemeControls />
+        <Box style={{ width: '100%' }}>
+          <ThemeControls variant='mobile' />
         </Box>
       </Box>
     </>

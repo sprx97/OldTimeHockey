@@ -1,8 +1,8 @@
 import { Menu, Group, Center, Box } from '@mantine/core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGear, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { useMemo, memo } from 'react'
+import { FaChevronDown } from 'react-icons/fa6'
+import { FaGear } from 'react-icons/fa6'
 import routes from '@/routes'
 import { ThemeControls } from '@components/ThemeControls'
 import { ThemeConfig } from '@/types/theme'
@@ -138,9 +138,8 @@ const MenuItem = memo(({ route, isActive, colors, theme }: MenuItemProps) => {
               }}
             >
               {route.name}{' '}
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                style={{ marginLeft: 5, fontSize: '0.9rem' }}
+              <FaChevronDown
+                style={{ marginLeft: 5, fontSize: '1rem' }}
                 aria-hidden='true'
               />
             </span>
@@ -207,12 +206,12 @@ const ThemeMenu = memo(({ colors }: ThemeMenuProps) => {
           className={styles.settingsIcon}
           style={{ color: colors.linkColor }}
         >
-          <FontAwesomeIcon icon={faGear} style={{ fontSize: '1.5rem' }} />
+          <FaGear style={{ fontSize: '1.5rem' }} />
         </Center>
       </Menu.Target>
       <Menu.Dropdown>
         <Box p='xs'>
-          <ThemeControls />
+          <ThemeControls variant='desktop' />
         </Box>
       </Menu.Dropdown>
     </Menu>

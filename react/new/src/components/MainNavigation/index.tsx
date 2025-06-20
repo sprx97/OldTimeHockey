@@ -35,7 +35,7 @@ const MainNavigation = () => {
         position: 'relative',
       }}
     >
-      <NavigationLogo logoSrc={logoSrc} teamLogo={teamLogo} />
+      <NavigationLogo logoSrc={logoSrc} teamLogo={null} />
       <style>{navLinkStyles}</style>
       <Box size='100%' style={{ width: '100%' }}>
         <Box
@@ -61,6 +61,11 @@ const MainNavigation = () => {
           />
         </Box>
       </Box>
+      {teamLogo && (
+        <div className={styles.teamLogoBackground}>
+          <img src={teamLogo} alt='Team Logo Background' />
+        </div>
+      )}
     </Box>
   )
 }

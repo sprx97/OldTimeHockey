@@ -1,3 +1,6 @@
+
+@import './styles/colors.scss';
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -5,22 +8,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  /* Color Variables */
-  --primary-color: #fe5900;
-  --secondary-color: #000000;
-  --text-light: #ffffff;
-  --text-dark: #333333;
-  --background-light: #f5f5f5;
-  --background-dark: #242424;
-  --border-light: #dddddd;
-  --border-dark: #444444;
-  
-  /* Button theme variables */
-  --primary-hover-color: #d94c00;
-  --secondary-hover-color: #898989;
-  --tertiary-color: #000000;
+  background-color: var(--color-bg-dark);
   
   /* Animation durations */
   --transition-fast: 0.2s;
@@ -66,11 +54,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--color-primary-hover);
 }
 
 body {
@@ -93,12 +81,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--color-bg-darker);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--color-primary);
 }
 button:focus,
 button:focus-visible {
@@ -107,32 +95,22 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
-    
-    /* Override colors for light mode */
-    --text-primary: var(--text-dark);
-    --text-secondary: #666666;
-    --background-primary: var(--background-light);
-    --background-secondary: #ffffff;
-    --border-primary: var(--border-light);
+    color: var(--color-text-primary);
+    background-color: var(--color-white);
   }
   a:hover {
-    color: #747bff;
+    color: var(--color-primary-hover);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: var(--color-gray-100);
   }
 }
 
 /* Dark mode overrides */
 @media (prefers-color-scheme: dark) {
   :root {
-    --text-primary: var(--text-light);
-    --text-secondary: #cccccc;
-    --background-primary: var(--background-dark);
-    --background-secondary: #1a1a1a;
-    --border-primary: var(--border-dark);
+    color: var(--color-text-inverse);
+    background-color: var(--color-bg-dark);
   }
 }
 
@@ -140,7 +118,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #001a36;
+  background-color: var(--color-header-bg);
   height: 60px;
   width: 100%;
 }
@@ -159,7 +137,7 @@ header .nav-link {
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 0 15px;
-  color: white;
+  color: var(--color-white);
   transition: color 0.3s ease;
   white-space: nowrap;
   font-weight: 400;
@@ -174,6 +152,6 @@ header .settings-icon {
   display: flex;
   align-items: center;
   height: 100%;
-  color: white;
+  color: var(--color-white);
   margin-left: 15px;
 }

@@ -240,46 +240,60 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   useEffect(() => {
     const root = document.documentElement
     root.style.setProperty(
-      '--button-primary-bg',
+      '--color-button-primary-bg',
       buttonColors.primaryBg || '#000'
     )
     root.style.setProperty(
-      '--button-primary-text',
+      '--color-button-primary-text',
       buttonColors.primaryText || '#fff'
     )
     root.style.setProperty(
-      '--button-primary-hover-bg',
+      '--color-button-primary-hover-bg',
       buttonColors.primaryHoverBg || '#fe5900'
     )
     root.style.setProperty(
-      '--button-primary-hover-text',
+      '--color-button-primary-hover-text',
       buttonColors.primaryHoverText || '#fff'
     )
     root.style.setProperty(
-      '--button-secondary-bg',
+      '--color-button-secondary-bg',
       buttonColors.secondaryBg || '#fff'
     )
     root.style.setProperty(
-      '--button-secondary-text',
+      '--color-button-secondary-text',
       buttonColors.secondaryText || '#000'
     )
     root.style.setProperty(
-      '--button-secondary-border',
+      '--color-button-secondary-border',
       buttonColors.secondaryBorder || '#000'
     )
     root.style.setProperty(
-      '--button-secondary-hover-bg',
+      '--color-button-secondary-hover-bg',
       buttonColors.secondaryHoverBg || '#fe5900'
     )
     root.style.setProperty(
-      '--button-secondary-hover-text',
+      '--color-button-secondary-hover-text',
       buttonColors.secondaryHoverText || '#fff'
     )
     root.style.setProperty(
-      '--button-secondary-hover-border',
+      '--color-button-secondary-hover-border',
       buttonColors.secondaryHoverBorder || '#fe5900'
     )
-  }, [buttonColors])
+
+    // Hero
+    const heroTitleColor =
+      theme.type === 'team' && theme.team
+        ? NHL_TEAM_COLORS[theme.team].primary
+        : theme.mode === 'light'
+          ? '#000'
+          : '#fff'
+    root.style.setProperty('--color-hero-title', heroTitleColor)
+
+    const heroBg = theme.mode === 'light' ? '#f8f9fa' : '#1a1a1a'
+    const heroText = theme.mode === 'light' ? '#000' : '#fff'
+    root.style.setProperty('--color-hero-bg', heroBg)
+    root.style.setProperty('--color-hero-text', heroText)
+  }, [buttonColors, theme])
 
   useEffect(() => {
     if (theme.team) {
