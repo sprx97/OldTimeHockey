@@ -145,7 +145,6 @@ export type AdpResponse = ApiResponse<AdpEntry[]>
 export type CareerRecordsResponse = ApiResponse<CareerRecord[]>
 export type SeasonRecordsResponse = ApiResponse<SeasonRecord[]>
 
-// Error Types
 export interface ApiError {
   message: string
   code?: string
@@ -153,7 +152,6 @@ export interface ApiError {
   details?: Record<string, unknown>
 }
 
-// Request Status Types
 export type RequestStatus = 'idle' | 'loading' | 'success' | 'error'
 
 export interface RequestState<T> {
