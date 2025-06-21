@@ -38,7 +38,7 @@ export interface LeagueRank {
   totalLeagues: number
 }
 
-// Standings & Playoffs
+// Standings & Playoff Types
 export interface StandingsEntry {
   teamId: number
   teamName: string
@@ -72,7 +72,7 @@ export interface CurrentTier {
   isPlayoffs: boolean
 }
 
-// Leaderboard & Statistics
+// Leaderboard & Statistics Types
 export interface LeaderboardEntry {
   rank: number
   teamId: number
@@ -95,7 +95,7 @@ export interface YearInfo {
   availableYears: number[]
 }
 
-// ADP
+// Draft & Player Types
 export interface AdpEntry {
   rank: number
   playerId: number
@@ -107,7 +107,7 @@ export interface AdpEntry {
   percentage: number
 }
 
-// Hall of Fame
+// Hall of Fame Records Types
 export interface RecordEntry {
   rank: number
   teamId: number
@@ -145,6 +145,7 @@ export type AdpResponse = ApiResponse<AdpEntry[]>
 export type CareerRecordsResponse = ApiResponse<CareerRecord[]>
 export type SeasonRecordsResponse = ApiResponse<SeasonRecord[]>
 
+// Error Types
 export interface ApiError {
   message: string
   code?: string
@@ -152,6 +153,7 @@ export interface ApiError {
   details?: Record<string, unknown>
 }
 
+// Request Status Types
 export type RequestStatus = 'idle' | 'loading' | 'success' | 'error'
 
 export interface RequestState<T> {
