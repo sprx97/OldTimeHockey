@@ -35,6 +35,23 @@ export interface RecordParams extends QueryParams {
 }
 
 export const buildApiUrl = (endpoint: string, params?: QueryParams): string => {
+  // Handle relative URLs for development
+  if (apiConfig.baseUrl.startsWith('/')) {
+    const path = `${apiConfig.baseUrl}${endpoint}`
+    const url = new URL(path, window.location.origin)
+
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          url.searchParams.append(key, String(value))
+        }
+      })
+    }
+
+    return url.toString()
+  }
+
+  // Handle absolute URLs for production
   const url = new URL(endpoint, apiConfig.baseUrl)
 
   if (params) {
