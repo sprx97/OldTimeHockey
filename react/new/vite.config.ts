@@ -14,4 +14,14 @@ export default defineConfig({
       '@assets': '/src/assets',
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://roldtimehockey.com/node',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: true,
+      },
+    },
+  },
 })
