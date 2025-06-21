@@ -10,7 +10,6 @@ import MainNavigation from '@/components/MainNavigation'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import ThemeErrorBoundary from '@/components/ErrorBoundary/ThemeErrorBoundary'
-import { TestCors } from '@/components/TestCors'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,7 +41,6 @@ function App() {
                   </AppShell.Header>
                   <AppShell.Main>
                     <ErrorBoundary level='route'>
-                      <TestCors />
                       <Routes>
                         {routes.map((route) => (
                           <Route
