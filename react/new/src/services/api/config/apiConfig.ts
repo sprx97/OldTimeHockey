@@ -31,7 +31,9 @@ const getApiConfig = (): ApiConfig => {
   const isDevelopment = import.meta.env?.MODE === 'development'
 
   return {
-    baseUrl: isDevelopment ? '/api' : 'https://roldtimehockey.com/node',
+    baseUrl: isDevelopment
+      ? `${window.location.protocol}//${window.location.host}/api`
+      : 'https://roldtimehockey.com/node',
     timeout: isDevelopment ? 10000 : 5000, // 10s in dev, 5s in prod
     retryAttempts: 3,
     retryDelay: 1000,
