@@ -1,30 +1,31 @@
 var http = require("http"),
     url = require("url"),
-    mysql = require("mysql2"),
+    mysql = require("mysql2/promise"),
     mysqlEscapeArray = require("mysql-escape-array"),
     fs = require("fs"),
     config = require("../shared/config.json"),
     PythonShell = require("python-shell"),
 	util = require("util")
 
-var conn = mysql.createConnection({
+// Connection pool to allow many connections
+const pool = mysql.createPool({
 	host: config.sql_hostname,
 	user: config.sql_username,
 	password: config.sql_password,
-	database: config.sql_dbname
+	database: config.sql_dbname,
+	waitForConnections: true,
+	connectionLimit: 100,
+	queueLimit: 1000
 });
 
-conn.connect(function(err) {
-	if(err) throw err;
-	console.log("Connected!");
-});
-
-// TODO: Only required until I upgrade node and use mysql2 package
-// Replaces conn.query with an async-safe version that returns the value.
-const async_query = util.promisify(conn.query).bind(conn);
 async function makeSqlQuery(query) {
-	const rows = await async_query(query);
-	return `${JSON.stringify(rows)}`;
+	try {
+		const [rows] = await pool.execute(query);
+		return rows
+	} catch (err) {
+		console.error("SQL error: ", err);
+		return {}
+	}
 }
 
 async function handleV2(request, response) {
@@ -112,8 +113,9 @@ http.createServer(async function(request, response) {
 		sql = "SELECT Leagues.name, Leagues.id from Leagues where year=" + mysql.escape(query.year) + tierfilter;
 	}
 	else if(path == "/leagueteams") {
-                sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.ties as ties, Teams.isChamp as isChamp, Leagues.tier as tier, Teams.replacement as is_replacement \
-                       from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on (leagueID=id and Teams.year=Leagues.year) where leagueid=" + mysql.escape(query.id) + " and Teams.year=" + mysql.escape(query.year) + " ORDER BY wins DESC, losses ASC, pointsFor DESC";
+		console.log(request.url);
+        sql = "SELECT Teams.teamID as teamID, Teams.leagueID as leagueID, Teams.name as name, Users.FFname as FFname, Teams.wins as wins, Teams.losses as losses, Teams.ties as ties, Teams.isChamp as isChamp, Leagues.tier as tier, Teams.replacement as is_replacement \
+            	from Teams INNER JOIN Users on ownerID=FFid INNER JOIN Leagues on (leagueID=id and Teams.year=Leagues.year) where leagueid=" + mysql.escape(query.id) + " and Teams.year=" + mysql.escape(query.year) + " ORDER BY wins DESC, losses ASC, pointsFor DESC";
 	}
 	else if (path == "/currenttier") {
 		sql = "SELECT Leagues.tier, Users.FFname from Teams inner join Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) inner join Users on ownerID=FFid where Teams.year=" + mysql.escape(query.year) + " and replacement != 1";
@@ -275,10 +277,9 @@ http.createServer(async function(request, response) {
 	sql += limit; // Can add limit to any query, even though it really only makes sense for certain ones.
 	console.log(path + " " + sql)
 
-	conn.query(sql, function(err, result, fields) {
-		console.log(result)
-		response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
-		response.write("" + JSON.stringify(result));
-		response.end();
-	});
+	const result = await makeSqlQuery(sql);
+	// console.log(result);
+	response.writeHead(200, {"Content-Type": "text/plain", "Access-Control-Allow-Origin": "*"});
+	response.write("" + JSON.stringify(result));
+	response.end();
 }).listen(8001, "0.0.0.0");
