@@ -4,6 +4,19 @@ import SiteHeader from "./SiteHeader";
 
 const seasons = [
   {
+    year: "2025-2026",
+    teams: "TBD",
+    leagues: "TBD",
+    divisions: 5,
+    champions: {
+      division1: { name: "TBD", link: "#" },
+      pointsFor: { name: "TBD", link: "#", stat: "TBD" },
+      coachesRating: { name: "TBD", link: "#", stat: "TBD" },
+      woppaCup: { name: "TBD", link: "#" },
+    },
+    ruleChanges: ["Moved to 5-division format and updated promo/rele and tenure to align with it"],
+  },
+  {
     year: "2024-2025",
     teams: 224,
     leagues: 16,
@@ -248,11 +261,11 @@ const Homepage = () => {
             <Grid.Row columns={1}>
               <Grid.Column textAlign="center">
                 <Header as="h1">About</Header>
-                OldTimeHockey is a fantasy hockey superleague run by redditors
+                OldTimeHockey is a fantasy hockey superleague run
                 using <a href="http://www.fleaflicker.com/nhl">
                   Fleaflicker
                 </a>{" "}
-                featuring 238 teams sorted into 17 leagues across 4 divisions.
+                featuring 224 teams sorted into 16 leagues across 5 divisions.
                 English Premier League style relegation dictates movement
                 between divisions each season.
               </Grid.Column>
@@ -261,9 +274,7 @@ const Homepage = () => {
               <Grid.Column textAlign="center">
                 <Header as="h1">Rules</Header>
                 <Header as="h3">
-                  <a href="https://www.reddit.com/r/OldTimeHockey/wiki/index#wiki_oth_constitution">
-                    OTH Constitution
-                  </a>
+                  <s>OTH Constitution</s> Under construction
                 </Header>
               </Grid.Column>
               <Grid.Column textAlign="center">
@@ -334,24 +345,78 @@ const Homepage = () => {
             Promotion and Relegation
           </Header>
           <Grid>
-            <Grid.Row columns={1}>
+            <Grid.Row columns={5}>
               <Grid.Column>
-                <Image src={"/images/PromoRele.png"} />
+                <Header as="h2" textAlign="center">D1 (14)</Header>
+                <ul>
+                  <li>(6) D1 Playoff teams</li>
+                  <li>(1) D1 7th Place Bracket Winner</li>
+                  <li>(4) D2 Finalist</li>
+                  <li>(2) D2 3rd Place Winners</li>
+                  <li>(1) PF Champion</li>
+                  *Spotfills from top PF D1-2 Teams
+                </ul>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h2" textAlign="center">D2 (28)</Header>
+                <ul>
+                  <li>(7) D1 8th-14th</li>
+                  <li>(6) D2 4th-6th</li>
+                  <li>(2) D2 7th Place Bracket Winners</li>
+                  <li>(6) D3 Finalists</li>
+                  <li>(3) D3 3rd Place Winners</li>
+                  <li>(1) WoppaCup Champion</li>
+                  <li>(1) Top PF D4 team</li>
+                  *Spotfills from top PF D2-3 Teams
+                </ul>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h2" textAlign="center">D3 (42)</Header>
+                <ul>
+                  <li>(14) D2 8th-14th</li>
+                  <li>(9) D3 4th-6th</li>
+                  <li>(3) D3 7th Place Bracket Winners</li>
+                  <li>(8) D4 Finalists</li>
+                  <li>(4) D4 3rd Place Winners</li>
+                  <li>(1) WC Runner-up</li>
+                  <li>(1) Top-PF D5 team</li>
+                  *Spotfills from top PF D3-4 Teams
+                </ul>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h2" textAlign="center">D4 (56)</Header>
+                <ul>
+                  <li>(21) D3 8th-14th</li>
+                  <li>(12) D4 4th-6th</li>
+                  <li>(4) D4 7th Place Bracket Winners</li>
+                  <li>(10+) D5 Finalists</li>
+                  <li>(5+) D5 3rd Place Winners</li>
+                  <li>New Signups (Tenured)</li>
+                  *Spotfills from top PF D4-5 Teams
+                </ul>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h2" textAlign="center">D5 (70+)</Header>
+                <ul>
+                  <li>(28) D4 8th-14th</li>
+                  <li>(55+) D5 4th-14th</li>
+                  <li>New Signups</li>
+                </ul>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column>
                 <Header as="h2" textAlign="center">Tenure</Header>
-                In order to prevent unfair advantages in D4 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs since the 4-division format was introduced in 2016-17 is ineligible for D4 and will say in D3. This also applies to managers returning from a hiatus. The year threshold for this is subject to change in the future in order to maintain relevance.</b>
+                In order to prevent unfair advantages in D5 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs the 2020-2021 season is ineligible for D5 and will be placed into D4. This also includes managers returning from a hiatus. The year threshold for this is subject to change in the future.</b>
               </Grid.Column>
             </Grid.Row>
           </Grid>
           <Header as="h1" textAlign="center">
             Inactivity Policy and Midseason "Promotion"
           </Header>
-          Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter where they finish and are bumped to D4.
-          Users who are inactive longer than two weeks in the season are subject to replacement off of the waitlist (D4) or via midseason promotion (D1-D3).
-          If a D1-D3 team goes inactive, the current highest season-long PF team in the division below will be offered the team. This manager is now responsible for BOTH of their teams,
+          Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter where they finish and are bumped to D5.
+          Users who are inactive longer than two weeks in the season are subject to replacement off of the waitlist (D5) or via midseason promotion (D1-D4).
+          If a D1-D4 team goes inactive, the current highest season-long PF team in the division below will be offered the team. This manager is now responsible for BOTH of their teams,
           and the higher one will be revoked of the lower one goes inactive. For the sake of promotion/relegation next season, they receive the higher slot of the two those teams earn.
         </Segment>
         <Segment basic />

@@ -1,6 +1,7 @@
 # Python excess stuff
 **/__pycache__/
 *.pyc
+scripts/oth.venv
 
 # Personal info
 *config.json

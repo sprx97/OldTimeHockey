@@ -246,7 +246,7 @@ def GenerateD3FillOrder():
         d3_fill.append(team["FFname"])
 
 # Generate Tenure list
-TENURE_NUM_YEARS = 5 # Currently back to 16-17. Needs to be adjusted.
+TENURE_NUM_YEARS = 5 # Currently back to 20-21. Needs to be adjusted.
 def GenerateTenureList():
     # Get all the D1 members from the past TENURE_NUM_YEARS years
     query = f"SELECT DISTINCT U.FFname from Teams as T INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year) INNER JOIN Users as U ON (T.ownerID=U.FFid) " + \
@@ -331,13 +331,17 @@ print(f"---- D4 Fill ({56-len(d4)}) ----")
 for manager in d4_fill:
     print(manager)
 
-# GenerateD5List()
+GenerateD5List()
 
-# print("\n---- D5 ----")
-# for manager in d5:
-#     print(manager)
+print("\n---- D5 ----")
+for manager in d5:
+    print(manager)
 
 # Tenured managers get fast tracked to D4 this year if necessary
-# GenerateTenureList()
-# tenure = list(set(tenure)) # Remove duplicates
-# tenure.sort()
+GenerateTenureList()
+tenure = list(set(tenure)) # Remove duplicates
+tenure.sort()
+
+print("\n---- Tenure ----")
+for manager in tenure:
+    print(manager)
