@@ -384,7 +384,7 @@ const Homepage = () => {
                 </ul>
               </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={2}>
+            <Grid.Row columns={3}>
               <Grid.Column>
                 <Header as="h2" textAlign="center">D4 (56)</Header>
                 <ul>
@@ -404,6 +404,8 @@ const Homepage = () => {
                   <li>(55+) D5 4th-14th</li>
                   <li>New Signups</li>
                 </ul>
+              </Grid.Column>
+              <Grid.Column>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={1}>
