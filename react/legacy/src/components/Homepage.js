@@ -345,7 +345,7 @@ const Homepage = () => {
             Promotion and Relegation
           </Header>
           <Grid>
-            <Grid.Row columns={5}>
+            <Grid.Row columns={3}>
               <Grid.Column>
                 <Header as="h2" textAlign="center">D1 (14)</Header>
                 <ul>
@@ -383,6 +383,8 @@ const Homepage = () => {
                   *Spotfills from top PF D3-4 Teams
                 </ul>
               </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={2}>
               <Grid.Column>
                 <Header as="h2" textAlign="center">D4 (56)</Header>
                 <ul>
