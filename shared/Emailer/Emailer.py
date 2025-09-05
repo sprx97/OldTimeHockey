@@ -40,7 +40,7 @@ def obtain_creds(file, scopes):
         # Otherwise create new creds from a login
         else:
             print("Requesting new gmail credentials")
-            flow = InstalledAppFlow.from_client_secrets_file(Config.config["srcroot"] + "scripts/Emailer/auth.json", scopes)
+            flow = InstalledAppFlow.from_client_secrets_file(Config.config["srcroot"] + "shared/Emailer/auth.json", scopes)
             creds = flow.run_local_server(port=0)
 
         # Save creds for next run

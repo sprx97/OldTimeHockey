@@ -29,8 +29,7 @@ sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
 
 last_year = sheets.values().get(spreadsheetId=Config.config["prev_season_reg_sheet_id"], range="Responses!A:Y").execute()
-this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:Y").execute()
-retirees = []
+this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:W").execute()
 
 # Get all of last year's registrants
 values = last_year.get("values", [])
@@ -52,21 +51,25 @@ for row in values[1:]: # Skip the header
         emails.remove(email)
 
 # Remove the retirees
+retirees = ["elizabeth.nadelman@gmail.com"]
 for email in retirees:
     if email in emails:
         emails.remove(email)
 
-#print("Remember to update the subject and body, and any retirees, then uncomment these lines.")
-#quit()
+print("Remember to update the subject and body, and any retirees, then comment these lines.")
+quit()
+
+reg_form_link = "https://forms.gle/zg4s96qHQ7XUMUmA6"
+draft_dates = "October 3rd-6th"
 
 # Construct the email -- TODO Update the form link each offseason
 to = "roldtimehockey@gmail.com"
 subject = "Old Time Hockey 2025-26 Registration (Reminder 1/3)"
 body = "Hello -- \n\n" + \
 "You are receiving this email because you played in the Old Time Hockey fantasy league last year. " + \
-"If you are interested in playing again, the registration form can be found here: ADD FORM HERE\n\n" + \
+f"If you are interested in playing again, the registration form can be found here: {reg_form_link}\n\n" + \
 "SET REGISTRATION DEADLINE.\n\n" + \
-"Drafts this year will take place between SET CORRECT DATES. Hope to see you back!\n\n" + \
+f"Drafts this year will take place {draft_dates}. Hope to see you back!\n\n" + \
 "-- Admins"
 
 gmail_service = Emailer.get_gmail_service()

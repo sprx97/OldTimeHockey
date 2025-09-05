@@ -13,12 +13,12 @@ from shared.Emailer import Emailer
 NUM_TEAMS_PER_LEAGUE = 14
 
 if len(sys.argv) != 3:
-    print("Please provide a division (D2-D4) and a star threshold (1-5).")
+    print("Please provide a division (D2-D5) and a star threshold (1-5).")
     quit()
 
 division = sys.argv[1]
-if division not in ["D2", "D3", "D4"]:
-    print("Division must be D2, D3, or D4.")
+if division not in ["D2", "D3", "D4", "D5"]:
+    print("Division must be D2, D3, D4, or D5.")
     quit()
 
 star_threshold = sys.argv[2]

@@ -9,8 +9,10 @@ from shared import Shared
 from shared import Config
 from shared.Emailer import Emailer
 
-DEBUG = False
-send_emails = True # last resort, change if needed
+# TODO: Add automatic setting of draft times
+
+DEBUG = True
+send_emails = False # last resort, change if needed
 all_emails = []
 
 # Only allow sending of invites for one division at a time
@@ -19,8 +21,8 @@ if len(sys.argv) != 2:
     quit()
 
 division = sys.argv[1]
-if division not in ["D1", "D2", "D3", "D4"]:
-    print("Division must be D1, D2, D3, or D4.")
+if division not in ["D1", "D2", "D3", "D4", "D5"]:
+    print("Division must be D1, D2, D3, D4, or D5.")
     quit()
 
 # Get the login session for OTHAdmin
@@ -58,7 +60,7 @@ for league in leagues:
 
     EMAIL_ADDRESS_COL = 0 # A
     FF_ID_COL = 2 # C
-    LEAGUE_ASSIGN_COL = 24 # Y
+    LEAGUE_ASSIGN_COL = 22 # W
     for row in values[1:]:
         # Skip managers not assigned to a league yet
         if len(row) <= LEAGUE_ASSIGN_COL:
@@ -103,7 +105,7 @@ body = \
 "If you can't find it, reach out to an admin via Discord or respond to this email. \n\n" + \
 "Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
 "If the league is full when you click on the link, **please respond to this email** and we'll get you into a different league. " + \
-"Replacement invites are being sent every 24 hours.\n\n" + \
+"Replacement invites are being sent every 48 hours.\n\n" + \
 "Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
 "Also, join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
 "-- Admins"

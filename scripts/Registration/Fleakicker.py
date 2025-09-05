@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath
 from shared import Shared
 from shared import Config
 
+# Swap this to actually commit changes instead of just printing stuff
 DEBUG = True
 
 # Comment this out to actually run the script.
@@ -49,15 +50,12 @@ if len(leagues) == 0:
     print(f"No leagues for {year} in database. Ensure WeekVars and DB are correct.")
     quit()
 
-activate_url = "https://www.fleaflicker.com/nhl/leagues/{}/activate"
-message_url = "https://www.fleaflicker.com/nhl/leagues/{}/messages/new"
-kick_url = 'https://www.fleaflicker.com/nhl/leagues/{}/settings/owners/remove'
-
-form = "https://forms.gle/DAn53vF5JTsU1W8L6"
-form_year = 2024
+form = "https://forms.gle/zg4s96qHQ7XUMUmA6"
+form_year = 2025
 if form_year != year+1:
     print(f"Form in registration post has not been updated.")
     quit()
+
 # NB: If you want to put spaces into this, use <br> instead of \n
 kick_message = f"OTH {year+1}-{year+2} is about to begin! These leagues are being cleared and new invites will go out shortly. If you're receiving this and haven't signed up, " + \
                f"please fill out the registration form ({form}) and check the discord/subreddit for more info. ALL RETURNING TEAMS MUST REGISTER. If you have any issues tag @mods on the Discord or DM via reddit for help!"
@@ -71,27 +69,56 @@ kick_message_data = {
 print(kick_message_data)
 
 season_num = year-2010
-invite_message = f"Welcome back to OTH for season number {season_num}! Draft date/time is FINAL, but " + \
+welcome_message = f"<p>Welcome back to OTH for season {season_num}! Draft date/time is FINAL, but " + \
                  "draft order is NOT FINAL. Draft order will be randomized once everyone has joined. " + \
                  "League assignments were made based on availability on the registration form. " + \
-                 "If your availability has changed, tag @mods on https://discord.com/invite/zXTUtj9 and we'll try to help."
-invite_message_data = {
-    "parentId": "",
-    "editId": "",
-    "title": f"Welcome to OldTimeHockey {year+1}-{year+2}!",
-    "contents": invite_message,
-    "emailAll": "false"
+                 "If your availability has changed, tag @mods on <a href='https://discord.com/invite/zXTUtj9'>the discord</a> and we'll try to help.</p>"
+welcome_message_data = {
+    "html": welcome_message,
+    "expiryDate": f"10/07/{year+1}"
 }
-print(invite_message_data)
+print(welcome_message_data)
 
-# TODO: Also set the trade deadline, playoff schedule, and other settings if necessary
-#       I'm not sure if this is automatable, but it's a pain to do manually.
-#	Also may not be able to do it because flea drags their feet on schedule stuff.
 def boot_teams(league_id):
     response = requests.get(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year+1}")
     teams = response.json()["divisions"][0]["teams"]
     for team in teams:
-        session.post(kick_url.format(league_id), data={"teamId": team["id"], "reason": 6})
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/settings/owners/remove".format(league_id), data={"teamId": team["id"], "reason": 6})
+
+def update_settings(league_id):
+    # Playoff settings
+    session.post("https://www.fleaflicker.com/nhl/editPlayoffsSubmit", data={
+        "leagueId": league_id,
+        "holdPlayoffs": "true",
+        "numPlayoffTeams": 6,
+        "finalsWeek": 26,
+        "reseed": "false"
+    })
+    
+    # Trade deadline
+    session.post("https://www.fleaflicker.com/nhl/editTransactionsSubmit", data={
+        "leagueId": league_id,
+        "tradeDeadline": 153, # Monday March 9th, 6am EST
+        "tradeDeadlineUnlockAfterSeason": "false",
+        # addDropDeadline: None
+        "addDropDeadlineUnlockAfterSeason": "false",
+        "allowIllegal": "false",
+        "lockPreseason": "false",
+        "lockBenchOnKickoff": "true",
+        "extendTradeReview": "false",
+        "allowVetoes": "true",
+        "limitType": "SCHEDULE_PERIOD_ONLY",
+        "periodLimit": 7,
+        "resetMoves": "false"
+    })
+
+    # Tiebreak rules
+    session.post("https://www.fleaflicker.com/nhl/editTiebreaksSubmit", data={
+        "leagueId": league_id,
+        "gameTiebreak": "STARTER_MAX_CATEGORY,STARTER_MAX_FANTASY_POINTS,BENCH_TOTAL_FANTASY_POINTS",
+        "breakRegularSeasonTies": "false",
+        "rankTiebreak": "POINTS_FOR,HEAD_TO_HEAD,POINTS_AGAINST,STRENGTH_OF_SCHED"
+    })
 
 for league in leagues:
     id = league["id"]
@@ -104,16 +131,19 @@ for league in leagues:
     if not DEBUG:
         # Activate league
         print(f"Activating {name}")
-        session.post(activate_url.format(id))
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/activate".format(id))
 
         # Post kick message board message
         print(f"Messaging {name}")
-        session.post(message_url.format(id), kick_message_data)
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/messages/new".format(id), kick_message_data)
 
         # Kick all managers
         print(f"Removing owners from {name}")
         boot_teams(id)
 
-        # Post invite message board message
-        print(f"Messaging {name}\n")
-        session.post(message_url.format(id), invite_message_data)
+        print(f"Updating Settings for {name}")
+        update_settings(id)
+
+        # Post welcome message to sticky note
+        print(f"Adding sticky note to {name}\n")
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/settings/sticky-note".format(id), welcome_message_data)
