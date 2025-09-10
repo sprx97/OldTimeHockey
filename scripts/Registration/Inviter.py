@@ -12,7 +12,7 @@ from shared.Emailer import Emailer
 # TODO: Add automatic setting of draft times
 
 DEBUG = True
-send_emails = False # last resort, change if needed
+send_emails = True
 all_emails = []
 
 # Only allow sending of invites for one division at a time
@@ -55,7 +55,7 @@ for league in leagues:
     emails = []
     sheets_service = Emailer.get_sheets_service()
     sheets = sheets_service.spreadsheets()
-    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:Y").execute()
+    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:W").execute()
     values = rows.get("values", [])
 
     EMAIL_ADDRESS_COL = 0 # A
@@ -104,8 +104,6 @@ body = \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
 "If you can't find it, reach out to an admin via Discord or respond to this email. \n\n" + \
 "Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
-"If the league is full when you click on the link, **please respond to this email** and we'll get you into a different league. " + \
-"Replacement invites are being sent every 48 hours.\n\n" + \
 "Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
 "Also, join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
 "-- Admins"
@@ -120,6 +118,4 @@ if not DEBUG and send_emails:
     bcc = ",".join(all_emails)
     Emailer.send_message(gmail_service, subject, body, to, None, bcc)
 else:
-    print("Emails not sent. Edit script to enable. (Last Resort)")
-
-# TODO: Add "preferred contact" and send either via reddit, discord, or email
+    print("Emails not sent. Edit script to enable.")

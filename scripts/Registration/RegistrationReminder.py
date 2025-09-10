@@ -40,8 +40,11 @@ for row in values[1:]: # Skip the header
         continue
     emails.append(row[0].strip().lower())
 
-print("Be sure to check that the DECLINED/NO RESPONSE code works")
-quit()
+# print("Update 24 to 22 for next season")
+# quit()
+
+# print("TODO: Also compare FF name/ID instead of just relying on emails. People change those sometimes.")
+# quit()
 
 # Remove the ones who have already registered this year
 values = this_year.get("values", [])
@@ -51,28 +54,35 @@ for row in values[1:]: # Skip the header
         emails.remove(email)
 
 # Remove the retirees
-retirees = ["elizabeth.nadelman@gmail.com"]
+retirees = ["elizabeth.nadelman@gmail.com", "chrisquitasol@gmail.com", "etienneselcioni@gmail.com", "trevormild@gmail.com"] # "james0914@gmail.com"
 for email in retirees:
     if email in emails:
         emails.remove(email)
 
-print("Remember to update the subject and body, and any retirees, then comment these lines.")
-quit()
+# print("Remember to update the subject and body, and any retirees, then comment these lines.")
+# quit()
 
 reg_form_link = "https://forms.gle/zg4s96qHQ7XUMUmA6"
 draft_dates = "October 3rd-6th"
+year = "2025-26"
+registration_deadline_1 = "September 15th, 2025 at 9am EST"
+registration_deadline_2 = "September 22nd, 2025 at 9am EST"
+reminder_num = "Final Reminder"
 
-# Construct the email -- TODO Update the form link each offseason
 to = "roldtimehockey@gmail.com"
-subject = "Old Time Hockey 2025-26 Registration (Reminder 1/3)"
+subject = f"Old Time Hockey {year} Registration ({reminder_num})"
 body = "Hello -- \n\n" + \
-"You are receiving this email because you played in the Old Time Hockey fantasy league last year. " + \
-f"If you are interested in playing again, the registration form can be found here: {reg_form_link}\n\n" + \
-"SET REGISTRATION DEADLINE.\n\n" + \
+"You are receiving this email because you played in the Old Time Hockey fantasy league last year or were on our waitlist. " + \
+f"If you are interested in playing this year, the registration form can be found here: {reg_form_link}\n\n" + \
+f"For returning managers, the registration deadline to keep your spot is {registration_deadline_1} for D1-D3 and {registration_deadline_2} for D4. " + \
+f"Those dates are slightly different than last email, sorry for the confusion.\n\n" + \
 f"Drafts this year will take place {draft_dates}. Hope to see you back!\n\n" + \
+f"If you do not register this season you will be removed from this list, so no further action required.\n\n" + \
 "-- Admins"
 
 gmail_service = Emailer.get_gmail_service()
+
+print(f"{subject}\n{body}\n")
 
 NUM_PER_SLICE = 97 # 97 emails plus two admins in the bcc, and this account in the to line equals 100, the gmail API sending limit
 for n in range(0, len(emails), NUM_PER_SLICE):
@@ -82,7 +92,6 @@ for n in range(0, len(emails), NUM_PER_SLICE):
     emails_slice.extend(Config.config["admin_email_ccs"].split(","))
 
     # Failsafe 3
-    print(f"{subject}\n{body}\n")
     print(f"{len(emails_slice)} {emails_slice}\n")
     if DEBUG:
         print("Stopped before sending. Set the DEBUG flag to False to send.\n")

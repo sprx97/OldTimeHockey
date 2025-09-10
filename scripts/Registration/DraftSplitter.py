@@ -27,37 +27,37 @@ if star_threshold not in ["2", "3", "4", "5"]:
     quit()
 star_threshold = int(star_threshold)   
 
-# Get the registration spreadsheets
+# Get the registration spreadsheet
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
-rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:X").execute()
+rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:W").execute()
 
-# Get all of last year's registrants
+# Get all of this year's registrants
 values = rows.get("values", [])
 values = values[1:] # Chop off the header row
 
 all_draft_times = {}
 all_users = {}
-max_in_division = 112 if division == "D4" else 56 if division == "D3" else 42
+max_in_division = 70 if division == "D5" else 56 if division == "D4" else 42 if division == "D3" else 28 # if division == "D2"
 count = 0
 for row in values:
-    # Only look for the chosen division, but count NEW as D4
-    if row[23] != division and not (row[23] == "NEW" and division == "D4"):
+    # Only look for the chosen division, but count NEW as D5
+    if row[21] != division and not (row[21] == "NEW" and division == "D5"):
         continue
 
     # Skip the waitlist -- the bottom of the reg form without a division
-    if len(row) >= 24 and row[23] == "WAITLIST":
+    if len(row) == 23 and row[22] == "WAITLIST":
         continue
 
     # Extract values
     email = row[0]
-    user_name = row[1].strip()
+    user_name = row[20]
     user_id = row[2]
 
     temp_threshold = 5
     drafts = []
     while len(drafts) == 0 or temp_threshold >= star_threshold:
-        more_drafts = row[22-temp_threshold].split(" EST, ")
+        more_drafts = row[20-temp_threshold].split(" EST, ")
         more_drafts[-1] = more_drafts[-1][:-4] # trim the last one
         if more_drafts[0] != "":
             drafts.extend(more_drafts)
@@ -228,7 +228,7 @@ if response == "Y":
 
         values = transpose(values)
 
-        result = sheets.values().append(spreadsheetId=Config.config["this_season_reg_sheet_id"], range=f"{division}!A1", valueInputOption="RAW", body={"values": values}).execute()
+        result = sheets.values().append(spreadsheetId=Config.config["this_season_reg_sheet_id"], range=f"{division} Drafts!A1", valueInputOption="RAW", body={"values": values}).execute()
 
 # Print to console
 for combo in best_combinations:
