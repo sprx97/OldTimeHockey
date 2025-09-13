@@ -11,11 +11,6 @@ from shared import Config
 
 DEBUG = True
 
-# Comment this out to actually run the script.
-# This script is scary so leave this on in case of a fatfinger python command
-# print("Aborting due to failsafe")
-# quit()
-
 # Failsafe 1
 print("Are you sure you want to randomize draft orders? (yes/no)")
 confirm = input()
@@ -52,7 +47,6 @@ if len(leagues) == 0:
 league_standings_url = "https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={}&season=" + str(year)
 league_activity_url = "https://www.fleaflicker.com/api/FetchLeagueActivity?sport=NHL&league_id={}&result_offset={}"
 draft_order_setting_url = "https://www.fleaflicker.com/nhl/leagues/{}/settings/draft-order"
-message_url = "https://www.fleaflicker.com/nhl/leagues/{}/messages/new"
 
 def try_randomize_league(id):
     # If any team is unclaimed, don't randomize yet
@@ -107,8 +101,9 @@ def try_randomize_league(id):
         "emailAll": "true"
     }
     if not DEBUG:
-        session.post(message_url.format(id), draft_order_message_data)
-    
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/messages/new".format(id), draft_order_message_data)
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/settings/sticky-note".format(id), {"html": "", "expiryDate": ""})
+
 for league in leagues:
     id = league["id"]
     name = league["name"]

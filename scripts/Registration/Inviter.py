@@ -38,6 +38,9 @@ if len(leagues) == 0:
     print(f"No leagues found for year {year}")
     quit()
 
+print("Double check the text of the email below then comment out.")
+quit()
+
 invite_url = "https://www.fleaflicker.com/nhl/leagues/{}/invite"
 for league in leagues:
     league_id = league["id"]
@@ -97,7 +100,7 @@ for league in leagues:
 
 # Construct the email
 to = "roldtimehockey@gmail.com"
-subject = "OldTimeHockey Invite -- DRAFTS NEXT WEEKEND!"
+subject = "OldTimeHockey Invite"
 body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \

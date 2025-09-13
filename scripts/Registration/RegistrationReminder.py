@@ -40,11 +40,11 @@ for row in values[1:]: # Skip the header
         continue
     emails.append(row[0].strip().lower())
 
-# print("Update 24 to 22 for next season")
-# quit()
+print("Update (row number) 24 to 22 for next season")
+quit()
 
-# print("TODO: Also compare FF name/ID instead of just relying on emails. People change those sometimes.")
-# quit()
+print("TODO: Also compare FF name/ID instead of just relying on emails. People change those sometimes.")
+quit()
 
 # Remove the ones who have already registered this year
 values = this_year.get("values", [])
@@ -54,13 +54,13 @@ for row in values[1:]: # Skip the header
         emails.remove(email)
 
 # Remove the retirees
-retirees = ["elizabeth.nadelman@gmail.com", "chrisquitasol@gmail.com", "etienneselcioni@gmail.com", "trevormild@gmail.com"] # "james0914@gmail.com"
+retirees = []
 for email in retirees:
     if email in emails:
         emails.remove(email)
 
-# print("Remember to update the subject and body, and any retirees, then comment these lines.")
-# quit()
+print("Remember to update the below variables, and any retirees, then comment out these lines.")
+quit()
 
 reg_form_link = "https://forms.gle/zg4s96qHQ7XUMUmA6"
 draft_dates = "October 3rd-6th"
@@ -74,10 +74,9 @@ subject = f"Old Time Hockey {year} Registration ({reminder_num})"
 body = "Hello -- \n\n" + \
 "You are receiving this email because you played in the Old Time Hockey fantasy league last year or were on our waitlist. " + \
 f"If you are interested in playing this year, the registration form can be found here: {reg_form_link}\n\n" + \
-f"For returning managers, the registration deadline to keep your spot is {registration_deadline_1} for D1-D3 and {registration_deadline_2} for D4. " + \
-f"Those dates are slightly different than last email, sorry for the confusion.\n\n" + \
+f"The registration deadline to keep your spot is {registration_deadline_1} for D1-D3 and {registration_deadline_2} for D4. " + \
 f"Drafts this year will take place {draft_dates}. Hope to see you back!\n\n" + \
-f"If you do not register this season you will be removed from this list, so no further action required.\n\n" + \
+f"If you do not register this season you will be removed from this list, so no further action required, as this is the final reminder email.\n\n" + \
 "-- Admins"
 
 gmail_service = Emailer.get_gmail_service()
