@@ -38,8 +38,8 @@ if len(leagues) == 0:
     print(f"No leagues found for year {year}")
     quit()
 
-print("Double check the text of the email below then comment out.")
-quit()
+# print("Double check the text of the email below then comment out.")
+# quit()
 
 invite_url = "https://www.fleaflicker.com/nhl/leagues/{}/invite"
 for league in leagues:
