@@ -41,14 +41,19 @@ if len(leagues) == 0:
 # print("Double check the text of the email below then comment out.")
 # quit()
 
-invite_url = "https://www.fleaflicker.com/nhl/leagues/{}/invite"
 for league in leagues:
     league_id = league["id"]
     league_name = league["name"]
 
+    standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year}")
+
+    # Ensure the draft has been set
+    if "draftLiveTimeEpochMilli" not in standings["league"]:
+        print(f"Draft time not set for {league_name} ({league_id}). Please set it and re-run.")
+        quit()
+
     # Get the list of managers already in the league
     already_registered = []
-    standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year}")
     if "teams" in standings["divisions"][0]:
         for team in standings["divisions"][0]["teams"]:
             if "owners" in team:
@@ -92,7 +97,7 @@ for league in leagues:
     # Invite to league
     print(f"{len(emails)} invites to send for {league_name}.")
     if not DEBUG:
-        session.post(invite_url.format(league_id), invite_message_data)
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/invite".format(league_id), invite_message_data)
     else:
         print("Actual invites not sent -- set DEBUG to false to proceed.")
 
