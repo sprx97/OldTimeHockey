@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath
 from shared import Shared
 from shared import Config
 
-DEBUG = True
+DEBUG = False
 
 # Failsafe 1
 print("Are you sure you want to randomize draft orders? (yes/no)")

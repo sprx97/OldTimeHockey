@@ -72,7 +72,7 @@ for row in values:
     if user_id in all_users:
         print(f"User {user_name} has duplicate entry.")
 
-    # Assign data to our maps of user->drafs and drafts->num_users
+    # Assign data to our maps of user->drafts and drafts->num_users
     all_users[user_id] = {"email":email, "name":user_name, "drafts":drafts}
     for draft in drafts:
         if draft not in all_draft_times:
@@ -85,14 +85,7 @@ for row in values:
 
 num_leagues = math.ceil(len(all_users) / NUM_TEAMS_PER_LEAGUE)
 
-# Duplicate the 3 most popular draft times (D3/4 only)
-# all_draft_times = dict(sorted(all_draft_times.items(), key=lambda item:len(item[1]), reverse=True))
-# draft_times_copy = copy.deepcopy(all_draft_times)
-# for time, users in list(draft_times_copy.items())[:3]:
-#     dupe_time = time + " (2)"
-#     for user_id in users:
-#         all_users[user_id]["drafts"].append(dupe_time)
-#     all_draft_times[dupe_time] = users
+# TODO: Potentially randomize the order of all_draft_times[N] to get different results each time?
 
 # Find all possible combinations of draft slots
 draft_combinations = list(itertools.combinations(all_draft_times.keys(), num_leagues))

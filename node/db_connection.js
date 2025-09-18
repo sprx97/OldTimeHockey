@@ -4,8 +4,7 @@ var http = require("http"),
     mysqlEscapeArray = require("mysql-escape-array"),
     fs = require("fs"),
     config = require("../shared/config.json"),
-    PythonShell = require("python-shell"),
-	util = require("util")
+    PythonShell = require("python-shell")
 
 // Connection pool to allow many connections
 const pool = mysql.createPool({
@@ -244,7 +243,8 @@ http.createServer(async function(request, response) {
 		if (query.tiers)
 			args.push(query.tiers)
 
-		PythonShell.PythonShell.run(config.srcroot + "scripts/ADP.py", {args: args}, function(err, results) {
+		const pythonPath = config.srcroot + "scripts/oth.venv/bin/python3";
+		PythonShell.PythonShell.run(config.srcroot + "scripts/ADP.py", { pythonPath, args: args}, function(err, results) {
 			if (err)
 				throw err;
 
