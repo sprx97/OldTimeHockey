@@ -119,6 +119,8 @@ def getStandings(leagueID, year):
                 user_id = "157129" # override for rellek multiple accounts
             elif user_id == "698576":
                 user_id = "1357398" # override for MWHazard multiple accounts
+            elif user_id == "841649":
+                user_id = "2267467" # override for dkpatrick multiple accounts
 
         # wins, losses, gamesBack, streak, pointsFor, pointsAgainst, coachRating*, isChamp, ties
         record = team["recordOverall"]
