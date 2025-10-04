@@ -33,7 +33,7 @@ for league in leagues:
     if "player" not in response["rows"][-1]["cells"][1]: # look at 2nd to last pick because of weird FF bug
         continue
 
-        # check each round of the draft
+    # check each round of the draft
     for row in response["rows"]:
         cells = row["cells"]
         round = row["round"]
