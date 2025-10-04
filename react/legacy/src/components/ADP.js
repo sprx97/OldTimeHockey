@@ -18,7 +18,8 @@ export default class ADP extends Component {
         {key: '1', text: 'D1', value: '1'},
         {key: '2', text: 'D2', value: '2'},
         {key: '3', text: 'D3', value: '3'},
-        {key: '4', text: 'D4', value: '4'}]
+        {key: '4', text: 'D4', value: '4'},
+        {key: '5', text: 'D5', value: '5'}]
     positionOptions = [
         {key: "C", text: "Center", value: "C"},
         {key: "LW", text: "Left Wing", value: "LW"},
@@ -31,6 +32,7 @@ export default class ADP extends Component {
         query: String(getCurrentYear()),
         tierFilters: null,
         positionFilters: null,
+        isLoaded: false,
     };
 
     getData = async() => {
@@ -61,7 +63,7 @@ export default class ADP extends Component {
         this.setState({
             data: adp,
             isLoaded: true,
-            numLeagues: (typeof(adp[0]) === "undefined") ? 0 : adp[0]["picks"].length, // highest ADP player should tell us the total number of leauges that have drafted
+            numLeagues: (typeof(adp[0]) === "undefined") ? 0 : adp[0]["TimesDrafted"], // highest ADP player should tell us the total number of leauges that have drafted
         });
     }
 
@@ -102,7 +104,7 @@ export default class ADP extends Component {
                                     placeholder="Division(s)"
                                     options={this.tierOptions}
                                     wrapSelection={false}
-                                    onChange={(event, value) => {this.setState({tierFilters: value.value, isLoaded: false}, () => {this.getData();})}}
+                                    onChange={(_event, value) => {this.setState({tierFilters: value.value, isLoaded: false}, () => {this.getData();})}}
                                 />
                             </Grid.Column>
                             <Grid.Column>

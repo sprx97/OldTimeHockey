@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Table, Loader } from 'semantic-ui-react';
 
 var MAX_PICK = 253;
@@ -54,31 +54,27 @@ export default class ADPTable extends Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {_.map(this.props.data, ({ name, position, picks }, index) =>
-                this.CheckPositionFilters(position) ? (
-                  <Table.Row className={position.replace('/', '')}>
+              {_.map(this.props.data, ({ PlayerId, PlayerName, ADP, MinPick, MaxPick, TimesDrafted, PlayerTeam, PlayerPositions }, index) =>
+                this.CheckPositionFilters(PlayerPositions) ? (
+                  <Table.Row className={PlayerPositions.replace('/', '')}>
                     <Table.Cell textAlign="center">{index + 1}</Table.Cell>
-                    <Table.Cell textAlign="center">{name}</Table.Cell>
+                    <Table.Cell textAlign="center">{PlayerName}</Table.Cell>
                     <Table.Cell textAlign="center">
                       {
-                        +(
-                          (picks.reduce((a, b) => a + b) +
-                            MAX_PICK * (this.props.numLeagues - picks.length)) /
-                          this.props.numLeagues
-                        ).toFixed(2)
+                        Number(ADP).toFixed(2)
                       }
                     </Table.Cell>
                     <Table.Cell textAlign="center">
-                      {Math.min.apply(null, picks)}
+                      {MinPick}
                     </Table.Cell>
                     <Table.Cell textAlign="center">
-                      {picks.length === this.props.numLeagues
-                        ? Math.max.apply(null, picks)
+                      {TimesDrafted === this.props.numLeagues
+                        ? MaxPick
                         : '--'}
                     </Table.Cell>
                     <Table.Cell textAlign="center">
                       {Math.floor(
-                        ((100 * picks.length) / this.props.numLeagues) * 100
+                        ((100 * TimesDrafted) / this.props.numLeagues) * 100
                       ) / 100}
                     </Table.Cell>
                   </Table.Row>

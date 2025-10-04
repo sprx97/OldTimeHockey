@@ -8,36 +8,32 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ../../
 from shared import Config
 
-YEAR = sys.argv[1]
-if len(sys.argv) > 2:
-    TIERS = sys.argv[2].split(",")
+if len(sys.argv) < 2:
+    year = Config.config["year"]
 else:
-    TIERS = []
-TIERS = [str(n) for n in TIERS] # convert to strings
-last_pick = 18*14 # hardcoded yolo
+    year = sys.argv[1]
 
 # Grab the list of leagues for this query from our database
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor()
-cmd = "SELECT L.id FROM Leagues L WHERE L.year=" + YEAR
-if len(TIERS) > 0:
-    cmd += " AND L.tier IN (" + ",".join(TIERS) + ")"
-cursor.execute(cmd)
+cursor.execute("SELECT L.id FROM Leagues L WHERE L.year=" + year)
 leagues = cursor.fetchall()
 
-# Get and store the draft results from each league on fleaflicer
-players = {}
-
-def pull_league(league_id):
-    response = requests.get("http://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + YEAR + "&sport=NHL")
-    assert response.status_code == 200, "Failed to find league " + str(league_id) + " for season " + YEAR
+for league in leagues:
+    league_id = league[0]
+    response = requests.get("http://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + year + "&sport=NHL")
+    assert response.status_code == 200, "Failed to find league " + str(league_id) + " for season " + year
     response = response.json()
+
+    league_size = 14
+    if year == "2012" or (year == "2013" and league_id != 4633):
+        league_size = 12
 
     # League draft isn't completed, skip
     if "player" not in response["rows"][-1]["cells"][1]: # look at 2nd to last pick because of weird FF bug
-        return
+        continue
 
-    # check each round of the draft
+        # check each round of the draft
     for row in response["rows"]:
         cells = row["cells"]
         round = row["round"]
@@ -46,41 +42,21 @@ def pull_league(league_id):
         if round % 2 == 0:
             cells.reverse()
 
+        cell_num = 0
         for pick in range(len(cells)):
             if "player" not in cells[pick]:
-#                print("Missing draft pick in league " + str(league_id) + ", pick " + str(round) + "." + str(pick+1))
                 break
 
             player = cells[pick]["player"]["proPlayer"]
-            pick = len(cells)*(round-1) + pick + 1
-            id = player["id"]
-            if id not in players:
-                name = player["nameFull"]
-                if "position" in player:
-                        pos = player["position"]
-                else:
-                        pos = ""
-                team = player["proTeamAbbreviation"]
-                players[id] = {"name":name, "position":pos, "team":team, "picks":[]}
-            players[id]["picks"].append(pick)
+            pick_num = len(cells)*(round-1) + pick + 1
+            team_id = response["draftOrder"][cell_num]["id"]
+            player_id = player["id"]
+            player_name = player["nameFull"]
+            player_team = player["proTeamAbbreviation"]
+            player_positions = player["position"] if "position" in player else ""
 
-for league in leagues:
-    pull_league(league[0])
+            cursor.execute(f"INSERT IGNORE INTO DraftPicks VALUES ({year}, {league_id}, {pick_num}, {team_id}, {player_id}, \"{player_name}\", \"{player_team}\", \"{player_positions}\")")
+            cell_num += 1
 
-#for id in players:
-#    p = players[id]
-#    if len(p["picks"]) < len(leagues):
-#        p["picks"] += [last_pick+1]*(len(leagues)-len(p["picks"]))
-
-# Helper method to find the ADP of a player, by averaging their pick numbers
-def ADP(list):
-  return (sum(list) + (last_pick+1)*(len(leagues)-len(list)))/len(leagues)
-
-# Sort players on ADP
-players = {k: v for k, v in sorted(players.items(), key=lambda item: ADP(item[1]["picks"]))}
-
-out = "["
-for p in players:
-    out += json.dumps(players[p]) + ","
-out = out[:-1] + "]"
-print(out)
+db.commit()
+cursor.close()

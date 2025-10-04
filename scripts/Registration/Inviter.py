@@ -9,7 +9,7 @@ from shared import Shared
 from shared import Config
 from shared.Emailer import Emailer
 
-DEBUG = False
+DEBUG = True
 send_emails = True
 all_emails = []
 
@@ -108,11 +108,10 @@ body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
-"If you can't find it, reach out to an admin via Discord or respond to this email. " + \
-"You have approximately 72 hours to accept this invite, otherwise your spot is no longer guaranteed. \n\n" + \
+"If you can't find it, reach out to an admin via Discord or respond to this email. \n\n" + \
 "Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
 "Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
-"Also, join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
+"Join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
 "-- Admins"
 
 # Add the admins to ensure this gets sent
