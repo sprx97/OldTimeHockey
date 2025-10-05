@@ -244,7 +244,8 @@ http.createServer(async function(request, response) {
 			query.tiers = "1,2,3,4,5";
 		}
 
-		const subQuery = "SELECT COUNT(PickNum) as NumDrafts from DraftPicks WHERE year=" + mysql.escape(query.year) + " AND PickNum=1";
+		const subQuery = "SELECT COUNT(PickNum) as NumDrafts from DraftPicks INNER JOIN Leagues on (DraftPicks.Year=Leagues.year and DraftPicks.LeagueId=Leagues.id) \
+		                  WHERE DraftPicks.Year=" + mysql.escape(query.year) + " AND PickNum=1 AND Leagues.tier in " + mysqlEscapeArray(query.tiers.split(",")).toString();
 		const subResult = await makeSqlQuery(subQuery);
 		const expected = subResult[0].NumDrafts;
 
