@@ -25,7 +25,7 @@ export default class Standings extends Component {
   getData = async () => {
     var newleagues = {};
 
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
       const res = await fetch(
         'https://roldtimehockey.com/node/divisionleagues?year=' +
           this.state.query +
@@ -151,6 +151,19 @@ export default class Standings extends Component {
               </Header>
               <Grid centered stackable>
                 {this.layoutGrid(this.state.leagues[4], false)}
+              </Grid>
+            </React.Fragment>
+          ) : (
+            ''
+          )}
+          {this.state.leagues[5] ? (
+            <React.Fragment>
+              <Divider hidden />
+              <Header as="h1" textAlign="center" block>
+                Division 5
+              </Header>
+              <Grid centered stackable>
+                {this.layoutGrid(this.state.leagues[5], false)}
               </Grid>
             </React.Fragment>
           ) : (

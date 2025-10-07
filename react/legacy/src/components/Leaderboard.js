@@ -14,6 +14,7 @@ export default class Leaderboard extends Component {
     { key: '2', text: 'D2', value: '2' },
     { key: '3', text: 'D3', value: '3' },
     { key: '4', text: 'D4', value: '4' },
+    { key: '5', text: 'D5', value: '5' },
   ];
 
   generateNumSeasonsOptions() {

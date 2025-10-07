@@ -67,11 +67,13 @@ class LeagueStandingsTable extends Component {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image
-                  src={`/images/jerseys/${this.props.leagueName}.png`}
-                  style={{ marginRight: '10px', height: 45, width: "100%"}}
-                  alt={`${this.props.leagueName} jersey`}
-                />
+                {"tier" in data[0] && data[0]["tier"] === 5 ? '' :
+                  <Image
+                    src={`/images/jerseys/${this.props.leagueName}.png`}
+                    style={{ marginRight: '10px', height: 45, width: "100%"}}
+                    alt={`${this.props.leagueName} jersey`}
+                  />
+                }
                 <a
                   href={`https://www.fleaflicker.com/nhl/leagues/${this.props.leagueID}?season=${this.props.year}`}
                   target="_blank"
