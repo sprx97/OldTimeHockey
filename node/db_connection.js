@@ -21,6 +21,13 @@ const pool = mysql.createPool({
 async function makeSqlQuery(query) {
 	try {
 		const [rows] = await pool.execute(query);
+		for (const row of rows) {
+			for (const data in row) {
+				if (typeof row[data] === 'number') {
+					row[data] = row[data].toFixed(2);
+				}
+			}
+		}
 		return rows
 	} catch (err) {
 		console.error("SQL error: ", err);
