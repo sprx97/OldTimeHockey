@@ -9,10 +9,10 @@ td.D3 {
   background-color: rgba(215, 153, 91, 0.5);
 }
 td.D4 {
-  background-color: rgba(119, 221, 119, 1.0)
+  background-color: rgba(185, 243, 185, 1.0)
 }
 td.D5, td.DInactive {
-  background-color: rgba(255, 255, 242, 1.0);
+  background-color: rgba(255, 255, 214, 1.0);
 }
 td.DInactive {
   color: rgba(128, 128, 128, 0.5);
@@ -33,7 +33,10 @@ tr.highlight td.D3 {
   background-color: rgba(215, 153, 91, 1.0);
 }
 tr.highlight td.D4 {
-  background-color: rgba(255, 255, 200, 1.0);
+  background-color: rgba(119, 212, 119, 1.0);
+}
+tr.highlight td.D5 {
+  background-color: rgba(255, 255, 180, 1.0);
 }
 .ui.definition.table tr.highlight td:first-child {
   background-color: black;
