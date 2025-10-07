@@ -21,13 +21,16 @@ const pool = mysql.createPool({
 async function makeSqlQuery(query) {
 	try {
 		const [rows] = await pool.execute(query);
+
+		// Round weird floating point numbers to 2 decimal places
 		for (const row of rows) {
 			for (const data in row) {
 				if (typeof row[data] === 'number') {
-					row[data] = row[data].toFixed(2);
+					row[data] = Math.round(row[data] * 100) / 100;
 				}
 			}
 		}
+
 		return rows
 	} catch (err) {
 		console.error("SQL error: ", err);
