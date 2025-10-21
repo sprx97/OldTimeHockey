@@ -67,7 +67,7 @@ class LeagueStandingsTable extends Component {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                {"tier" in data[0] && data[0]["tier"] === 5 ? '' :
+                {data[0] && "tier" in data[0] && data[0]["tier"] !== 5 &&
                   <Image
                     src={`/images/jerseys/${this.props.leagueName}.png`}
                     style={{ marginRight: '10px', height: 45, width: "100%"}}
