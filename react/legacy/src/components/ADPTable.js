@@ -6,7 +6,7 @@ var MAX_PICK = 253;
 
 export default class ADPTable extends Component {
   CheckPositionFilters(position) {
-    if (this.props.positionFilters === null || this.props.positionFilters === "") return true; // empty filters just means everything
+    if (this.props.positionFilters === null || this.props.positionFilters === "" || this.props.positionFilters.length === 0) return true; // empty filters just means everything
 
     if ((position.includes('C') || position === 'F') && this.props.positionFilters.includes('C'))
       return true;

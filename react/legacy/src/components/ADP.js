@@ -116,7 +116,7 @@ export default class ADP extends Component {
                                     placeholder="Position(s)"
                                     options={this.positionOptions}
                                     wrapSelection={false}
-                                    onChange={(event, value) => {this.setState({positionFilters: value.value})}}
+                                    onChange={(_event, value) => {this.setState({positionFilters: value.value})}}
                                 />
                             </Grid.Column>
                         </Grid.Row>
