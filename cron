@@ -4,7 +4,7 @@
 
 # Run weekly scripts to update data stores
 # Enable the day the season starts
-0 8 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh 2>&1 | /usr/bin/ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >> /var/www/OldTimeHockey/cronjob_weekly.log
+0 9 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh 2>&1 | /usr/bin/ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >> /var/www/OldTimeHockey/cronjob_weekly.log
 
 # Run the ADP script for the current year. Disable after draft season
 #*/15 * * * *    root    /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/ADP.py 2>&1 >> /var/www/OldTimeHockey/cronjob.log

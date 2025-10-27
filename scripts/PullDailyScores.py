@@ -147,6 +147,9 @@ f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
 
+year = 2025
+week = 3
+
 # If arguments are given, override the defaults
 if len(sys.argv) >= 2:
     year = int(sys.argv[1])
