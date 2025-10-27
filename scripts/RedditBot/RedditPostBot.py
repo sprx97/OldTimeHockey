@@ -16,8 +16,6 @@ year = int(f.readline().strip())
 week = int(f.readline().strip())
 f.close()
 
-week = 3
-
 # PF Leaderboard
 pf = open(Config.config["srcroot"] + "scripts/RedditBot/PFs/" + str(year) + "_Week_" + str(week) + ".txt", "r")
 r.subreddit("OldTimeHockey").submit(str(year) + " Week " + str(week) + " PF Rankings", selftext=pf.read())
