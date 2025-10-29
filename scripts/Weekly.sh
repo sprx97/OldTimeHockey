@@ -16,8 +16,8 @@ echo "UpdateTables Complete!"
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/PullDailyScores.py
 echo "PullDailyScores Complete!"
 
-# Update the playoff odds json from fleaflicker starting in December
-if (( $week > 8 )); then
+# Update the playoff odds json from fleaflicker starting in November (week 4)
+if (( $week >= 4 )); then
     /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/PlayoffOdds/PlayoffOdds_OTH.py
     echo "PlayoffOdds Complete!"
 fi
