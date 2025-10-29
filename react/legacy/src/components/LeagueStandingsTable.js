@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
-import { Table, Header, Image, Icon } from 'semantic-ui-react';
+import { Component } from 'react';
+import { Table, Header, Image } from 'semantic-ui-react';
 import './LeagueStandingsTable.css';
-import { getCurrentYear, GetTrophy } from './Helpers';
+import { getCurrentYear, GetTrophy, isDoubleDemoTier } from './Helpers';
 import { Link, withRouter } from 'react-router-dom';
 
 class LeagueStandingsTable extends Component {
@@ -36,7 +36,8 @@ class LeagueStandingsTable extends Component {
 
     this.setState({
       data: leaders,
-      has_ties: has_ties
+      has_ties: has_ties,
+      has_playoff_odds: Object.keys(playoff_odds).length != 0
     });
   };
 
@@ -50,7 +51,7 @@ class LeagueStandingsTable extends Component {
   }
 
   render() {
-    const { data, has_ties } = this.state;
+    const { data, has_ties, has_playoff_odds } = this.state;
 
     return (
       <div>
@@ -83,7 +84,7 @@ class LeagueStandingsTable extends Component {
                   {this.props.leagueName}
                 </a>
               </div>
-              {this.props.year == getCurrentYear() ? (
+              {this.props.year == getCurrentYear() && has_playoff_odds ? (
                 <div>
                   <button
                     onClick={() => {
@@ -112,8 +113,8 @@ class LeagueStandingsTable extends Component {
                 {has_ties ? (<Table.HeaderCell width={1} textAlign="center">Ties</Table.HeaderCell>) : ''}
                 {this.props.year == getCurrentYear() ? <Table.HeaderCell width={1} textAlign="center">Playoff%</Table.HeaderCell> : ''}
                 {this.props.year == getCurrentYear() ? <Table.HeaderCell width={1} textAlign="center">Bye%</Table.HeaderCell> : ''}
-                {this.props.year == getCurrentYear() && data[0] && "tier" in data[0] && data[0]["tier"] == 1 ? <Table.HeaderCell width={1} textAlign="center">D3%</Table.HeaderCell> : ''}
-                {this.props.year == getCurrentYear() && data[0] && "tier" in data[0] && data[0]["tier"] == 2 ? <Table.HeaderCell width={1} textAlign="center">D4%</Table.HeaderCell> : ''}
+                {this.props.year == getCurrentYear() && isDoubleDemoTier(this.props.year, 1) && data[0] && "tier" in data[0] && data[0]["tier"] == 1 ? <Table.HeaderCell width={1} textAlign="center">D3%</Table.HeaderCell> : ''}
+                {this.props.year == getCurrentYear() && isDoubleDemoTier(this.props.year, 2) && data[0] && "tier" in data[0] && data[0]["tier"] == 2 ? <Table.HeaderCell width={1} textAlign="center">D4%</Table.HeaderCell> : ''}
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -128,7 +129,7 @@ class LeagueStandingsTable extends Component {
                     style={
                       index < 6 && this.props.promotion
                         ? { backgroundColor: '#BFFFBF' }
-                        : index > 11 && this.props.relegation
+                        : index > 11 && this.props.relegation && isDoubleDemoTier(this.props.year, tier)
                         ? { backgroundColor: '#FFBFBF' }
                         : { backgroundColor: '' }
                     }
@@ -169,7 +170,7 @@ class LeagueStandingsTable extends Component {
                       </Table.Cell>
                     ) : ''}
                     {this.props.year == getCurrentYear() ? (<Table.Cell textAlign="center">{bye_odds !== undefined ? bye_odds : '-'}</Table.Cell>) : ''}
-                    {this.props.year == getCurrentYear() && tier <= 2 ? (<Table.Cell textAlign="center">{double_demo_odds !== undefined ? double_demo_odds : '-'}</Table.Cell>) : ''}
+                    {this.props.year == getCurrentYear() && isDoubleDemoTier(this.props.year, tier) ? (<Table.Cell textAlign="center">{double_demo_odds !== undefined ? double_demo_odds : '-'}</Table.Cell>) : ''}
                   </Table.Row>
                 ),
               )}

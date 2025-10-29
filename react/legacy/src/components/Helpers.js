@@ -9,6 +9,22 @@ export function getFirstYear() {
   return 2012;
 }
 
+export function isDoubleDemoTier(year, tier) {
+  // There were no tiers in the first year
+  if (year === 2012)
+    return false;
+
+  // Tier 1 double demotion existed up until 2025
+  if (year < 2025 && tier === 1)
+    return true;
+
+  // Tier 2 double demotion existed from 2014 to 2018
+  if (year >= 2014 && year < 2019 && tier === 2)
+    return true;
+
+  return false;
+}
+
 // Most seasons playoffs start in week 24, but some are special cases.
 export function isPlayoffWeek(week, year) {
   switch (year)
