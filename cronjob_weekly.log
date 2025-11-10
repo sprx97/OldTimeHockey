@@ -489,3 +489,75 @@
 [2025-11-03 09:00:12] 
 [2025-11-03 09:00:12] 	git config --global --add safe.directory /var/www/OldTimeHockey
 [2025-11-03 09:00:12] Backup Complete!
+[2025-11-10 09:00:11] 12086 2025
+[2025-11-10 09:00:11] 12087 2025
+[2025-11-10 09:00:11] 12088 2025
+[2025-11-10 09:00:11] 12089 2025
+[2025-11-10 09:00:11] 12090 2025
+[2025-11-10 09:00:11] 12091 2025
+[2025-11-10 09:00:11] 12092 2025
+[2025-11-10 09:00:11] 12093 2025
+[2025-11-10 09:00:11] 12095 2025
+[2025-11-10 09:00:11] 12096 2025
+[2025-11-10 09:00:11] 12097 2025
+[2025-11-10 09:00:11] 12098 2025
+[2025-11-10 09:00:11] 12099 2025
+[2025-11-10 09:00:11] 12100 2025
+[2025-11-10 09:00:11] 12101 2025
+[2025-11-10 09:00:11] UpdateTables Complete!
+[2025-11-10 09:00:14] 2025 5
+[2025-11-10 09:00:14] Getting Scores for Gretzky 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Brodeur 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Roy 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Messier 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Yzerman 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Jagr 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Coffey 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Leetch 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Bourque 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Orr 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Williams 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Hunter 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Domi 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for McSorley 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] Getting Scores for Probert 2025 Week 5
+[2025-11-10 09:00:14] Week 5 does not have final results. Skipping.
+[2025-11-10 09:00:14] PullDailyScores Complete!
+[2025-11-10 09:00:14] Traceback (most recent call last):
+[2025-11-10 09:00:14]   File "/var/www/OldTimeHockey/scripts/PlayoffOdds/PlayoffOdds_OTH.py", line 5, in <module>
+[2025-11-10 09:00:14]     import ujson
+[2025-11-10 09:00:14] ModuleNotFoundError: No module named 'ujson'
+[2025-11-10 09:00:14] PlayoffOdds Complete!
+[2025-11-10 09:00:16] Reddit Post Complete!
+[2025-11-10 09:00:16] WeekVars Incremented!
+[2025-11-10 09:00:16] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-11-10 09:00:16] To add an exception for this directory, call:
+[2025-11-10 09:00:16] 
+[2025-11-10 09:00:16] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-11-10 09:00:16] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-11-10 09:00:16] To add an exception for this directory, call:
+[2025-11-10 09:00:16] 
+[2025-11-10 09:00:16] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-11-10 09:00:16] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-11-10 09:00:16] To add an exception for this directory, call:
+[2025-11-10 09:00:16] 
+[2025-11-10 09:00:16] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-11-10 09:00:16] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-11-10 09:00:16] To add an exception for this directory, call:
+[2025-11-10 09:00:16] 
+[2025-11-10 09:00:16] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-11-10 09:00:16] Backup Complete!

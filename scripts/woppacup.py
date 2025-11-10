@@ -45,7 +45,7 @@ def get_user_matchup_from_database(user, division=None):
 challonge.set_credentials(Config.config["challonge_username"], Config.config["challonge_api_key"])
 wc_id = Config.config["woppa_cup_id"]
 
-particpants = challonge.participants.index(wc_id)
+participants = challonge.participants.index(wc_id)
 played = []
 
 # Sort the matches by round. This is how the group stage used to sort,
@@ -72,7 +72,7 @@ for m in all_matches:
     p1 = p2 = None
 
     # Match the IDs from the players in the matchup with participants from the participants list
-    for p in particpants:
+    for p in participants:
         if p["id"] == p1id or p1id in p["group_player_ids"]:
             p1 = p
         elif p["id"] == p2id or p2id in p["group_player_ids"]:
