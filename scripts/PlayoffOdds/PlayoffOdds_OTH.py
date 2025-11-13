@@ -58,8 +58,8 @@ def calculate_playoff_odds(league, year, current_week = None):
         if schedule_period["ordinal"] > current_week:
 
             # HACKHACKHACKHACK
-            # Week 19 of 2024 is a phantom week. There are no games and it won't count towards wins and losses (we hope)
-            if schedule_period["ordinal"] == 19 and year == 2024:
+            # Week 19 and 20 of 2025 is a phantom week. There are no games and it won't count towards wins and losses (we hope)
+            if (schedule_period["ordinal"] == 19 or schedule_period["ordinal"] == 20) and year == 2025:
                 continue
             # HACKHACKHACKHACK
             remaining_weeks.append(schedule_period["low"]["ordinal"])
