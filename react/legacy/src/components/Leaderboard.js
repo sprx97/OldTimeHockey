@@ -79,6 +79,11 @@ export default class Leaderboard extends Component {
   getSortedData(data, clickedColumn) {
     var sortedData = _.sortBy(data, [
       function(datum) {
+        if (clickedColumn === "wins" || clickedColumn === "losses" || clickedColumn === "ties")
+          datum[clickedColumn] = Number(datum[clickedColumn])
+        if ((clickedColumn === "pct" || clickedColumn === "avgPF" || clickedColumn === "avgPA") && !datum[clickedColumn])
+          datum[clickedColumn] = 0
+
         if (typeof datum[clickedColumn] === 'string')
           return datum[clickedColumn].toLowerCase();
         else return datum[clickedColumn];
