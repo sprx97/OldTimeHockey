@@ -61,27 +61,29 @@ export function GetTrophy(tier, year) {
 // function to generate trophie images from the integer returned
 export function generateTrophies(trophies) {
   var primes = {
-    19: 'D1Covid',
-    17: 'D2Covid',
-    13: 'D3Covid',
-    11: 'D4Covid',
-    7: 'D1Champion',
-    5: 'D2Champion',
-    3: 'D3Champion',
-    2: 'D4Champion',
+    23: 'D1Covid',
+    19: 'D2Covid',
+    17: 'D3Covid',
+    13: 'D4Covid',
+    11: 'D1Champion',
+    7: 'D2Champion',
+    5: 'D3Champion',
+    3: 'D4Champion',
+    2: 'D5Champion',
   };
   var output = [];
   Object.keys(primes).forEach((key) => {
     while (trophies % key === 0) {
       var value = primes[key];
+      var size = 12 + 4*(5-value[1])
       output.unshift(
         <img
           src={`/images/trophies/${value}.png`}
           align="center"
           title={`${value}`}
           alt={`${value} winner`}
-          width="12px"
-          height="24px"
+          width={size/2}
+          height={size}
         />
       );
       trophies /= key;
@@ -120,6 +122,11 @@ export const divisionMapping = {
   Orr: 'D4',
   Leetch: 'D4',
   Niedermayer: 'D4',
+  Williams: 'D5',
+  Hunter: 'D5',
+  Domi: 'D5',
+  McSorley: 'D5',
+  Probert: 'D5'
 };
 
 // function for highlighting all rows of the same league on hover

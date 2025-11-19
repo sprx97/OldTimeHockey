@@ -170,14 +170,16 @@ http.createServer(async function(request, response) {
 					sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA, \
 					round(exp(sum(log(CASE \
 						WHEN isChamp = 0 THEN 1 \
-						WHEN (tier = 1 AND Teams.year = 2019) THEN isChamp*19 \
-						WHEN (tier = 2 AND Teams.year = 2019) THEN isChamp*17 \
-						WHEN (tier = 3 AND Teams.year = 2019) THEN isChamp*13 \
-						WHEN (tier = 4 AND Teams.year = 2019) THEN isChamp*11 \
-						WHEN (tier = 1 AND Teams.year != 2019) THEN isChamp*7 \
-						WHEN (tier = 2 AND Teams.year != 2019) THEN isChamp*5 \
-						WHEN (tier = 3 AND Teams.year != 2019) THEN isChamp*3 \
-						WHEN (tier = 4 AND Teams.year != 2019) THEN isChamp*2 END)))) as trophies, \
+						WHEN (tier = 1 AND Teams.year = 2019) THEN isChamp*23 \
+						WHEN (tier = 2 AND Teams.year = 2019) THEN isChamp*19 \
+						WHEN (tier = 3 AND Teams.year = 2019) THEN isChamp*17 \
+						WHEN (tier = 4 AND Teams.year = 2019) THEN isChamp*13 \
+						WHEN (tier = 1 AND Teams.year != 2019) THEN isChamp*11 \
+						WHEN (tier = 2 AND Teams.year != 2019) THEN isChamp*7 \
+						WHEN (tier = 3 AND Teams.year != 2019) THEN isChamp*5 \
+						WHEN (tier = 4 AND Teams.year != 2019) THEN isChamp*3 \
+						WHEN (tier = 5) THEN isChamp*2 END \
+					)))) as trophies, \
 					FFid \
 					from Teams_post inner join Teams on (Teams_post.teamID=Teams.teamID AND Teams_post.year=Teams.year) \
 					inner join Users on ownerID=FFid inner join Leagues on (Teams.leagueID=Leagues.id AND Teams.year = Leagues.year) \
@@ -190,14 +192,16 @@ http.createServer(async function(request, response) {
 					sum(pointsFor) as PF, sum(pointsAgainst) as PA, \
 					round(exp(sum(log(CASE \
 						WHEN isChamp = 0 THEN 1 \
-						WHEN (tier = 1 AND Teams.year = 2019) THEN isChamp*19 \
-						WHEN (tier = 2 AND Teams.year = 2019) THEN isChamp*17 \
-						WHEN (tier = 3 AND Teams.year = 2019) THEN isChamp*13 \
-						WHEN (tier = 4 AND Teams.year = 2019) THEN isChamp*11 \
-						WHEN (tier = 1 AND Teams.year != 2019) THEN isChamp*7 \
-						WHEN (tier = 2 AND Teams.year != 2019) THEN isChamp*5 \
-						WHEN (tier = 3 AND Teams.year != 2019) THEN isChamp*3 \
-						WHEN (tier = 4 AND Teams.year != 2019) THEN isChamp*2 END)))) as trophies, \
+						WHEN (tier = 1 AND Teams.year = 2019) THEN isChamp*23 \
+						WHEN (tier = 2 AND Teams.year = 2019) THEN isChamp*19 \
+						WHEN (tier = 3 AND Teams.year = 2019) THEN isChamp*17 \
+						WHEN (tier = 4 AND Teams.year = 2019) THEN isChamp*13 \
+						WHEN (tier = 1 AND Teams.year != 2019) THEN isChamp*11 \
+						WHEN (tier = 2 AND Teams.year != 2019) THEN isChamp*7 \
+						WHEN (tier = 3 AND Teams.year != 2019) THEN isChamp*5 \
+						WHEN (tier = 4 AND Teams.year != 2019) THEN isChamp*3 \
+						WHEN (tier = 5) THEN isChamp*2 END \
+					)))) as trophies, \
 					round(100*sum(pointsFor)/sum(100.0*pointsFor/coachRating), 2) as careerCR, FFid \
 					from Teams inner join Users on ownerID=FFid inner join Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year) where replacement != 1 and pointsFor >=0 " + yearfilter + tierfilter + "group by FFid " + minseasons + ") as T1 order by PF DESC";
 		}
