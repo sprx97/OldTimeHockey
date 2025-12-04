@@ -415,13 +415,13 @@ const Homepage = () => {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          <Header as="h1" textAlign="center">
+          {/* <Header as="h1" textAlign="center">
             Inactivity Policy and Midseason "Promotion"
           </Header>
           Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter where they finish and are bumped to D5.
           Users who are inactive longer than two weeks in the season are subject to replacement off of the waitlist (D5) or via midseason promotion (D1-D4).
           If a D1-D4 team goes inactive, the current highest season-long PF team in the division below will be offered the team. This manager is now responsible for BOTH of their teams,
-          and the higher one will be revoked of the lower one goes inactive. For the sake of promotion/relegation next season, they receive the higher slot of the two those teams earn.
+          and the higher one will be revoked of the lower one goes inactive. For the sake of promotion/relegation next season, they receive the higher slot of the two those teams earn. */}
         </Segment>
         <Segment basic />
       </Container>
