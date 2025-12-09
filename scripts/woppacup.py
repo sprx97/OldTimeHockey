@@ -55,6 +55,8 @@ all_matches = sorted(all_matches, key=lambda x: x["round"])
 
 curr_round = None
 for m in all_matches:
+    print(m)
+
     # Skip completed matches, because we only want the current one
     if m["state"] != "open":
         continue
@@ -66,6 +68,8 @@ for m in all_matches:
     # Skip matches for other rounds
     if m["round"] != curr_round:
         continue
+
+    quit()
 
     p1id = m["player1_id"]
     p2id = m["player2_id"]
@@ -120,7 +124,6 @@ for m in all_matches:
 
     winner_id = None
     if finalize:
-        winner_id = None # account for ties
         if p1_pf > p2_pf:
             winner_id = m["player1_id"]
         if p2_pf > p1_pf:
@@ -128,4 +131,4 @@ for m in all_matches:
 
     print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
     if len(sys.argv) > 1 and sys.argv[1] == "true":
-        challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id)
+        challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id, state=("complete" if finalize else "open"))
