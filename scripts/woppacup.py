@@ -69,8 +69,6 @@ for m in all_matches:
     if m["round"] != curr_round:
         continue
 
-    quit()
-
     p1id = m["player1_id"]
     p2id = m["player2_id"]
     p1 = p2 = None
