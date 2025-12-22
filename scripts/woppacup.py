@@ -16,7 +16,7 @@ f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 _ = f.readline().strip()
 week = int(f.readline().strip())
 if pf_week == "prevWeekPF":
-    pf_week -= 1
+    week -= 1
 
 # Skip olympic weeks in 2025-2026
 def is_week_to_skip():
@@ -25,7 +25,7 @@ def is_week_to_skip():
 
     return False
 
-def is_two_week_matchup(m)
+def is_two_week_matchup(m):
     # Semifinals and finals are always two-week
     if m["group_id"] == None and m["round"] >= 6:
         return True
@@ -82,8 +82,6 @@ all_matches = sorted(all_matches, key=lambda x: x["round"])
 
 curr_round = None
 for m in all_matches:
-    print(m)
-
     # Skip completed matches, because we only want the current one
     if m["state"] != "open":
         continue
@@ -155,5 +153,5 @@ for m in all_matches:
             winner_id = m["player2_id"]
 
     print(f"{p1_name} {p1_pf} - {p2_pf} {p2_name}")
-    if len(sys.argv) > 1 and sys.argv[1] == "true":
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "true":
         challonge.matches.update(wc_id, m["id"], scores_csv=f"{p1_pf}-{p2_pf}", winner_id=winner_id, state=("complete" if finalize else "open"))
