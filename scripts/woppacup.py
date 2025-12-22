@@ -9,8 +9,32 @@ from shared import Config
 
 sys.stdout = open("/var/www/OldTimeHockey/scripts/wc.log", "w")
 sys.stderr = open("/var/www/OldTimeHockey/scripts/wc.err", "w")
-week = "currentWeekPF"
-# week = "prevWeekPF"
+pf_week = "currentWeekPF"
+# pf_week = "prevWeekPF"
+
+f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+_ = f.readline().strip()
+week = int(f.readline().strip())
+if pf_week == "prevWeekPF":
+    pf_week -= 1
+
+# Skip olympic weeks in 2025-2026
+def is_week_to_skip():
+    if Config.config["year"] == 2025 and (week == 19 or week == 20):
+        return True
+
+    return False
+
+def is_two_week_matchup(m)
+    # Semifinals and finals are always two-week
+    if m["group_id"] == None and m["round"] >= 6:
+        return True
+
+    # In 2025-2026, the Round of 64 is a 2-week matchup due to Christmas
+    if Config.config["year"] == 2025 and m["round"] == 2 and m["group_id"] == None:
+        return True
+
+    return False
 
 # Grabs the current score and opponent's current score for the given username
 # This is a direct copy from the one in DiscordBot/Shared.py
@@ -20,7 +44,7 @@ def get_user_matchup_from_database(user, division=None):
 
     cursor = DB.cursor()
 
-    query = f"SELECT me_u.FFname as name, me.{week} as PF, opp_u.FFname as opp_name, opp.{week} as opp_PF, me.leagueID as league_id, me.matchupID as matchup_id, " + \
+    query = f"SELECT me_u.FFname as name, me.{pf_week} as PF, opp_u.FFname as opp_name, opp.{pf_week} as opp_PF, me.leagueID as league_id, me.matchupID as matchup_id, " + \
                           "me.wins as wins, me.losses as losses, opp.wins as opp_wins, opp.losses as opp_losses, me.year as year " + \
                           "FROM Teams AS me " + \
                           "LEFT JOIN Teams AS opp ON (me.CurrOpp=opp.teamID AND me.year=opp.year) " + \
@@ -41,6 +65,9 @@ def get_user_matchup_from_database(user, division=None):
     cursor.close()
 
     return matchup
+
+if is_week_to_skip():
+    quit()
 
 challonge.set_credentials(Config.config["challonge_username"], Config.config["challonge_api_key"])
 wc_id = Config.config["woppa_cup_id"]
@@ -110,7 +137,7 @@ for m in all_matches:
     # Currently this is only semifinals and final (for 2024-25), but subject to change each year
     current_scores = m["scores_csv"]
     finalize = True
-    if m["group_id"] == None and m["round"] >= 6:
+    if is_two_week_matchup(m):
         if current_scores == "":
             challonge.matches.mark_as_underway(wc_id, m["id"])
             finalize = False

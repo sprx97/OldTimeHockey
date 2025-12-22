@@ -1131,3 +1131,124 @@
 [2025-12-15 09:09:36] 
 [2025-12-15 09:09:36] 	git config --global --add safe.directory /var/www/OldTimeHockey
 [2025-12-15 09:09:36] Backup Complete!
+[2025-12-22 09:00:01]   File "/var/www/OldTimeHockey/scripts/woppacup.py", line 28
+[2025-12-22 09:00:01]     def is_two_week_matchup(m)
+[2025-12-22 09:00:01]                               ^
+[2025-12-22 09:00:01] SyntaxError: expected ':'
+[2025-12-22 09:00:01] WoppaCup Update Complete!
+[2025-12-22 09:00:11] 12086 2025
+[2025-12-22 09:00:11] 12087 2025
+[2025-12-22 09:00:11] 12088 2025
+[2025-12-22 09:00:11] 12089 2025
+[2025-12-22 09:00:11] 12090 2025
+[2025-12-22 09:00:11] 12091 2025
+[2025-12-22 09:00:11] 12092 2025
+[2025-12-22 09:00:11] 12093 2025
+[2025-12-22 09:00:11] 12095 2025
+[2025-12-22 09:00:11] 12096 2025
+[2025-12-22 09:00:11] 12097 2025
+[2025-12-22 09:00:11] 12098 2025
+[2025-12-22 09:00:11] 12099 2025
+[2025-12-22 09:00:11] 12100 2025
+[2025-12-22 09:00:11] 12101 2025
+[2025-12-22 09:00:11] UpdateTables Complete!
+[2025-12-22 09:00:14] 2025 11
+[2025-12-22 09:00:14] Getting Scores for Gretzky 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Brodeur 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Roy 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Messier 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Yzerman 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Jagr 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Coffey 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Leetch 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Bourque 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Orr 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Williams 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Hunter 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Domi 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for McSorley 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] Getting Scores for Probert 2025 Week 11
+[2025-12-22 09:00:14] Week 11 does not have final results. Skipping.
+[2025-12-22 09:00:14] PullDailyScores Complete!
+[2025-12-22 09:09:20] Calculating playoff odds for league 12086 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12087 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12088 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12089 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12090 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12091 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12092 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12093 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12095 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12096 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12097 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12098 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12099 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12100 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] Calculating playoff odds for league 12101 in 2025
+[2025-12-22 09:09:20] All API calls completed. Starting simulations.
+[2025-12-22 09:09:20] Simulations completed.
+[2025-12-22 09:09:20] PlayoffOdds Complete!
+[2025-12-22 09:09:22] /var/www/OldTimeHockey/scripts/RedditBot/RedditPostBot.py:29: DeprecationWarning: Positional arguments for 'Subreddit.submit' will no longer be supported in PRAW 8.
+[2025-12-22 09:09:22] Call this function with 'selftext' as a keyword argument.
+[2025-12-22 09:09:22]   r.subreddit("OldTimeHockey").submit("Woppa Cup " + str(year) + " Update", "https://challonge.com/woppacup" + str(year)[2:])
+[2025-12-22 09:09:22] Reddit Post Complete!
+[2025-12-22 09:09:23] WeekVars Incremented!
+[2025-12-22 09:09:23] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-12-22 09:09:23] To add an exception for this directory, call:
+[2025-12-22 09:09:23] 
+[2025-12-22 09:09:23] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-12-22 09:09:23] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-12-22 09:09:23] To add an exception for this directory, call:
+[2025-12-22 09:09:23] 
+[2025-12-22 09:09:23] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-12-22 09:09:23] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-12-22 09:09:23] To add an exception for this directory, call:
+[2025-12-22 09:09:23] 
+[2025-12-22 09:09:23] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-12-22 09:09:23] fatal: detected dubious ownership in repository at '/var/www/OldTimeHockey'
+[2025-12-22 09:09:23] To add an exception for this directory, call:
+[2025-12-22 09:09:23] 
+[2025-12-22 09:09:23] 	git config --global --add safe.directory /var/www/OldTimeHockey
+[2025-12-22 09:09:23] Backup Complete!
