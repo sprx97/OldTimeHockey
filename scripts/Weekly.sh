@@ -34,4 +34,5 @@ echo "WeekVars Incremented!"
 
 # Run weekly database copy
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/backupdata.py
+/var/www/OldTimeHockey/scripts/oth.venv/bin/pip freeze > /var/www/OldTimeHockey/scripts/requirements.txt
 echo "Backup Complete!"
