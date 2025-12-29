@@ -20,7 +20,7 @@ if pf_week == "prevWeekPF":
 
 # Skip olympic weeks in 2025-2026
 def is_week_to_skip():
-    if Config.config["year"] == 2025 and (week == 19 or week == 20):
+    if int(Config.config["year"]) == 2025 and (week == 19 or week == 20):
         return True
 
     return False
@@ -31,7 +31,7 @@ def is_two_week_matchup(m):
         return True
 
     # In 2025-2026, the Round of 64 is a 2-week matchup due to Christmas
-    if Config.config["year"] == 2025 and m["round"] == 2 and m["group_id"] == None:
+    if int(Config.config["year"]) == 2025 and m["round"] == 2 and m["group_id"] == None:
         return True
 
     return False
