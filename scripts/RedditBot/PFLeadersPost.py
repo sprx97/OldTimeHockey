@@ -18,8 +18,8 @@ if os.path.isfile(Config.config["srcroot"] + "scripts/RedditBot/PFs/" + str(year
 sys.stdout = open(Config.config["srcroot"] + "scripts/RedditBot/PFs/" + str(year) + "_Week_" + str(week) + ".txt", "w")
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
-cursor = db.cursor()
-cursor.execute("SELECT L.name, T.name, T.pointsFor, U.FFname FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID and L.year = T.year) " + \
+cursor = db.cursor(pymysql.cursors.DictCursor)
+cursor.execute("SELECT L.name as league_name, T.name as team_name, T.pointsFor, U.FFname FROM Leagues L INNER JOIN Teams T ON (L.id = T.leagueID and L.year = T.year) " + \
                "INNER JOIN Users U on T.ownerID = U.FFid WHERE L.year=" + str(year) + " ORDER BY T.pointsFor DESC")
 teams = cursor.fetchall()
 s = "###OVERALL POINTS LEADERS - Who has scored the most points this season?\n"
@@ -28,7 +28,7 @@ s += ":-:|:-:|:-:|:-:|:--\n"
 
 rank = 1
 for team in teams:
-        s += str(rank) + "|" + team[0] + "|" + team[1] + "|" + team[3] + "|" + str(team[2]) + "\n"
+        s += str(rank) + "|" + team["league_name"] + "|" + team["team_name"] + "|" + team["FFname"] + "|" + str(team["pointsFor"]) + "\n"
         rank += 1
 s += "-----\n"
 

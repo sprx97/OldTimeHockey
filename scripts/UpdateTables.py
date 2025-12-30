@@ -145,7 +145,20 @@ def getStandings(leagueID, year):
             # https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id=12086&fantasy_game_id=2579652&scoring_period=104
             # https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id=12086&fantasy_game_id=2579653&scoring_period=108
 
-        all_teams.append([team_id, team_name, user_id, user_name, division, wins, losses, games_back, streak, points_for, points_against, coachRating[team_id], team_id in champs, ties])
+        all_teams.append({"team_id": team_id, 
+                          "team_name": team_name,
+                          "user_id": user_id,
+                          "user_name": user_name,
+                          "division": division,
+                          "wins": wins,
+                          "losses": losses,
+                          "games_back": games_back,
+                          "streak": streak,
+                          "points_for": points_for,
+                          "points_against": points_against,
+                          "coach_rating": coachRating[team_id],
+                          "is_champ": team_id in champs,
+                          "ties": ties})
 
     return all_teams
 
@@ -224,71 +237,74 @@ def demojify(text):
     return regex_pattern.sub(r'', text)
 
 if __name__ == "__main__":
-    db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
+    db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
     cursor = db.cursor()
 
     for year in years_to_update:
         cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
         leagues = cursor.fetchall()
         for league in leagues:
-            teams = getStandings(league[0], league[1])
+            teams = getStandings(league["id"], league["year"])
             for next in teams:
-                next[1] = next[1].replace(";", "") # prevent sql injection
-                next[1] = next[1].replace("'", "''") # correct quote escaping
-                next[1] = next[1].replace(u"\u2019", "''") # another type of quote?
-                next[1] = next[1].replace("í", "i").replace("ř", "r") # non-english characters
-                next[1] = next[1].replace("á", "a").replace("č", "c").replace("Š", "S") # more non-english characters
-                next[1] = demojify(next[1])
-                if len(next[1]) == 1 and ord(next[1][0]) == 65039: # Weird issue with team names solely composed of emoji
-                    next[1] = "<Blank Team Name>"
-                next[3] = next[3].replace(";", "") # prevent sql injection
-                next[3] = next[3].replace("'", "''") # correct quote escaping
+                next["team_name"] = next["team_name"].replace(";", "") # prevent sql injection
+                next["team_name"] = next["team_name"].replace("'", "''") # correct quote escaping
+                next["team_name"] = next["team_name"].replace(u"\u2019", "''") # another type of quote?
+                next["team_name"] = next["team_name"].replace("í", "i").replace("ř", "r") # non-english characters
+                next["team_name"] = next["team_name"].replace("á", "a").replace("č", "c").replace("Š", "S") # more non-english characters
+                next["team_name"] = demojify(next["team_name"])
+                if len(next["team_name"]) == 1 and ord(next["team_name"][0]) == 65039: # Weird issue with team names solely composed of emoji -- case by case fix
+                    next["team_name"] = "<Blank Team Name>"
+                next["user_name"] = next["user_name"].replace(";", "") # prevent sql injection
+                next["user_name"] = next["user_name"].replace("'", "''") # correct quote escaping
                 try:
-                    if next[3][-2] == "+":
-                        next[3] = next[3][:-3] # elimites "+1" for managers with co-managers
+                    if next["user_name"][-2] == "+":
+                        next["user_name"] = next["user_name"][:-3] # elimites "+1" for managers with co-managers
                 except:
-                    pass
+                    print("Failed to trim co-managers")
 
-                if str(next[2]) == "591742":
-                    next[2] = 157129 # override for rellek multi accounts...
-                elif str(next[2]) == "698576":
-                    next[2] = 1357398 # override for MWHazard's old account
+                # TODO: This may be a dupe of the part in getStandings
+                if str(next["user_id"]) == "591742":
+                    next["user_id"] = 157129 # override for rellek multi accounts...
+                elif str(next["user_id"]) == "698576":
+                    next["user_id"] = 1357398 # override for MWHazard's old account
+                elif str(next["user_id"]) == "841649":
+                    next["user_id"] = 2267467 # override for dkpatrick multiple accounts
 
-                cursor.execute("SELECT * from Teams where teamID = " + next[0] + " AND year=" + str(year))
+                cursor.execute("SELECT * from Teams where teamID = " + next["team_id"] + " AND year=" + str(year))
                 data = cursor.fetchall()
                 if len(data) == 0: # insert new team into table (should only happen once)
-                    cursor.execute("INSERT into Teams values (" + str(next[0]) + ", " + str(league[0]) + ", " + str(next[2]) + ", '" + \
-                    next[1] + "', " + str(next[5]) + ", " + str(next[6]) + ", " + str(next[7]) + ", " + str(next[8]) + ", " + \
-                    str(next[9]) + ", " + str(next[10]) + ", 0, " + str(next[11]) + ", " + str(next[12]) +  ", 0.0, 0.0, -1, -1," + str(next[2]) + ", " + str(year) + ", " + str(next[13]) + ")")
+                    cursor.execute("INSERT into Teams values (" + str(next["team_id"]) + ", " + str(league["id"]) + ", " + str(next["user_id"]) + ", '" + \
+                    next["team_name"] + "', " + str(next["wins"]) + ", " + str(next["losses"]) + ", " + str(next["games_back"]) + ", " + str(next["streak"]) + ", " + \
+                    str(next["points_for"]) + ", " + str(next["pointsAgainst"]) + ", 0, " + str(next["coach_rating"]) + ", " + str(next["is_champ"]) +  ", 0.0, 0.0, -1, -1," + str(next["user_id"]) + ", " + str(year) + ", " + str(next["ties"]) + ")")
                 elif len(data) == 1:
-                    if intP(data[0][2]) != intP(next[2]) and intP(next[2]) != 0:
-                        cursor.execute("UPDATE Teams set ownerID=" + str(next[2]) + ", replacement=1 where teamID=" + str(next[0]) + " AND year=" + str(year))
+                    if intP(data[0]["ownerID"]) != intP(next["user_id"]) and intP(next["user_id"]) != 0:
+                        cursor.execute("UPDATE Teams set ownerID=" + str(next["user_id"]) + ", replacement=1 where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
 
-                    cursor.execute("UPDATE Teams set name='" + next[1] + \
-                    "', wins=" + str(next[5]) + ", losses=" + str(next[6]) + ", ties=" + str(next[13]) + ", gamesBack=" + str(next[7]) + \
-                    ", streak=" + str(next[8]) + ", pointsFor=" + str(next[9]) + ", pointsAgainst=" + str(next[10]) + \
-                    ", coachRating=" + str(next[11]) + ", isChamp=" + str(next[12]) +  " where teamID=" + str(next[0]) + " AND year=" + str(year))
+                    cursor.execute("UPDATE Teams set name='" + next["team_name"] + \
+                    "', wins=" + str(next["wins"]) + ", losses=" + str(next["losses"]) + ", ties=" + str(next["ties"]) + ", gamesBack=" + str(next["games_back"]) + \
+                    ", streak=" + str(next["streak"]) + ", pointsFor=" + str(next["points_for"]) + ", pointsAgainst=" + str(next["points_against"]) + \
+                    ", coachRating=" + str(next["coach_rating"]) + ", isChamp=" + str(next["is_champ"]) +  " where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
                 else:
-                    raise Exception("Error: more than one team matches teamID: " + str(next[0]))
+                    raise Exception("Error: more than one team matches teamID: " + str(next["team_id"]))
 
                 # only update the user if there is actually another user
-                if (next[2] != 0):
-                    cursor.execute("SELECT * from Users where FFid = " + str(next[2]))
+                if (next["user_id"] != 0):
+                    cursor.execute("SELECT * from Users where FFid = " + str(next["user_id"]))
                     data = cursor.fetchall()
                     if len(data) == 0: # insert new user into table (should only happen once)
-                        cursor.execute("INSERT into Users values (" + str(next[2]) + ", '" + next[3] + \
+                        cursor.execute("INSERT into Users values (" + str(next["user_id"]) + ", '" + next["user_name"] + \
                                         "', NULL)")
                     elif len(data) == 1:
-                        cursor.execute("UPDATE Users set FFname='" + next[3] \
-                        + "' where FFid=" + str(next[2]))
+                        cursor.execute("UPDATE Users set FFname='" + next["user_name"] \
+                        + "' where FFid=" + str(next["user_id"]))
                     else:
-                        raise Exception("Error: more than one user matches userID: " + str(next[2]))
+                        raise Exception("Error: more than one user matches userID: " + str(next["user_id"]))
 
     for year in playoffs_to_update:
         cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
         leagues = cursor.fetchall()
         for league in leagues:
-            teams_post = getPlayoffs(league[0], league[1])
+            teams_post = getPlayoffs(league["id"], league["year"])
             for next in teams_post:
                 cursor.execute("SELECT * from Teams_post where teamID = " + next + " AND year=" + str(year))
                 data = cursor.fetchall()

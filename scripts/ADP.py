@@ -15,12 +15,12 @@ else:
 
 # Grab the list of leagues for this query from our database
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
-cursor = db.cursor()
+cursor = db.cursor(pymysql.cursors.DictCursor)
 cursor.execute("SELECT L.id FROM Leagues L WHERE L.year=" + year)
 leagues = cursor.fetchall()
 
 for league in leagues:
-    league_id = league[0]
+    league_id = league["id"]
     response = requests.get("http://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + year + "&sport=NHL")
     assert response.status_code == 200, "Failed to find league " + str(league_id) + " for season " + year
     response = response.json()
