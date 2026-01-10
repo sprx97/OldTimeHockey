@@ -26,4 +26,4 @@ r.subreddit("OldTimeHockey").submit(str(year) + " Week " + str(week) + " Stats a
 
 # Woppa Cup Tournament (needs to be updated each year)
 if week >= 6 and week <= 22:
-    r.subreddit("OldTimeHockey").submit("Woppa Cup " + str(year+1) + " Update", "https://challonge.com/woppacup" + str(year+1)[2:])
+    r.subreddit("OldTimeHockey").submit("Woppa Cup " + str(year+1) + " Update", url="https://challonge.com/woppacup" + str(year+1)[2:])

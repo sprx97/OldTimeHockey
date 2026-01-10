@@ -59,7 +59,6 @@ teams = cursor.fetchall()
 # adjust to add in previous years streaks
 teamslist = []
 for team in teams:
-        team = list(team)
         if team["wins"] == 0 or team["losses"] == 0: # streak extends to previous years
                 tmpyear = year-1
                 while 1:

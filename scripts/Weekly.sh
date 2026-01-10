@@ -22,6 +22,7 @@ if (( $week >= 4 )); then
     echo "PlayoffOdds Complete!"
 fi
 
+# TODO: CONVERT TO REGULAR DISCORD POSTS VIA BOT
 # Generate weekly stat dumps and post to Reddit
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/WeeklyStatsPost.py
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/PFLeadersPost.py
