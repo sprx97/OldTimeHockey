@@ -30,5 +30,5 @@ tzlocal==2.1
 ujson==5.11.0
 update-checker==0.18.0
 uritemplate==4.2.0
-urllib3==2.6.0
+urllib3==2.6.3
 websocket-client==1.9.0
