@@ -66,8 +66,9 @@ async function handleV2(request, response) {
 		{
 			if (query.year === undefined) query.year = current_year;
 			if (query.week === undefined) query.week = current_week;
+			query.fiftyfifty = query.fiftyfifty === "true";
 			try {
-				content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}/${query.week - 1}.json`);
+				content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}${query.fiftyfifty ? "/fiftyfifty" : ""}/${query.week - 1}.json`);
 			} catch {
 				console.log("Error reading Playoff Odds file.");
 			}

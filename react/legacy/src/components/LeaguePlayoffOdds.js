@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, Header, Grid, Dropdown, Tab } from 'semantic-ui-react';
+import { Checkbox, Container, Dropdown, Grid, Header, Popup, Tab } from 'semantic-ui-react';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, LineChart, Cell } from 'recharts';
 import { getCurrentYear, isPlayoffWeek } from './Helpers';
 
@@ -28,7 +28,7 @@ const LeaguePlayoffOdds = (props) => {
 
   const fetchPlayoffOdds = async () => {
     try {
-      const response = await fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}`);
+      const response = await fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}&fiftyfifty=${useFiftyFifty}`);
       const data = await response.json();
 
       setPlayoffOdds(data);
@@ -53,7 +53,7 @@ const LeaguePlayoffOdds = (props) => {
 
       // Fetch data for weeks 1 up to but not including the first playoff week
       const promises = Array.from({ length: maxWeek - 1 }, (_, i) => i + 1).map(week =>
-        fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}&week=${week}`)
+        fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}&week=${week}&fiftyfifty=${useFiftyFifty}`)
           .then(res => res.json())
           .then(data => {
             weeklyData[week] = data;
@@ -75,11 +75,12 @@ const LeaguePlayoffOdds = (props) => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [historicalOdds, setHistoricalOdds] = useState(null);
   const [selectedTeams, setSelectedTeams] = useState(new Set());
+  const [useFiftyFifty, setUseFiftyFifty] = useState(false);
 
   useEffect(() => {
     fetchPlayoffOdds();
     fetchHistoricalOdds();
-  }, [leagueId]);
+  }, [leagueId, useFiftyFifty]);
 
   const handleLegendClick = (entry) => {
     setSelectedTeams(prev => {
@@ -554,6 +555,34 @@ const LeaguePlayoffOdds = (props) => {
   return (
     <Container style={{ marginTop: '2rem', padding: '0' }}>
       <Header as="h1">{leagueName} - Playoff Odds</Header>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: '1rem' }}>
+        <span>Gaussian</span>
+        <Popup
+          position="right center"
+          wide
+          hoverable
+          trigger={
+              <Checkbox
+                toggle
+                checked={useFiftyFifty}
+                onChange={(e, { checked }) =>
+                  setUseFiftyFifty(checked)
+                }
+              />
+          }
+        >
+          <Popup.Header>Distribution Mode</Popup.Header>
+          <Popup.Content>
+            <p>
+              <strong>Gaussian:</strong> Outcomes follow a normal distribution based on teams' average weekly points scored.
+            </p>
+            <p>
+              <strong>Fifty-fifty:</strong> Each matchup is treated as a coin flip.
+            </p>
+          </Popup.Content>
+        </Popup>
+        <span>Fifty-Fifty</span>
+      </div>
       <Tab panes={panes} defaultActiveIndex={passedTeamName ? 1 : 0} />
     </Container>
   );
