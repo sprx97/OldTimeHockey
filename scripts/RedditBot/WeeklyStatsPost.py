@@ -66,7 +66,7 @@ for team in teams:
                         prev = cursor.fetchall()
                         if len(prev) == 0 or len(prev) > 1:
                                 break
-                        prev = prev["streak"]
+                        prev = prev[0]
                         if prev["streak"]*team["streak"] > 0: # streaks are same direction
                                 team["streak"] += prev["streak"]
                         if (prev["streak"] > 0 and prev["streak"] == prev["wins"]) or (prev["streak"] < 0 and prev["streak"] == prev["losses"]):
