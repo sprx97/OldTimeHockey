@@ -48,6 +48,12 @@ async function handleV2(request, response) {
 	current_week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
 
 	switch (path) {
+		case "/Sentinel":
+		{
+			content = JSON.stringify({ sentinel: fs.existsSync(config.srcroot + "Sentinel") });
+		}
+		break;
+
 		case "/getLeagues":
 		{
 			year_where = "";

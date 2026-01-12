@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Header, Grid, Dropdown, Tab } from 'semantic-ui-react';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, LineChart, Cell } from 'recharts';
@@ -39,6 +39,35 @@ const LeaguePlayoffOdds = (props) => {
       }
     } catch (error) {
       console.error('Error fetching playoff odds:', error);
+    }
+  };
+
+  const fetchHistoricalOdds = async () => {
+    try {
+      const weeklyData = {};
+      const currentYear = getCurrentYear();
+      let maxWeek = 1;
+      while (!isPlayoffWeek(maxWeek, currentYear)) {
+        maxWeek++;
+      }
+
+      // Fetch data for weeks 1 up to but not including the first playoff week
+      const promises = Array.from({ length: maxWeek - 1 }, (_, i) => i + 1).map(week =>
+        fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}&week=${week}`)
+          .then(res => res.json())
+          .then(data => {
+            weeklyData[week] = data;
+          })
+          .catch(error => {
+            console.error(`Error fetching week ${week}:`, error);
+          })
+      );
+
+      await Promise.all(promises);
+      console.log(weeklyData)
+      setHistoricalOdds(weeklyData);
+    } catch (error) {
+      console.error('Error fetching historical odds:', error);
     }
   };
 
@@ -106,35 +135,6 @@ const LeaguePlayoffOdds = (props) => {
         })}
       </ul>
     );
-  };
-
-  const fetchHistoricalOdds = async () => {
-    try {
-      const weeklyData = {};
-      const currentYear = getCurrentYear();
-      let maxWeek = 1;
-      while (!isPlayoffWeek(maxWeek, currentYear)) {
-        maxWeek++;
-      }
-  
-      // Fetch data for weeks 1 up to but not including the first playoff week
-      const promises = Array.from({ length: maxWeek - 1 }, (_, i) => i + 1).map(week =>
-        fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${leagueId}&week=${week}`)
-          .then(res => res.json())
-          .then(data => {
-            weeklyData[week] = data;
-          })
-          .catch(error => {
-            console.error(`Error fetching week ${week}:`, error);
-          })
-      );
-      
-      await Promise.all(promises);
-      console.log(weeklyData)
-      setHistoricalOdds(weeklyData);
-    } catch (error) {
-      console.error('Error fetching historical odds:', error);
-    }
   };
 
   const formatSeedData = (seeds) => {

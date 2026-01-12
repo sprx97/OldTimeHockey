@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Create sentinel file to indicate weekly script is running
+touch /var/www/OldTimeHockey/Sentinel
+
 # Find the current year and week
 year=$(head -1 /var/www/OldTimeHockey/scripts/WeekVars.txt)
 week=$(head -2 /var/www/OldTimeHockey/scripts/WeekVars.txt | tail -1)
@@ -38,3 +41,6 @@ echo "WeekVars Incremented!"
 /var/www/OldTimeHockey/scripts/oth.venv/bin/pip freeze > /var/www/OldTimeHockey/scripts/requirements.txt
 /home/jeremy/wes.venv/bin/pip freeze > /home/jeremy/DiscordBot/requirements.txt
 echo "Backup Complete!"
+
+# Remove sentinel file to indicate weekly script is done
+rm /var/www/OldTimeHockey/Sentinel
