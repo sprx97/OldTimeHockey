@@ -12,12 +12,24 @@ from shared import Config
 # TODO: Consider adding a constant random.seed so it's reproducible
 
 stddev = 40
-def project_winner(teams, away, home):
+def project_winner(teams, away, home, use5050):
     away_random_pf = random.gauss(teams[away]["PF_avg"], stddev)
     home_random_pf = random.gauss(teams[home]["PF_avg"], stddev)
 
     teams[away]["PF"] += away_random_pf
     teams[home]["PF"] += home_random_pf
+
+    # 50/50 mode gives teams equal odds of winning, even if the PFs are different
+    if use5050:
+        if random.random() < 0.5:
+            teams[away]["wins"] += 1
+            teams[home]["losses"] += 1
+            return away
+        else:
+            teams[away]["losses"] += 1
+            teams[home]["wins"] += 1
+            return home
+
     if away_random_pf > home_random_pf:
         teams[away]["wins"] += 1
         teams[home]["losses"] += 1
@@ -27,7 +39,7 @@ def project_winner(teams, away, home):
         teams[home]["wins"] += 1
         return home
 
-def calculate_playoff_odds(league, year, current_week = None):
+def calculate_playoff_odds(league, year, current_week = None, use5050 = False):
     print(f"Calculating playoff odds for league {league} in {year}")
 
     teams = {}
@@ -86,7 +98,7 @@ def calculate_playoff_odds(league, year, current_week = None):
 
         for n in range(len(matches)):
             away, home = matches[n]
-            winner = project_winner(copy_teams, away, home)
+            winner = project_winner(copy_teams, away, home, use5050)
             if n < 7: # Current week (ie first matchup for each team)
                 copy_teams[winner]["win_current_week"] = True
 
@@ -137,6 +149,8 @@ def calculate_playoff_odds(league, year, current_week = None):
 
     # Write to JSON
     directory = f"scripts/PlayoffOdds/data/{year}/{league}"
+    if use5050:
+        directory += f"/fiftyfifty"
     WriteJsonFile(f"{directory}/{current_week}.json", teams)
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
@@ -145,3 +159,4 @@ week = int(f.readline().strip())
 
 for league in get_leagues_from_database(year, None):
     calculate_playoff_odds(league["id"], league["year"], week)
+    calculate_playoff_odds(league["id"], league["year"], week, use5050=True)
