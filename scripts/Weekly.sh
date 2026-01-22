@@ -27,10 +27,10 @@ fi
 
 # TODO: CONVERT TO REGULAR DISCORD POSTS VIA BOT
 # Generate weekly stat dumps and post to Reddit
-/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/WeeklyStatsPost.py
-/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/PFLeadersPost.py
-/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/RedditPostBot.py
-echo "Reddit Post Complete!"
+#/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/WeeklyStatsPost.py
+#/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/PFLeadersPost.py
+#/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/RedditBot/RedditPostBot.py
+#echo "Reddit Post Complete!"
 
 # Increment week variable
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/IncrementWeek.py
