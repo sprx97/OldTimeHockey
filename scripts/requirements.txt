@@ -17,7 +17,7 @@ praw==7.8.1
 prawcore==2.4.0
 proto-plus==1.26.1
 protobuf==6.32.0
-pyasn1==0.6.2
+pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pychallonge==1.11.5
 PyMySQL==1.1.2
