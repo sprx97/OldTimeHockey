@@ -122,22 +122,14 @@ def getStandings(leagueID, year):
             elif user_id == "841649":
                 user_id = "2267467" # override for dkpatrick multiple accounts
 
-        # wins, losses, gamesBack, streak, pointsFor, pointsAgainst, coachRating*, isChamp, ties
+        # wins, losses, pointsFor, pointsAgainst, coachRating*, isChamp, ties
         record = team["recordOverall"]
         wins = record["wins"] if "wins" in record else 0
         losses = record["losses"] if "losses" in record else 0
         ties = record["ties"] if "ties" in record else 0
-        # gamesBack? -- don't really need this IIRC
 
-        streak = team["streak"]["value"] if "value" in team["streak"] else 0
         points_for = team["pointsFor"]["value"] if "value" in team["pointsFor"] else 0
         points_against = team["pointsAgainst"]["value"] if "value" in team["pointsAgainst"] else 0
-
-        # I don't think these values are necessary anymore,
-        # but I'll have to disentangle some things to fully remove them
-        # If GamesBack is necessary that can easily be calculated in SQL
-        division = None
-        games_back = 0
 
         # CR is stored above, but I should have enough info to figure it out
         # Should have enough info to get CR from, and isChamp I think I can figure out.
@@ -149,11 +141,8 @@ def getStandings(leagueID, year):
                           "team_name": team_name,
                           "user_id": user_id,
                           "user_name": user_name,
-                          "division": division,
                           "wins": wins,
                           "losses": losses,
-                          "games_back": games_back,
-                          "streak": streak,
                           "points_for": points_for,
                           "points_against": points_against,
                           "coach_rating": coachRating[team_id],
@@ -177,7 +166,6 @@ def getPlayoffs(league_id, year):
 
         if not "isPlayoffs" in scoreboard["games"][0] or not scoreboard["games"][0]["isPlayoffs"]:
             continue
-
 
         for game in scoreboard["games"]:
             # Skip consolation bracket games
@@ -274,15 +262,15 @@ if __name__ == "__main__":
                 data = cursor.fetchall()
                 if len(data) == 0: # insert new team into table (should only happen once)
                     cursor.execute("INSERT into Teams values (" + str(next["team_id"]) + ", " + str(league["id"]) + ", " + str(next["user_id"]) + ", '" + \
-                    next["team_name"] + "', " + str(next["wins"]) + ", " + str(next["losses"]) + ", " + str(next["games_back"]) + ", " + str(next["streak"]) + ", " + \
-                    str(next["points_for"]) + ", " + str(next["pointsAgainst"]) + ", 0, " + str(next["coach_rating"]) + ", " + str(next["is_champ"]) +  ", 0.0, 0.0, -1, -1," + str(next["user_id"]) + ", " + str(year) + ", " + str(next["ties"]) + ")")
+                    next["team_name"] + "', " + str(next["wins"]) + ", " + str(next["losses"]) + ", " + str(next["points_for"]) + ", " + str(next["pointsAgainst"]) + \
+                    ", 0, " + str(next["coach_rating"]) + ", " + str(next["is_champ"]) +  ", 0.0, 0.0, -1, -1," + str(next["user_id"]) + ", " + str(year) + ", " + str(next["ties"]) + ")")
                 elif len(data) == 1:
                     if intP(data[0]["ownerID"]) != intP(next["user_id"]) and intP(next["user_id"]) != 0:
                         cursor.execute("UPDATE Teams set ownerID=" + str(next["user_id"]) + ", replacement=1 where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
 
                     cursor.execute("UPDATE Teams set name='" + next["team_name"] + \
-                    "', wins=" + str(next["wins"]) + ", losses=" + str(next["losses"]) + ", ties=" + str(next["ties"]) + ", gamesBack=" + str(next["games_back"]) + \
-                    ", streak=" + str(next["streak"]) + ", pointsFor=" + str(next["points_for"]) + ", pointsAgainst=" + str(next["points_against"]) + \
+                    "', wins=" + str(next["wins"]) + ", losses=" + str(next["losses"]) + ", ties=" + str(next["ties"]) + \
+                    ", pointsFor=" + str(next["points_for"]) + ", pointsAgainst=" + str(next["points_against"]) + \
                     ", coachRating=" + str(next["coach_rating"]) + ", isChamp=" + str(next["is_champ"]) +  " where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
                 else:
                     raise Exception("Error: more than one team matches teamID: " + str(next["team_id"]))
