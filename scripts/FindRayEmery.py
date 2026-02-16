@@ -136,5 +136,9 @@ for year in key:
                 for slot in boxscore["lineups"][0]["slots"]:
                     if "home" in slot and slot["home"]["proPlayer"]["id"] == 338:
                         print(f"{league_id} {year} {day} {home_id} -- {key[year][day]}")
+                        cursor.execute(f"UPDATE Scoring SET points = points+{key[year][day]}, optimum_points = optimum_points+{key[year][day]}, num_players = num_players + 1, optimum_num_players = optimum_num_players + 1 where team_id={home_id} and scoring_period={day} and year={year}")
                     elif "away" in slot and slot["away"]["proPlayer"]["id"] == 338:
                         print(f"{league_id} {year} {day} {away_id} -- {key[year][day]}")
+                        cursor.execute(f"UPDATE Scoring SET points = points+{key[year][day]}, optimum_points = optimum_points+{key[year][day]}, num_players = num_players + 1, optimum_num_players = optimum_num_players + 1 where team_id={away_id} and scoring_period={day} and year={year}")
+
+db.commit()
