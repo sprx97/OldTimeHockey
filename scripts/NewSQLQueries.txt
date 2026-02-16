@@ -24,7 +24,7 @@ SELECT team_id, year, 100*SUM(points)/SUM(optimum_points) as cr FROM `Scoring` G
 SELECT team_id, year, week, SUM(points) as points FROM `Scoring` WHERE year=2022 AND week=14 GROUP BY team_id, year, week ORDER BY points DESC
 
 # Career CR
-SELECT u.FFid, u.FFname, 100*SUM(s.points)/SUM(s.optimum_points) as cr FROM `Scoring` s INNER JOIN `Teams` t ON s.team_id=t.teamID INNER JOIN `Users` u ON t.ownerID=u.FFid WHERE t.replacement=0 GROUP BY u.FFid ORDER BY cr DESC
+SELECT u.FFid, u.FFname, 100*SUM(s.points)/SUM(s.optimum_points) as cr FROM `Scoring` s INNER JOIN `Teams` t ON s.team_id=t.teamID INNER JOIN `Users` u ON t.ownerID=u.FFid WHERE t.initialOwner=NULL GROUP BY u.FFid ORDER BY cr DESC
 
 # TODO: Playoff queries, career queries
 # TODO: INNER JOIN these with Leagues, Users, and Teams to get display names

@@ -53,7 +53,7 @@ def get_user_matchup_from_database(user, division=None):
                           "INNER JOIN Leagues AS l ON (me.leagueID=l.id AND me.year=l.year) "
 
     if division == None:
-        query += "WHERE me.replacement != 1 "
+        query += "WHERE me.initialOwner == me.ownerID "
     else:
         query += "WHERE LOWER(l.name)='" + division.lower() + "' "
 

@@ -261,12 +261,12 @@ if __name__ == "__main__":
                 cursor.execute("SELECT * from Teams where teamID = " + next["team_id"] + " AND year=" + str(year))
                 data = cursor.fetchall()
                 if len(data) == 0: # insert new team into table (should only happen once)
-                    cursor.execute("INSERT into Teams values (" + str(next["team_id"]) + ", " + str(league["id"]) + ", " + str(next["user_id"]) + ", '" + \
-                    next["team_name"] + "', " + str(next["wins"]) + ", " + str(next["losses"]) + ", " + str(next["points_for"]) + ", " + str(next["pointsAgainst"]) + \
-                    ", 0, " + str(next["coach_rating"]) + ", " + str(next["is_champ"]) +  ", 0.0, 0.0, -1, -1," + str(next["user_id"]) + ", " + str(year) + ", " + str(next["ties"]) + ")")
+                    cursor.execute("INSERT into Teams values (" + str(next["team_id"]) + ", " + str(league["id"]) + ", " + str(next["user_id"]) + ", " + str(next["user_id"]) + \
+                    ", '" + next["team_name"] + "', " + str(next["wins"]) + ", " + str(next["losses"]) + ", " + str(next["ties"]) + ", " + str(next["points_for"]) + ", " + \
+                    str(next["pointsAgainst"]) + ", " + str(next["coach_rating"]) + ", " + str(next["is_champ"]) +  ", 0.0, 0.0, -1, -1," + str(year) + ")")
                 elif len(data) == 1:
                     if intP(data[0]["ownerID"]) != intP(next["user_id"]) and intP(next["user_id"]) != 0:
-                        cursor.execute("UPDATE Teams set ownerID=" + str(next["user_id"]) + ", replacement=1 where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
+                        cursor.execute("UPDATE Teams set ownerID=" + str(next["user_id"]) + " where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
 
                     cursor.execute("UPDATE Teams set name='" + next["team_name"] + \
                     "', wins=" + str(next["wins"]) + ", losses=" + str(next["losses"]) + ", ties=" + str(next["ties"]) + \

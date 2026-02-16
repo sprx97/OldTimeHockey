@@ -334,6 +334,7 @@ const Homepage = () => {
                   <li>Win: 3</li>
                   <li>Loss: -1.5</li>
                   <li>OT Loss: 1</li>
+                  <li>Shutout: 2.5</li>
                   <li>Save: .25</li>
                   <li>GA: -1</li>
                   <a href="http://www.fleaflicker.com/nhl/leagues/12086/scoring">Full Scoring</a>

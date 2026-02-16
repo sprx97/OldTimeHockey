@@ -1,6 +1,0 @@
-# Get the highest PFs over the last two years
-SELECT FFname, ROUND(SUM(pointsFor), 2) as PF from Teams Inner Join Users on ownerID=FFid Inner Join Leagues on leagueID=id 
-where FFid != 0 and replacement != 1 and (year=2017 or year=2018)
-group by ownerID order by PF DESC 
-Limit 0,50
-
