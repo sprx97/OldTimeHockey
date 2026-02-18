@@ -31,6 +31,7 @@ for matchup in matchup_ids:
                 continue
         print(num_players, sum)
     print()
+    quit()
 
     print(team_b)
     for period in periods:

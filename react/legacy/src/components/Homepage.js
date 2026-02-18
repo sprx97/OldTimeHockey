@@ -174,7 +174,8 @@ const seasons = [
       "D2/D3 leagues increased from 12 to 14 teams.",
       "Wins and losses decreased from 6 and -3 to 4 and -2.",
       "Saves decreased from .3 to .2 per.",
-      "Assists increased from 2 to 2.5 per."
+      "Assists increased from 2 to 2.5 per.",
+      "PIMs increased from .1 to .2 per."
     ]
   },
   {
