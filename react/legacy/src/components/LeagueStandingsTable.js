@@ -15,7 +15,7 @@ class LeagueStandingsTable extends Component {
   };
 
   getData = async () => {
-    const res = await fetch('https://roldtimehockey.com/node/leagueteams?id=' + this.props.leagueID + "&year=" + this.props.year);
+    const res = await fetch(`https://roldtimehockey.com/node/leagueteams?id=${this.props.leagueID}&year=${this.props.year}`);
     const leaders = await res.json();
 
     const res2 = await fetch(`https://roldtimehockey.com/node/v2/standings/advanced/playoff_odds?league=${this.props.leagueID}&year=${this.props.year}`) // (And week defaults to current week)
@@ -121,7 +121,7 @@ class LeagueStandingsTable extends Component {
               {_.map(
                 data,
                 (
-                  { teamID, leagueID, name, FFname, wins, losses, isChamp, tier, ties, is_replacement, playoff_odds, bye_odds, double_demo_odds },
+                  { teamID, leagueID, name, FFname, wins, losses, ties, isChamp, tier, is_replacement, playoff_odds, bye_odds, double_demo_odds },
                   index,
                 ) => (
                   <Table.Row

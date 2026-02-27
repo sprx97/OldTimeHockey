@@ -30,7 +30,7 @@ def updateCurrentPF(league, year):
     # Season over, or this week doesn't exist. Exit and zero out this league
     if day == 0:
         print(f"Week {week} does not exist in {league}")
-        cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID={league} and year={year}")
+        cursor.execute("UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s", (league, year))
         return
 
     # Call it again for the week based on our current week
@@ -46,13 +46,13 @@ def updateCurrentPF(league, year):
         tracked.append(str(away_id))
         tracked.append(str(home_id))
 
-        cursor.execute(f"UPDATE Teams set currentWeekPF={away_score}, CurrOpp={home_id}, matchupID={matchup_id} where teamID={away_id} AND year={year}")
-        cursor.execute(f"UPDATE Teams set currentWeekPF={home_score}, CurrOpp={away_id}, matchupID={matchup_id} where teamID={home_id} AND year={year}")
+        cursor.execute("UPDATE Teams set currentWeekPF=%s, CurrOpp=%s, matchupID=%s where teamID=%s AND year=%s", (away_score, home_id, matchup_id, away_id, year))
+        cursor.execute("UPDATE Teams set currentWeekPF=%s, CurrOpp=%s, matchupID=%s where teamID=%s AND year=%s", (home_score, away_id, matchup_id, home_id, year))
 
     # Reset teams on bye to 0.0 points with null opponent and matchup id
     if len(tracked) < 14:
         tracked_string = ",".join(tracked)
-        cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID={league} and year={year} and teamID NOT IN ({tracked_string})")
+        cursor.execute("UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s and teamID NOT IN (%s)", (league, year, tracked_string))
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
 cursor = db.cursor()

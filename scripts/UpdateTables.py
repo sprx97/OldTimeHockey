@@ -229,7 +229,7 @@ if __name__ == "__main__":
     cursor = db.cursor()
 
     for year in years_to_update:
-        cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
+        cursor.execute("SELECT * from Leagues where year=%s", (year,)) # queries for all leagues that year
         leagues = cursor.fetchall()
         for league in leagues:
             teams = getStandings(league["id"], league["year"])
@@ -258,50 +258,44 @@ if __name__ == "__main__":
                 elif str(next["user_id"]) == "841649":
                     next["user_id"] = 2267467 # override for dkpatrick multiple accounts
 
-                cursor.execute("SELECT * from Teams where teamID = " + next["team_id"] + " AND year=" + str(year))
+                cursor.execute("SELECT * from Teams where teamID = %s AND year = %s", (next["team_id"], year))
                 data = cursor.fetchall()
                 if len(data) == 0: # insert new team into table (should only happen once)
-                    cursor.execute("INSERT into Teams values (" + str(next["team_id"]) + ", " + str(league["id"]) + ", " + str(next["user_id"]) + ", " + str(next["user_id"]) + \
-                    ", '" + next["team_name"] + "', " + str(next["wins"]) + ", " + str(next["losses"]) + ", " + str(next["ties"]) + ", " + str(next["points_for"]) + ", " + \
-                    str(next["pointsAgainst"]) + ", " + str(next["coach_rating"]) + ", " + str(next["is_champ"]) +  ", 0.0, 0.0, -1, -1," + str(year) + ")")
+                    cursor.execute("INSERT into Teams values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                                   (next["team_id"], league["id"], next["user_id"], next["user_id"], next["team_name"], next["wins"], next["losses"], next["ties"], next["points_for"], next["points_against"], next["coach_rating"], next["is_champ"], 0.0, 0.0, -1, -1, year))
                 elif len(data) == 1:
                     if intP(data[0]["ownerID"]) != intP(next["user_id"]) and intP(next["user_id"]) != 0:
-                        cursor.execute("UPDATE Teams set ownerID=" + str(next["user_id"]) + " where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
+                        cursor.execute("UPDATE Teams set ownerID=%s where teamID=%s AND year=%s", (next["user_id"], next["team_id"], year))
 
-                    cursor.execute("UPDATE Teams set name='" + next["team_name"] + \
-                    "', wins=" + str(next["wins"]) + ", losses=" + str(next["losses"]) + ", ties=" + str(next["ties"]) + \
-                    ", pointsFor=" + str(next["points_for"]) + ", pointsAgainst=" + str(next["points_against"]) + \
-                    ", coachRating=" + str(next["coach_rating"]) + ", isChamp=" + str(next["is_champ"]) +  " where teamID=" + str(next["team_id"]) + " AND year=" + str(year))
+                    cursor.execute("UPDATE Teams set name=%s, wins=%s, losses=%s, ties=%s, pointsFor=%s, pointsAgainst=%s, coachRating=%s, isChamp=%s where teamID=%s AND year=%s", 
+                                   (next["team_name"], next["wins"], next["losses"], next["ties"], next["points_for"], next["points_against"], next["coach_rating"], next["is_champ"], next["team_id"], year))
                 else:
                     raise Exception("Error: more than one team matches teamID: " + str(next["team_id"]))
 
                 # only update the user if there is actually another user
                 if (next["user_id"] != 0):
-                    cursor.execute("SELECT * from Users where FFid = " + str(next["user_id"]))
+                    cursor.execute("SELECT * from Users where FFid = %s", (next["user_id"],))
                     data = cursor.fetchall()
                     if len(data) == 0: # insert new user into table (should only happen once)
-                        cursor.execute("INSERT into Users values (" + str(next["user_id"]) + ", '" + next["user_name"] + \
-                                        "', NULL)")
+                        cursor.execute("INSERT into Users values (%s, %s, NULL)", (next["user_id"], next["user_name"]))
                     elif len(data) == 1:
-                        cursor.execute("UPDATE Users set FFname='" + next["user_name"] \
-                        + "' where FFid=" + str(next["user_id"]))
+                        cursor.execute("UPDATE Users set FFname=%s where FFid=%s", (next["user_name"], next["user_id"]))
                     else:
                         raise Exception("Error: more than one user matches userID: " + str(next["user_id"]))
 
     for year in playoffs_to_update:
-        cursor.execute("SELECT * from Leagues where year=" + str(year)) # queries for all leagues that year
+        cursor.execute("SELECT * from Leagues where year=%s", (year,)) # queries for all leagues that year
         leagues = cursor.fetchall()
         for league in leagues:
             teams_post = getPlayoffs(league["id"], league["year"])
             for next in teams_post:
-                cursor.execute("SELECT * from Teams_post where teamID = " + next + " AND year=" + str(year))
+                cursor.execute("SELECT * from Teams_post where teamID = %s AND year=%s", (next, year))
                 data = cursor.fetchall()
                 if len(data) == 0: # new team
-                    cursor.execute("INSERT into Teams_post values (" + next + ", " + str(teams_post[next][0]) + ", " + str(teams_post[next][1]) + \
-                    ", " + str(teams_post[next][2]) + ", " + str(teams_post[next][3]) + ", " + str(teams_post[next][4]) + ", " + str(year) +  ")")
+                    cursor.execute("INSERT into Teams_post values (%s, %s, %s, %s, %s, %s)", (next, teams_post[next][0], teams_post[next][1], teams_post[next][2], teams_post[next][3], teams_post[next][4], year))
                 elif len(data) == 1:
-                    cursor.execute("UPDATE Teams_post set wins=" + str(teams_post[next][0]) + ", losses=" + str(teams_post[next][1]) + \
-                    ", pointsFor=" + str(teams_post[next][2]) + ", pointsAgainst=" + str(teams_post[next][3]) + ", seed=" + str(teams_post[next][4]) + " where teamID=" + next + " AND year=" + str(year))
+                    cursor.execute("UPDATE Teams_post set wins=%s, losses=%s, pointsFor=%s, pointsAgainst=%s, seed=%s where teamID=%s AND year=%s", 
+                                   (teams_post[next][0], teams_post[next][1], teams_post[next][2], teams_post[next][3], teams_post[next][4], next, year))
                 else:
                     raise Exception("Error: more than one team matches teamID: " + next)
 

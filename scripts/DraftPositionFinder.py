@@ -19,6 +19,6 @@ for league in leagues:
 
     for pick_num in range(len(draft_order)):
         id = draft_order[pick_num]["id"]
-        cursor.execute(f"UPDATE Teams set DraftPosition={pick_num + 1} where teamID={id}")
+        cursor.execute("UPDATE Teams set DraftPosition=%s where teamID=%s", (pick_num + 1, id))
 
 db.commit()

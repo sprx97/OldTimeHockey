@@ -9,13 +9,13 @@ from shared import Config
 
 sys.stdout = open("/var/www/OldTimeHockey/scripts/wc.log", "w")
 sys.stderr = open("/var/www/OldTimeHockey/scripts/wc.err", "w")
-pf_week = "currentWeekPF"
-# pf_week = "prevWeekPF"
+week_to_use = "currentWeekPF"
+# week_to_use = "prevWeekPF"
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 _ = f.readline().strip()
 week = int(f.readline().strip())
-if pf_week == "prevWeekPF":
+if week_to_use == "prevWeekPF":
     week -= 1
 
 # Skip olympic weeks in 2025-2026
@@ -44,22 +44,28 @@ def get_user_matchup_from_database(user, division=None):
 
     cursor = DB.cursor()
 
-    query = f"SELECT me_u.FFname as name, me.{pf_week} as PF, opp_u.FFname as opp_name, opp.{pf_week} as opp_PF, me.leagueID as league_id, me.matchupID as matchup_id, " + \
-                          "me.wins as wins, me.losses as losses, opp.wins as opp_wins, opp.losses as opp_losses, me.year as year " + \
-                          "FROM Teams AS me " + \
-                          "LEFT JOIN Teams AS opp ON (me.CurrOpp=opp.teamID AND me.year=opp.year) " + \
-                          "INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid " + \
-                          "LEFT JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid " + \
-                          "INNER JOIN Leagues AS l ON (me.leagueID=l.id AND me.year=l.year) "
+    query = """
+        SELECT me_u.FFname as name, me.%s as PF, opp_u.FFname as opp_name, opp.%s as opp_PF,
+            me.leagueID as league_id, me.matchupID as matchup_id, me.wins as wins, me.losses as losses,
+            opp.wins as opp_wins, opp.losses as opp_losses, me.year as year
+            FROM Teams AS me
+            LEFT JOIN Teams AS opp ON (me.CurrOpp=opp.teamID AND me.year=opp.year)
+            INNER JOIN Users AS me_u ON me.ownerID=me_u.FFid
+            LEFT JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid
+            INNER JOIN Leagues AS l ON (me.leagueID=l.id AND me.year=l.year)
+        """
+    params = [week_to_use, week_to_use]
 
     if division == None:
         query += "WHERE me.initialOwner == me.ownerID "
     else:
-        query += "WHERE LOWER(l.name)='" + division.lower() + "' "
+        query += "WHERE LOWER(l.name)='%s' "
+        params.append(division.lower())
 
-    query += "AND LOWER(me_u.FFname)='" + user + "' AND l.year=" + Config.config["year"]
+    query += "AND LOWER(me_u.FFname)='%s' AND l.year=%s"
+    params.extend([user, Config.config["year"]])
 
-    cursor.execute(query)
+    cursor.execute(query, tuple(params))
 
     matchup = cursor.fetchall()
     cursor.close()

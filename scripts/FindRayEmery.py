@@ -113,7 +113,7 @@ key = {
 
 for year in key:
     # Get all leagues for the year
-    cursor.execute(f"SELECT id, name from Leagues where year={year}")
+    cursor.execute("SELECT id, name from Leagues where year=%s", (year,))
     leagues = cursor.fetchall()
 
     for league in leagues:
@@ -147,10 +147,10 @@ for year in key:
                 for slot in boxscore["lineups"][0]["slots"]:
                     if "home" in slot and slot["home"]["proPlayer"]["id"] == 338:
                         print(f"{league_id} {year} {day} {home_id} -- {key[year][day]}")
-                        cursor.execute(f"UPDATE Scoring SET points = points+{key[year][day]}, optimum_points = optimum_points+{key[year][day]}, num_players = num_players + 1, optimum_num_players = optimum_num_players + 1 where team_id={home_id} and scoring_period={day} and year={year}")
+                        cursor.execute("UPDATE Scoring SET points = points+%s, optimum_points = optimum_points+%s, num_players = num_players + 1, optimum_num_players = optimum_num_players + 1 where team_id=%s and scoring_period=%s and year=%s", (key[year][day], key[year][day], home_id, day, year))
                     elif "away" in slot and slot["away"]["proPlayer"]["id"] == 338:
                         print(f"{league_id} {year} {day} {away_id} -- {key[year][day]}")
-                        cursor.execute(f"UPDATE Scoring SET points = points+{key[year][day]}, optimum_points = optimum_points+{key[year][day]}, num_players = num_players + 1, optimum_num_players = optimum_num_players + 1 where team_id={away_id} and scoring_period={day} and year={year}")
+                        cursor.execute("UPDATE Scoring SET points = points+%s, optimum_points = optimum_points+%s, num_players = num_players + 1, optimum_num_players = optimum_num_players + 1 where team_id=%s and scoring_period=%s and year=%s", (key[year][day], key[year][day], away_id, day, year))
 
 print("DB not committed")
 # db.commit()

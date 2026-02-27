@@ -113,8 +113,12 @@ def GetScores(league_id, year, week=None):
                              "num_players": num_players_away,
                              "optimum_num_players": optimum_num_players_away}
 
-                cursor.execute(f"INSERT INTO Scoring ({', '.join(home_data.keys())}) VALUES ({', '.join([str(val) for val in home_data.values()])})")
-                cursor.execute(f"INSERT INTO Scoring ({', '.join(away_data.keys())}) VALUES ({', '.join([str(val) for val in away_data.values()])})")
+                columns = list(home_data.keys())
+                placeholders = ", ".join(["%s"] * len(columns))
+                column_names = ", ".join(columns)
+
+                cursor.execute(f"INSERT INTO Scoring ({column_names}) VALUES ({placeholders})", tuple(home_data.values()))
+                cursor.execute(f"INSERT INTO Scoring ({column_names}) VALUES ({placeholders})", tuple(away_data.values()))
 
                 # TODO: Stored procedures for quicker data access (queries that will be used frequently)
                 # - GetCareerPFTotal(user_id) -- needs to union with Teams table
@@ -155,7 +159,7 @@ if len(sys.argv) == 3:
     week = int(sys.argv[2])
 
 # Get all leagues for the year
-cursor.execute(f"SELECT id, name from Leagues where year={year}")
+cursor.execute("SELECT id, name from Leagues where year=%s", (year,))
 leagues = cursor.fetchall()
 
 print(year, week)

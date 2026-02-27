@@ -28,10 +28,12 @@ def is_playoff_week(week, year):
 def get_leagues_from_database(year, tier=None):
     DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
     cursor = DB.cursor()
-    query = f"SELECT id, name, year from Leagues where year={year}"
+    query = "SELECT id, name, year from Leagues where year=%s"
+    params = [year]
     if tier != None:
-        query += " and tier=" + str(tier)
-    cursor.execute(query)
+        query += " and tier=%s"
+        params.append(tier)
+    cursor.execute(query, tuple(params))
     leagues = cursor.fetchall()
     cursor.close()
 

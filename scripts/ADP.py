@@ -16,7 +16,7 @@ else:
 # Grab the list of leagues for this query from our database
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"])
 cursor = db.cursor(pymysql.cursors.DictCursor)
-cursor.execute("SELECT L.id FROM Leagues L WHERE L.year=" + year)
+cursor.execute("SELECT L.id FROM Leagues L WHERE L.year=%s", (year,))
 leagues = cursor.fetchall()
 
 for league in leagues:
@@ -55,7 +55,7 @@ for league in leagues:
             player_team = player["proTeamAbbreviation"]
             player_positions = player["position"] if "position" in player else ""
 
-            cursor.execute(f"INSERT IGNORE INTO DraftPicks VALUES ({year}, {league_id}, {pick_num}, {team_id}, {player_id}, \"{player_name}\", \"{player_team}\", \"{player_positions}\")")
+            cursor.execute("INSERT IGNORE INTO DraftPicks VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (year, league_id, pick_num, team_id, player_id, player_name, player_team, player_positions))
             cell_num += 1
 
 db.commit()
