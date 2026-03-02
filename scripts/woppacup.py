@@ -10,7 +10,7 @@ from shared import Config
 sys.stdout = open("/var/www/OldTimeHockey/scripts/wc.log", "w")
 sys.stderr = open("/var/www/OldTimeHockey/scripts/wc.err", "w")
 week_to_use = "currentWeekPF"
-# week_to_use = "prevWeekPF"
+#week_to_use = "prevWeekPF"
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 _ = f.readline().strip()
@@ -44,8 +44,8 @@ def get_user_matchup_from_database(user, division=None):
 
     cursor = DB.cursor()
 
-    query = """
-        SELECT me_u.FFname as name, me.%s as PF, opp_u.FFname as opp_name, opp.%s as opp_PF,
+    query = f"""
+        SELECT me_u.FFname as name, me.{week_to_use} as PF, opp_u.FFname as opp_name, opp.{week_to_use} as opp_PF,
             me.leagueID as league_id, me.matchupID as matchup_id, me.wins as wins, me.losses as losses,
             opp.wins as opp_wins, opp.losses as opp_losses, me.year as year
             FROM Teams AS me
@@ -54,15 +54,13 @@ def get_user_matchup_from_database(user, division=None):
             LEFT JOIN Users AS opp_u ON opp.ownerID=opp_u.FFid
             INNER JOIN Leagues AS l ON (me.leagueID=l.id AND me.year=l.year)
         """
-    params = [week_to_use, week_to_use]
+    params = []
 
-    if division == None:
-        query += "WHERE me.initialOwner == me.ownerID "
-    else:
-        query += "WHERE LOWER(l.name)='%s' "
+    if division != None:
+        query += "WHERE LOWER(l.name)=%s "
         params.append(division.lower())
 
-    query += "AND LOWER(me_u.FFname)='%s' AND l.year=%s"
+    query += "AND LOWER(me_u.FFname)=%s AND l.year=%s"
     params.extend([user, Config.config["year"]])
 
     cursor.execute(query, tuple(params))
