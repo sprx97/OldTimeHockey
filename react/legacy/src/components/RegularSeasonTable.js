@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import React from 'react';
 import { Table, Loader } from 'semantic-ui-react';
 import UserLink from './UserLink';
 import { GetTrophy, highlightLeague, unhighlightLeague } from './Helpers'

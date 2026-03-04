@@ -10,7 +10,7 @@ from shared import Config
 sys.stdout = open("/var/www/OldTimeHockey/scripts/wc.log", "w")
 sys.stderr = open("/var/www/OldTimeHockey/scripts/wc.err", "w")
 week_to_use = "currentWeekPF"
-#week_to_use = "prevWeekPF"
+# week_to_use = "prevWeekPF"
 
 f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
 _ = f.readline().strip()

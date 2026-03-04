@@ -285,7 +285,7 @@ http.createServer(async function(request, response) {
 		}
 		else { // just a single-year
 			sql = `
-				SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname Teams.Wins, Teams.Losses, Teams.Ties,
+				SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams.Wins, Teams.Losses, Teams.Ties,
 					Teams.pointsFor, Teams.pointsAgainst, Teams.coachRating, isChamp, Leagues.tier, Users.FFid, Leagues.year from Teams
 					INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year)
 					INNER JOIN Users on ownerID=FFid

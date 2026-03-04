@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { Component, Fragment } from 'react';
+import { Component, Fragment } from 'react';
 import { Container, Segment, Dropdown, Grid, Checkbox, Divider, Input } from 'semantic-ui-react';
 import RegularSeasonTable from './RegularSeasonTable';
 import PlayoffsTable from './PlayoffsTable';
