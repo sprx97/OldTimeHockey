@@ -1,0 +1,688 @@
+{
+    "63207": {
+        "name": "Dumpster Fire Brigade",
+        "owner": "stroopwafels",
+        "wins": 15,
+        "losses": 5,
+        "PF": 4330.55,
+        "playoff_odds": 100.0,
+        "seeds": [
+            100.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 50110,
+                "total": 50110,
+                "odds": 100.0
+            },
+            "0-1": {
+                "made_playoffs": 49890,
+                "total": 49890,
+                "odds": 100.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 50110,
+                "total": 50110,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 49890,
+                "total": 49890,
+                "odds": 100.0
+            }
+        },
+        "PF_avg": 216.5275
+    },
+    "63316": {
+        "name": "The Toronto Maple Leafs are a Baseball team.",
+        "owner": "Swankey",
+        "wins": 14,
+        "losses": 6,
+        "PF": 3950.95,
+        "playoff_odds": 100.0,
+        "seeds": [
+            0.0,
+            49.98,
+            24.98,
+            25.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 49934,
+                "total": 49934,
+                "odds": 100.0
+            },
+            "0-1": {
+                "made_playoffs": 50066,
+                "total": 50066,
+                "odds": 100.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 49934,
+                "total": 49934,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 50066,
+                "total": 50066,
+                "odds": 100.0
+            }
+        },
+        "PF_avg": 197.54749999999999
+    },
+    "63226": {
+        "name": "Gelvum Gladiators",
+        "owner": "Odin_Hoffman",
+        "wins": 13,
+        "losses": 7,
+        "PF": 4165.0,
+        "playoff_odds": 100.0,
+        "seeds": [
+            0.0,
+            23.61,
+            25.27,
+            12.55,
+            24.75,
+            13.82,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 50258,
+                "total": 50258,
+                "odds": 100.0
+            },
+            "0-1": {
+                "made_playoffs": 49742,
+                "total": 49742,
+                "odds": 100.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 50258,
+                "total": 50258,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 49742,
+                "total": 49742,
+                "odds": 100.0
+            }
+        },
+        "PF_avg": 208.25
+    },
+    "63182": {
+        "name": "Ponch",
+        "owner": "ponch101",
+        "wins": 13,
+        "losses": 7,
+        "PF": 4101.2,
+        "playoff_odds": 100.0,
+        "seeds": [
+            0.0,
+            19.11,
+            24.62,
+            12.48,
+            25.21,
+            18.58,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 49742,
+                "total": 49742,
+                "odds": 100.0
+            },
+            "0-1": {
+                "made_playoffs": 50258,
+                "total": 50258,
+                "odds": 100.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 49742,
+                "total": 49742,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 50258,
+                "total": 50258,
+                "odds": 100.0
+            }
+        },
+        "PF_avg": 205.06
+    },
+    "63219": {
+        "name": "Morrie's Wig Shop",
+        "owner": "CarneAsadaFrys",
+        "wins": 13,
+        "losses": 7,
+        "PF": 4098.1,
+        "playoff_odds": 100.0,
+        "seeds": [
+            0.0,
+            7.3,
+            25.13,
+            24.92,
+            24.96,
+            17.69,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 49944,
+                "total": 49944,
+                "odds": 100.0
+            },
+            "0-1": {
+                "made_playoffs": 50056,
+                "total": 50056,
+                "odds": 100.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 49944,
+                "total": 49944,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 50056,
+                "total": 50056,
+                "odds": 100.0
+            }
+        },
+        "PF_avg": 204.90500000000003
+    },
+    "63590": {
+        "name": "Kuch ma dawg",
+        "owner": "Wuibot",
+        "wins": 12,
+        "losses": 8,
+        "PF": 4508.9,
+        "playoff_odds": 74.95,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            25.0,
+            25.09,
+            24.86,
+            25.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 50089,
+                "total": 50089,
+                "odds": 100.0
+            },
+            "0-1": {
+                "made_playoffs": 24857,
+                "total": 49911,
+                "odds": 49.8
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 50089,
+                "total": 50089,
+                "odds": 100.0
+            },
+            "loss": {
+                "make_playoffs": 24857,
+                "total": 49911,
+                "odds": 49.8
+            }
+        },
+        "PF_avg": 225.445
+    },
+    "63188": {
+        "name": "Eklund's 14",
+        "owner": "Kiwsu",
+        "wins": 12,
+        "losses": 8,
+        "PF": 3703.9,
+        "playoff_odds": 25.05,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            25.05,
+            50.09,
+            24.86,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 25054,
+                "total": 50056,
+                "odds": 50.05
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 49944,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 25054,
+                "total": 50056,
+                "odds": 50.05
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 49944,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 185.195
+    },
+    "63263": {
+        "name": "Bunch of Kunitz",
+        "owner": "yalittlehip",
+        "wins": 11,
+        "losses": 8,
+        "PF": 4043.25,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            24.86,
+            75.14,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 0,
+                "total": 49911,
+                "odds": 0.0
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 50089,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 49911,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 50089,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 212.80263157894737
+    },
+    "63189": {
+        "name": "The Djoos",
+        "owner": "DubJee",
+        "wins": 8,
+        "losses": 11,
+        "PF": 3902.15,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            53.53,
+            31.04,
+            15.43,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 0,
+                "total": 49890,
+                "odds": 0.0
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 50110,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 49890,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 50110,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 205.3763157894737
+    },
+    "63319": {
+        "name": "Zamboni Drivers",
+        "owner": "Pomelo707",
+        "wins": 8,
+        "losses": 12,
+        "PF": 3873.9,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            33.82,
+            43.99,
+            22.19,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 0,
+                "total": 49655,
+                "odds": 0.0
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 50345,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 49655,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 50345,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 193.695
+    },
+    "63198": {
+        "name": "DingleBarrie\u2019s",
+        "owner": "jacouzzie",
+        "wins": 8,
+        "losses": 12,
+        "PF": 3649.5,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            12.65,
+            24.98,
+            62.38,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 0,
+                "total": 50066,
+                "odds": 0.0
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 49934,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 50066,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 49934,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 182.475
+    },
+    "63200": {
+        "name": "Duncan's Mighty Wings",
+        "owner": "brown4se",
+        "wins": 5,
+        "losses": 15,
+        "PF": 3571.35,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            100.0,
+            0.0,
+            0.0
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 0,
+                "total": 49872,
+                "odds": 0.0
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 50128,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 49872,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 50128,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 178.5675
+    },
+    "63202": {
+        "name": "Poison Ivies",
+        "owner": "RibeanieBaby",
+        "wins": 4,
+        "losses": 16,
+        "PF": 3316.1,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            99.78,
+            0.22
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 0,
+                "total": 50128,
+                "odds": 0.0
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 49872,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 50128,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 49872,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 165.805
+    },
+    "63269": {
+        "name": "Up and Around the Benn",
+        "owner": "jagoe_unchained",
+        "wins": 3,
+        "losses": 17,
+        "PF": 3188.3,
+        "playoff_odds": 0.0,
+        "seeds": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.22,
+            99.78
+        ],
+        "records": {
+            "1-0": {
+                "made_playoffs": 0,
+                "total": 50345,
+                "odds": 0.0
+            },
+            "0-1": {
+                "made_playoffs": 0,
+                "total": 49655,
+                "odds": 0.0
+            }
+        },
+        "current_week": {
+            "win": {
+                "make_playoffs": 0,
+                "total": 50345,
+                "odds": 0.0
+            },
+            "loss": {
+                "make_playoffs": 0,
+                "total": 49655,
+                "odds": 0.0
+            }
+        },
+        "PF_avg": 159.41500000000002
+    }
+}
