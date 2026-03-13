@@ -20,10 +20,11 @@ if len(leagues) == 0:
     print(f"No leagues for {year} in database. Ensure WeekVars and DB are correct.")
     quit()
 
-title = f"OldTimeHockey weekly adds will reset at 12:01am ET on Wednesday"
-message = f"There's been a bit of confusion with what is happening with adds. In previous years fleaflicker has reset adds after the empty weeks. That has not happened yet this year, so the plan is to " + \
-          f"manually reset them at approximately 12:01am ET on Wednesday (unless Flea beats us to it). All of the information spread on the Discord claimed they would, so we were caught off guard when Flea didn't reset things this morning. Apologies for the confusion." + \
-          f"<br><br>Any questions, pop into https://discord.com/invite/zXTUtj9 <br><br>-- Mods"
+title = f"Playoffs and Consolation Bracket Reminder"
+message = f"""Hello everyone -- just a reminder that per our updated pyramid starting this year (https://roldtimehockey.com/), the 3rd and 7th place consolation brackets in D1-4 now matter 
+for promotion and relegation. This is different from previous seasons so we felt it was a good idea to drop a reminder. As usual teams who are fully eliminated from the 1st, 3rd, and 7th 
+place brackets are discouraged from making additional add/drops, but that's ultimately unenforceable.<br><br>Any questions? Pop into https://discord.com/invite/zXTUtj9 <br><br>-- Mods"""
+
 data = {
     "parentId": "",
     "editId": "",
@@ -33,9 +34,13 @@ data = {
 }
 
 for league in leagues:
-    id = league["id"]8
+    id = league["id"]
     name = league["name"]
 
     # Post message board message
-    print(f"Messaging {name}")
-    # session.post("https://www.fleaflicker.com/nhl/leagues/{}/messages/new".format(id), data)
+    debug = True
+    if debug:
+        print(f"Not messaging {name}. Set debug to false to actually send.")
+    else:
+        print(f"Messaging {name}.")
+        session.post("https://www.fleaflicker.com/nhl/leagues/{}/messages/new".format(id), data)

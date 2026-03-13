@@ -412,8 +412,8 @@ const Homepage = () => {
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column>
-                <Header as="h2" textAlign="center">Tenure</Header>
-                In order to prevent unfair advantages in D5 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs the 2020-2021 season is ineligible for D5 and will be placed into D4. This also includes managers returning from a hiatus. The year threshold for this is subject to change in the future.</b>
+                <Header as="h2" textAlign="center">Tenure (Under review with new pyramid)</Header>
+                <strike>In order to prevent unfair advantages in D5 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs the 2020-2021 season is ineligible for D5 and will be placed into D4. This also includes managers returning from a hiatus. The year threshold for this is subject to change in the future.</b></strike>
               </Grid.Column>
             </Grid.Row>
           </Grid>
