@@ -51,8 +51,8 @@ def updateCurrentPF(league, year):
 
     # Reset teams on bye to 0.0 points with null opponent and matchup id
     if len(tracked) < 14:
-        tracked_string = ",".join(tracked)
-        cursor.execute("UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s and teamID NOT IN (%s)", (league, year, tracked_string))
+        placeholders = ",".join(["%s"] * len(tracked))
+        cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s and teamID NOT IN ({placeholders})", (league, year, *tracked))
 
 db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
 cursor = db.cursor()
