@@ -211,8 +211,8 @@ http.createServer(async function(request, response) {
 		if (query.year == "week") {
 			sql = `
 				SELECT Leagues.id as leagueID, Leagues.tier as tier, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, 
-					t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, round(IFNULL(tp1.pointsFor, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA,
-					round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.pointsAgainst, 0) + t2.currentWeekPF, 2) as postPATotal from Teams as t1
+					t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, round(IFNULL(tp1.points_for_playoff, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA,
+					round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.points_against_playoff, 0) + t2.currentWeekPF, 2) as postPATotal from Teams as t1
 					INNER JOIN Leagues on (t1.leagueID=Leagues.id AND t1.year=Leagues.year)
 					INNER JOIN Users on t1.ownerID=Users.FFid left outer join Teams_post as tp1 on (tp1.teamID=t1.teamID AND tp1.year=t1.year)
 					LEFT JOIN Teams as t2 on (t1.CurrOpp=t2.teamID AND t1.year=t2.year)
@@ -223,8 +223,8 @@ http.createServer(async function(request, response) {
 		else if (query.year == "careerp") {
 			sql = `
 				SELECT FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2) as PF, round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA,
-					round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins) as wins, sum(Teams_post.losses) as losses,
-					sum(Teams_post.pointsFor) as PF, sum(Teams_post.pointsAgainst) as PA,
+					round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins_playoff) as wins, sum(Teams_post.losses_playoff) as losses,
+					sum(Teams_post.points_for_playoff) as PF, sum(Teams_post.points_against_playoff) as PA,
 					round(exp(sum(log(CASE
 						WHEN isChamp = 0 THEN 1
 						WHEN (tier = 1 AND Teams.year = 2019) THEN isChamp*23
@@ -273,13 +273,13 @@ http.createServer(async function(request, response) {
 		else if (query.year[query.year.length-1] == "p") {
 			year = query.year.slice(0, -1);
 			sql = `
-				SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins, Teams_post.losses,
-					Teams_post.pointsFor, Teams_post.pointsAgainst, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid, Leagues.year from Teams_post
+				SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins_playoff, Teams_post.losses_playoff,
+					Teams_post.points_for_playoff, Teams_post.points_against_playoff, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid, Leagues.year from Teams_post
 					INNER JOIN Teams on (Teams_post.teamID=Teams.teamID and Teams.year=Teams_post.year)
 					INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams_post.year=Leagues.year)
 					INNER JOIN Users on Teams.ownerID=Users.FFid
 					WHERE Leagues.year=? ${tierfilter}
-					ORDER BY Teams_post.pointsFor DESC`;
+					ORDER BY Teams_post.points_for_playoff DESC`;
 			params = [year];
 			params = [...params, ...tierparams]
 		}

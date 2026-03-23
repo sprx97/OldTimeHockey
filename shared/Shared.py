@@ -9,6 +9,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.realpath(__file__))) # ./
 import Config
 
+# The week playoffs start varies year to year. It's easiest to just add it manually each year here.
 def is_playoff_week(week, year):
     if year == 2012:
         return week > 10
@@ -22,6 +23,10 @@ def is_playoff_week(week, year):
         return week > 22
     else:
         return week > 23
+
+# We ignored consolation brackets until 2025, but starting then they get tracked separately.
+def should_use_consolation_bracket(year):
+    return year >= 2025
 
 # Grabs the list of OTH leagues for the given year
 # from the SQL database

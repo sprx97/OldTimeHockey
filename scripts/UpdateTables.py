@@ -168,64 +168,58 @@ def getPlayoffs(league_id, year):
             continue
 
         for game in scoreboard["games"]:
-            # Skip consolation bracket games
-            if "isThirdPlaceGame" in game and game["isThirdPlaceGame"]:
-                print("Skipping 3rd place game.")
+            game_type = None
+            if game.get("isPlayoffs"):
+                if game.get("isThirdPlaceGame"):
+                    game_type = "third_place"
+                else:
+                    game_type = "playoff"
+            elif game.get("isConsolation"):
+                if game["away"]["recordOverall"]["rank"] == 14:
+                    game_type = None # Skip 13th vs 14th consolation game
+                elif game.get("away", {}).get("recordPostseason", {}).get("losses", 0) == 2 or game.get("home", {}).get("recordPostseason", {}).get("losses", 0) == 2:
+                    game_type = None # Skip the consolation bracket 3rd place game (9th place game) -- the team that loses this will have two playoff losses, so we can check for that
+                else:
+                    game_type = "consolation"
+
+            if game_type is None:
                 continue
-            if "isConsolation" in game and game["isConsolation"]:
-                print("Skipping consolation bracket matchup.")
+
+            if not Shared.should_use_consolation_bracket(year) and (game_type == "third_place" or game_type == "consolation"):
                 continue
 
             away_id = str(game["away"]["id"])
             home_id = str(game["home"]["id"])
 
-            if "homeResult" in game:
-                if game["homeResult"] == "WIN":
-                    away_wins = 0
-                    away_losses = 1
-                    home_wins = 1
-                    home_losses = 0
-                else:
-                    away_wins = 1
-                    away_losses = 0
-                    home_wins = 0
-                    home_losses = 1
-
-            away_score = round(game["awayScore"]["score"]["value"], 2)
-            home_score = round(game["homeScore"]["score"]["value"], 2)
-
             away_seed = game["away"]["recordPostseason"]["rank"]
             home_seed = game["home"]["recordPostseason"]["rank"]
 
             if away_id not in teams:
-                teams[away_id] = [away_wins, away_losses, away_score, home_score, away_seed]
-            else:
-                teams[away_id][0] += away_wins
-                teams[away_id][1] += away_losses
-                teams[away_id][2] += away_score
-                teams[away_id][3] += home_score
-
+                teams[away_id] = {"wins_playoff": 0, "losses_playoff": 0, "points_for_playoff": 0, "points_against_playoff": 0, 
+                                  "wins_third_place": 0, "losses_third_place": 0, "points_for_third_place": 0, "points_against_third_place": 0, 
+                                  "wins_consolation": 0, "losses_consolation": 0, "points_for_consolation": 0, "points_against_consolation": 0, "seed": away_seed}
             if home_id not in teams:
-                teams[home_id] = [home_wins, home_losses, home_score, away_score, home_seed]
-            else:
-                teams[home_id][0] += home_wins
-                teams[home_id][1] += home_losses
-                teams[home_id][2] += home_score
-                teams[home_id][3] += away_score
+                teams[home_id] = {"wins_playoff": 0, "losses_playoff": 0, "points_for_playoff": 0, "points_against_playoff": 0, 
+                                  "wins_third_place": 0, "losses_third_place": 0, "points_for_third_place": 0, "points_against_third_place": 0, 
+                                  "wins_consolation": 0, "losses_consolation": 0, "points_for_consolation": 0, "points_against_consolation": 0, "seed": home_seed}
+
+            if "homeResult" in game:
+                if game["homeResult"] == "WIN":
+                    teams[home_id]["wins_" + game_type] += 1
+                    teams[away_id]["losses_" + game_type] += 1
+                else:
+                    teams[away_id]["wins_" + game_type] += 1
+                    teams[home_id]["losses_" + game_type] += 1
+
+            teams[away_id]["points_for_" + game_type] += round(game["awayScore"]["score"]["value"], 2)
+            teams[away_id]["points_against_" + game_type] += round(game["homeScore"]["score"]["value"], 2)
+            teams[home_id]["points_for_" + game_type] += round(game["homeScore"]["score"]["value"], 2)
+            teams[home_id]["points_against_" + game_type] += round(game["awayScore"]["score"]["value"], 2)
 
     return teams
 
-def demojify(text):
-    regex_pattern = re.compile(pattern="["
-        u"\U0001F600-\U0001F64F" # emoticons
-        u"\U0001F300-\U0001F5FF" # symbols & pictographs
-        u"\U0001F680-\U0001F6FF" # transport & map symbols
-        u"\U0001F1E0-\U0001F1FF" # flags (iOS)
-        "]+", flags = re.UNICODE)
-    return regex_pattern.sub(r'', text)
-
 if __name__ == "__main__":
-    db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
+    db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], charset="utf8mb4", cursorclass=pymysql.cursors.DictCursor)
     cursor = db.cursor()
 
     for year in years_to_update:
@@ -234,16 +228,6 @@ if __name__ == "__main__":
         for league in leagues:
             teams = getStandings(league["id"], league["year"])
             for next in teams:
-                next["team_name"] = next["team_name"].replace(";", "") # prevent sql injection
-                next["team_name"] = next["team_name"].replace("'", "''") # correct quote escaping
-                next["team_name"] = next["team_name"].replace(u"\u2019", "''") # another type of quote?
-                next["team_name"] = next["team_name"].replace("í", "i").replace("ř", "r") # non-english characters
-                next["team_name"] = next["team_name"].replace("á", "a").replace("č", "c").replace("Š", "S") # more non-english characters
-                next["team_name"] = demojify(next["team_name"])
-                if len(next["team_name"]) == 1 and ord(next["team_name"][0]) == 65039: # Weird issue with team names solely composed of emoji -- case by case fix
-                    next["team_name"] = "<Blank Team Name>"
-                next["user_name"] = next["user_name"].replace(";", "") # prevent sql injection
-                next["user_name"] = next["user_name"].replace("'", "''") # correct quote escaping
                 try:
                     if next["user_name"][-2] == "+":
                         next["user_name"] = next["user_name"][:-3] # elimites "+1" for managers with co-managers
@@ -288,15 +272,24 @@ if __name__ == "__main__":
         leagues = cursor.fetchall()
         for league in leagues:
             teams_post = getPlayoffs(league["id"], league["year"])
-            for next in teams_post:
-                cursor.execute("SELECT * from Teams_post where teamID = %s AND year=%s", (next, year))
+            for next_id in teams_post:
+                stats = teams_post[next_id]
+                stats["teamID"] = next_id
+                stats["year"] = year
+
+                cursor.execute("SELECT * from Teams_post where teamID=%s AND year=%s", (next_id, year))
                 data = cursor.fetchall()
+
                 if len(data) == 0: # new team
-                    cursor.execute("INSERT into Teams_post values (%s, %s, %s, %s, %s, %s)", (next, teams_post[next][0], teams_post[next][1], teams_post[next][2], teams_post[next][3], teams_post[next][4], year))
+                    columns = list(stats.keys())
+                    placeholders = ", ".join(["%s"] * len(columns))
+                    column_names = ", ".join(columns)
+                    cursor.execute(f"INSERT into Teams_post ({column_names}) values ({placeholders})", tuple(stats.values()))
                 elif len(data) == 1:
-                    cursor.execute("UPDATE Teams_post set wins=%s, losses=%s, pointsFor=%s, pointsAgainst=%s, seed=%s where teamID=%s AND year=%s", 
-                                   (teams_post[next][0], teams_post[next][1], teams_post[next][2], teams_post[next][3], teams_post[next][4], next, year))
+                    set_clause = ",".join([f"{col}=%s" for col in stats.keys()])
+                    values = list(stats.values()) + [next_id, year]
+                    cursor.execute(f"UPDATE Teams_post SET {set_clause} WHERE teamID=%s AND year=%s", tuple(values))
                 else:
-                    raise Exception("Error: more than one team matches teamID: " + next)
+                    raise Exception("Error: more than one team matches teamID: " + str(next_id))
 
     db.commit()

@@ -64,7 +64,7 @@ def GenerateD1List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=2 AND ((P.wins >= 2 AND P.seed >= 3) OR (P.wins >= 1 AND P.seed < 3))
+            WHERE P.year=%s AND L.tier=2 AND ((P.wins_playoff >= 2 AND P.seed >= 3) OR (P.wins_playoff >= 1 AND P.seed < 3))
         """
     cursor.execute(query, (year,))
     d2_finalists = cursor.fetchall()
@@ -97,7 +97,7 @@ def GenerateD2List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=2 AND ((P.wins >= 1 AND P.seed >= 3) OR (P.wins >= 0 AND P.seed < 3))
+            WHERE P.year=%s AND L.tier=2 AND ((P.wins_playoff >= 1 AND P.seed >= 3) OR (P.wins_playoff >= 0 AND P.seed < 3))
         """
     cursor.execute(query, (year,))
     d2_playoff_teams = cursor.fetchall()
@@ -110,7 +110,7 @@ def GenerateD2List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=3 AND ((P.wins >= 2 AND P.seed >= 3) OR (P.wins >= 1 AND P.seed < 3))
+            WHERE P.year=%s AND L.tier=3 AND ((P.wins_playoff >= 2 AND P.seed >= 3) OR (P.wins_playoff >= 1 AND P.seed < 3))
         """
     cursor.execute(query, (year,))
     d3_semifinalists = cursor.fetchall()
@@ -178,7 +178,7 @@ def GenerateD3List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=2 AND (P.wins = 0 AND P.seed >= 3)
+            WHERE P.year=%s AND L.tier=2 AND (P.wins_playoff = 0 AND P.seed >= 3)
         """
     cursor.execute(query, (year,))
     d2_playoff_teams = cursor.fetchall()
@@ -206,7 +206,7 @@ def GenerateD3List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=3 AND ((P.wins = 1 AND P.seed >= 3) OR (P.wins = 0 AND P.seed < 3))
+            WHERE P.year=%s AND L.tier=3 AND ((P.wins_playoff = 1 AND P.seed >= 3) OR (P.wins_playoff = 0 AND P.seed < 3))
         """
     cursor.execute(query, (year,))
     d2_playoff_teams = cursor.fetchall()
@@ -219,7 +219,7 @@ def GenerateD3List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=4 AND ((P.wins >= 2 AND P.seed >= 3) OR (P.wins >= 1 and P.seed < 3))
+            WHERE P.year=%s AND L.tier=4 AND ((P.wins_playoff >= 2 AND P.seed >= 3) OR (P.wins_playoff >= 1 and P.seed < 3))
         """
     cursor.execute(query, (year,))
     d4_semifinalists = cursor.fetchall()
@@ -248,7 +248,7 @@ def GenerateD4List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=3 AND (P.wins = 0 AND P.seed >= 3)
+            WHERE P.year=%s AND L.tier=3 AND (P.wins_playoff = 0 AND P.seed >= 3)
         """
     cursor.execute(query, (year,))
     d3_qf_losers = cursor.fetchall()
@@ -272,7 +272,7 @@ def GenerateD4List():
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=4 AND ((P.wins = 1 AND P.seed >= 3) OR (P.wins = 0 AND P.seed < 3))
+            WHERE P.year=%s AND L.tier=4 AND ((P.wins_playoff = 1 AND P.seed >= 3) OR (P.wins_playoff = 0 AND P.seed < 3))
         """
     cursor.execute(query, (year,))
     d4_semifinalists = cursor.fetchall()
@@ -373,7 +373,7 @@ def EliminateDupes(data, seen=[]):
             result.append(item)
     return result
 
-print("REMEMBER TO UPDATE FOR THE NEW FORMAT")
+print("REMEMBER TO UPDATE FOR THE NEW FORMAT AND ADJUST TENURE RULE")
 quit()
 
 GenerateD1List()

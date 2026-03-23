@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { defaults } from 'lodash';
 import { Component, Fragment } from 'react';
 import { Container, Segment, Dropdown, Grid, Checkbox, Divider, Input } from 'semantic-ui-react';
 import RegularSeasonTable from './RegularSeasonTable';
@@ -79,7 +79,7 @@ export default class Leaderboard extends Component {
   getSortedData(data, clickedColumn) {
     var sortedData = _.sortBy(data, [
       function(datum) {
-        if (clickedColumn === "wins" || clickedColumn === "losses" || clickedColumn === "ties")
+        if (clickedColumn === "wins" || clickedColumn === "wins_playoff" || clickedColumn === "losses" || clickedColumn === "losses_playoff" || clickedColumn === "ties")
           datum[clickedColumn] = Number(datum[clickedColumn])
         if ((clickedColumn === "pct" || clickedColumn === "avgPF" || clickedColumn === "avgPA") && !datum[clickedColumn])
           datum[clickedColumn] = 0
@@ -91,6 +91,7 @@ export default class Leaderboard extends Component {
       'postTotal',
       'regTotal',
       'pointsFor',
+      'points_for_playoff',
     ]); // postTotal, regTotal, and pointsFor are secondary sorts depending on view
 
     if (this.reversedColumns.indexOf(clickedColumn) > -1) {
@@ -124,8 +125,10 @@ export default class Leaderboard extends Component {
 
     // Sets the default column to sort by
     var defaultSort = 'FFname';
-    if (this.state.query.slice(-1) == 'p' || this.state.query == 'careerp') {
+    if (this.state.query.slice(-1) == 'p') {
       // playoffs and career playoffs
+      defaultSort = 'wins_playoff';
+    } else if (this.state.query == 'careerp') {
       defaultSort = 'wins';
     } else if (this.state.query == 'career') {
       // career regular season

@@ -42,32 +42,32 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
               <Table.HeaderCell
                 width={2}
                 textAlign="center"
-                sorted={column === 'wins' ? direction : null}
-                onClick={handleSort('wins')}
+                sorted={column === 'wins_playoff' ? direction : null}
+                onClick={handleSort('wins_playoff')}
               >
                 Wins
               </Table.HeaderCell>
               <Table.HeaderCell
                 width={2}
                 textAlign="center"
-                sorted={column === 'losses' ? direction : null}
-                onClick={handleSort('losses')}
+                sorted={column === 'losses_playoff' ? direction : null}
+                onClick={handleSort('losses_playoff')}
               >
                 Losses
               </Table.HeaderCell>
               <Table.HeaderCell
                 width={2}
                 textAlign="center"
-                sorted={column === 'pointsFor' ? direction : null}
-                onClick={handleSort('pointsFor')}
+                sorted={column === 'points_for_playoff' ? direction : null}
+                onClick={handleSort('points_for_playoff')}
               >
                 PF
               </Table.HeaderCell>
               <Table.HeaderCell
                 width={2}
                 textAlign="center"
-                sorted={column === 'pointsAgainst' ? direction : null}
-                onClick={handleSort('pointsAgainst')}
+                sorted={column === 'points_against_playoff' ? direction : null}
+                onClick={handleSort('points_against_playoff')}
               >
                 PA
               </Table.HeaderCell>
@@ -83,10 +83,10 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   teamID,
                   teamname,
                   FFname,
-                  wins,
-                  losses,
-                  pointsFor,
-                  pointsAgainst,
+                  wins_playoff,
+                  losses_playoff,
+                  points_for_playoff,
+                  points_against_playoff,
                   isChamp,
                   tier,
                   year
@@ -117,10 +117,10 @@ const PlayoffsTable = ({ column, data, isLoaded, direction, handleSort }) => {
                   <Table.Cell textAlign="center">
                     <UserLink FFname={FFname} />
                   </Table.Cell>
-                  <Table.Cell textAlign="center">{wins}</Table.Cell>
-                  <Table.Cell textAlign="center">{losses}</Table.Cell>
-                  <Table.Cell textAlign="center">{pointsFor}</Table.Cell>
-                  <Table.Cell textAlign="center">{pointsAgainst}</Table.Cell>
+                  <Table.Cell textAlign="center">{wins_playoff}</Table.Cell>
+                  <Table.Cell textAlign="center">{losses_playoff}</Table.Cell>
+                  <Table.Cell textAlign="center">{points_for_playoff}</Table.Cell>
+                  <Table.Cell textAlign="center">{points_against_playoff}</Table.Cell>
                 </Table.Row>
               ),
             )}

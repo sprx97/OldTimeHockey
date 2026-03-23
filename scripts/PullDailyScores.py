@@ -30,15 +30,27 @@ def GetScores(league_id, year, week=None):
             continue
 
         for game in scoreboard["games"]:
-            # Skip consolation bracket games
-            if "isThirdPlaceGame" in game and game["isThirdPlaceGame"]:
-                print("Skipping 3rd place game.")
-                continue
-            if "isConsolation" in game and game["isConsolation"]:
-                print("Skipping consolation bracket matchup.")
+            matchup_type = "regular"
+            # Figure out matchup type for playoff/third_place/consolation
+            if game.get("isPlayoffs"):
+                if game.get("isThirdPlaceGame"):
+                    matchup_type = "third_place"
+                else:
+                    matchup_type = "playoff"
+            elif game.get("isConsolation"):
+                if game["away"]["recordOverall"]["rank"] == 14:
+                    matchup_type = None # Skip 13th vs 14th consolation game
+                elif game.get("away", {}).get("recordPostseason", {}).get("losses", 0) == 2 or game.get("home", {}).get("recordPostseason", {}).get("losses", 0) == 2:
+                    matchup_type = None # Skip the consolation bracket 3rd place game (9th place game) -- the team that loses this will have two playoff losses, so we can check for that
+                else:
+                    matchup_type = "consolation"
+            # else matchup_type stays as "regular"
+
+            if matchup_type is None:
                 continue
 
-            is_playoffs = "isPlayoffs" in game and game["isPlayoffs"]
+            if not Shared.should_use_consolation_bracket(year) and (matchup_type == "consolation" or matchup_type == "third_place"):
+                continue
 
             game_id = game["id"]
             away_id = game["away"]["id"]
@@ -47,7 +59,6 @@ def GetScores(league_id, year, week=None):
             # Finally, this call gets the actual boxscore of the game.
             # Unfortunately this has to be done day by day and will be really slow.
             for day in range(start, end+1):
-#                print(game_id, day)
                 boxscore = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id={league_id}&fantasy_game_id={game_id}&scoring_period={day}")
 
                 points_away = float(boxscore["pointsAway"]["scoringPeriod"]["value"]["formatted"])
@@ -96,7 +107,7 @@ def GetScores(league_id, year, week=None):
                              "game_id": game_id,
                              "opponent_team_id": away_id,
                              "week": week_id,
-                             "is_playoffs": is_playoffs,
+                             "matchup_type": matchup_type,
                              "points": points_home,
                              "optimum_points": optimum_home,
                              "num_players": num_players_home,
@@ -107,7 +118,7 @@ def GetScores(league_id, year, week=None):
                              "game_id": game_id,
                              "opponent_team_id": home_id,
                              "week": week_id,
-                             "is_playoffs": is_playoffs,
+                             "matchup_type": matchup_type,
                              "points": points_away,
                              "optimum_points": optimum_away,
                              "num_players": num_players_away,
