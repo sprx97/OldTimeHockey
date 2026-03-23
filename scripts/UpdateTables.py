@@ -110,6 +110,7 @@ def getStandings(leagueID, year):
     for team in standings["divisions"][0]["teams"]:
         team_id = str(team["id"])
         team_name = team["name"]
+        team_name = team_name.replace("\u0027", "'") # convert unicode ' to ascii '
 
         user_id = 0
         if "owners" in team:
@@ -266,7 +267,7 @@ if __name__ == "__main__":
                         cursor.execute("UPDATE Users set FFname=%s where FFid=%s", (next["user_name"], next["user_id"]))
                     else:
                         raise Exception("Error: more than one user matches userID: " + str(next["user_id"]))
-
+    
     for year in playoffs_to_update:
         cursor.execute("SELECT * from Leagues where year=%s", (year,)) # queries for all leagues that year
         leagues = cursor.fetchall()
