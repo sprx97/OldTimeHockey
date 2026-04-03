@@ -16,14 +16,14 @@ oauthlib==3.3.1
 praw==7.8.1
 prawcore==2.4.0
 proto-plus==1.26.1
-protobuf==6.32.0
+protobuf==6.33.5
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pychallonge==1.11.5
 PyMySQL==1.1.2
 pyparsing==3.2.3
 pytz==2019.3
-requests==2.32.5
+requests==2.33.0
 requests-oauthlib==2.0.0
 rsa==4.9.1
 tzlocal==2.1
