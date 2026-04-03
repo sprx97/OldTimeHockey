@@ -26,5 +26,9 @@ SELECT team_id, year, week, SUM(points) as points FROM `Scoring` WHERE year=2022
 # Career CR
 SELECT u.FFid, u.FFname, 100*SUM(s.points)/SUM(s.optimum_points) as cr FROM `Scoring` s INNER JOIN `Teams` t ON s.team_id=t.teamID INNER JOIN `Users` u ON t.ownerID=u.FFid WHERE t.initialOwner=NULL GROUP BY u.FFid ORDER BY cr DESC
 
+# Playoff teams by draft position
+SELECT tier,DraftPosition,rank_in_league,t.year FROM (SELECT year,teamID,leagueID,wins,pointsFor,RANK() OVER (PARTITION BY leagueID,year ORDER BY wins DESC, pointsFor DESC) AS rank_in_league
+FROM Teams) AS t2 INNER JOIN Teams t ON (t.year=t2.year AND t.teamID=t2.teamID) INNER JOIN Leagues l ON (l.year=t.year AND l.id=t.leagueID) WHERE rank_in_league<=6 AND DraftPosition=1 AND t.year=2025;
+
 # TODO: Playoff queries, career queries
 # TODO: INNER JOIN these with Leagues, Users, and Teams to get display names
