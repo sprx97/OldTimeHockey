@@ -45,9 +45,17 @@ def get_leagues_from_database(year, tier=None):
     return leagues
 
 # Gets the JSON data from the given fleaflicker.com/api call
+headers = {
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "application/json",
+}
 def make_api_call(link):
     try:
-        with requests.get(link) as response: # Throws HTTPError if page fails to open
+        with requests.get(link, headers=headers) as response: # Throws HTTPError if page fails to open
+            print(response.headers)
+            print(response.text)
+            quit()
+
             data = response.json()
     except requests.exceptions.HTTPError:
         print(f"Error accessing {link}")

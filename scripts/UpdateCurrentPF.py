@@ -20,7 +20,7 @@ def updateCurrentPF(league, year):
 
     # "Week" is really "Day" for the scoreboard, but FF is really weird.
     # Using the Monday of each matchup week works for this.
-    scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
+    scores = make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
     day = 0
     for schedule_period in scores["eligibleSchedulePeriods"]:
         if schedule_period["ordinal"] == week:
@@ -34,7 +34,7 @@ def updateCurrentPF(league, year):
         return
 
     # Call it again for the week based on our current week
-    scores = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={day}")
+    scores = make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={day}")
 
     for game in scores["games"]:
         matchup_id = game["id"]
