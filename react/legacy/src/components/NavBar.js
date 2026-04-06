@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react';
+import { Icon, Menu, Message } from 'semantic-ui-react';
 import config from './config.json';
 import logo from '../oth-wordmark-white.svg';
 import './NavBar.css';
@@ -128,6 +128,17 @@ export default class NavBar extends Component {
             </Menu>
           )}
         </div>
+        <Message warning style={{ margin: 0, borderRadius: 0 }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Icon name="warning circle" />
+            <Message.Content style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <Message.Header>Site Issues 4/6/2026</Message.Header>
+              <span>
+                We're currently experiencing issues with Fleaflicker data. Scores/standings are not up-to-date.
+              </span>
+            </Message.Content>
+          </div>
+        </Message>
       </>
     );
   }
