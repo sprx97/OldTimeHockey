@@ -183,4 +183,4 @@ for league in leagues:
     GetScores(id, year, week)
     db.commit()
     Shared.flush_telemetry()
-    time.sleep(60) # Rest a minute between each league, because these API calls are intense
+    time.sleep(20) # Rest a bit between each league, because these API calls are intense
