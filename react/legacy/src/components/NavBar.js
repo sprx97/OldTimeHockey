@@ -128,7 +128,7 @@ export default class NavBar extends Component {
             </Menu>
           )}
         </div>
-        <Message warning style={{ margin: 0, borderRadius: 0 }}>
+        {/* <Message warning style={{ margin: 0, borderRadius: 0 }}>
           <div style={{ display: 'flex', gap: '10px' }}>
             <Icon name="warning circle" />
             <Message.Content style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -138,7 +138,7 @@ export default class NavBar extends Component {
               </span>
             </Message.Content>
           </div>
-        </Message>
+        </Message> */}
       </>
     );
   }

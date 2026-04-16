@@ -1,6 +1,7 @@
 import os
 import pymysql
 import sys
+import time
 
 # OTH includes
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
@@ -12,7 +13,7 @@ cursor = db.cursor(pymysql.cursors.DictCursor)
 
 def GetScores(league_id, year, week=None):
     # This first call is just used to get all "Eligible Scoring Periods" ie weeks
-    base_scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
+    base_scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
     for period in base_scoreboard["eligibleSchedulePeriods"]:
         week_id = int(period["ordinal"])
 
@@ -24,7 +25,7 @@ def GetScores(league_id, year, week=None):
         end = period["high"]["ordinal"]
 
         # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
-        scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
+        scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
         if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
             print(f"Week {week_id} does not have final results. Skipping.")
             continue
@@ -59,7 +60,7 @@ def GetScores(league_id, year, week=None):
             # Finally, this call gets the actual boxscore of the game.
             # Unfortunately this has to be done day by day and will be really slow.
             for day in range(start, end+1):
-                boxscore = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id={league_id}&fantasy_game_id={game_id}&scoring_period={day}")
+                boxscore = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id={league_id}&fantasy_game_id={game_id}&scoring_period={day}")
 
                 points_away = float(boxscore["pointsAway"]["scoringPeriod"]["value"]["formatted"])
                 points_home = float(boxscore["pointsHome"]["scoringPeriod"]["value"]["formatted"])
@@ -128,8 +129,8 @@ def GetScores(league_id, year, week=None):
                 placeholders = ", ".join(["%s"] * len(columns))
                 column_names = ", ".join(columns)
 
-                cursor.execute(f"INSERT INTO Scoring ({column_names}) VALUES ({placeholders})", tuple(home_data.values()))
-                cursor.execute(f"INSERT INTO Scoring ({column_names}) VALUES ({placeholders})", tuple(away_data.values()))
+                cursor.execute(f"INSERT IGNORE INTO Scoring ({column_names}) VALUES ({placeholders})", tuple(home_data.values()))
+                cursor.execute(f"INSERT IGNORE INTO Scoring ({column_names}) VALUES ({placeholders})", tuple(away_data.values()))
 
                 # TODO: Stored procedures for quicker data access (queries that will be used frequently)
                 # - GetCareerPFTotal(user_id) -- needs to union with Teams table
@@ -181,3 +182,5 @@ for league in leagues:
     print(f"Getting Scores for {name} {year} Week {week}")
     GetScores(id, year, week)
     db.commit()
+    Shared.flush_telemetry()
+    time.sleep(60) # Rest a minute between each league, because these API calls are intense

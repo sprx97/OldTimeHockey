@@ -63,3 +63,5 @@ for year in years_to_update:
         updateCurrentPF(league["id"], league["year"])
 
 db.commit()
+
+flush_telemetry()

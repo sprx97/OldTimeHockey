@@ -1,9 +1,12 @@
 # Python Libraries
+from datetime import datetime
 import json
 import os
 import pymysql
 import requests
 import sys
+import time
+from urllib.parse import urlparse
 
 # Local Includes
 sys.path.append(os.path.dirname(os.path.realpath(__file__))) # ./
@@ -44,18 +47,59 @@ def get_leagues_from_database(year, tier=None):
 
     return leagues
 
+def bucket_time(minutes):
+    dt = datetime.now()
+    bucket_minute = (dt.minute // minutes) * minutes
+    return dt.replace(minute=bucket_minute, second=0, microsecond=0)
+
+telemetry = {}
+def log_api_usage_telemetry(site):
+    if site not in telemetry:
+        telemetry[site] = {}
+
+    bucket = bucket_time(minutes=1).strftime("%Y-%m-%d %H:%M:%S")
+    if bucket not in telemetry[site]:
+        telemetry[site][bucket] = 0
+
+    telemetry[site][bucket] += 1
+
+def flush_telemetry():
+    global telemetry
+    DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
+    cursor = DB.cursor()
+
+    query = "INSERT INTO ApiUsageTelemetry (time_bucket, site, count) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE count = count + VALUES(count)"
+
+    for site, buckets in telemetry.items():
+        for bucket, count in buckets.items():
+            cursor.execute(query, (bucket, site, count))
+
+    DB.commit()
+    cursor.close()
+    DB.close()
+
+    telemetry = {}
+
 # Gets the JSON data from the given fleaflicker.com/api call
 headers = {
     "User-Agent": "Mozilla/5.0",
     "Accept": "application/json",
 }
 def make_api_call(link):
+    # Log telemetry to ensure I'm not overusing APIs
+    if "://" not in link:
+        link = "https://" + link
+    site = urlparse(link).netloc.replace("www.", "")
+    log_api_usage_telemetry(site)
+
+    print(link)
+
     try:
         with requests.get(link, headers=headers) as response: # Throws HTTPError if page fails to open
-            print(response.headers)
-            print(response.text)
-            quit()
-
+            if response.status_code == 429 or response.status_code == 403:
+                print(f"Rate limited when accessing {link}. Retrying in 60 seconds...")
+                time.sleep(60)
+                response = requests.get(link, headers=headers)
             data = response.json()
     except requests.exceptions.HTTPError:
         print(f"Error accessing {link}")

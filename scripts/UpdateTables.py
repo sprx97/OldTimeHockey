@@ -53,9 +53,10 @@ def floatP(str):
 
 # Checks the standings pages of the given league and updates the datafile
 def getStandings(leagueID, year):
-    print(leagueID, year)
+    print("Regular Season:", leagueID, year)
 
-    standingsURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "?season=" + str(year)
+    standingsURL = "https://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "?season=" + str(year)
+    Shared.log_api_usage_telemetry("fleaflicker.com") # Hardcoded because not using my make_api_call method
     response = requests.get(standingsURL)
     root = html.document_fromstring(response.text)
     rows = root.cssselect(".table-striped")[0].findall("tr")
@@ -78,7 +79,8 @@ def getStandings(leagueID, year):
     #                                                             #
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-    leadersTabURL = "http://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "/leaders?season=" + str(year)
+    leadersTabURL = "https://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "/leaders?season=" + str(year)
+    Shared.log_api_usage_telemetry("fleaflicker.com") # Hardcoded because not using my make_api_call method
     response2 = requests.get(leadersTabURL)
     root2 = html.document_fromstring(response2.text)
     rows2 = root2.cssselect(".table-group")[0].findall("tr")
@@ -106,7 +108,7 @@ def getStandings(leagueID, year):
 
     all_teams = []
 
-    standings = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={leagueID}&season={year}")
+    standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={leagueID}&season={year}")
     for team in standings["divisions"][0]["teams"]:
         team_id = str(team["id"])
         team_name = team["name"]
@@ -153,17 +155,18 @@ def getStandings(leagueID, year):
     return all_teams
 
 def getPlayoffs(league_id, year):
+    print("Playoffs:", league_id, year)
     teams = {}
 
-    base_scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
-    for period in base_scoreboard["eligibleSchedulePeriods"]:
+    base_scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
+    for period in base_scoreboard["eligibleSchedulePeriods"][-3:]: # Playoffs should just be the last three weeks of the season
         # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
         start = period["low"]["ordinal"]
-        scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
+        scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
 
         if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
             print(f"Week {start} does not have final results. Skipping.")
-            continue
+            return
 
         if not "isPlayoffs" in scoreboard["games"][0] or not scoreboard["games"][0]["isPlayoffs"]:
             continue
@@ -294,3 +297,5 @@ if __name__ == "__main__":
                     raise Exception("Error: more than one team matches teamID: " + str(next_id))
 
     db.commit()
+
+    Shared.flush_telemetry()
