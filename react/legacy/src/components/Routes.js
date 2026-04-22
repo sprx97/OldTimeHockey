@@ -40,6 +40,13 @@ const Routes = () => {
           return null;
         }}
       />
+      <Route
+        path="/elo"
+        component={() => {
+          window.location.href = "https://public.tableau.com/app/profile/daniel.cairns/viz/OTHELO/ELORanking2025";
+          return null;
+        }}
+      />
       <Route component={NotFound} />
     </Switch>
   );

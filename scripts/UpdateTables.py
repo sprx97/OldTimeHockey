@@ -1,7 +1,6 @@
 from lxml import html # xml parsing
 import os
 import pymysql # sql queries
-import re
 import requests
 import sys
 

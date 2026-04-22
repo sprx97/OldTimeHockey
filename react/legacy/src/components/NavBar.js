@@ -70,6 +70,16 @@ export default class NavBar extends Component {
               Leaderboard
             </Menu.Item>
             <Menu.Item
+              as="a"
+              href="https://public.tableau.com/app/profile/daniel.cairns/viz/OTHELO/ELORanking2025"
+              target="_blank"
+              rel="noopener noreferrer"
+              name="elo"
+              onClick={() => this.handleItemClick('/elo')}
+            >
+              Elo
+            </Menu.Item>
+            <Menu.Item
               as={Link}
               to="/adp"
               name="ADP"
