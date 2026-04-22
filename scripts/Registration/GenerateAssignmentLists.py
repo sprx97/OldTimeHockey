@@ -264,7 +264,7 @@ def GenerateD1FillOrder():
     cursor.execute(query, (year,))
     ranks = cursor.fetchall()
     for team in ranks:
-        d1_fill.append(team["FFname"])
+        d1_fill.append(team["FFname"].lower())
 
 def GenerateD2FillOrder():
     # Get PF ranks of just D2-D3 managers
@@ -278,7 +278,7 @@ def GenerateD2FillOrder():
     cursor.execute(query, (year,))
     ranks = cursor.fetchall()
     for team in ranks:
-        d2_fill.append(team["FFname"])
+        d2_fill.append(team["FFname"].lower())
 
 def GenerateD3FillOrder():
     # Get PF ranks of just D3-D4 managers
@@ -292,7 +292,7 @@ def GenerateD3FillOrder():
     cursor.execute(query, (year,))
     ranks = cursor.fetchall()
     for team in ranks:
-        d3_fill.append(team["FFname"])
+        d3_fill.append(team["FFname"].lower())
 
 def GenerateD4FillOrder():
     # Get PF ranks of just D4-D5 managers
@@ -306,7 +306,7 @@ def GenerateD4FillOrder():
     cursor.execute(query, (year,))
     ranks = cursor.fetchall()
     for team in ranks:
-        d4_fill.append(team["FFname"])
+        d4_fill.append(team["FFname"].lower())
 
 ##############################################################################################################
 

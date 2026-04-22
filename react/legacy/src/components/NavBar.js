@@ -98,14 +98,26 @@ export default class NavBar extends Component {
             </Menu.Item>
             <Menu.Item
               as="a"
+              href="https://oth-playoff-pool.replit.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              name="playoffpool"
+              onClick={() => this.handleItemClick('/playoffpool')}
+            >
+              Playoff Pool
+            </Menu.Item>
+            <Menu.Item
+              as="a"
               href="https://discord.com/invite/zXTUtj9"
               target="_blank"
               rel="noopener noreferrer"
               name="chat"
               onClick={() => this.handleItemClick('/chat')}
             >
-              <i className="fab fa-discord" aria-label="Join Discord Server"></i>
+              <i className="fab fa-discord" aria-label="Join Discord Server" style={{marginRight: 6}}></i>
+              Discord
             </Menu.Item>
+
           </Menu>
           {config.features.enableLogin && (
             <Menu

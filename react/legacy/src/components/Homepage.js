@@ -5,14 +5,14 @@ import SiteHeader from "./SiteHeader";
 const seasons = [
   {
     year: "2025-2026",
-    teams: "TBD",
-    leagues: "TBD",
+    teams: 210,
+    leagues: 15,
     divisions: 5,
     champions: {
-      division1: { name: "TBD", link: "#" },
-      pointsFor: { name: "TBD", link: "#", stat: "TBD" },
-      coachesRating: { name: "TBD", link: "#", stat: "TBD" },
-      woppaCup: { name: "TBD", link: "#" },
+      division1: { name: "chizzle", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62749?season=2025" },
+      pointsFor: { name: "TMichael11", link: "https://www.fleaflicker.com/nhl/leagues/12101/teams/63259?season=2025", stat: 4876.3 },
+      coachesRating: { name: "nickfrompitt", link: "https://www.fleaflicker.com/nhl/leagues/12088/teams/63174?season=2025", stat: "98.75%" },
+      woppaCup: { name: "DonPaita", link: "https://www.fleaflicker.com/nhl/leagues/12089/teams/63155?season=2025" },
     },
     ruleChanges: ["Moved to 5-division format and updated promo/rele and tenure to align with it"],
   },
@@ -22,7 +22,7 @@ const seasons = [
     leagues: 16,
     divisions: 4,
     champions: {
-      division1: { name: "GusZ", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62768&season=2024" },
+      division1: { name: "GusZ", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62768?season=2024" },
       pointsFor: { name: "ch1zzle", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62749?season=2024", stat: 5070.5 },
       coachesRating: { name: "GusZ", link: "https://www.fleaflicker.com/nhl/leagues/12086/teams/62768?season=2024", stat: "99.51%" },
       woppaCup: { name: "tooproforyou", link: "https://www.fleaflicker.com/nhl/leagues/12088/teams/63135?season=2024" },

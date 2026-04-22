@@ -26,6 +26,20 @@ const Routes = () => {
       <Route exact path="/createAccount" component={CreateAccount} />
       <Route path="/profile" component={() => (<UserProfile username={query.get('username')}/>)} />
       <Route path="/league/:leagueId" component={LeaguePlayoffOdds} />
+      <Route
+        path="/chat"
+        component={() => {
+          window.location.href = "https://discord.com/invite/zXTUtj9";
+          return null;
+        }}
+      />
+      <Route
+        path="/playoffpool"
+        component={() => {
+          window.location.href = "https://oth-playoff-pool.replit.app/";
+          return null;
+        }}
+      />
       <Route component={NotFound} />
     </Switch>
   );
