@@ -425,21 +425,22 @@ const Homepage = () => {
             <Grid.Row columns={1}>
               <Grid.Column>
                 <Header as="h2" textAlign="center">Tenure</Header>
-                In order to prevent unfair advantages in D5 leagues, and encourage veterans to return, 
-                <b>Any manager who has been in D1 will skip D5 and be placed directly into D4.</b> 
-                This includes both managers demoted and managers returning from a hiatus.
-                The year threshold for this is subject to change in the future. 
-                Additionally mods reserve the right to grant "exceptional status" to much-older returnees who miss the 5-year threshold.
+                In order to prevent unfair advantages in D5 leagues, and encourage veterans to return, <b>any 
+                manager who has been in D1 will skip D5 and be placed directly into D4</b>. This includes both
+                managers demoted and managers returning from a hiatus. The year threshold for this is subject
+                to change in the future. Additionally mods reserve the right to grant "exceptional status" to
+                much older returnees who miss the 5-year threshold.
               </Grid.Column>
             </Grid.Row>
           </Grid>
           <Header as="h1" textAlign="center">
             Inactivity Policy
           </Header>
-          Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter where they finish and are bumped to D5. 
-          Users who are inactive longer than two weeks in the season are subject to replacement off of the waitlist, especially pre-Thanksgiving break. 
-          There is no guarantee of replacement, as it depends on waitlist size, and mods also reserve the right to use a bot to set bare minimum lineups for inactive 
-          users to preserve league competitive balance.
+          Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter
+          where they finish and are bumped to D5. Users who are inactive longer than two weeks in the season are
+          subject to replacement off of the waitlist, especially pre-Thanksgiving break. There is no guarantee of
+          replacement, as it depends on waitlist size, and mods also reserve the right to use a bot to set bare
+          minimum lineups for inactive users to preserve league competitive balance.
         </Segment>
         <Segment basic />
       </Container>
