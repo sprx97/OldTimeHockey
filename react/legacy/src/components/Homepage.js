@@ -3,6 +3,19 @@ import { Container, Grid, Header, Image, Segment, Tab } from "semantic-ui-react"
 import SiteHeader from "./SiteHeader";
 
 const seasons = [
+  // {
+  //   year: "2026-2027",
+  //   teams: "TBD",
+  //   leagues: "TBD",
+  //   divisions: 5,
+  //   champions: {
+  //     division1: { },
+  //     pointsFor: { },
+  //     coachesRating: { },
+  //     woppaCup: { },
+  //   },
+  //   ruleChanges: "None",
+  // },
   {
     year: "2025-2026",
     teams: 210,
@@ -266,9 +279,8 @@ const Homepage = () => {
                 using <a href="http://www.fleaflicker.com/nhl">
                   Fleaflicker
                 </a>{" "}
-                featuring 224 teams sorted into 16 leagues across 5 divisions.
-                English Premier League style relegation dictates movement
-                between divisions each season.
+                featuring 200+ teams sorted into leagues across 5 divisions.
+                Promotion and relegation dictates movement between divisions each season.
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={2}>
@@ -412,18 +424,22 @@ const Homepage = () => {
             </Grid.Row>
             <Grid.Row columns={1}>
               <Grid.Column>
-                <Header as="h2" textAlign="center">Tenure (Under review with new pyramid)</Header>
-                <strike>In order to prevent unfair advantages in D5 leagues, and encourage veterans to return, <b>Any manager who has (a) been in D1 or (b) made D2 playoffs the 2020-2021 season is ineligible for D5 and will be placed into D4. This also includes managers returning from a hiatus. The year threshold for this is subject to change in the future.</b></strike>
+                <Header as="h2" textAlign="center">Tenure</Header>
+                In order to prevent unfair advantages in D5 leagues, and encourage veterans to return, 
+                <b>Any manager who has been in D1 will skip D5 and be placed directly into D4.</b> 
+                This includes both managers demoted and managers returning from a hiatus.
+                The year threshold for this is subject to change in the future. 
+                Additionally mods reserve the right to grant "exceptional status" to much-older returnees who miss the 5-year threshold.
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          {/* <Header as="h1" textAlign="center">
-            Inactivity Policy and Midseason "Promotion"
+          <Header as="h1" textAlign="center">
+            Inactivity Policy
           </Header>
-          Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter where they finish and are bumped to D5.
-          Users who are inactive longer than two weeks in the season are subject to replacement off of the waitlist (D5) or via midseason promotion (D1-D4).
-          If a D1-D4 team goes inactive, the current highest season-long PF team in the division below will be offered the team. This manager is now responsible for BOTH of their teams,
-          and the higher one will be revoked of the lower one goes inactive. For the sake of promotion/relegation next season, they receive the higher slot of the two those teams earn. */}
+          Users who go inactive in any division (stop setting lineups before playoffs) forfeit their slot no matter where they finish and are bumped to D5. 
+          Users who are inactive longer than two weeks in the season are subject to replacement off of the waitlist, especially pre-Thanksgiving break. 
+          There is no guarantee of replacement, as it depends on waitlist size, and mods also reserve the right to use a bot to set bare minimum lineups for inactive 
+          users to preserve league competitive balance.
         </Segment>
         <Segment basic />
       </Container>

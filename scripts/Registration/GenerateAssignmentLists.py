@@ -365,38 +365,26 @@ DisplayTier(5, d5, None) # No fill for D5 since it's the lowest tier
 ##############################################################################################################
 
 # Generate Tenure list
-# TENURE_NUM_YEARS = 5 # Currently back to 20-21. Needs to be adjusted.
-# def GenerateTenureList():
-#     # Get all the D1 members from the past TENURE_NUM_YEARS years
-#     query = """
-#         SELECT DISTINCT U.FFname from Teams as T
-#             INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year)
-#             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-#             WHERE T.year>%s AND L.tier=1
-#         """
-#     cursor.execute(query, (year - TENURE_NUM_YEARS,))
-#     d1_teams = cursor.fetchall()
-#     for team in d1_teams:
-#         tenure.append(team["FFname"].lower())
+TENURE_NUM_YEARS = 5 # Currently back to 20-21. Needs to be adjusted.
+def GenerateTenureList():
+    # Get all the D1 members from the past TENURE_NUM_YEARS years
+    query = """
+         SELECT DISTINCT U.FFname from Teams as T
+             INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year)
+             INNER JOIN Users as U ON (T.ownerID=U.FFid)
+             WHERE T.year>%s AND L.tier=1
+        """
 
-#     # Get all the D2 playoff teams from the past TENURE_NUM_YEARS years
-#     query = """
-#         SELECT DISTINCT U.FFname from Teams as T
-#             INNER JOIN Teams_post as P ON (T.teamID=P.teamID AND T.year=P.year)
-#             INNER JOIN Leagues as L ON (T.leagueID=L.id AND T.year=L.year)
-#             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-#             WHERE T.year>%s AND L.tier=2
-#         """
-#     cursor.execute(query, (year - TENURE_NUM_YEARS,))
-#     d2_playoff_teams = cursor.fetchall()
-#     for team in d2_playoff_teams:
-#         tenure.append(team["FFname"].lower())
+    cursor.execute(query, (year - TENURE_NUM_YEARS,))
+    d1_teams = cursor.fetchall()
+    for team in d1_teams:
+        tenure.append(team["FFname"].lower())
 
-# Tenured managers get fast tracked to D4 this year if necessary
-# GenerateTenureList()
-# tenure = list(set(tenure)) # Remove duplicates
-# tenure.sort()
+# Tenured managers get fast tracked to D5 this year if necessary
+GenerateTenureList()
+tenure = list(set(tenure)) # Remove duplicates
+tenure.sort()
 
-# print("\n---- Tenure ----")
-# for manager in tenure:
-#     print(manager)
+print("\n---- Tenure ----")
+for manager in tenure:
+    print(manager)
