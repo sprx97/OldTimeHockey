@@ -1,18 +1,14 @@
 # Python Includes
+from filelock import FileLock
 import os
 import pymysql # sql queries
 import sys
+import time
 
 # OTH includes
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
 from shared.Shared import *
 from shared import Config
-
-years_to_update = [] # Can manually seed if necessary
-
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
-years_to_update.append(int(f.readline().strip()))
-week = int(f.readline().strip())
 
 def updateCurrentPF(league, year):
     # Track which teams in this division we've updated, because for playoffs, teams on bye don't show up in FetchLeagueScoreboard
@@ -54,14 +50,40 @@ def updateCurrentPF(league, year):
         placeholders = ",".join(["%s"] * len(tracked))
         cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s and teamID NOT IN ({placeholders})", (league, year, *tracked))
 
-db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
-cursor = db.cursor()
+LOCKFILE = f"{Config.config['srcroot']}scripts/UpdateCurrentPF.lock"
+TIMESTAMP = f"{Config.config['srcroot']}scripts/UpdateCurrentPF.timestamp"
+COOLDOWN = 30
+with FileLock(LOCKFILE):
+    now = time.time()
 
-for year in years_to_update:
-    for league in get_leagues_from_database(year):
-        print(f"Updating {league}")
-        updateCurrentPF(league["id"], league["year"])
+    try:
+        with open(TIMESTAMP, "r") as f:
+            last_run = int(f.readline().strip())
+    except:
+        last_run = 0
 
-db.commit()
+    # Skip if the script has run too recently
+    if now - last_run < COOLDOWN:
+        print(f"Last run was {now - last_run} seconds ago. Exiting.")
+        quit()
 
-flush_telemetry()
+    years_to_update = [] # Can manually seed if necessary
+
+    f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+    years_to_update.append(int(f.readline().strip()))
+    week = int(f.readline().strip())
+
+    db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
+    cursor = db.cursor()
+
+    for year in years_to_update:
+        for league in get_leagues_from_database(year):
+            print(f"Updating {league}")
+            updateCurrentPF(league["id"], league["year"])
+
+    db.commit()
+
+    flush_telemetry()
+
+    with open(TIMESTAMP, "w") as f:
+        f.write(str(int(now)))
