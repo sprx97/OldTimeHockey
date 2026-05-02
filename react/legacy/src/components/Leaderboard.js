@@ -102,6 +102,7 @@ export default class Leaderboard extends Component {
   }
 
   getData = async () => {
+    await fetch('https://roldtimehockey.com/node/UpdateCurrentPF');
     const week = parseInt(await (await fetch('https://roldtimehockey.com/node/getweek')).json());
     const year = parseInt(await (await fetch('https://roldtimehockey.com/node/getyear')).json());
 
@@ -166,6 +167,15 @@ export default class Leaderboard extends Component {
 
   componentDidMount() {
     this.getData();
+    this.interval = setInterval(() => {
+      if (this.state.query == 'week') {
+        this.getData();
+      }
+    }, 5000); // Update every 5s in Live/week view
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   onChange = (event, result) => {

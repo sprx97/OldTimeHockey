@@ -2,7 +2,8 @@ var http = require("http"),
     url = require("url"),
     mysql = require("mysql2/promise"),
     fs = require("fs"),
-    config = require("../shared/config.json")
+    config = require("../shared/config.json"),
+	{ spawn } = require("child_process");
 
 // TODO: parameterized queries/refactor
 
@@ -50,6 +51,13 @@ async function handleV2(request, response) {
 		case "/Sentinel":
 		{
 			content = JSON.stringify({ sentinel: fs.existsSync(config.srcroot + "Sentinel") });
+		}
+		break;
+
+		case "/UpdateCurrentPF":
+		{
+			spawn("/var/www/OldTimeHockey/scripts/oth.venv/bin/python3", ["/var/www/OldTimeHockey/scripts/UpdateCurrentPF.py"], { stdio: "ignore" });
+			content = JSON.stringify({ success: true });
 		}
 		break;
 

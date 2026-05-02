@@ -25,7 +25,7 @@ def updateCurrentPF(league, year):
 
     # Season over, or this week doesn't exist. Exit and zero out this league
     if day == 0:
-        print(f"Week {week} does not exist in {league}")
+        # print(f"Week {week} does not exist in {league}")
         cursor.execute("UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s", (league, year))
         return
 
@@ -78,7 +78,7 @@ with FileLock(LOCKFILE):
 
     for year in years_to_update:
         for league in get_leagues_from_database(year):
-            print(f"Updating {league}")
+            # print(f"Updating {league}")
             updateCurrentPF(league["id"], league["year"])
 
     db.commit()

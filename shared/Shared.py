@@ -92,8 +92,6 @@ def make_api_call(link):
     site = urlparse(link).netloc.replace("www.", "")
     log_api_usage_telemetry(site)
 
-    print(link)
-
     try:
         with requests.get(link, headers=headers) as response: # Throws HTTPError if page fails to open
             if response.status_code == 429 or response.status_code == 403:
