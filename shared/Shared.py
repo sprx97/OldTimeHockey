@@ -91,12 +91,12 @@ def make_api_call(link):
         link = "https://" + link
     site = urlparse(link).netloc.replace("www.", "")
     log_api_usage_telemetry(site)
+    flush_telemetry() # for now flush it every API call... should be able to tamper this down
 
     try:
         with requests.get(link, headers=headers) as response: # Throws HTTPError if page fails to open
             if response.status_code == 429 or response.status_code == 403:
                 print(f"Rate limited when accessing {link}. Retrying in 60 seconds...")
-                flush_telemetry()
                 time.sleep(60)
                 response = requests.get(link, headers=headers)
             data = response.json()

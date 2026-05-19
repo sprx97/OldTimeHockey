@@ -102,7 +102,7 @@ export default class Leaderboard extends Component {
   }
 
   getData = async () => {
-    await fetch('https://roldtimehockey.com/node/UpdateCurrentPF');
+    await fetch('https://roldtimehockey.com/node/v2/UpdateCurrentPF');
     const week = parseInt(await (await fetch('https://roldtimehockey.com/node/getweek')).json());
     const year = parseInt(await (await fetch('https://roldtimehockey.com/node/getyear')).json());
 
