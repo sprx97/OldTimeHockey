@@ -1,7 +1,6 @@
 from lxml import html # xml parsing
 import os
 import pymysql
-import requests
 import sys
 
 # OTH includes
@@ -122,7 +121,7 @@ for year in key:
 
         for day in key[year]:
             # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
-            scoreboard = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={day}")
+            scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={day}")
             if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
                 #print(f"Week {week_id} does not have final results. Skipping.")
                 continue
@@ -142,7 +141,7 @@ for year in key:
 
                 # Finally, this call gets the actual boxscore of the game.
                 # Unfortunately this has to be done day by day and will be really slow.
-                boxscore = Shared.make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id={league_id}&fantasy_game_id={game_id}&scoring_period={day}")
+                boxscore = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueBoxscore?sport=NHL&league_id={league_id}&fantasy_game_id={game_id}&scoring_period={day}")
 
                 for slot in boxscore["lineups"][0]["slots"]:
                     if "home" in slot and slot["home"]["proPlayer"]["id"] == 338:

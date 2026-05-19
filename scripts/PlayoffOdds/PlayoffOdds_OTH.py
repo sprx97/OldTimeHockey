@@ -1,7 +1,7 @@
 import os
-import pymysql
 import random
 import sys
+import time
 import ujson
 
 # OTH includes
@@ -46,7 +46,7 @@ def calculate_playoff_odds(league, year, current_week = None, use5050 = False):
     matches = []
 
     # Get current standings
-    standings = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league}&season={year}")
+    standings = make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league}&season={year}")
     for team in standings["divisions"][0]["teams"]:
         id = str(team["id"])
 
@@ -62,7 +62,7 @@ def calculate_playoff_odds(league, year, current_week = None, use5050 = False):
         teams[id]["PF_avg"] = teams[id]["PF"] / (teams[id]["wins"] + teams[id]["losses"])
 
     # Get remaining weeks
-    schedule = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
+    schedule = make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}")
     if current_week == None:
         current_week = schedule["schedulePeriod"]["ordinal"]
     remaining_weeks = []
@@ -83,7 +83,7 @@ def calculate_playoff_odds(league, year, current_week = None, use5050 = False):
 
     # Get matches in remaining weeks
     for week in remaining_weeks:
-        schedule = make_api_call(f"http://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={week}")
+        schedule = make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league}&season={year}&scoring_period={week}")
         for game in schedule["games"]:
             id1 = str(game["away"]["id"])
             id2 = str(game["home"]["id"])
@@ -160,3 +160,4 @@ week = int(f.readline().strip())
 for league in get_leagues_from_database(year, None):
     calculate_playoff_odds(league["id"], league["year"], week)
     calculate_playoff_odds(league["id"], league["year"], week, use5050=True)
+    time.sleep(60)

@@ -1,4 +1,3 @@
-import json
 import os
 import pymysql
 import requests
@@ -21,7 +20,7 @@ leagues = cursor.fetchall()
 
 for league in leagues:
     league_id = league["id"]
-    response = requests.get("http://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + year + "&sport=NHL")
+    response = requests.get("https://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + year + "&sport=NHL")
     assert response.status_code == 200, "Failed to find league " + str(league_id) + " for season " + year
     response = response.json()
 

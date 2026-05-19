@@ -14,7 +14,7 @@ cursor = db.cursor(pymysql.cursors.DictCursor)
 cursor.execute("SELECT * from Leagues")
 leagues = cursor.fetchall()
 for league in leagues:
-    response = requests.get("http://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league["id"]) + "&season=" + str(league["year"]) + "&sport=NHL")
+    response = requests.get("https://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league["id"]) + "&season=" + str(league["year"]) + "&sport=NHL")
     draft_order = response.json()["draftOrder"]
 
     for pick_num in range(len(draft_order)):

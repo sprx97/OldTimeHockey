@@ -11,7 +11,7 @@ def find_hits(league_id):
 	hits = {"F": 0, "D": 0}
 	big_hits = {"F": 0, "D": 0}
 
-	response = requests.get(f"http://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id={league_id}&season={year}&sport=NHL").json()
+	response = requests.get(f"https://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id={league_id}&season={year}&sport=NHL").json()
 
 	for row in response["rows"]:
 		round = row["round"]
@@ -32,7 +32,7 @@ def find_hits(league_id):
 
 			id = cells[pick]["player"]["proPlayer"]["id"]
 
-			players = requests.get(f"http://www.fleaflicker.com/api/FetchPlayerListing?sport=NHL&league_id={league_id}&filter.query={name}").json()["players"]
+			players = requests.get(f"https://www.fleaflicker.com/api/FetchPlayerListing?sport=NHL&league_id={league_id}&filter.query={name}").json()["players"]
 			for player in players:
 				if player["proPlayer"]["id"] == id:
 					break
