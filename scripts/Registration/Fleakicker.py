@@ -22,7 +22,7 @@ from shared import Config
 #     Total: 20 calls per league, 15 leagues = 300 calls. Meaning we need a wait after every league.
 
 # Swap this to actually commit changes instead of just printing stuff
-DEBUG = False
+DEBUG = True
 
 # Comment this out to actually run the script.
 # This script is scary so leave this on in case of a fatfinger python command
@@ -112,7 +112,7 @@ def update_settings(league_id):
     # Trade deadline
     session.post("https://www.fleaflicker.com/nhl/editTransactionsSubmit", data={
         "leagueId": league_id,
-        "tradeDeadline": 155, # Tuesday March 2nd, 6am EST
+        "tradeDeadline": 154, # Tuesday March 2nd, 6am EST -- NEEDS TO BE THE DAY BEFORE THE DEADLINE PERIOD
         "tradeDeadlineUnlockAfterSeason": "false",
         # addDropDeadline: None
         "addDropDeadlineUnlockAfterSeason": "false",
@@ -126,20 +126,12 @@ def update_settings(league_id):
         "resetMoves": "false"
     })
 
-    # Tiebreak rules
-    # session.post("https://www.fleaflicker.com/nhl/editTiebreaksSubmit", data={
-    #     "leagueId": league_id,
-    #     "gameTiebreak": "STARTER_MAX_CATEGORY,STARTER_MAX_FANTASY_POINTS,BENCH_TOTAL_FANTASY_POINTS",
-    #     "breakRegularSeasonTies": "false",
-    #     "rankTiebreak": "POINTS_FOR,HEAD_TO_HEAD,POINTS_AGAINST,STRENGTH_OF_SCHED"
-    # })
-
 for league in leagues:
     id = league["id"]
     name = league["name"]
 
     # Skip D1
-    if id == 12086 or id == 12087 or id == 12088:
+    if id == 12086:
         continue
 
     if not DEBUG:
