@@ -30,7 +30,7 @@ star_threshold = int(star_threshold)
 # Get the registration spreadsheet
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
-rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:W").execute()
+rows = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range="Responses!A:W").execute()
 
 # Get all of this year's registrants
 values = rows.get("values", [])
@@ -221,7 +221,7 @@ if response == "Y":
 
         values = transpose(values)
 
-        result = sheets.values().append(spreadsheetId=Config.config["this_season_reg_sheet_id"], range=f"{division} Drafts!A1", valueInputOption="RAW", body={"values": values}).execute()
+        result = sheets.values().append(spreadsheetId=Config.config["reg_sheet_id"], range=f"{division} Drafts!A1", valueInputOption="RAW", body={"values": values}).execute()
 
 # Print to console
 for combo in best_combinations:

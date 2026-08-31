@@ -17,7 +17,8 @@ import Config
 # In order to get a new one, you'll have to run the obtain_creds code from a local machine (IE not this server)
 # It's super annoying, and I should probably just write code to maintain the token ever month or two
 # But for now this is a hacky solution.
-# For now, assuming SPRX hasn't lost or given up his work laptop yet, he has a minimized local copy that will
+#
+# For now, SPRX has a minimized local copy on his onedrive that will
 # regenerate those two token files for you. Just get those and replace the contents of Emailer/tokens/*token.json
 # and pray that nothing else goes wrong.
 ############################

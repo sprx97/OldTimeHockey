@@ -61,7 +61,7 @@ for league in leagues:
     emails = []
     sheets_service = Emailer.get_sheets_service()
     sheets = sheets_service.spreadsheets()
-    rows = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:W").execute()
+    rows = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range="Responses!A:W").execute()
     values = rows.get("values", [])
 
     EMAIL_ADDRESS_COL = 0 # A

@@ -1,5 +1,5 @@
 # Standard python libraries
-import datetime
+from datetime import datetime
 import os
 import sys
 
@@ -10,15 +10,25 @@ from shared.Emailer import Emailer
 
 DEBUG = True
 
+# print("Remember to update the below variables, then comment out these lines.")
+# quit()
+
+year = 2026
+reg_form_link = "https://forms.gle/mGznBPwf4KQVPBtt8"
+draft_dates = "September 25th-28th"
+registration_deadline = "September 11th, 2025 at 9am EST"
+reminder_num = "reminder 1/2"
+retirees = [1382557, 2109426, 2227203]
+
 # Failsafe 1
-print("Are you sure you want to run the registraton script? This will email more than 200 people. (yes/no)")
+print("Are you sure you want to run the registraton reminder script? This could email more than 200 people. (yes/no)")
 confirm = input()
 if confirm != "yes":
     print("Aborting.")
     quit()
 
 # Failsafe 2
-d = datetime.datetime.now()
+d = datetime.now()
 month = int(d.strftime("%m"))
 if month >= 10 or month <= 6:
     print ("Why are we sending regisration pings during the season? Please be sure you want to do this.")
@@ -28,55 +38,47 @@ if month >= 10 or month <= 6:
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
 
-last_year = sheets.values().get(spreadsheetId=Config.config["prev_season_reg_sheet_id"], range="Responses!A:Y").execute()
-this_year = sheets.values().get(spreadsheetId=Config.config["this_season_reg_sheet_id"], range="Responses!A:W").execute()
+last_year = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range=f"{year-1}-{year}!A:V").execute()
+this_year = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range="Responses!A:W").execute()
 
 # Get all of last year's registrants
 values = last_year.get("values", [])
-emails = []
+emails = {}
 for row in values[1:]: # Skip the header
-    if row[24] == "DECLINED" or row[24] == "NO RESPONSE" or row[24] == "REJECTED" or row[24] == "QUITTER":
+    if row == []:
+        break
+    if row[21] == "DECLINED" or row[21] == "NO RESPONSE" or row[21] == "REJECTED" or row[21] == "QUITTER":
         print(f"Skipping manager who didn't play or quit last year: {row[1]}")
         continue
-    emails.append(row[0].strip().lower())
-
-print("Update (row number) 24 to 22 for next season")
-quit()
-
-print("TODO: Also compare FF name/ID instead of just relying on emails. People change those sometimes.")
-quit()
+    ff_id = row[3].strip()
+    if ff_id != "":
+        emails[int(ff_id)] = row[0].strip().lower()
 
 # Remove the ones who have already registered this year
 values = this_year.get("values", [])
 for row in values[1:]: # Skip the header
+    if row == []:
+        break
     email = row[0].strip().lower()
-    if email in emails:
-        emails.remove(email)
+    ff_id = row[2].strip()
+    if ff_id != "":
+        ff_id = int(ff_id)
+        if ff_id in emails.keys():
+            del emails[ff_id]
 
 # Remove the retirees
-retirees = []
-for email in retirees:
-    if email in emails:
-        emails.remove(email)
-
-print("Remember to update the below variables, and any retirees, then comment out these lines.")
-quit()
-
-reg_form_link = "https://forms.gle/zg4s96qHQ7XUMUmA6"
-draft_dates = "October 3rd-6th"
-year = "2025-26"
-registration_deadline_1 = "September 15th, 2025 at 9am EST"
-registration_deadline_2 = "September 22nd, 2025 at 9am EST"
-reminder_num = "Final Reminder"
+for ff_id in retirees:
+    if ff_id in emails.keys():
+        del emails[ff_id]
 
 to = "roldtimehockey@gmail.com"
 subject = f"Old Time Hockey {year} Registration ({reminder_num})"
 body = "Hello -- \n\n" + \
 "You are receiving this email because you played in the Old Time Hockey fantasy league last year or were on our waitlist. " + \
 f"If you are interested in playing this year, the registration form can be found here: {reg_form_link}\n\n" + \
-f"The registration deadline to keep your spot is {registration_deadline_1} for D1-D3 and {registration_deadline_2} for D4. " + \
+f"The registration deadline to keep your spot is {registration_deadline}. " + \
 f"Drafts this year will take place {draft_dates}. Hope to see you back!\n\n" + \
-f"If you do not register this season you will be removed from this list, so no further action required, as this is the final reminder email.\n\n" + \
+f"If you do not register this season you will be removed from this list, so no further action required. Or you can respond to not receive follow-up reminders this year.\n\n" + \
 "-- Admins"
 
 gmail_service = Emailer.get_gmail_service()
