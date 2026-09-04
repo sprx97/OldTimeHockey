@@ -11,6 +11,7 @@ from shared import Config
 from shared.Emailer import Emailer
 
 NUM_TEAMS_PER_LEAGUE = 14
+NUM_SPACER_ROWS = 3
 
 if len(sys.argv) != 3:
     print("Please provide a division (D2-D5) and a star threshold (1-5).")
@@ -31,6 +32,18 @@ star_threshold = int(star_threshold)
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
 rows = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range="Responses!A:W").execute()
+
+# Get the ELO for each owner so every draft slot can be sorted before it is written.
+elo_rows = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range="ELO!B2:C").execute()
+elo_by_name = {}
+for row in elo_rows.get("values", []):
+    if len(row) < 2 or row[0] == "" or row[1] == "":
+        continue
+
+    try:
+        elo_by_name[row[0].lower()] = float(row[1].replace(",", ""))
+    except (AttributeError, ValueError):
+        print(f"Could not parse ELO '{row[1]}' for {row[0]}.")
 
 # Get all of this year's registrants
 values = rows.get("values", [])
@@ -195,33 +208,67 @@ for combo in best_combinations:
     sorted_combinations.append(dict(sorted(combo.items(), key=sortfunc)))
 best_combinations = sorted_combinations
 
-def transpose(list):
-    result = []
-    for i in range(NUM_TEAMS_PER_LEAGUE+1):
+def get_elo_sort_key(user_name):
+    normalized_name = user_name.lower()
+    elo = elo_by_name.get(normalized_name)
+    return (elo is None, -elo if elo is not None else math.inf, normalized_name)
+
+def get_column_name(column_index):
+    column_name = ""
+    while column_index >= 0:
+        column_name = chr(column_index % 26 + ord("A")) + column_name
+        column_index = column_index // 26 - 1
+    return column_name
+
+def get_sheet_values(combo, start_row):
+    draft_columns = []
+    for draft_time, users in combo.items():
+        sorted_users = sorted(users, key=get_elo_sort_key)
+        draft_columns.append((draft_time, sorted_users))
+
+    values = []
+    header = []
+    for draft_time, users in draft_columns:
+        header.extend([draft_time, ""])
+    values.append(header)
+
+    num_user_rows = max((len(users) for draft_time, users in draft_columns), default=0)
+    for user_index in range(num_user_rows):
         row = []
-        for item in list:
-            try:
-                row.append(item[i])
-            except IndexError:
+        sheet_row = start_row + user_index + 1
+        for draft_index, (draft_time, users) in enumerate(draft_columns):
+            user_name = users[user_index] if user_index < len(users) else ""
+            row.append(user_name)
+            if user_name == "":
                 row.append("")
-        result.append(row)
-    return result
+                continue
+
+            name_column = get_column_name(draft_index * 2)
+            row.append(f"=INDEX(ELO!$C:$C, MATCH({name_column}{sheet_row}, ELO!$B:$B, 0))")
+        values.append(row)
+
+    return values
 
 # "Print" the combinations to the spreadsheet
 print("Post to spreadsheet (Y/N)?")
 response = input()
 if response == "Y":
+    existing_rows = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range=f"{division} Drafts!A:Z").execute().get("values", [])
+    start_sheet_row = len(existing_rows) + 1
+    next_sheet_row = start_sheet_row
+    values = []
     for combo in best_combinations:
-        values = []
-        for draft_time, users in combo.items():
-            row = []
-            row.append(draft_time)
-            row.extend(users)
-            values.append(row)
+        if len(values) > 0:
+            num_columns = len(combo) * 2
+            values.extend([[""] * num_columns for _ in range(NUM_SPACER_ROWS)])
+            next_sheet_row += NUM_SPACER_ROWS
 
-        values = transpose(values)
+        combo_values = get_sheet_values(combo, next_sheet_row)
+        values.extend(combo_values)
+        next_sheet_row += len(combo_values)
 
-        result = sheets.values().append(spreadsheetId=Config.config["reg_sheet_id"], range=f"{division} Drafts!A1", valueInputOption="RAW", body={"values": values}).execute()
+    if len(values) > 0:
+        result = sheets.values().update(spreadsheetId=Config.config["reg_sheet_id"], range=f"{division} Drafts!A{start_sheet_row}", valueInputOption="USER_ENTERED", body={"values": values}).execute()
 
 # Print to console
 for combo in best_combinations:

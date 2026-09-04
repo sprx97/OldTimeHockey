@@ -10,15 +10,15 @@ from shared.Emailer import Emailer
 
 DEBUG = True
 
-# print("Remember to update the below variables, then comment out these lines.")
-# quit()
+print("Remember to update the below variables, then comment out these lines.")
+quit()
 
 year = 2026
 reg_form_link = "https://forms.gle/mGznBPwf4KQVPBtt8"
 draft_dates = "September 25th-28th"
-registration_deadline = "September 11th, 2025 at 9am EST"
-reminder_num = "reminder 1/2"
-retirees = [1382557, 2109426, 2227203]
+registration_deadline = f"September 8th, {year} at 9am EST"
+reminder_num = "LAST CALL"
+retirees = [2227203, 1382557, 2109426, 2267437, 1357398, 654680, 2102614, 664513, 2210964] # See Retirements list in Checkin tab of sheet
 
 # Failsafe 1
 print("Are you sure you want to run the registraton reminder script? This could email more than 200 people. (yes/no)")
@@ -38,7 +38,7 @@ if month >= 10 or month <= 6:
 sheets_service = Emailer.get_sheets_service()
 sheets = sheets_service.spreadsheets()
 
-last_year = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range=f"{year-1}-{year}!A:V").execute()
+last_year = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range=f"{year-1}-{year}!A:X").execute()
 this_year = sheets.values().get(spreadsheetId=Config.config["reg_sheet_id"], range="Responses!A:W").execute()
 
 # Get all of last year's registrants
@@ -47,12 +47,12 @@ emails = {}
 for row in values[1:]: # Skip the header
     if row == []:
         break
-    if row[21] == "DECLINED" or row[21] == "NO RESPONSE" or row[21] == "REJECTED" or row[21] == "QUITTER":
+    if row[23] == "DECLINED" or row[23] == "NO RESPONSE" or row[23] == "REJECTED" or row[23] == "QUITTER":
         print(f"Skipping manager who didn't play or quit last year: {row[1]}")
         continue
     ff_id = row[3].strip()
     if ff_id != "":
-        emails[int(ff_id)] = row[0].strip().lower()
+        emails[int(ff_id)] = row[1].strip().lower()
 
 # Remove the ones who have already registered this year
 values = this_year.get("values", [])
@@ -63,7 +63,7 @@ for row in values[1:]: # Skip the header
     ff_id = row[2].strip()
     if ff_id != "":
         ff_id = int(ff_id)
-        if ff_id in emails.keys():
+        if ff_id in emails.keys() or email in emails.values():
             del emails[ff_id]
 
 # Remove the retirees
@@ -78,7 +78,7 @@ body = "Hello -- \n\n" + \
 f"If you are interested in playing this year, the registration form can be found here: {reg_form_link}\n\n" + \
 f"The registration deadline to keep your spot is {registration_deadline}. " + \
 f"Drafts this year will take place {draft_dates}. Hope to see you back!\n\n" + \
-f"If you do not register this season you will be removed from this list, so no further action required. Or you can respond to not receive follow-up reminders this year.\n\n" + \
+f"If you do not register this season you will be removed from this list, so no further action required.\n\n" + \
 "-- Admins"
 
 gmail_service = Emailer.get_gmail_service()
@@ -87,7 +87,7 @@ print(f"{subject}\n{body}\n")
 
 NUM_PER_SLICE = 97 # 97 emails plus two admins in the bcc, and this account in the to line equals 100, the gmail API sending limit
 for n in range(0, len(emails), NUM_PER_SLICE):
-    emails_slice = emails[n:n+NUM_PER_SLICE]
+    emails_slice = list(emails.values())[n:n+NUM_PER_SLICE]
 
     # Add the admins to ensure this gets sent
     emails_slice.extend(Config.config["admin_email_ccs"].split(","))
