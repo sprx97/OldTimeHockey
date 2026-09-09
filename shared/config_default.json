@@ -24,9 +24,6 @@
 	// GSheet ID for registration data
 	"reg_sheet_id": "",
 
-	// Output location for the roles file for the DiscordBot to be able to read it
-	"roles_file_out_location": "",
-
 	// Admin Email CCs for mailing scripts
 	"admin_email_ccs": "",
 

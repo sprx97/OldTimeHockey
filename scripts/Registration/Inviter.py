@@ -9,7 +9,7 @@ from shared import Shared
 from shared import Config
 from shared.Emailer import Emailer
 
-DEBUG = True
+DEBUG = False
 send_emails = True
 all_emails = []
 
@@ -46,7 +46,7 @@ for league in leagues:
     standings = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueStandings?sport=NHL&league_id={league_id}&season={year}")
 
     # Ensure the draft has been set
-    if "draftLiveTimeEpochMilli" not in standings["league"]:
+    if "draftLiveTimeEpochMilli" not in standings["league"] and league_id != 12086:
         print(f"Draft time not set for {league_name} ({league_id}). Please set it and re-run.")
         quit()
 
@@ -103,12 +103,12 @@ for league in leagues:
 
 # Construct the email
 to = "roldtimehockey@gmail.com"
-subject = "OldTimeHockey Invite"
+subject = "OldTimeHockey Invite (Accept by 9/16)"
 body = \
 "Hello -- \n\n" + \
 "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
 "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
-"If you can't find it, reach out to an admin via Discord or respond to this email. \n\n" + \
+"If you can't find it, or no longer want to play, reach out to an admin via Discord or respond to this email. \n\n" + \
 "Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
 "Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
 "Join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
