@@ -1,7 +1,10 @@
 # Python includes
 import os
+import re
 import requests
 import sys
+
+from lxml import html
 
 # OTH includes
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
@@ -11,7 +14,7 @@ from shared.Emailer import Emailer
 
 DEBUG = False
 send_emails = True
-all_emails = []
+email_batches = []
 
 # Only allow sending of invites for one division at a time
 if len(sys.argv) != 2:
@@ -92,6 +95,17 @@ for league in leagues:
         print(f"No invites to send for {league_name}.")
         continue
 
+    invite_page = session.get(f"https://www.fleaflicker.com/nhl/leagues/{league_id}/invite")
+    invite_page.raise_for_status()
+    invite_page_text = html.fromstring(invite_page.content).text_content()
+    invite_link_match = re.search(
+        rf"https://www\.fleaflicker\.com/nhl/leagues/{league_id}/invited\?eh=[a-zA-Z0-9]+",
+        invite_page_text,
+    )
+    if invite_link_match is None:
+        raise RuntimeError(f"Could not find the invite link for {league_name} ({league_id}).")
+    invite_link = invite_link_match.group(0)
+
     # Invite to league
     print(f"{len(emails)} invites to send for {league_name}.")
     if not DEBUG:
@@ -99,29 +113,32 @@ for league in leagues:
     else:
         print("Actual invites not sent -- set DEBUG to false to proceed.")
 
-    all_emails.extend(emails)
+    email_batches.append((league_name, emails, invite_link))
 
-# Construct the email
+# Construct and send the emails
 to = "roldtimehockey@gmail.com"
-subject = "OldTimeHockey Invite (Accept by 9/16)"
-body = \
-"Hello -- \n\n" + \
-"You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
-"We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
-"If you can't find it, or no longer want to play, reach out to an admin via Discord or respond to this email. \n\n" + \
-"Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
-"Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
-"Join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
-"-- Admins"
-
-# Add the admins to ensure this gets sent
-all_emails.extend(Config.config["admin_email_ccs"].split(","))
-
 gmail_service = Emailer.get_gmail_service()
 
-print(f"Sending {len(all_emails)} emails to {all_emails}.")
-if not DEBUG and send_emails:
-    bcc = ",".join(all_emails)
-    Emailer.send_message(gmail_service, subject, body, to, None, bcc)
-else:
-    print("Emails not sent. Edit script to enable.")
+for league_name, emails, invite_link in email_batches:
+    subject = f"OldTimeHockey Invite: {league_name} Division (Accept by 9/16)"
+    body = \
+    "Hello -- \n\n" + \
+    "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
+    "We have sent invites via fleaflicker and you should have one to this address. Please check your Spam and Promotions folders. " + \
+    "You can also join directly using this invite link:\n" + \
+    f"{invite_link}\n\n" + \
+    "If you cannot find it, or no longer want to play, reach out to an admin via Discord or respond to this email. \n\n" + \
+    "Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
+    "Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
+    "Join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
+    "-- Admins"
+
+    # Add the admins to ensure this gets sent
+    recipients = emails + Config.config["admin_email_ccs"].split(",")
+
+    print(f"Sending {len(recipients)} emails for {league_name} to {recipients}.")
+    if not DEBUG and send_emails:
+        bcc = ",".join(recipients)
+        Emailer.send_message(gmail_service, subject, body, to, None, bcc)
+    else:
+        print("Emails not sent. Edit script to enable.")

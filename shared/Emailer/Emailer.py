@@ -69,6 +69,10 @@ def send_message(service, subject, body, to, cc=None, bcc=None):
     if bcc:
         message["bcc"] = bcc
 
-    message = {'raw': urlsafe_b64encode(message.as_bytes()).decode() }
+    message['X-Priority'] = '1' # High
+    message['X-MSMail-Priority'] = 'High'
+    message['Importance'] = 'High'
+
+    message = {'raw': urlsafe_b64encode(message.as_bytes()).decode()}
 
     return service.users().messages().send(userId="me", body=message).execute()
