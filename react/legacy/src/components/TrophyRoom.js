@@ -11,6 +11,7 @@ const bannerData = [
     title: "Division 1 Champions",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
+      { year: "2026", name: "CHIZZLE (3)" },
       { year: "2025", name: "GUSZ (2)" },
       { year: "2024", name: "GUSZ" },
       { year: "2023", name: "SPRX97" },
@@ -32,6 +33,7 @@ const bannerData = [
     title: "Points For Champions",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
+      { year: "2026", name: "TMICHAEL11" },
       { year: "2025", name: "CHIZZLE" },
       { year: "2024", name: "COSTCOSTAN" },
       { year: "2023", name: "CHRISTHROWROCKS" },
@@ -54,6 +56,7 @@ const bannerData = [
     title: "Woppa Cup Champions",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
+      { year: "2026", name: "DONPAITA" },
       { year: "2025", name: "TOOPROFORYOU" },
       { year: "2024", name: "AKACESFAN (2)" },
       { year: "2023", name: "CHRISTHROWROCKS" },
@@ -76,6 +79,7 @@ const bannerData = [
     title: "Presidents' <br /> Trophy",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
+      { year: "2026", name: "TGMILLS (2)" },
       { year: "2025", name: "CHIZZLE (3)" },
       { year: "2024", name: "BRUINHAWKS" },
       { year: "2023", name: "SPRX97" },

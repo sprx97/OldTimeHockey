@@ -12,7 +12,7 @@ from shared import Shared
 from shared import Config
 from shared.Emailer import Emailer
 
-DEBUG = False
+DEBUG = True
 send_emails = True
 email_batches = []
 
@@ -120,7 +120,7 @@ to = "roldtimehockey@gmail.com"
 gmail_service = Emailer.get_gmail_service()
 
 for league_name, emails, invite_link in email_batches:
-    subject = f"OldTimeHockey Invite: {league_name} Division (Accept by 9/16)"
+    subject = f"OldTimeHockey Invite: {league_name} Division (Accept by 9/20/2026)"
     body = \
     "Hello -- \n\n" + \
     "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \

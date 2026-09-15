@@ -13,6 +13,30 @@ from shared.Emailer import Emailer
 NUM_TEAMS_PER_LEAGUE = 14
 NUM_SPACER_ROWS = 3
 
+def select_registration_rows(values, division, max_in_division):
+    selected_rows = []
+    waitlist = []
+    registration_groups = [division]
+    if division == "D5":
+        registration_groups.append("NEW")
+
+    # Returning D5 managers must be selected before NEW managers can fill
+    # any remaining D5 spots, regardless of their order in Responses.
+    for registration_group in registration_groups:
+        for row in values:
+            if len(row) <= 21 or row[21] != registration_group:
+                continue
+
+            is_waitlisted = len(row) > 22 and row[22] == "WAITLIST"
+            if is_waitlisted or len(selected_rows) >= max_in_division:
+                if division == "D5" and len(row) > 20 and row[20] != "":
+                    waitlist.append(row[20])
+                continue
+
+            selected_rows.append(row)
+
+    return selected_rows, waitlist
+
 if len(sys.argv) != 3:
     print("Please provide a division (D2-D5) and a star threshold (1-5).")
     quit()
@@ -52,16 +76,8 @@ values = values[1:] # Chop off the header row
 all_draft_times = {}
 all_users = {}
 max_in_division = 70 if division == "D5" else 56 if division == "D4" else 42 if division == "D3" else 28 # if division == "D2"
-count = 0
-for row in values:
-    # Only look for the chosen division, but count NEW as D5
-    if row[21] != division and not (row[21] == "NEW" and division == "D5"):
-        continue
-
-    # Skip the waitlist -- the bottom of the reg form without a division
-    if len(row) == 23 and row[22] == "WAITLIST":
-        continue
-
+selected_rows, waitlist = select_registration_rows(values, division, max_in_division)
+for row in selected_rows:
     # Extract values
     email = row[0]
     user_name = row[20]
@@ -91,10 +107,6 @@ for row in values:
         if draft not in all_draft_times:
             all_draft_times[draft] = []
         all_draft_times[draft].append(user_id)
-
-    count += 1
-    if count == max_in_division:
-        break
 
 num_leagues = math.ceil(len(all_users) / NUM_TEAMS_PER_LEAGUE)
 
@@ -201,9 +213,9 @@ sorted_combinations = []
 for combo in best_combinations:
     def sortfunc(item):
         if item[0] == "UNASSIGNED":
-            return "UNASSIGNED"
+            return (1, "")
         
-        return "".join(item[0].split(" ")[1:]) # Trim off the day of week, and then just compare the strings
+        return (0, "".join(item[0].split(" ")[1:])) # Trim off the day of week, and then just compare the strings
 
     sorted_combinations.append(dict(sorted(combo.items(), key=sortfunc)))
 best_combinations = sorted_combinations
@@ -220,7 +232,7 @@ def get_column_name(column_index):
         column_index = column_index // 26 - 1
     return column_name
 
-def get_sheet_values(combo, start_row):
+def get_sheet_values(combo, start_row, include_elo=True, waitlist_users=None):
     draft_columns = []
     for draft_time, users in combo.items():
         sorted_users = sorted(users, key=get_elo_sort_key)
@@ -229,22 +241,33 @@ def get_sheet_values(combo, start_row):
     values = []
     header = []
     for draft_time, users in draft_columns:
-        header.extend([draft_time, ""])
+        header.append(draft_time)
+        if include_elo:
+            header.append("")
+    if waitlist_users is not None:
+        header.append("WAITLIST")
     values.append(header)
 
-    num_user_rows = max((len(users) for draft_time, users in draft_columns), default=0)
+    column_lengths = [len(users) for draft_time, users in draft_columns]
+    if waitlist_users is not None:
+        column_lengths.append(len(waitlist_users))
+    num_user_rows = max(column_lengths, default=0)
     for user_index in range(num_user_rows):
         row = []
         sheet_row = start_row + user_index + 1
         for draft_index, (draft_time, users) in enumerate(draft_columns):
             user_name = users[user_index] if user_index < len(users) else ""
             row.append(user_name)
-            if user_name == "":
-                row.append("")
+            if not include_elo:
                 continue
 
-            name_column = get_column_name(draft_index * 2)
-            row.append(f"=INDEX(ELO!$C:$C, MATCH({name_column}{sheet_row}, ELO!$B:$B, 0))")
+            if user_name == "":
+                row.append("")
+            else:
+                name_column = get_column_name(draft_index * 2)
+                row.append(f"=INDEX(ELO!$C:$C, MATCH({name_column}{sheet_row}, ELO!$B:$B, 0))")
+        if waitlist_users is not None:
+            row.append(waitlist_users[user_index] if user_index < len(waitlist_users) else "")
         values.append(row)
 
     return values
@@ -257,13 +280,15 @@ if response == "Y":
     start_sheet_row = len(existing_rows) + 1
     next_sheet_row = start_sheet_row
     values = []
-    for combo in best_combinations:
+    include_elo = division != "D5"
+    for combo_index, combo in enumerate(best_combinations):
         if len(values) > 0:
-            num_columns = len(combo) * 2
+            num_columns = len(combo) * 2 if include_elo else len(combo)
             values.extend([[""] * num_columns for _ in range(NUM_SPACER_ROWS)])
             next_sheet_row += NUM_SPACER_ROWS
 
-        combo_values = get_sheet_values(combo, next_sheet_row)
+        waitlist_users = waitlist if division == "D5" and combo_index == 0 else None
+        combo_values = get_sheet_values(combo, next_sheet_row, include_elo, waitlist_users)
         values.extend(combo_values)
         next_sheet_row += len(combo_values)
 
