@@ -101,6 +101,8 @@ const bannerData = [
     title: "Playoff Pool Champions",
     logoSrc: "/images/logos/oth-circle-logo.svg",
     winnersList: [
+      { year: "2026", name: "HANNIBAL0" },
+      { year: "2025", name: "NODDAN (2)" },
       { year: "2024", name: "NODDAN" },
       { year: "2023", name: "MWHAZARD" },
       { year: "2022", name: "TSUNKATSE" },
