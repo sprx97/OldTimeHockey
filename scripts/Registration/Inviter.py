@@ -120,7 +120,7 @@ to = "roldtimehockey@gmail.com"
 gmail_service = Emailer.get_gmail_service()
 
 for league_name, emails, invite_link in email_batches:
-    subject = f"OldTimeHockey Invite: {league_name} Division (Accept by 9/20/2026 -- LAST CALL)"
+    subject = f"OldTimeHockey Invite: {league_name} Division (Accept ASAP)"
     body = \
     "Hello -- \n\n" + \
     "You are receiving this email because you registered for the Old Time Hockey fantasy league this year. " + \
@@ -130,6 +130,7 @@ for league_name, emails, invite_link in email_batches:
     "If you cannot find it, or no longer want to play, reach out to an admin via Discord or respond to this email. \n\n" + \
     "Once you click the link, click TAKE OVER on any open team in that league and feel free to change the name and logo. " + \
     "Draft order is NOT finalized and will be randomized after the league fills.\n\n" + \
+    "Because draft season is so close, this invite will be sent to a new manager if you don't accept by tomorrow morning.\n\n" + \
     "Join our discord to stay more involved: https://discord.com/invite/zXTUtj9\n\n" + \
     "-- Admins"
 

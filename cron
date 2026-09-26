@@ -5,7 +5,7 @@ CRON_TZ=America/New_York
 #0 13 * * 1   root    /var/www/OldTimeHockey/scripts/Weekly.sh 2>&1 | /usr/bin/ts '[\%Y-\%m-\%d \%H:\%M:\%S]' >> /var/www/OldTimeHockey/cronjob_weekly.log
 
 # Run the ADP script for the current year. Disable after draft season
-#*/15 * * * *    root    /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/ADP.py 2>&1 >> /var/www/OldTimeHockey/cronjob.log
+*/15 * * * *    root    /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/ADP.py 2>&1 >> /var/www/OldTimeHockey/cronjob.log
 
 # Prune telemetry to not waste too much space on my server
 0 0 * * *	root	/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/PruneTelemetry.py
