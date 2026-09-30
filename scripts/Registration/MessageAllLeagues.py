@@ -20,10 +20,11 @@ if len(leagues) == 0:
     print(f"No leagues for {year} in database. Ensure WeekVars and DB are correct.")
     quit()
 
-title = f"Schedule Update and Draft Reminder"
-message = f"""Hello everyone -- Fleaflicker just combined the Allstar Break weeks into a single matchup (good!), but that left our championship week too late in the season.
-I'll be adjusting accordingly so you'll see a notification about the schedule being changed.<br><br>Additionally, this serves as a reminder that your draft is coming up in the next
-four days. Check your league settings for the specific date/time if you've forgotten.<br><br>Any questions? Pop into https://discord.com/invite/zXTUtj9 <br><br>-- Mods"""
+title = f"Minor Settings Update for Drafts (Autodraft issues)"
+message = f"""If you haven't been following along in Discord, two of our first three drafts have had
+a team autodraft 7 goalies in early to mid rounds. We aren't sure why this is happening this year but it hasn't happened before.
+In order to prevent this from happening in other leagues we're setting a maximum of 4 goalies for the draft, so auto will
+stop at that. After the draft we'll undo the limit. <br><br>Any questions? Pop into https://discord.com/invite/zXTUtj9 <br><br>-- Mods"""
 
 data = {
     "parentId": "",
@@ -38,7 +39,7 @@ for league in leagues:
     name = league["name"]
 
     # Post message board message
-    debug = False
+    debug = True
     if debug:
         print(f"Not messaging {name}. Set debug to false to actually send.")
     else:

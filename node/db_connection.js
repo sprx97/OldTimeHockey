@@ -373,10 +373,10 @@ http.createServer(async function(request, response) {
 		const expected = subResult[0].NumDrafts;
 
 		sql = `
-			SELECT PlayerId, PlayerName, (SUM(PickNum) + 253*(?-COUNT(PickNum))) / ? as ADP, MIN(PickNum) as MinPick, MAX(PickNum) as MaxPick,COUNT(PickNum) as TimesDrafted, PlayerTeam, PlayerPositions from DraftPicks
+			SELECT PlayerId, MAX(PlayerName) as PlayerName, (SUM(PickNum) + 253*(?-COUNT(PickNum))) / ? as ADP, MIN(PickNum) as MinPick, MAX(PickNum) as MaxPick, COUNT(PickNum) as TimesDrafted, MAX(PlayerTeam) as PlayerTeam, MAX(PlayerPositions) as PlayerPositions from DraftPicks
 				INNER JOIN Leagues on (DraftPicks.Year=Leagues.year and DraftPicks.LeagueId=Leagues.id)
 				WHERE DraftPicks.Year=? AND Leagues.tier in (${placeholders})
-				GROUP BY PlayerId, PlayerName, PlayerTeam, PlayerPositions
+				GROUP BY PlayerId
 				ORDER BY ADP ASC`;
 		params = [expected, expected, query.year, ...tiers];
 	}

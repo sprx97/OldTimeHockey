@@ -29,7 +29,9 @@ for league in leagues:
         league_size = 12
 
     # League draft isn't completed, skip
-    if "player" not in response["rows"][-1]["cells"][1]: # look at 2nd to last pick because of weird FF bug
+    # look at 2nd to last pick because of weird FF bug
+    # Also account for a 19th pick because of weird shit like this: https://www.fleaflicker.com/nhl/leagues/12088/drafts?year=2026
+    if "player" not in response["rows"][-1]["cells"][1] and len(response["rows"]) == 18: 
         continue
 
     # check each round of the draft

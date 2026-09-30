@@ -221,6 +221,10 @@ def getPlayoffs(league_id, year):
 
     return teams
 
+def getDraftOrder(league_id, year):
+    response = requests.get("https://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + str(year) + "&sport=NHL")
+    return response.json()["draftOrder"]
+
 if __name__ == "__main__":
     db = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], charset="utf8mb4", cursorclass=pymysql.cursors.DictCursor)
     cursor = db.cursor()
@@ -230,6 +234,14 @@ if __name__ == "__main__":
         leagues = cursor.fetchall()
         for league in leagues:
             teams = getStandings(league["id"], league["year"])
+            draft_order = getDraftOrder(league["id"], league["year"])
+            for pick_num in range(len(draft_order)):
+                id = draft_order[pick_num]["id"]
+                for team in teams:
+                    if team["team_id"] == str(id):
+                        team["draft_position"] = pick_num + 1
+                        break
+
             for next in teams:
                 try:
                     if next["user_name"][-2] == "+":
@@ -248,8 +260,8 @@ if __name__ == "__main__":
                 cursor.execute("SELECT * from Teams where teamID = %s AND year = %s", (next["team_id"], year))
                 data = cursor.fetchall()
                 if len(data) == 0: # insert new team into table (should only happen once)
-                    cursor.execute("INSERT into Teams values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
-                                   (next["team_id"], league["id"], next["user_id"], next["user_id"], next["team_name"], next["wins"], next["losses"], next["ties"], next["points_for"], next["points_against"], next["coach_rating"], next["is_champ"], 0.0, 0.0, -1, -1, year))
+                    cursor.execute("INSERT into Teams values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                                   (next["team_id"], league["id"], next["user_id"], next["user_id"], next["team_name"], next["wins"], next["losses"], next["ties"], next["points_for"], next["points_against"], next["coach_rating"], next["is_champ"], 0.0, 0.0, -1, -1, year, next["draft_position"]))
                 elif len(data) == 1:
                     if intP(data[0]["ownerID"]) != intP(next["user_id"]) and intP(next["user_id"]) != 0:
                         cursor.execute("UPDATE Teams set ownerID=%s where teamID=%s AND year=%s", (next["user_id"], next["team_id"], year))
