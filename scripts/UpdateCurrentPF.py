@@ -47,8 +47,11 @@ def updateCurrentPF(league, year):
 
     # Reset teams on bye to 0.0 points with null opponent and matchup id
     if len(tracked) < 14:
-        placeholders = ",".join(["%s"] * len(tracked))
-        cursor.execute(f"UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s and teamID NOT IN ({placeholders})", (league, year, *tracked))
+        query = "UPDATE Teams set currentWeekPF=0.0, CurrOpp=NULL, matchupID=NULL where leagueID=%s and year=%s"
+        if tracked:
+            placeholders = ",".join(["%s"] * len(tracked))
+            query += f" and teamID NOT IN ({placeholders})"
+        cursor.execute(query, (league, year, *tracked))
 
 LOCKFILE = f"{Config.config['srcroot']}scripts/UpdateCurrentPF.lock"
 TIMESTAMP = f"{Config.config['srcroot']}scripts/UpdateCurrentPF.timestamp"
