@@ -1,5 +1,6 @@
 filelock==3.29.0
 lxml==6.1.0
+pychallonge
 PyMySQL==1.1.2
 requests==2.33.0
 ujson==5.12.1
