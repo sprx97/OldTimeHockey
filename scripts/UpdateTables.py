@@ -56,7 +56,7 @@ def getStandings(leagueID, year):
 
     standingsURL = "https://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "?season=" + str(year)
     Shared.log_api_usage_telemetry("fleaflicker.com") # Hardcoded because not using my make_api_call method
-    response = requests.get(standingsURL)
+    response = requests.get(standingsURL, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
     root = html.document_fromstring(response.text)
     rows = root.cssselect(".table-striped")[0].findall("tr")
     champs = []
@@ -80,7 +80,7 @@ def getStandings(leagueID, year):
 
     leadersTabURL = "https://www.fleaflicker.com/nhl/leagues/" + str(leagueID) + "/leaders?season=" + str(year)
     Shared.log_api_usage_telemetry("fleaflicker.com") # Hardcoded because not using my make_api_call method
-    response2 = requests.get(leadersTabURL)
+    response2 = requests.get(leadersTabURL, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
     root2 = html.document_fromstring(response2.text)
     rows2 = root2.cssselect(".table-group")[0].findall("tr")
     coachRating = {}
@@ -222,7 +222,7 @@ def getPlayoffs(league_id, year):
     return teams
 
 def getDraftOrder(league_id, year):
-    response = requests.get("https://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + str(year) + "&sport=NHL")
+    response = requests.get("https://www.fleaflicker.com/api/FetchLeagueDraftBoard?league_id=" + str(league_id) + "&season=" + str(year) + "&sport=NHL", headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
     return response.json()["draftOrder"]
 
 if __name__ == "__main__":

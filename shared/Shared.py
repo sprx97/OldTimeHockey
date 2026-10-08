@@ -5,7 +5,6 @@ import os
 import pymysql
 import requests
 import sys
-import time
 from urllib.parse import urlparse
 
 # Local Includes
@@ -94,14 +93,11 @@ def make_api_call(link):
     flush_telemetry() # for now flush it every API call... should be able to tamper this down
 
     try:
-        with requests.get(link, headers=headers) as response: # Throws HTTPError if page fails to open
-            if response.status_code == 429 or response.status_code == 403:
-                print(f"Rate limited when accessing {link}. Retrying in 60 seconds...")
-                time.sleep(60)
-                response = requests.get(link, headers=headers)
+        with requests.get(link, headers=headers, timeout=(5, 15)) as response:
+            response.raise_for_status()
             data = response.json()
-    except requests.exceptions.HTTPError:
-        print(f"Error accessing {link}")
+    except (requests.exceptions.RequestException, ValueError) as error:
+        print(f"Error accessing {link}\n {error}")
         return {}
 
     return data
