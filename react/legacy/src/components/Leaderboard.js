@@ -167,15 +167,6 @@ export default class Leaderboard extends Component {
 
   componentDidMount() {
     this.getData();
-    this.interval = setInterval(() => {
-      if (this.state.query == 'week') {
-        this.getData();
-      }
-    }, 5000); // Update every 5s in Live/week view
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   onChange = (event, result) => {
