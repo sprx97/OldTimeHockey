@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+python3 "$repo_root/scripts/sync_requirements.py" --check
