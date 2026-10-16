@@ -58,7 +58,7 @@ def GetPlayoffTeams(tier):
             LEFT JOIN Teams_post as P on (T.teamID=P.teamID AND T.year=P.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE T.year=%s AND L.tier=%s AND P.seed <= 6
+            WHERE T.year=%s AND L.tier=%s AND P.playoff_seed <= 6
         """
     cursor.execute(query, (year, tier))
     d1_playoff_teams = cursor.fetchall()
@@ -74,7 +74,7 @@ def GetNonPlayoffTeams(tier):
             LEFT JOIN Teams_post as P on (T.teamID=P.teamID AND T.year=P.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE T.year=%s AND L.tier=%s AND (P.seed > 6 OR P.seed IS NULL)
+            WHERE T.year=%s AND L.tier=%s AND (P.playoff_seed > 6 OR P.playoff_seed IS NULL)
         """
     cursor.execute(query, (year, tier))
     non_playoff_teams = cursor.fetchall()
@@ -106,7 +106,7 @@ def GetFinalists(tier):
             INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=%s AND ((P.wins_playoff >= 2 AND P.seed >= 3) OR (P.wins_playoff >= 1 AND P.seed < 3))
+            WHERE P.year=%s AND L.tier=%s AND ((P.wins_playoff >= 2 AND P.playoff_seed >= 3) OR (P.wins_playoff >= 1 AND P.playoff_seed < 3))
         """
     cursor.execute(query, (year, tier))
     finalists = cursor.fetchall()

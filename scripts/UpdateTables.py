@@ -11,6 +11,7 @@ from shared import Config
 
 years_to_update = [] # can manually seed if necessary
 playoffs_to_update = []
+consolation_repairs = []
 
 if len(sys.argv) == 1: # no arguments
     f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
@@ -27,6 +28,8 @@ else:
             years_to_update.append(int(arg))
         elif len(arg) == 5 and arg[-1] == "p":
             playoffs_to_update.append(int(arg[:-1]))
+        elif len(arg) == 5 and arg[-1] == "c":
+            consolation_repairs.append(int(arg[:-1]))
         else:
             print("Invalid argument")
             quit()
@@ -158,66 +161,73 @@ def getPlayoffs(league_id, year):
     teams = {}
 
     base_scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
+    games_by_period = []
     for period in base_scoreboard["eligibleSchedulePeriods"][-3:]: # Playoffs should just be the last three weeks of the season
         # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
         start = period["low"]["ordinal"]
         scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
 
-        if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
-            print(f"Week {start} does not have final results. Skipping.")
-            return
-
-        if not "isPlayoffs" in scoreboard["games"][0] or not scoreboard["games"][0]["isPlayoffs"]:
+        games = scoreboard.get("games", [])
+        if not games:
             continue
 
-        for game in scoreboard["games"]:
-            game_type = None
-            if game.get("isPlayoffs"):
-                if game.get("isThirdPlaceGame"):
-                    game_type = "third_place"
-                else:
-                    game_type = "playoff"
-            elif game.get("isConsolation"):
-                if game["away"]["recordOverall"]["rank"] == 14:
-                    game_type = None # Skip 13th vs 14th consolation game
-                elif game.get("away", {}).get("recordPostseason", {}).get("losses", 0) == 2 or game.get("home", {}).get("recordPostseason", {}).get("losses", 0) == 2:
-                    game_type = None # Skip the consolation bracket 3rd place game (9th place game) -- the team that loses this will have two playoff losses, so we can check for that
-                else:
-                    game_type = "consolation"
+        if not any(game.get("isPlayoffs") or game.get("isConsolation") for game in games):
+            continue
 
-            if game_type is None:
-                continue
+        games_by_period.extend((period["ordinal"], game) for game in games if game.get("isFinalScore"))
 
-            if not Shared.should_use_consolation_bracket(year) and (game_type == "third_place" or game_type == "consolation"):
-                continue
+    main_consolation_game_ids = set()
+    if Shared.should_use_consolation_bracket(year):
+        main_consolation_game_ids = Shared.get_main_consolation_game_ids(games_by_period)
+        print(f"Main consolation games: {len(main_consolation_game_ids)}")
 
-            away_id = str(game["away"]["id"])
-            home_id = str(game["home"]["id"])
+    for _, game in games_by_period:
+        game_type = None
+        if game.get("isPlayoffs"):
+            game_type = "third_place" if game.get("isThirdPlaceGame") else "playoff"
+        elif game.get("isConsolation") and str(game.get("id")) in main_consolation_game_ids:
+            game_type = "consolation"
 
-            away_seed = game["away"]["recordPostseason"]["rank"]
-            home_seed = game["home"]["recordPostseason"]["rank"]
+        if game_type is None:
+            continue
 
-            if away_id not in teams:
-                teams[away_id] = {"wins_playoff": 0, "losses_playoff": 0, "points_for_playoff": 0, "points_against_playoff": 0, 
-                                  "wins_third_place": 0, "losses_third_place": 0, "points_for_third_place": 0, "points_against_third_place": 0, 
-                                  "wins_consolation": 0, "losses_consolation": 0, "points_for_consolation": 0, "points_against_consolation": 0, "seed": away_seed}
-            if home_id not in teams:
-                teams[home_id] = {"wins_playoff": 0, "losses_playoff": 0, "points_for_playoff": 0, "points_against_playoff": 0, 
-                                  "wins_third_place": 0, "losses_third_place": 0, "points_for_third_place": 0, "points_against_third_place": 0, 
-                                  "wins_consolation": 0, "losses_consolation": 0, "points_for_consolation": 0, "points_against_consolation": 0, "seed": home_seed}
+        if not Shared.should_use_consolation_bracket(year) and game_type in ("third_place", "consolation"):
+            continue
 
-            if "homeResult" in game:
-                if game["homeResult"] == "WIN":
-                    teams[home_id]["wins_" + game_type] += 1
-                    teams[away_id]["losses_" + game_type] += 1
-                else:
-                    teams[away_id]["wins_" + game_type] += 1
-                    teams[home_id]["losses_" + game_type] += 1
+        away_id = str(game["away"]["id"])
+        home_id = str(game["home"]["id"])
+        away_seed = game["away"]["recordPostseason"]["rank"]
+        home_seed = game["home"]["recordPostseason"]["rank"]
 
-            teams[away_id]["points_for_" + game_type] += round(game["awayScore"]["score"]["value"], 2)
-            teams[away_id]["points_against_" + game_type] += round(game["homeScore"]["score"]["value"], 2)
-            teams[home_id]["points_for_" + game_type] += round(game["homeScore"]["score"]["value"], 2)
-            teams[home_id]["points_against_" + game_type] += round(game["awayScore"]["score"]["value"], 2)
+        if away_id not in teams:
+            teams[away_id] = {"wins_playoff": None, "losses_playoff": None, "points_for_playoff": None, "points_against_playoff": None,
+                              "wins_third_place": None, "losses_third_place": None, "points_for_third_place": None, "points_against_third_place": None,
+                              "wins_consolation": None, "losses_consolation": None, "points_for_consolation": None, "points_against_consolation": None, "playoff_seed": away_seed}
+        if home_id not in teams:
+            teams[home_id] = {"wins_playoff": None, "losses_playoff": None, "points_for_playoff": None, "points_against_playoff": None,
+                              "wins_third_place": None, "losses_third_place": None, "points_for_third_place": None, "points_against_third_place": None,
+                              "wins_consolation": None, "losses_consolation": None, "points_for_consolation": None, "points_against_consolation": None, "playoff_seed": home_seed}
+
+        # Initialize the bracket that this team is in to 0 if it hasn't been set yet
+        for team_id in (away_id, home_id):
+            for stat in ("wins_", "losses_", "points_for_", "points_against_"):
+                stat_key = stat + game_type
+                if teams[team_id][stat_key] is None:
+                    teams[team_id][stat_key] = 0
+
+        if game.get("homeResult") == "WIN":
+            teams[home_id]["wins_" + game_type] += 1
+            teams[away_id]["losses_" + game_type] += 1
+        elif game.get("homeResult") == "LOSE":
+            teams[away_id]["wins_" + game_type] += 1
+            teams[home_id]["losses_" + game_type] += 1
+        else:
+            raise ValueError(f"Invalid playoff result for game {game.get('id')}: {game.get('homeResult')}")
+
+        teams[away_id]["points_for_" + game_type] += round(game["awayScore"]["score"]["value"], 2)
+        teams[away_id]["points_against_" + game_type] += round(game["homeScore"]["score"]["value"], 2)
+        teams[home_id]["points_for_" + game_type] += round(game["homeScore"]["score"]["value"], 2)
+        teams[home_id]["points_against_" + game_type] += round(game["awayScore"]["score"]["value"], 2)
 
     return teams
 
@@ -260,7 +270,7 @@ if __name__ == "__main__":
                 cursor.execute("SELECT * from Teams where teamID = %s AND year = %s", (next["team_id"], year))
                 data = cursor.fetchall()
                 if len(data) == 0: # insert new team into table (should only happen once)
-                    cursor.execute("INSERT into Teams values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                    cursor.execute("INSERT into Teams (teamID, leagueID, ownerID, initialOwner, name, wins, losses, ties, pointsFor, pointsAgainst, coachRating, isChamp, currentWeekPF, PrevWeekPF, CurrOpp, matchupID, year, DraftPosition) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                                    (next["team_id"], league["id"], next["user_id"], next["user_id"], next["team_name"], next["wins"], next["losses"], next["ties"], next["points_for"], next["points_against"], next["coach_rating"], next["is_champ"], 0.0, 0.0, -1, -1, year, next["draft_position"]))
                 elif len(data) == 1:
                     if intP(data[0]["ownerID"]) != intP(next["user_id"]) and intP(next["user_id"]) != 0:

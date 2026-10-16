@@ -14,6 +14,21 @@ cursor = db.cursor(pymysql.cursors.DictCursor)
 def GetScores(league_id, year, week=None):
     # This first call is just used to get all "Eligible Scoring Periods" ie weeks
     base_scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}")
+    periods = base_scoreboard["eligibleSchedulePeriods"]
+    bracket_periods = periods[-3:]
+    cached_bracket_scoreboards = {}
+    main_consolation_game_ids = set()
+
+    if Shared.should_use_consolation_bracket(year) and (week is None or week in {int(p["ordinal"]) for p in bracket_periods}):
+        bracket_games = []
+        for period in bracket_periods:
+            start = period["low"]["ordinal"]
+            time.sleep(1.5)
+            scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
+            cached_bracket_scoreboards[start] = scoreboard
+            bracket_games.extend((period["ordinal"], game) for game in scoreboard.get("games", []))
+        main_consolation_game_ids = Shared.get_main_consolation_game_ids(bracket_games)
+
     for period in base_scoreboard["eligibleSchedulePeriods"]:
         week_id = int(period["ordinal"])
 
@@ -25,8 +40,11 @@ def GetScores(league_id, year, week=None):
         end = period["high"]["ordinal"]
 
         # This scoreboard call gets the scoreboard from each week by using the starting day of the scoring period
-        scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
-        if "games" not in scoreboard or "isFinalScore" not in scoreboard["games"][0]:
+        if start in cached_bracket_scoreboards:
+            scoreboard = cached_bracket_scoreboards[start]
+        else:
+            scoreboard = Shared.make_api_call(f"https://www.fleaflicker.com/api/FetchLeagueScoreboard?sport=NHL&league_id={league_id}&season={year}&scoring_period={start}")
+        if not scoreboard.get("games") or not scoreboard["games"][0].get("isFinalScore"):
             print(f"Week {week_id} does not have final results. Skipping.")
             continue
 
@@ -38,13 +56,10 @@ def GetScores(league_id, year, week=None):
                     matchup_type = "third_place"
                 else:
                     matchup_type = "playoff"
+            elif game.get("isConsolation") and str(game.get("id")) in main_consolation_game_ids:
+                matchup_type = "consolation"
             elif game.get("isConsolation"):
-                if game["away"]["recordOverall"]["rank"] == 14:
-                    matchup_type = None # Skip 13th vs 14th consolation game
-                elif game.get("away", {}).get("recordPostseason", {}).get("losses", 0) == 2 or game.get("home", {}).get("recordPostseason", {}).get("losses", 0) == 2:
-                    matchup_type = None # Skip the consolation bracket 3rd place game (9th place game) -- the team that loses this will have two playoff losses, so we can check for that
-                else:
-                    matchup_type = "consolation"
+                matchup_type = None
             # else matchup_type stays as "regular"
 
             if matchup_type is None:

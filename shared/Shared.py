@@ -30,6 +30,63 @@ def is_playoff_week(week, year):
 def should_use_consolation_bracket(year):
     return year >= 2025
 
+def get_main_consolation_game_ids(games_by_period):
+    """
+    Return the five games in the six-team, single-elimination consolation bracket. Ignore the
+    separate 13th-14th consolation "bracket". 
+
+    `games_by_period` is an iterable of (period_ordinal, game) pairs. Main-bracket
+    entrants are the teams ranked 7th through 12th overall. A team eliminated in
+    an earlier counted matchup cannot appear in another counted matchup; this
+    naturally excludes the separate 9th-place game.
+    """
+    games_by_week = {}
+    for period, game in games_by_period:
+        if game.get("isConsolation"):
+            games_by_week.setdefault(period, []).append(game)
+
+    eliminated = set()
+    selected = set()
+
+    for period in sorted(games_by_week):
+        week_losers = set()
+        week_teams = set()
+        for game in games_by_week[period]:
+            away = game.get("away", {})
+            home = game.get("home", {})
+            away_rank = away.get("recordOverall", {}).get("rank")
+            home_rank = home.get("recordOverall", {}).get("rank")
+            if away_rank not in range(7, 13) or home_rank not in range(7, 13):
+                continue
+
+            away_id = str(away.get("id"))
+            home_id = str(home.get("id"))
+            if away_id in eliminated or home_id in eliminated:
+                continue
+
+            # A team can only play once in a round. Reject ambiguous scoreboards
+            # instead of silently choosing an ordering-dependent bracket.
+            if away_id in week_teams or home_id in week_teams:
+                raise ValueError(f"Team appears in multiple main consolation games in period {period}")
+            week_teams.update((away_id, home_id))
+
+            result = game.get("homeResult")
+            if not game.get("isFinalScore") or result not in ("WIN", "LOSE"):
+                continue
+
+            if result == "WIN":
+                loser_id = away_id
+            else:
+                loser_id = home_id
+
+            game_id = str(game.get("id"))
+            selected.add(game_id)
+            week_losers.add(loser_id)
+
+        eliminated.update(week_losers)
+
+    return selected
+
 # Grabs the list of OTH leagues for the given year
 # from the SQL database
 def get_leagues_from_database(year, tier=None):
