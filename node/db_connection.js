@@ -248,7 +248,9 @@ http.createServer(async function(request, response) {
 					INNER JOIN Teams on (Teams_post.teamID=Teams.teamID AND Teams_post.year=Teams.year)
 					INNER JOIN Users on ownerID=FFid
 					INNER JOIN Leagues on (Teams.leagueID=Leagues.id AND Teams.year = Leagues.year)
-					WHERE initialOwner = ownerID ${yearfilter} ${tierfilter}
+					WHERE initialOwner = ownerID
+					AND (COALESCE(Teams_post.wins_playoff, 0) > 0 OR COALESCE(Teams_post.losses_playoff, 0) > 0)
+					${yearfilter} ${tierfilter}
 					GROUP BY FFid ${minseasons}) as T1
 					ORDER BY PF DESC`;
 			params = [...yearparams, ...tierparams, ...minseasonsparams]
@@ -281,8 +283,9 @@ http.createServer(async function(request, response) {
 		else if (query.year[query.year.length-1] == "p") {
 			year = query.year.slice(0, -1);
 			sql = `
-				SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname, Teams_post.wins_playoff, Teams_post.losses_playoff,
-					Teams_post.points_for_playoff, Teams_post.points_against_playoff, Teams.isChamp, Teams_post.seed, Leagues.tier, Users.FFid, Leagues.year from Teams_post
+				SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname,
+					Teams_post.wins_playoff, Teams_post.losses_playoff, Teams_post.points_for_playoff, Teams_post.points_against_playoff,
+					Teams.isChamp, Teams_post.playoff_seed, Leagues.tier, Users.FFid, Leagues.year from Teams_post
 					INNER JOIN Teams on (Teams_post.teamID=Teams.teamID and Teams.year=Teams_post.year)
 					INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams_post.year=Leagues.year)
 					INNER JOIN Users on Teams.ownerID=Users.FFid
