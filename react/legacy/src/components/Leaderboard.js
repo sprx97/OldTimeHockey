@@ -126,11 +126,11 @@ export default class Leaderboard extends Component {
 
     // Sets the default column to sort by
     var defaultSort = 'FFname';
-    if (this.state.query.slice(-1) == 'p') {
-      // playoffs and career playoffs
-      defaultSort = 'wins_playoff';
-    } else if (this.state.query == 'careerp') {
+    if (this.state.query == 'careerp') {
       defaultSort = 'wins';
+    } else if (this.state.query.slice(-1) == 'p') {
+      // playoffs
+      defaultSort = 'wins_playoff';
     } else if (this.state.query == 'career') {
       // career regular season
       defaultSort = 'PF';
