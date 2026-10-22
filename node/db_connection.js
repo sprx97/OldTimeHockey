@@ -186,7 +186,6 @@ http.createServer(async function(request, response) {
 		sql = `
 			SELECT L.name as leaguename, L.tier, U.FFname, L.year from Teams T
 				INNER JOIN Leagues L on (T.leagueID=L.id and T.year=L.year)
-				LEFT OUTER JOIN Teams_post TP on T.teamID=TP.teamID
 				INNER JOIN Users U on T.ownerID=U.FFid
 				WHERE T.ownerID=" + mysql.escape(query.ffid)`;
 	}
@@ -219,10 +218,10 @@ http.createServer(async function(request, response) {
 		if (query.year == "week") {
 			sql = `
 				SELECT Leagues.id as leagueID, Leagues.tier as tier, t1.teamID as teamID, Leagues.name as leaguename, t1.name as teamname, Users.FFname, Users.FFid, 
-					t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, round(IFNULL(tp1.points_for_playoff, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA,
-					round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(tp1.points_against_playoff, 0) + t2.currentWeekPF, 2) as postPATotal from Teams as t1
+					t1.currentWeekPF, round(t1.currentWeekPF + t1.pointsFor, 2) regTotal, round(IFNULL(t1.points_for_playoff, 0) + t1.currentWeekPF, 2) as postTotal, t2.currentWeekPF as PA,
+					round(t2.currentWeekPF + t1.pointsAgainst, 2) as regPATotal, round(IFNULL(t1.points_against_playoff, 0) + t2.currentWeekPF, 2) as postPATotal from Teams as t1
 					INNER JOIN Leagues on (t1.leagueID=Leagues.id AND t1.year=Leagues.year)
-					INNER JOIN Users on t1.ownerID=Users.FFid left outer join Teams_post as tp1 on (tp1.teamID=t1.teamID AND tp1.year=t1.year)
+					INNER JOIN Users on t1.ownerID=Users.FFid
 					LEFT JOIN Teams as t2 on (t1.CurrOpp=t2.teamID AND t1.year=t2.year)
 					WHERE Leagues.year=? ${tierfilter} order by t1.currentWeekPF`;
 			params = [year];
@@ -231,8 +230,8 @@ http.createServer(async function(request, response) {
 		else if (query.year == "careerp") {
 			sql = `
 				SELECT FFname, seasons, wins, losses, round(wins/(wins+losses), 3) as pct, round(PF, 2) as PF, round(PF/(wins+losses), 2) as avgPF, round(PA, 2) as PA,
-					round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams_post.wins_playoff) as wins, sum(Teams_post.losses_playoff) as losses,
-					sum(Teams_post.points_for_playoff) as PF, sum(Teams_post.points_against_playoff) as PA,
+					round(PA/(wins+losses), 2) as avgPA, trophies, FFid from (select FFname, count(*) as Seasons, sum(Teams.wins_playoff) as wins, sum(Teams.losses_playoff) as losses,
+					sum(Teams.points_for_playoff) as PF, sum(Teams.points_against_playoff) as PA,
 					round(exp(sum(log(CASE
 						WHEN isChamp = 0 THEN 1
 						WHEN (tier = 1 AND Teams.year = 2019) THEN isChamp*23
@@ -244,12 +243,12 @@ http.createServer(async function(request, response) {
 						WHEN (tier = 3 AND Teams.year != 2019) THEN isChamp*5
 						WHEN (tier = 4 AND Teams.year != 2019) THEN isChamp*3
 						WHEN (tier = 5) THEN isChamp*2 END
-					)))) as trophies, FFid from Teams_post 
-					INNER JOIN Teams on (Teams_post.teamID=Teams.teamID AND Teams_post.year=Teams.year)
+					)))) as trophies, FFid from Teams
 					INNER JOIN Users on ownerID=FFid
 					INNER JOIN Leagues on (Teams.leagueID=Leagues.id AND Teams.year = Leagues.year)
 					WHERE initialOwner = ownerID
-					AND (COALESCE(Teams_post.wins_playoff, 0) > 0 OR COALESCE(Teams_post.losses_playoff, 0) > 0)
+					AND Teams.playoff_seed <= 6
+					AND (COALESCE(Teams.wins_playoff, 0) > 0 OR COALESCE(Teams.losses_playoff, 0) > 0)
 					${yearfilter} ${tierfilter}
 					GROUP BY FFid ${minseasons}) as T1
 					ORDER BY PF DESC`;
@@ -284,13 +283,12 @@ http.createServer(async function(request, response) {
 			year = query.year.slice(0, -1);
 			sql = `
 				SELECT Leagues.id as leagueID, Teams.teamID as teamID, Leagues.name as leaguename, Teams.name as teamname, Users.FFname,
-					Teams_post.wins_playoff, Teams_post.losses_playoff, Teams_post.points_for_playoff, Teams_post.points_against_playoff,
-					Teams.isChamp, Teams_post.playoff_seed, Leagues.tier, Users.FFid, Leagues.year from Teams_post
-					INNER JOIN Teams on (Teams_post.teamID=Teams.teamID and Teams.year=Teams_post.year)
-					INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams_post.year=Leagues.year)
+					Teams.wins_playoff, Teams.losses_playoff, Teams.points_for_playoff, Teams.points_against_playoff,
+					Teams.isChamp, Teams.playoff_seed, Leagues.tier, Users.FFid, Leagues.year from Teams
+					INNER JOIN Leagues on (Teams.leagueID=Leagues.id and Teams.year=Leagues.year)
 					INNER JOIN Users on Teams.ownerID=Users.FFid
-					WHERE Leagues.year=? ${tierfilter}
-					ORDER BY Teams_post.points_for_playoff DESC`;
+					WHERE Leagues.year=? AND Teams.playoff_seed <= 6 ${tierfilter}
+					ORDER BY Teams.points_for_playoff DESC`;
 			params = [year];
 			params = [...params, ...tierparams]
 		}

@@ -165,9 +165,6 @@ def GetScores(league_id, year, week=None):
 
                 # TODO: Would it be possible to pull number of moves used in a week?
 
-                # TODO: Cleanup existing "Teams" and "Teams_post" tables when this is finished. Lots of extraneous data in there.
-                # TODO: Also ensure that table is handled in backupdata.py
-                # TODO: Ensure this runs every week via crontab
 
                 # TODO: Set up method take arguments for specific year, league, week, etc. Should be able to use weeksVars.txt to run this constantly
 

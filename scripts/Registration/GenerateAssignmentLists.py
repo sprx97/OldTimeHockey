@@ -55,10 +55,9 @@ def GetPFChampForTier(tier):
 def GetPlayoffTeams(tier):
     query = """
         SELECT U.FFname from Teams as T
-            LEFT JOIN Teams_post as P on (T.teamID=P.teamID AND T.year=P.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE T.year=%s AND L.tier=%s AND P.playoff_seed <= 6
+            WHERE T.year=%s AND L.tier=%s AND T.playoff_seed <= 6
         """
     cursor.execute(query, (year, tier))
     d1_playoff_teams = cursor.fetchall()
@@ -71,10 +70,9 @@ def GetPlayoffTeams(tier):
 def GetNonPlayoffTeams(tier):
     query = """
         SELECT U.FFname from Teams as T
-            LEFT JOIN Teams_post as P on (T.teamID=P.teamID AND T.year=P.year)
             INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE T.year=%s AND L.tier=%s AND (P.playoff_seed > 6 OR P.playoff_seed IS NULL)
+            WHERE T.year=%s AND L.tier=%s AND (T.playoff_seed > 6 OR T.playoff_seed IS NULL)
         """
     cursor.execute(query, (year, tier))
     non_playoff_teams = cursor.fetchall()
@@ -86,11 +84,10 @@ def GetNonPlayoffTeams(tier):
 
 def GetConsolationWinners(tier):
     query = """
-        SELECT U.FFname from Teams_post as P
-            INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
-            INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
+        SELECT U.FFname from Teams as T
+            INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=%s AND P.wins_consolation > 0 AND P.losses_consolation = 0
+            WHERE T.year=%s AND L.tier=%s AND T.wins_consolation > 0 AND T.losses_consolation = 0
         """
     cursor.execute(query, (year, tier))
     consolation_winners = cursor.fetchall()
@@ -102,11 +99,10 @@ def GetConsolationWinners(tier):
 
 def GetFinalists(tier):
     query = """
-        SELECT U.FFname from Teams_post as P
-            INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
-            INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
+        SELECT U.FFname from Teams as T
+            INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=%s AND ((P.wins_playoff >= 2 AND P.playoff_seed >= 3) OR (P.wins_playoff >= 1 AND P.playoff_seed < 3))
+            WHERE T.year=%s AND L.tier=%s AND ((T.wins_playoff >= 2 AND T.playoff_seed >= 3) OR (T.wins_playoff >= 1 AND T.playoff_seed < 3))
         """
     cursor.execute(query, (year, tier))
     finalists = cursor.fetchall()
@@ -118,11 +114,10 @@ def GetFinalists(tier):
 
 def GetThirdPlaceWinners(tier):
     query = """
-        SELECT U.FFname from Teams_post as P
-            INNER JOIN Teams as T ON (P.teamID=T.teamID AND P.year=T.year)
-            INNER JOIN Leagues as L ON (T.leagueID=L.id and P.year=L.year)
+        SELECT U.FFname from Teams as T
+            INNER JOIN Leagues as L ON (T.leagueID=L.id and T.year=L.year)
             INNER JOIN Users as U ON (T.ownerID=U.FFid)
-            WHERE P.year=%s AND L.tier=%s AND P.wins_third_place = 1
+            WHERE T.year=%s AND L.tier=%s AND T.wins_third_place = 1
         """
     cursor.execute(query, (year, tier))
     finalists = cursor.fetchall()

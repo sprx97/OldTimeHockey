@@ -299,23 +299,14 @@ if __name__ == "__main__":
             teams_post = getPlayoffs(league["id"], league["year"])
             for next_id in teams_post:
                 stats = teams_post[next_id]
-                stats["teamID"] = next_id
-                stats["year"] = year
+                cursor.execute("SELECT 1 from Teams where teamID=%s AND year=%s", (next_id, year))
+                if cursor.fetchone() is None:
+                    raise Exception(f"Error: no Teams row matches teamID {next_id} in year {year}")
 
-                cursor.execute("SELECT * from Teams_post where teamID=%s AND year=%s", (next_id, year))
-                data = cursor.fetchall()
-
-                if len(data) == 0: # new team
-                    columns = list(stats.keys())
-                    placeholders = ", ".join(["%s"] * len(columns))
-                    column_names = ", ".join(columns)
-                    cursor.execute(f"INSERT into Teams_post ({column_names}) values ({placeholders})", tuple(stats.values()))
-                elif len(data) == 1:
-                    set_clause = ",".join([f"{col}=%s" for col in stats.keys()])
-                    values = list(stats.values()) + [next_id, year]
-                    cursor.execute(f"UPDATE Teams_post SET {set_clause} WHERE teamID=%s AND year=%s", tuple(values))
-                else:
-                    raise Exception("Error: more than one team matches teamID: " + str(next_id))
+                columns = list(stats.keys())
+                set_clause = ", ".join([f"`{col}`=%s" for col in columns])
+                values = list(stats.values()) + [next_id, year]
+                cursor.execute(f"UPDATE Teams SET {set_clause} WHERE teamID=%s AND year=%s", tuple(values))
 
     db.commit()
 
