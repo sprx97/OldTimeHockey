@@ -36,6 +36,7 @@
 	"challonge_api_key": "",
 	"woppa_cup_id": "",
 
-	// Webhook for posting to the mods channel
-	"mods_webhook_url": ""
+	// Webhook for posting to Discord channels
+	"mods_webhook_url": "",
+	"hockey_general_webhook_url": ""
 }

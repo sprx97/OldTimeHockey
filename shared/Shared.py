@@ -103,6 +103,15 @@ def get_leagues_from_database(year, tier=None):
 
     return leagues
 
+def get_owner_for_team(year, team_id):
+    DB = pymysql.connect(host=Config.config["sql_hostname"], user=Config.config["sql_username"], passwd=Config.config["sql_password"], db=Config.config["sql_dbname"], cursorclass=pymysql.cursors.DictCursor)
+    cursor = DB.cursor()
+    cursor.execute("SELECT U.FFname from Teams T INNER JOIN Users U on T.ownerID = U.FFid where year=%s AND teamID=%s", (year, team_id))
+    owner = cursor.fetchone()
+    cursor.close()
+    DB.close()
+    return owner
+
 def bucket_time(minutes):
     dt = datetime.now()
     bucket_minute = (dt.minute // minutes) * minutes

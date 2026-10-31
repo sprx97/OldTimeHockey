@@ -8,7 +8,10 @@ CRON_TZ=America/New_York
 */15 * * 9 *    root    /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/ADP.py 2>&1 >> /var/www/OldTimeHockey/cronjob.log
 
 # Run the inactives checker once a week. Only runs October-March
-0 1 * 10,11,12,1,2,3 6       root    /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/webhooks/inactives.py >> /var/www/OldTimeHockey/cronjob.log
+0 1 * 10,11,12,1,2,3 6       root    /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/webhooks/inactives.py 2>&1 >> /var/www/OldTimeHockey/cronjob.log
+
+# Run the trades checker every 30 minutes from September-March
+*/30 * * 9,10,11,12,1,2,3 * root /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/webhooks/trades.py 2>&1 >> /var/www/OldTimeHockey/cronjob.log
 
 # Prune telemetry to not waste too much space on my server
 0 0 * * *	root	/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/PruneTelemetry.py >> /var/www/OldTimeHockey/cronjob.log
