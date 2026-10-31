@@ -34,5 +34,8 @@
 	// Challonge username and API key for woppacup bracket
 	"challonge_username": "",
 	"challonge_api_key": "",
-	"woppa_cup_challonge_id": ""
+	"woppa_cup_id": "",
+
+	// Webhook for posting to the mods channel
+	"mods_webhook_url": ""
 }
