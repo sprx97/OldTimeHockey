@@ -62,6 +62,15 @@ export default class NavBar extends Component {
             </Menu.Item>
             <Menu.Item
               as={Link}
+              to="/othcup"
+              name="othcup"
+              active={activeItem === '/othcup'}
+              onClick={() => this.handleItemClick('/othcup')}
+            >
+              OTH Cup <span className="navbar-new-badge">NEW</span>
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
               to="/leaderboard"
               name="leaderboard"
               active={activeItem === '/leaderboard'}

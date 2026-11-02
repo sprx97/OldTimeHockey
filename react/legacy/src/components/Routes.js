@@ -10,6 +10,7 @@ import CreateAccount from "./CreateAccount";
 import NotFound from './NotFound';
 import UserProfile from "./UserProfile";
 import LeaguePlayoffOdds from "./LeaguePlayoffOdds";
+import OTHCup from './OTHCup';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -18,6 +19,7 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path="/standings" component={Standings} />
+      <Route exact path="/othcup" component={OTHCup} />
       <Route exact path="/leaderboard" component={Leaderboard} />
       <Route exact path="/trophyroom" component={TrophyRoom} />
       <Route exact path="/halloffame" component={HallOfFame} />

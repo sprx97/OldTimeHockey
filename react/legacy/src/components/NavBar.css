@@ -122,6 +122,18 @@
   border: none;
 }
 
+.navbar-new-badge {
+  margin-left: 0.45rem;
+  padding: 0.12rem 0.35rem;
+  border-radius: 0.25rem;
+  background: #d84b4b;
+  color: white;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
 @media screen and (min-width: 769px) {
   #main-menu {
     justify-content: flex-end;
