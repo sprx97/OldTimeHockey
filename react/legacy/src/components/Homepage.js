@@ -3,19 +3,19 @@ import { Container, Grid, Header, Image, Segment, Tab } from "semantic-ui-react"
 import SiteHeader from "./SiteHeader";
 
 const seasons = [
-  // {
-  //   year: "2026-2027",
-  //   teams: "TBD",
-  //   leagues: "TBD",
-  //   divisions: 5,
-  //   champions: {
-  //     division1: { },
-  //     pointsFor: { },
-  //     coachesRating: { },
-  //     woppaCup: { },
-  //   },
-  //   ruleChanges: "None",
-  // },
+  {
+    year: "2026-2027",
+    teams: 210,
+    leagues: 15,
+    divisions: 5,
+    champions: {
+      division1: { },
+      pointsFor: { },
+      coachesRating: { },
+      woppaCup: { },
+    },
+    ruleChanges: "None",
+  },
   {
     year: "2025-2026",
     teams: 210,
