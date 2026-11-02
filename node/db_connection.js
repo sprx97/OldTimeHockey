@@ -4,6 +4,7 @@ var http = require("http"),
     fs = require("fs"),
     config = require("../shared/config.json"),
 	{ spawn } = require("child_process");
+const getOthCupData = require("./othcup_data");
 
 // TODO: parameterized queries/refactor
 
@@ -48,6 +49,19 @@ async function handleV2(request, response) {
 	current_week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
 
 	switch (path) {
+		case "/othcup":
+		{
+			try {
+				const cupData = await getOthCupData(pool, query.year);
+				response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
+				response.end(JSON.stringify(cupData));
+			} catch (error) {
+				response.writeHead(error.statusCode || 500, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
+				response.end(JSON.stringify({error: error.message}));
+			}
+			return;
+		}
+
 		case "/Sentinel":
 		{
 			content = JSON.stringify({ sentinel: fs.existsSync(config.srcroot + "Sentinel") });
