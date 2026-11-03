@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))) # ./../../
 from shared import Config
 
-with open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r") as week_vars:
+with open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r") as week_vars:
     previous_year = int(week_vars.readline().strip())
 
 current_year = previous_year + 1

@@ -171,7 +171,7 @@ def GetScores(league_id, year, week=None):
             print(f"Finished {league_id} {year} week {week_id} game_id {game_id}")
 
 # Default uses the previous week from the WeekVars file
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
 

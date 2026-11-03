@@ -4,12 +4,9 @@ import json
 import os
 import pymysql
 import requests
-import sys
 from urllib.parse import urlparse
 
-# Local Includes
-sys.path.append(os.path.dirname(os.path.realpath(__file__))) # ./
-import Config
+from shared import Config
 
 # The week playoffs start varies year to year. It's easiest to just add it manually each year here.
 def is_playoff_week(week, year):
@@ -170,14 +167,13 @@ def make_api_call(link):
 
 # TODO: This differs from the other Shared.py but is better
 def WriteJsonFile(file, data):
-    file = f"{Config.config['srcroot']}{file}"
+    file = f"{Config.config['website_srcroot']}{file}"
     try:
         directory = "/".join(file.split("/")[:-1])
         if not os.path.exists(directory):
             os.makedirs(directory)
             print(f"Made new directory {directory}")
 
-        # TODO: This differs from the other Shared.py version in that Config.config['srcroot'] has a trailing slash
         with open(file, "w") as f:
             json.dump(data, f, indent=4)
 

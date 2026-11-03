@@ -8,7 +8,7 @@ from shared import Config
 
 # TODO: This needs to handle name changes
 
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 f.close()
 

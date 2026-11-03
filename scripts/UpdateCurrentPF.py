@@ -10,8 +10,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # 
 from shared.Shared import *
 from shared import Config
 
-LOCKFILE = f"{Config.config['srcroot']}scripts/UpdateCurrentPF.lock"
-TIMESTAMP = f"{Config.config['srcroot']}scripts/UpdateCurrentPF.timestamp"
+LOCKFILE = f"{Config.config['website_srcroot']}scripts/UpdateCurrentPF.lock"
+TIMESTAMP = f"{Config.config['website_srcroot']}scripts/UpdateCurrentPF.timestamp"
 COOLDOWN = 30
 
 def updateCurrentPF(league, year):
@@ -73,7 +73,7 @@ try:
 
         years_to_update = [] # Can manually seed if necessary
 
-        f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+        f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r")
         years_to_update.append(int(f.readline().strip()))
         week = int(f.readline().strip())
 

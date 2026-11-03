@@ -11,7 +11,7 @@ from shared import Config
 
 # TODO: Consider adding a constant random.seed so it's reproducible
 
-stddev = 40
+stddev = 80
 def project_winner(teams, away, home, use5050):
     away_random_pf = random.gauss(teams[away]["PF_avg"], stddev)
     home_random_pf = random.gauss(teams[home]["PF_avg"], stddev)
@@ -153,7 +153,7 @@ def calculate_playoff_odds(league, year, current_week = None, use5050 = False):
         directory += f"/fiftyfifty"
     WriteJsonFile(f"{directory}/{current_week}.json", teams)
 
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
 

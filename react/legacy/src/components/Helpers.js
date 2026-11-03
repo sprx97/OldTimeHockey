@@ -1,8 +1,7 @@
 import React from 'react';
-import config from './config.json' // Symbolic link of the config in the root of this git repo to the components folder
 
 export function getCurrentYear() {
-  return Number(config["year"]);
+  return Number(process.env.REACT_APP_YEAR);
 }
 
 export function getFirstYear() {

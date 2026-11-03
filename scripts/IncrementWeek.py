@@ -6,13 +6,13 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./../
 from shared import Config
 
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip())
 week = int(f.readline().strip())
 f.close()
 
 week += 1
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "w")
+f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "w")
 f.write(str(year) + "\n")
 f.write(str(week) + "\n")
 f.close()

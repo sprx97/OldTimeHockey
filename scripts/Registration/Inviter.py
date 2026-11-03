@@ -31,7 +31,7 @@ session = requests.session()
 session.post("https://www.fleaflicker.com/nhl/login", data={"email":Config.config["fleaflicker_email"], "password":Config.config["fleaflicker_password"], "keepMe":"true"})
 
 # Get all of the league IDs
-f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r")
 year = int(f.readline().strip()) + 1 # Must be done AFTER adding the new leagues to the sql table
 leagues = Shared.get_leagues_from_database(year, division[-1])
 

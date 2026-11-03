@@ -9,11 +9,10 @@ from zoneinfo import ZoneInfo
 import requests
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SHARED_ROOT = PROJECT_ROOT / "shared"
-sys.path.insert(0, str(SHARED_ROOT))
+sys.path.insert(0, str(PROJECT_ROOT))
 
-import Config
-from Shared import get_leagues_from_database, get_owner_for_team, make_api_call
+from shared import Config
+from shared.Shared import get_leagues_from_database, get_owner_for_team, make_api_call
 
 WEBHOOK_URLS = (
     Config.config["mods_webhook_url"],

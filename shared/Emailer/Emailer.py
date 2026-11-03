@@ -9,7 +9,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))) # ./..
-import Config
+from shared import Config
 
 ############################
 # HEY YOU!
@@ -25,7 +25,7 @@ import Config
 
 def obtain_creds(file, scopes):
     creds = None
-    file = Config.config["srcroot"] + "shared/Emailer/tokens/" + file # Use special tokens directory
+    file = Config.config["website_srcroot"] + "shared/Emailer/tokens/" + file # Use special tokens directory
 
     # Read a stored credentials file if it exists
     if os.path.exists(file):
@@ -41,7 +41,7 @@ def obtain_creds(file, scopes):
         # Otherwise create new creds from a login
         else:
             print("Requesting new gmail credentials")
-            flow = InstalledAppFlow.from_client_secrets_file(Config.config["srcroot"] + "shared/Emailer/auth.json", scopes)
+            flow = InstalledAppFlow.from_client_secrets_file(Config.config["website_srcroot"] + "shared/Emailer/auth.json", scopes)
             creds = flow.run_local_server(port=0)
 
         # Save creds for next run

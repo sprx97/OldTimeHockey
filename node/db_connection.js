@@ -2,7 +2,7 @@ var http = require("http"),
     url = require("url"),
     mysql = require("mysql2/promise"),
     fs = require("fs"),
-    config = require("../shared/config.json"),
+    config = require("/home/jeremy/oth-shared/config.json"),
 	{ spawn } = require("child_process");
 const getOthCupData = require("./othcup_data");
 
@@ -45,8 +45,8 @@ async function handleV2(request, response) {
 	query = request_url.query;
 	content = "{}"
 
-	current_year = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
-	current_week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
+	current_year = fs.readFileSync(config.website_srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
+	current_week = fs.readFileSync(config.website_srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
 
 	switch (path) {
 		case "/othcup":
@@ -64,7 +64,7 @@ async function handleV2(request, response) {
 
 		case "/Sentinel":
 		{
-			content = JSON.stringify({ sentinel: fs.existsSync(config.srcroot + "Sentinel") });
+			content = JSON.stringify({ sentinel: fs.existsSync(config.website_srcroot + "Sentinel") });
 		}
 		break;
 
@@ -93,7 +93,7 @@ async function handleV2(request, response) {
 			if (query.week === undefined) query.week = current_week;
 			query.fiftyfifty = query.fiftyfifty === "true";
 			try {
-				content = fs.readFileSync(config.srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}${query.fiftyfifty ? "/fiftyfifty" : ""}/${query.week - 1}.json`);
+				content = fs.readFileSync(config.website_srcroot + `scripts/PlayoffOdds/data/${query.year}/${query.league}${query.fiftyfifty ? "/fiftyfifty" : ""}/${query.week - 1}.json`);
 			} catch {
 				console.log("Error reading Playoff Odds file.");
 			}
@@ -126,8 +126,8 @@ http.createServer(async function(request, response) {
 	}
 
 	query = url.parse(request.url, true).query;
-	year = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
-	week = fs.readFileSync(config.srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
+	year = fs.readFileSync(config.website_srcroot + "scripts/WeekVars.txt").toString().split("\n")[0];
+	week = fs.readFileSync(config.website_srcroot + "scripts/WeekVars.txt").toString().split("\n")[1];
 	sql = "";
 	params = [];
 

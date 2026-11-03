@@ -14,7 +14,7 @@ playoffs_to_update = []
 consolation_repairs = []
 
 if len(sys.argv) == 1: # no arguments
-    f = open(Config.config["srcroot"] + "scripts/WeekVars.txt", "r")
+    f = open(Config.config["website_srcroot"] + "scripts/WeekVars.txt", "r")
     year = int(f.readline().strip())
     week = int(f.readline().strip())
 

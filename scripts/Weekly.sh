@@ -7,12 +7,6 @@ touch /var/www/OldTimeHockey/Sentinel
 year=$(head -1 /var/www/OldTimeHockey/scripts/WeekVars.txt)
 week=$(head -2 /var/www/OldTimeHockey/scripts/WeekVars.txt | tail -1)
 
-# After week 5, start updating the woppa cup
-if (( $week > 5 )); then
-    /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/woppacup.py true
-    echo "WoppaCup Update Complete!"
-fi
-
 # Update the weekly scores tables from fleaflicker
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/UpdateTables.py
 echo "UpdateTables Complete!"

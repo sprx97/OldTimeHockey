@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon, Menu, Message } from 'semantic-ui-react';
-import config from './config.json';
 import logo from '../oth-wordmark-white.svg';
 import './NavBar.css';
 
@@ -138,7 +137,7 @@ export default class NavBar extends Component {
             </Menu.Item>
 
           </Menu>
-          {config.features.enableLogin && (
+          {process.env.REACT_APP_ENABLE_LOGIN === 'true' && (
             <Menu
               style={{ width: 'fit-content' }}
               size="large"
