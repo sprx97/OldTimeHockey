@@ -86,8 +86,9 @@
 .manager-name { display: block; max-width: 10rem; overflow: hidden; color: var(--cup-ink); font-weight: 700; text-overflow: ellipsis; }
 .cup-group-card td small { display: block; color: #a0aaae; font-size: .58rem; }
 .cup-group-matches { padding: .35rem .75rem; }
-.cup-group-match-row { display: flex; align-items: flex-start; gap: .5rem; padding: .56rem 0; border-bottom: 1px solid #eef2f3; }
-.cup-group-match-row:last-child { border: 0; }
+.cup-group-match-row { position: relative; display: flex; align-items: flex-start; gap: .5rem; padding: .56rem 0; border-bottom: 1px solid #eef2f3; }
+.cup-group-match-row.in-progress { margin: .18rem 0; padding: .56rem .45rem; border: 1px solid #36a99e; border-radius: 7px; background: #f5fcfb; }
+.cup-group-match-row:last-child:not(.in-progress) { border: 0; }
 .match-number { min-width: 1.4rem; padding-top: .1rem; color: #9aa8ad; font-size: .62rem; font-weight: 800; }
 .cup-group-match-sides { display: grid; flex: 1; gap: .12rem; }
 .cup-group-match-side { display: flex; justify-content: space-between; gap: .45rem; align-items: center; padding: .16rem .3rem; border-radius: 4px; font-size: .67rem; }
@@ -131,6 +132,17 @@
 .cup-match.is-bye { border-style: dashed; background: #f8fafb; }
 .cup-match.is-pending { border-style: dashed; }
 .cup-match { position: relative; box-sizing: border-box; overflow: hidden; border: 1px solid var(--cup-line); border-radius: 8px; background: white; box-shadow: 0 3px 10px rgba(27,58,70,.05); transition: opacity .15s, border-color .15s; }
+.cup-match.in-progress { border: 2px solid #36a99e; }
+.cup-group-match-row.in-progress::after, .cup-match.in-progress::after { position: absolute; top: 0; left: 0; width: 30px; height: 3px; border-radius: 50%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.98) 28%, #fff 50%, rgba(255,255,255,.98) 72%, transparent); content: ''; pointer-events: none; offset-anchor: center; offset-rotate: auto; offset-distance: 0%; animation: cup-progress-orbit 2.5s linear infinite; }
+.cup-group-match-row.in-progress::after { offset-path: inset(0 round 7px); }
+.cup-match.in-progress::after { offset-path: inset(1px round 7px); }
+@keyframes cup-progress-orbit { to { offset-distance: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .cup-group-match-row.in-progress::after, .cup-match.in-progress::after { animation: none; }
+}
+.cup-in-progress-badge { position: absolute; top: .35rem; right: .35rem; z-index: 2; padding: .16rem .36rem; border-radius: 999px; color: #fff; background: #168b81; font-size: .52rem; font-weight: 800; line-height: 1.2; white-space: nowrap; }
+.cup-group-match-row.in-progress .cup-in-progress-badge { top: .2rem; right: .35rem; }
+.cup-match.in-progress .cup-match-side:first-of-type { padding-right: 4.2rem; }
 .cup-match.has-winner { border-left: 3px solid #55aaa1; }
 .cup-match.pairing-alert { border-color: #e1a84a; }
 .cup-match.is-tie { border-color: #d87e7e; }

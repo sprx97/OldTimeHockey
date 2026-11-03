@@ -95,6 +95,7 @@ function OTHCup() {
   const groups = data?.groups || [];
   const rounds = data?.knockout_rounds || [];
   const tournament = data?.tournament;
+  const knockoutStartWeek = rounds.find(round => round.first_week !== null && round.first_week !== undefined)?.first_week;
   const isDoubleElimination = Number(tournament?.is_double_elimination) === 1;
   const hasGroupData = groups.some(group => group.matches.length > 0);
   const filteredGroups = useMemo(() => selectedGroup === 'all' ? groups : groups.filter(group => String(group.group_number) === selectedGroup), [groups, selectedGroup]);
@@ -138,6 +139,7 @@ function OTHCup() {
     const teamTwoId = match.team_two_id === null ? null : Number(match.team_two_id);
     const winnerId = Number(match.override_winning_team_id ?? match.winner_team_id);
     const championMatch = Number(match.match_id) === Number(championshipMatchId);
+    const isInProgress = match.round_status === 'in progress';
     const matchName = match.match_type === 'pending' ? 'Awaiting advancement' : null;
     const droppedInSides = match.stage === 'second-chance'
       ? new Set((match.generated_sources || [])
@@ -145,7 +147,8 @@ function OTHCup() {
         .map(source => source.side))
       : new Set();
     return (
-      <div style={style} className={`cup-match ${match.winner_team_id ? 'has-winner' : ''} ${match.is_tie ? 'is-tie' : ''} ${match.match_type === 'bye' ? 'is-bye' : ''} ${match.match_type === 'pending' ? 'is-pending' : ''} ${match.pairing_consistent === false ? 'pairing-alert' : ''} ${spotlight && !isSpotlight ? 'dimmed' : ''}`} key={match.match_id || `${match.stage}-${match.group_number || 0}-${match.round_number}-${match.match_number}`}>
+      <div style={style} className={`cup-match ${isInProgress ? 'in-progress' : ''} ${match.winner_team_id ? 'has-winner' : ''} ${match.is_tie ? 'is-tie' : ''} ${match.match_type === 'bye' ? 'is-bye' : ''} ${match.match_type === 'pending' ? 'is-pending' : ''} ${match.pairing_consistent === false ? 'pairing-alert' : ''} ${spotlight && !isSpotlight ? 'dimmed' : ''}`} key={match.match_id || `${match.stage}-${match.group_number || 0}-${match.round_number}-${match.match_number}`}>
+        {isInProgress && <span className="cup-in-progress-badge">In Progress</span>}
         {matchName && <div className="cup-match-node-label">{matchName}</div>}
         <div className={`cup-match-side ${winnerId === teamOneId ? 'winner' : ''}`}>
           <span className="cup-match-seed">{match.stage !== 'group' ? (match.team_one_knockout_seed || '') : (match.team_one_initial_seed || '')}</span>
@@ -343,7 +346,8 @@ function OTHCup() {
                     const teamTwoId = Number(match.team_two_id);
                     const winnerId = Number(match.override_winning_team_id ?? match.winner_team_id);
                     const matchInfoText = match.scoring_note;
-                    return <div key={`${match.round_number}-${index}`} className="cup-group-match-row"><div className="cup-group-match-sides">
+                    const isInProgress = match.round_status === 'in progress';
+                    return <div key={`${match.round_number}-${index}`} className={`cup-group-match-row ${isInProgress ? 'in-progress' : ''}`}>{isInProgress && <span className="cup-in-progress-badge">In Progress</span>}<div className="cup-group-match-sides">
                       <div className={`cup-group-match-side ${winnerId === teamOneId ? 'winner' : ''}`}><span>{match.team_one_manager || match.team_one_name}</span><b>{matchInfoText && winnerId === teamOneId && <span className="cup-tiebreak-info" role="img" tabIndex="0" aria-label={matchInfoText} title={matchInfoText}><span>?</span></span>}{scoreText(match.score_one)}</b></div>
                       <div className={`cup-group-match-side ${winnerId === teamTwoId ? 'winner' : ''}`}><span>{match.team_two_manager || match.team_two_name}</span><b>{matchInfoText && winnerId === teamTwoId && <span className="cup-tiebreak-info" role="img" tabIndex="0" aria-label={matchInfoText} title={matchInfoText}><span>?</span></span>}{scoreText(match.score_two)}</b></div>
                     </div></div>;
@@ -354,8 +358,8 @@ function OTHCup() {
           </section>
         </> : !hasBracketData ? <section className="cup-empty-bracket">
           <span className="cup-card-kicker">KNOCKOUT BRACKET</span>
-          <h2>{tournament.status === 'upcoming' ? 'Coming soon' : 'Bracket information unavailable'}</h2>
-          <p>{tournament.status === 'upcoming' ? 'The knockout bracket will appear here when the tournament begins.' : 'Bracket data is not available for this tournament.'}</p>
+          <h2>{tournament.status === 'upcoming' ? 'Coming soon' : tournament.status === 'in progress' ? 'The bracket stage has not started yet' : 'Bracket information unavailable'}</h2>
+          <p>{tournament.status === 'upcoming' ? 'The knockout bracket will appear here when the tournament begins.' : tournament.status === 'in progress' ? (knockoutStartWeek ? `The bracket stage starts in Week ${knockoutStartWeek}.` : 'The bracket stage has not started yet.') : 'Bracket data is not available for this tournament.'}</p>
         </section> : <>
           <section className="cup-bracket-tools">
             <label>Start at <select value={effectiveStartRound} onChange={event => setParam('round', event.target.value)}>{roundPickerRounds.map(round => <option key={round.round_number} value={round.round_number}>{roundTitle(round, isDoubleElimination)}</option>)}</select></label>
