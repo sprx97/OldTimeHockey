@@ -2,4 +2,9 @@
 set -eu
 
 repo_root=$(git rev-parse --show-toplevel)
-python3 "$repo_root/scripts/sync_requirements.py" --check
+cd "$repo_root"
+python3 scripts/sync_requirements.py
+if ! git diff HEAD --quiet -- scripts/requirements.txt; then
+    echo "Push blocked: scripts/requirements.txt changed. Commit the regenerated file, then push again." >&2
+    exit 1
+fi
