@@ -30,6 +30,120 @@ function buildSeedOrder(size) {
   return order;
 }
 
+function buildDoubleEliminationLayout(bracketStages, teams, tournamentSize) {
+  const largestSeed = teams.reduce((maximum, team) => Math.max(maximum, Number(team.knockout_seed) || 0), 0);
+  let bracketSize = 1;
+  while (bracketSize < Math.max(2, largestSeed, Number(tournamentSize) || 0)) bracketSize *= 2;
+  const seedPositions = new Map(buildSeedOrder(bracketSize).map((seed, index) => [seed, index]));
+  const teamHistories = new Map();
+  const stageOrder = new Map([["knockout", 0], ["second-chance", 1]]);
+  const chronologicalRounds = bracketStages.flatMap(stage => stage.rounds.map(round => ({ stage: stage.stage, round }))).sort((first, second) =>
+    Number(first.round.first_week || 0) - Number(second.round.first_week || 0) ||
+    (stageOrder.get(first.stage) ?? 2) - (stageOrder.get(second.stage) ?? 2) ||
+    Number(first.round.round_number) - Number(second.round.round_number)
+  );
+
+  for (const { stage, round } of chronologicalRounds) {
+    for (const match of round.matches) {
+      const generatedSources = [];
+      for (const [side, teamId] of [["one", match.team_one_id], ["two", match.team_two_id]]) {
+        if (teamId === null || teamId === undefined) continue;
+        const history = teamHistories.get(Number(teamId)) || [];
+        const previousMatch = history[history.length - 1];
+        if (previousMatch) {
+          const previousWinner = previousMatch.winner_team_id === null || previousMatch.winner_team_id === undefined
+            ? null
+            : Number(previousMatch.winner_team_id);
+          const result = previousWinner === null
+            ? (stage === "second-chance" && previousMatch.stage === "knockout" ? "loser" : "winner")
+            : (previousWinner === Number(teamId) ? "winner" : "loser");
+          generatedSources.push({ match_id: Number(previousMatch.match_id), source_stage: previousMatch.stage, result, side });
+        }
+      }
+      match.generated_sources = generatedSources;
+    }
+
+    for (const match of round.matches) {
+      for (const teamId of [match.team_one_id, match.team_two_id]) {
+        if (teamId === null || teamId === undefined) continue;
+        const history = teamHistories.get(Number(teamId)) || [];
+        history.push(match);
+        teamHistories.set(Number(teamId), history);
+      }
+    }
+  }
+
+  const upperRounds = bracketStages.find(stage => stage.stage === "knockout")?.rounds || [];
+  const lowerStage = bracketStages.find(stage => stage.stage === "second-chance");
+  const lowerRounds = lowerStage?.rounds || [];
+  const lowerSpan = upperRounds[1]?.matches.length || Math.max(1, Math.floor((upperRounds[0]?.matches.length || 1) / 2));
+  const upperMatchById = new Map(upperRounds.flatMap(round => round.matches).map(match => [Number(match.match_id), match]));
+
+  for (const round of upperRounds) {
+    const placements = round.matches.map((match, index) => {
+      const sourceMatches = (match.generated_sources || [])
+        .map(source => upperMatchById.get(source.match_id))
+        .filter(Boolean);
+      const sourceCenters = sourceMatches
+        .filter(source => Number.isFinite(Number(source.generated_bracket_row)))
+        .map(source => Number(source.generated_bracket_row));
+      const seedCenters = [];
+      if (!sourceCenters.length) {
+        for (const [teamId, seed] of [[match.team_one_id, match.team_one_knockout_seed], [match.team_two_id, match.team_two_knockout_seed]]) {
+          if (teamId === null || teamId === undefined) continue;
+          const seedPosition = seedPositions.get(Number(seed));
+          if (seedPosition !== undefined) seedCenters.push(Math.floor(seedPosition / 2) + 0.5);
+        }
+      }
+      const centers = sourceCenters.length ? sourceCenters : [...new Set(seedCenters)];
+      return {
+        match,
+        center: centers.length ? centers.reduce((total, center) => total + center, 0) / centers.length : index + 0.5
+      };
+    });
+    placements.sort((first, second) => first.center - second.center || Number(first.match.match_number) - Number(second.match.match_number));
+    placements.forEach((placement, index) => { placement.match.generated_bracket_row = placement.center; });
+  }
+
+  if (lowerRounds.length) {
+    for (const round of lowerRounds.slice(1)) {
+      const matchCount = round.matches.length;
+      round.matches.forEach(match => {
+        match.generated_bracket_row = (Number(match.match_number) - 0.5) * lowerSpan / matchCount + 0.5;
+      });
+    }
+
+    const firstLowerRound = lowerRounds[0];
+    const nextLowerRound = lowerRounds[1];
+    const nextRoundGap = nextLowerRound?.matches.length ? lowerSpan / nextLowerRound.matches.length : 1;
+    firstLowerRound.matches.forEach((match, index) => {
+      const child = nextLowerRound?.matches.find(candidate =>
+        (candidate.generated_sources || []).some(source => source.match_id === Number(match.match_id))
+      );
+      match.generated_bracket_row = child
+        ? Number(child.generated_bracket_row) + nextRoundGap / 2
+        : (Number(match.match_number) - 0.5) * lowerSpan / firstLowerRound.matches.length + 0.5;
+      if (!Number.isFinite(match.generated_bracket_row)) match.generated_bracket_row = index + 0.5;
+    });
+  }
+
+  for (const stage of bracketStages) {
+    const matchById = new Map(stage.rounds.flatMap(round => round.matches).map(match => [Number(match.match_id), match]));
+    stage.feeders = stage.rounds.flatMap(round => round.matches.flatMap(match =>
+      (match.generated_sources || [])
+        .filter(source => matchById.has(source.match_id))
+        .map(source => ({ source_match_id: source.match_id, target_match_id: Number(match.match_id), result: source.result }))
+    ));
+
+    for (const round of stage.rounds) {
+      round.matches.sort((first, second) =>
+        Number(first.generated_bracket_row ?? Infinity) - Number(second.generated_bracket_row ?? Infinity) ||
+        Number(first.match_number) - Number(second.match_number)
+      );
+    }
+  }
+}
+
 function compareByCriteria(first, second, criteria) {
   for (const criterion of criteria) {
     let firstValue;
@@ -314,7 +428,7 @@ module.exports = async function getOthCupData(pool, requestedYear) {
     pool.execute("SELECT ot.`group` AS group_number, ot.team_id, ot.initial_seed, ot.knockout_seed, t.name AS team_name, COALESCE(ot.manager_name_override, u.FFname) AS manager_name FROM OTHCupTeams ot LEFT JOIN Teams t ON t.teamID=ot.team_id AND t.year=ot.year LEFT JOIN Users u ON u.FFid=CASE WHEN t.initialOwner=-1 THEN t.ownerID ELSE t.initialOwner END WHERE ot.year=? ORDER BY ot.`group`, ot.initial_seed", [year]).then(([rows]) => rows),
     pool.execute("SELECT stage, round_number, first_week, second_week, status FROM OTHCupRounds WHERE year=? ORDER BY CASE stage WHEN 'group' THEN 1 WHEN 'knockout' THEN 2 ELSE 3 END, round_number", [year]).then(([rows]) => rows),
     pool.execute("SELECT stage, priority, tiebreak_type FROM OTHCupTiebreakers WHERE year=? ORDER BY stage, priority", [year]).then(([rows]) => rows),
-    pool.execute("SELECT m.match_id, m.match_number, m.bracket_position, m.match_type, m.stage, m.group_number, m.round AS round_number, m.scoring_note, m.override_winning_team_id, m.team_one_score_override, m.team_two_score_override, m.team_one_id, t1.name AS team_one_name, COALESCE(ot1.manager_name_override, u1.FFname) AS team_one_manager, ot1.initial_seed AS team_one_initial_seed, ot1.knockout_seed AS team_one_knockout_seed, m.team_one_source_match_id, m.team_one_source_result, m.team_two_id, t2.name AS team_two_name, COALESCE(ot2.manager_name_override, u2.FFname) AS team_two_manager, ot2.initial_seed AS team_two_initial_seed, ot2.knockout_seed AS team_two_knockout_seed, m.team_two_source_match_id, m.team_two_source_result, r.first_week, r.second_week, r.status AS round_status FROM OTHCupMatches m JOIN OTHCupRounds r ON r.year=m.year AND r.stage=m.stage AND r.round_number=m.round LEFT JOIN Teams t1 ON t1.teamID=m.team_one_id AND t1.year=m.year LEFT JOIN Users u1 ON u1.FFid=CASE WHEN t1.initialOwner=-1 THEN t1.ownerID ELSE t1.initialOwner END LEFT JOIN OTHCupTeams ot1 ON ot1.year=m.year AND ot1.team_id=m.team_one_id LEFT JOIN Teams t2 ON t2.teamID=m.team_two_id AND t2.year=m.year LEFT JOIN Users u2 ON u2.FFid=CASE WHEN t2.initialOwner=-1 THEN t2.ownerID ELSE t2.initialOwner END LEFT JOIN OTHCupTeams ot2 ON ot2.year=m.year AND ot2.team_id=m.team_two_id WHERE m.year=? ORDER BY CASE m.stage WHEN 'group' THEN 1 WHEN 'knockout' THEN 2 ELSE 3 END, m.group_number, m.round, m.match_number", [year]).then(([rows]) => rows)
+    pool.execute("SELECT m.match_id, m.match_number, m.match_type, m.stage, m.group_number, m.round AS round_number, m.scoring_note, m.override_winning_team_id, m.team_one_score_override, m.team_two_score_override, m.team_one_id, t1.name AS team_one_name, COALESCE(ot1.manager_name_override, u1.FFname) AS team_one_manager, ot1.initial_seed AS team_one_initial_seed, ot1.knockout_seed AS team_one_knockout_seed, m.team_two_id, t2.name AS team_two_name, COALESCE(ot2.manager_name_override, u2.FFname) AS team_two_manager, ot2.initial_seed AS team_two_initial_seed, ot2.knockout_seed AS team_two_knockout_seed, r.first_week, r.second_week, r.status AS round_status FROM OTHCupMatches m JOIN OTHCupRounds r ON r.year=m.year AND r.stage=m.stage AND r.round_number=m.round LEFT JOIN Teams t1 ON t1.teamID=m.team_one_id AND t1.year=m.year LEFT JOIN Users u1 ON u1.FFid=CASE WHEN t1.initialOwner=-1 THEN t1.ownerID ELSE t1.initialOwner END LEFT JOIN OTHCupTeams ot1 ON ot1.year=m.year AND ot1.team_id=m.team_one_id LEFT JOIN Teams t2 ON t2.teamID=m.team_two_id AND t2.year=m.year LEFT JOIN Users u2 ON u2.FFid=CASE WHEN t2.initialOwner=-1 THEN t2.ownerID ELSE t2.initialOwner END LEFT JOIN OTHCupTeams ot2 ON ot2.year=m.year AND ot2.team_id=m.team_two_id WHERE m.year=? ORDER BY CASE m.stage WHEN 'group' THEN 1 WHEN 'knockout' THEN 2 ELSE 3 END, m.group_number, m.round, m.match_number", [year]).then(([rows]) => rows)
   ]);
 
   const scoreWeeks = [...new Set(rounds.flatMap(round => [round.first_week, round.second_week].filter(week => week !== null)))];
@@ -389,7 +503,9 @@ module.exports = async function getOthCupData(pool, requestedYear) {
   }
   const knockoutRounds = bracketStages[0].rounds;
   const knockoutMatches = knockoutRounds.flatMap(round => round.matches);
-  if (!Number(tournaments[0].is_double_elimination)) {
+  if (Number(tournaments[0].is_double_elimination)) {
+    buildDoubleEliminationLayout(bracketStages, teams, tournaments[0].knockout_size);
+  } else {
     resolveTiedMatchesFromAdvancement(knockoutRounds);
     resolveScoringNotesFromAdvancement(knockoutRounds);
     assignBracketNumbers(knockoutMatches, teams, knockoutRounds);

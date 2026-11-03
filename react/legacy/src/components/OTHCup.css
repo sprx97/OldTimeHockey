@@ -141,6 +141,7 @@
 .cup-match-seed { color: #9caaaf; font-size: .55rem; text-align: center; }
 .cup-match-manager { display: flex; min-width: 0; align-items: center; gap: .2rem; overflow: hidden; white-space: nowrap; }
 .cup-match-manager-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.cup-drop-in-indicator { flex: none; font-size: .76rem; line-height: 1; }
 .cup-champion-medal { flex: none; font-size: .78rem; line-height: 1; }
 .cup-match-score { display: flex; align-items: center; justify-content: flex-end; gap: .22rem; }
 .cup-match-side strong { font-size: .65rem; font-variant-numeric: tabular-nums; }

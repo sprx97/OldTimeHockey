@@ -139,17 +139,22 @@ function OTHCup() {
     const winnerId = Number(match.override_winning_team_id ?? match.winner_team_id);
     const championMatch = Number(match.match_id) === Number(championshipMatchId);
     const matchName = match.match_type === 'pending' ? 'Awaiting advancement' : null;
+    const droppedInSides = match.stage === 'second-chance'
+      ? new Set((match.generated_sources || [])
+        .filter(source => source.source_stage === 'knockout' && source.result === 'loser')
+        .map(source => source.side))
+      : new Set();
     return (
       <div style={style} className={`cup-match ${match.winner_team_id ? 'has-winner' : ''} ${match.is_tie ? 'is-tie' : ''} ${match.match_type === 'bye' ? 'is-bye' : ''} ${match.match_type === 'pending' ? 'is-pending' : ''} ${match.pairing_consistent === false ? 'pairing-alert' : ''} ${spotlight && !isSpotlight ? 'dimmed' : ''}`} key={match.match_id || `${match.stage}-${match.group_number || 0}-${match.round_number}-${match.match_number}`}>
         {matchName && <div className="cup-match-node-label">{matchName}</div>}
         <div className={`cup-match-side ${winnerId === teamOneId ? 'winner' : ''}`}>
           <span className="cup-match-seed">{match.stage !== 'group' ? (match.team_one_knockout_seed || '') : (match.team_one_initial_seed || '')}</span>
-          <span className="cup-match-manager"><span className="cup-match-manager-name">{match.match_type === 'bye' && !teamOneId ? 'BYE' : match.team_one_manager || match.team_one_name || (match.team_one_source_match_id ? `${match.team_one_source_result === 'loser' ? 'Loser' : 'Winner'} of match ${match.team_one_source_match_id}` : `Team ${match.team_one_id || 'TBD'}`)}</span>{championMatch && winnerId === teamOneId && <span className="cup-champion-medal" role="img" aria-label="Tournament champion">🥇</span>}</span>
+          <span className="cup-match-manager"><span className="cup-match-manager-name">{match.match_type === 'bye' && !teamOneId ? 'BYE' : match.team_one_manager || match.team_one_name || `Team ${match.team_one_id || 'TBD'}`}</span>{droppedInSides.has('one') && <span className="cup-drop-in-indicator" role="img" aria-label="Dropped in from upper bracket" title="Dropped in from upper bracket">⬇️</span>}{championMatch && winnerId === teamOneId && <span className="cup-champion-medal" role="img" aria-label="Tournament champion">🥇</span>}</span>
           <div className="cup-match-score">{match.match_type !== 'bye' && matchInfoText && winnerId === teamOneId && <span className="cup-tiebreak-info" role="img" tabIndex="0" aria-label={matchInfoText} title={matchInfoText}><span>?</span></span>}<strong>{scoreText(match.match_type === 'bye' ? null : match.score_one)}</strong></div>
         </div>
         <div className={`cup-match-side ${winnerId === teamTwoId ? 'winner' : ''}`}>
           <span className="cup-match-seed">{match.stage !== 'group' ? (match.team_two_knockout_seed || '') : (match.team_two_initial_seed || '')}</span>
-          <span className="cup-match-manager"><span className="cup-match-manager-name">{match.match_type === 'bye' && !teamTwoId ? 'BYE' : match.team_two_manager || match.team_two_name || (match.team_two_source_match_id ? `${match.team_two_source_result === 'loser' ? 'Loser' : 'Winner'} of match ${match.team_two_source_match_id}` : `Team ${match.team_two_id || 'TBD'}`)}</span>{championMatch && winnerId === teamTwoId && <span className="cup-champion-medal" role="img" aria-label="Tournament champion">🥇</span>}</span>
+          <span className="cup-match-manager"><span className="cup-match-manager-name">{match.match_type === 'bye' && !teamTwoId ? 'BYE' : match.team_two_manager || match.team_two_name || `Team ${match.team_two_id || 'TBD'}`}</span>{droppedInSides.has('two') && <span className="cup-drop-in-indicator" role="img" aria-label="Dropped in from upper bracket" title="Dropped in from upper bracket">⬇️</span>}{championMatch && winnerId === teamTwoId && <span className="cup-champion-medal" role="img" aria-label="Tournament champion">🥇</span>}</span>
           <div className="cup-match-score">{match.match_type !== 'bye' && matchInfoText && winnerId === teamTwoId && <span className="cup-tiebreak-info" role="img" tabIndex="0" aria-label={matchInfoText} title={matchInfoText}><span>?</span></span>}<strong>{scoreText(match.match_type === 'bye' ? null : match.score_two)}</strong></div>
         </div>
         {match.is_tie && <div className="cup-match-foot">Tie to resolve</div>}
@@ -187,95 +192,43 @@ function OTHCup() {
   </div>;
 
   const renderDoubleEliminationStage = () => {
-    const spacing = 54;
-    const minimumMatchSpacing = 72;
+    const matchSpacing = 72;
+    const matchHalfHeight = 27;
     const positions = new Map();
     const roundsForStage = doubleRounds.filter(round => Number(round.round_number) >= effectiveStartRound);
-    const compactFilteredRounds = effectiveStartRound > Number(doubleRounds[0]?.round_number || 1);
-    const resetIsNotNeeded = doubleBracketTab === 'knockout' && data?.grand_final_status === 'reset-not-needed';
-    const grandFinalRoundIndex = resetIsNotNeeded ? roundsForStage.length - 1 : roundsForStage.length - 2;
-    roundsForStage.forEach((round, roundIndex) => {
-      if (compactFilteredRounds) {
-        const orderedMatches = [...round.matches].sort((first, second) =>
-          Number(first.bracket_position ?? first.match_number) - Number(second.bracket_position ?? second.match_number)
-        );
-        const displayedMatches = orderedMatches.filter(match => match.match_type !== 'bye');
-        const displayIndexes = new Map(displayedMatches.map((match, index) => [Number(match.match_id), index]));
-        orderedMatches.forEach((match, matchIndex) => {
-          const sourceIds = [match.team_one_source_match_id, match.team_two_source_match_id].filter(id => id !== null && id !== undefined);
-          const sourcePositions = sourceIds.map(id => positions.get(Number(id))).filter(Number.isFinite);
-          let center;
-          if (roundIndex === grandFinalRoundIndex && sourcePositions.length === 1) {
-            center = sourcePositions[0];
-          } else if (sourceIds.length > 0 && sourcePositions.length === sourceIds.length) {
-            center = sourcePositions.reduce((total, value) => total + value, 0) / sourcePositions.length;
-          } else if (match.match_type === 'bye') {
-            const fraction = orderedMatches.length > 1 ? matchIndex / (orderedMatches.length - 1) : 0;
-            center = 36 + fraction * Math.max(0, displayedMatches.length - 1) * minimumMatchSpacing;
-          } else {
-            center = 36 + (displayIndexes.get(Number(match.match_id)) || 0) * minimumMatchSpacing;
-          }
-          positions.set(Number(match.match_id), center);
-        });
-        return;
-      }
-      const roundCenters = round.matches.map((match, matchIndex) => {
-        const sourceIds = [match.team_one_source_match_id, match.team_two_source_match_id].filter(id => id !== null && id !== undefined);
-        const sourcePositions = sourceIds.map(id => positions.get(Number(id))).filter(Number.isFinite);
-        if (roundIndex === grandFinalRoundIndex && sourceIds.length === 2 && sourcePositions.length === 1) {
-          return { match, center: sourcePositions[0] };
-        }
-        if (sourceIds.length === 2 && sourcePositions.length === 2) {
-          return { match, center: sourcePositions.reduce((total, value) => total + value, 0) / sourcePositions.length };
-        }
-        if (match.bracket_position !== null && match.bracket_position !== undefined && Number.isFinite(Number(match.bracket_position))) {
-          return { match, center: Number(match.bracket_position) };
-        }
-        const center = sourcePositions.length
-          ? sourcePositions.reduce((total, value) => total + value, 0) / sourcePositions.length
-          : (matchIndex + 0.5) * spacing * (2 ** Math.min(roundIndex, 4));
-        return { match, center };
-      });
-      const minCenter = Math.min(...roundCenters.map(item => item.center));
-      const maxCenter = Math.max(...roundCenters.map(item => item.center));
-      const requiredSpan = minimumMatchSpacing * Math.max(0, roundCenters.length - 1);
-      const observedSpan = maxCenter - minCenter;
-      const expansion = observedSpan > 0 && observedSpan < requiredSpan ? requiredSpan / observedSpan : 1;
-      roundCenters.forEach(({ match, center }) => {
-        positions.set(Number(match.match_id), minCenter + (center - minCenter) * expansion);
-      });
-    });
-    if (roundsForStage.length >= 2) {
-      const grandFinal = roundsForStage[grandFinalRoundIndex]?.matches[0];
-      const reset = roundsForStage[roundsForStage.length - 1].matches.find(match =>
-        match.team_one_source_match_id != null &&
-        Number(match.team_one_source_match_id) === Number(match.team_two_source_match_id) &&
-        match.team_one_source_result === 'winner' &&
-        match.team_two_source_result === 'loser'
-      );
-      if (grandFinal && reset) positions.set(Number(reset.match_id), positions.get(Number(grandFinal.match_id)));
-    }
-    const maxCenter = Math.max(spacing, ...positions.values());
-    const height = maxCenter + spacing / 2;
+    const visibleCenters = roundsForStage.flatMap(round => round.matches)
+      .map(match => Number(match.generated_bracket_row) * matchSpacing)
+      .filter(Number.isFinite);
+    const positionOffset = visibleCenters.length ? Math.min(...visibleCenters) - matchSpacing / 2 : 0;
+    roundsForStage.forEach(round => round.matches.forEach((match, index) => {
+      const generatedCenter = Number(match.generated_bracket_row) * matchSpacing;
+      positions.set(Number(match.match_id), Number.isFinite(generatedCenter)
+        ? generatedCenter - positionOffset
+        : (index + 0.5) * matchSpacing);
+    }));
+    const maxCenter = Math.max(matchSpacing / 2, ...positions.values());
+    const height = maxCenter + matchSpacing / 2;
     const matchMap = new Map(roundsForStage.flatMap(round => round.matches).map(match => [Number(match.match_id), match]));
     const hiddenByeIds = new Set(roundsForStage.flatMap(round => round.matches)
       .filter(match => match.match_type === 'bye')
       .map(match => Number(match.match_id)));
-    const edges = roundsForStage.flatMap(round => round.matches.flatMap(match => [
-      { source: match.team_one_source_match_id, target: match, result: match.team_one_source_result },
-      { source: match.team_two_source_match_id, target: match, result: match.team_two_source_result }
-    ].filter(edge => edge.source !== null && edge.source !== undefined && matchMap.has(Number(edge.source)) && !hiddenByeIds.has(Number(edge.source)))));
+    const edges = (selectedDoubleStage?.feeders || []).filter(edge =>
+      matchMap.has(Number(edge.source_match_id)) &&
+      matchMap.has(Number(edge.target_match_id)) &&
+      !hiddenByeIds.has(Number(edge.source_match_id))
+    );
     const width = roundsForStage.length * 180;
     return <div className="cup-double-bracket" style={{ '--bracket-zoom': zoom, '--cup-double-height': `${height}px`, '--cup-double-width': `${width}px` }}>
       <svg className="cup-double-feeders" viewBox={`0 0 ${width} ${height}`} aria-hidden="true">
         {edges.map((edge, index) => {
-          const source = matchMap.get(Number(edge.source));
-          const sourceRound = roundsForStage.findIndex(round => round.matches.some(match => Number(match.match_id) === Number(edge.source)));
-          const targetRound = roundsForStage.findIndex(round => round.matches.some(match => Number(match.match_id) === Number(edge.target.match_id)));
+          const source = matchMap.get(Number(edge.source_match_id));
+          const target = matchMap.get(Number(edge.target_match_id));
+          const sourceRound = roundsForStage.findIndex(round => round.matches.some(match => Number(match.match_id) === Number(edge.source_match_id)));
+          const targetRound = roundsForStage.findIndex(round => round.matches.some(match => Number(match.match_id) === Number(edge.target_match_id)));
           const x1 = sourceRound * 180 + 156;
           const x2 = targetRound * 180;
           const y1 = positions.get(Number(source.match_id));
-          const y2 = positions.get(Number(edge.target.match_id));
+          const y2 = positions.get(Number(target.match_id));
           const elbow = Math.max(x1 + 8, (x1 + x2) / 2);
           return <path key={index} className={`cup-double-feeder ${edge.result === 'loser' ? 'loser-feeder' : ''}`} d={`M${x1} ${y1} H${elbow} V${y2} H${x2}`} />;
         })}
@@ -283,7 +236,7 @@ function OTHCup() {
       {roundsForStage.map(round => <article className="cup-double-round-column" key={`${round.stage}-${round.round_number}`}>
         <header><span>{roundTitle(round, true)}</span><small>{roundWeeksLabel(round)}</small></header>
         <div className="cup-double-round-canvas" style={{ height: `${height}px` }}>
-          {round.matches.filter(match => !hiddenByeIds.has(Number(match.match_id))).map(match => renderMatch(match, round, { position: 'absolute', top: `${positions.get(Number(match.match_id)) - 27}px`, left: 0, right: 0 }))}
+          {round.matches.filter(match => !hiddenByeIds.has(Number(match.match_id))).map(match => renderMatch(match, round, { position: 'absolute', top: `${positions.get(Number(match.match_id)) - matchHalfHeight}px`, left: 0, right: 0 }))}
         </div>
       </article>)}
     </div>;
