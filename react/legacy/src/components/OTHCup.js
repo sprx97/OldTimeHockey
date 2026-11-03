@@ -196,16 +196,55 @@ function OTHCup() {
     const matchHalfHeight = 27;
     const positions = new Map();
     const roundsForStage = doubleRounds.filter(round => Number(round.round_number) >= effectiveStartRound);
-    const visibleCenters = roundsForStage.flatMap(round => round.matches)
-      .map(match => Number(match.generated_bracket_row) * matchSpacing)
-      .filter(Number.isFinite);
-    const positionOffset = visibleCenters.length ? Math.min(...visibleCenters) - matchSpacing / 2 : 0;
-    roundsForStage.forEach(round => round.matches.forEach((match, index) => {
-      const generatedCenter = Number(match.generated_bracket_row) * matchSpacing;
-      positions.set(Number(match.match_id), Number.isFinite(generatedCenter)
-        ? generatedCenter - positionOffset
-        : (index + 0.5) * matchSpacing);
-    }));
+    const compactFilteredRounds = effectiveStartRound > Number(doubleRounds[0]?.round_number || 1);
+    if (compactFilteredRounds) {
+      roundsForStage.forEach(round => {
+        const orderedMatches = round.matches
+          .filter(match => match.match_type !== 'bye')
+          .sort((first, second) =>
+            Number(first.generated_bracket_row ?? Infinity) - Number(second.generated_bracket_row ?? Infinity) ||
+            Number(first.match_number) - Number(second.match_number)
+          );
+        const placements = orderedMatches.map((match, index) => {
+          const sourceCenters = [...new Set((match.generated_sources || []).map(source => source.match_id))]
+            .map(sourceId => positions.get(Number(sourceId)))
+            .filter(Number.isFinite);
+          return {
+            match,
+            center: sourceCenters.length
+              ? sourceCenters.reduce((total, center) => total + center, 0) / sourceCenters.length
+              : (index + 0.5) * matchSpacing
+          };
+        });
+        placements.sort((first, second) => first.center - second.center || Number(first.match.match_number) - Number(second.match.match_number));
+        const separated = [];
+        for (const placement of placements) {
+          const previous = separated[separated.length - 1];
+          separated.push(previous ? Math.max(placement.center, previous + matchSpacing) : placement.center);
+        }
+        const offset = placements.length
+          ? (placements.reduce((total, placement) => total + placement.center, 0) - separated.reduce((total, center) => total + center, 0)) / placements.length
+          : 0;
+        placements.forEach((placement, index) => {
+          positions.set(Number(placement.match.match_id), separated[index] + offset);
+        });
+      });
+      if (positions.size) {
+        const positionOffset = Math.min(...positions.values()) - matchSpacing / 2;
+        for (const [matchId, center] of positions) positions.set(matchId, center - positionOffset);
+      }
+    } else {
+      const visibleCenters = roundsForStage.flatMap(round => round.matches)
+        .map(match => Number(match.generated_bracket_row) * matchSpacing)
+        .filter(Number.isFinite);
+      const positionOffset = visibleCenters.length ? Math.min(...visibleCenters) - matchSpacing / 2 : 0;
+      roundsForStage.forEach(round => round.matches.forEach((match, index) => {
+        const generatedCenter = Number(match.generated_bracket_row) * matchSpacing;
+        positions.set(Number(match.match_id), Number.isFinite(generatedCenter)
+          ? generatedCenter - positionOffset
+          : (index + 0.5) * matchSpacing);
+      }));
+    }
     const maxCenter = Math.max(matchSpacing / 2, ...positions.values());
     const height = maxCenter + matchSpacing / 2;
     const matchMap = new Map(roundsForStage.flatMap(round => round.matches).map(match => [Number(match.match_id), match]));
