@@ -82,7 +82,6 @@
 .cup-group-card td:first-child { color: #8b989d; }
 .cup-group-card tr.qualifier { background: #f0faf8; }
 .cup-group-card tr.qualifier td:first-child { color: var(--cup-teal); font-weight: 800; }
-.cup-group-card tr.unresolved td:first-child::after { color: #d39124; content: ' ·'; }
 .manager-name { display: block; max-width: 10rem; overflow: hidden; color: var(--cup-ink); font-weight: 700; text-overflow: ellipsis; }
 .cup-group-card td small { display: block; color: #a0aaae; font-size: .58rem; }
 .cup-group-matches { padding: .35rem .75rem; }

@@ -324,7 +324,8 @@ function OTHCup() {
                 const groupView = groupViews[group.group_number] || 'standings';
                 const groupRounds = data?.group_rounds || [];
                 const requestedRound = groupMatchRounds[group.group_number];
-                const selectedRound = groupRounds.find(round => Number(round.round_number) === Number(requestedRound)) || groupRounds[0];
+                const defaultRound = groupRounds.find(round => round.status === 'in progress') || groupRounds[0];
+                const selectedRound = groupRounds.find(round => Number(round.round_number) === Number(requestedRound)) || defaultRound;
                 const dayMatches = selectedRound ? group.matches.filter(match => Number(match.round_number) === Number(selectedRound.round_number)) : [];
                 return <>
                   <header className="cup-group-header">

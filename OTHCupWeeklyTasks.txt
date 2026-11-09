@@ -1,0 +1,4 @@
+- Update OTHCupRounds for (year, prevWeek) to completed
+- Update OTHCupRounds for (year, currWeek) to in progress
+- if end of group stage, set the knockout seeds and create the first set of matches
+- if in the group stage, set the next round of matches, if not a double week
