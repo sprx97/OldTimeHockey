@@ -30,6 +30,10 @@ fi
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/IncrementWeek.py
 echo "WeekVars Incremented!"
 
+# Update OTH Cup
+/var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/UpdateOTHCup.py
+echo "UpdateOTHCup Complete!"
+
 # Run weekly database copy
 /var/www/OldTimeHockey/scripts/oth.venv/bin/python3 /var/www/OldTimeHockey/scripts/backupdata.py
 /home/jeremy/wes.venv/bin/pip freeze > /home/jeremy/DiscordBot/requirements.txt
